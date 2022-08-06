@@ -243,7 +243,9 @@ class ScriptCoreMain:
                                 remove_sim(sim)
                                 return
                         if now.hour() >= sim.sim_info.routine_info.off_duty and not sim == services.get_active_sim() \
-                                and not sim.sim_info.routine_info.off_duty == 0 and not sim.sim_info.is_selectable:
+                                and not sim.sim_info.routine_info.off_duty == 0 and not sim.sim_info.is_selectable or \
+                                now.hour() < sim.sim_info.routine_info.on_duty and not sim == services.get_active_sim() \
+                                and not sim.sim_info.routine_info.on_duty == 0 and not sim.sim_info.is_selectable:
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
                                     sim.sim_info.routine_info.off_duty, now.hour()))

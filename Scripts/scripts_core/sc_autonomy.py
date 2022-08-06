@@ -230,12 +230,9 @@ class sc_Autonomy:
                 autonomy == AutonomyState.DISABLED and "social" in action and not interaction.is_user_directed:
             if distance_to_by_room(interaction.sim, interaction.target) > 5:
                 debugger("Sim: {} {} - Long Distance: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, action, interaction.allow_autonomous), 2, True)
-                social_group = interaction.social_group
-                if social_group:
-                    participants = interaction.get_participants(ParticipantType.PickedSim)
-                    for sim in participants:
-                        if sim is not None:
-                            social_group.remove(sim)
+                for social_group in interaction.sim.get_groups_for_sim_gen():
+                    social_group.remove(interaction.target)
+                    social_group._resend_members()
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
                 return False
 
