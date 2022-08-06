@@ -252,7 +252,8 @@ class ScriptCoreMain:
                             send_sim_home(sim)
                             return
 
-                        if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0:
+                        if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0 or \
+                                now.hour() < sim.sim_info.routine_info.on_duty and not sim.sim_info.routine_info.on_duty == 0:
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
                                     sim.sim_info.routine_info.off_duty, now.hour()))
