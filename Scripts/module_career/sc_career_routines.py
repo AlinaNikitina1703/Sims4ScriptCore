@@ -14,7 +14,7 @@ from module_career.sc_career_functions import get_routine_objects_by_title, find
     find_empty_register, find_empty_desk_by_id, find_empty_desk
 from objects import ALL_HIDDEN_REASONS
 from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance, go_here_routine, push_sim_function, \
-    debugger, set_all_motives_by_sim, clear_jobs, get_sleep_hours, make_clean, \
+    debugger, set_all_motives_by_sim, clear_jobs, get_awake_hours, make_clean, \
     object_is_dirty, make_dirty, create_dust, get_dust_action_and_vacuum, remove_object_from_list, check_action_list, \
     find_all_objects_by_title, distance_to_by_level, push_sim_out, remove_sim, make_sim_leave, \
     get_spawn_point_by_distance, distance_to_pos, distance_to_by_room, assign_routine
@@ -499,7 +499,7 @@ class sc_CareerRoutine:
     def sleep_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
-            if not get_sleep_hours(sim):
+            if not get_awake_hours(sim):
                 clear_jobs(sim_info)
                 set_all_motives_by_sim(sim, 100, 'motive_fun')
                 set_all_motives_by_sim(sim, 100, 'motive_social')
