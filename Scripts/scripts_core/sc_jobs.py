@@ -583,7 +583,7 @@ def find_all_objects_by_title(target,
     except BaseException as e:
         error_trap(e)
 
-def get_sleep_hours(sim):
+def get_awake_hours(sim):
     try:
         random.seed(sim.sim_id)
         start = random.randint(6, 9)
