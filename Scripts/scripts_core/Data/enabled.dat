@@ -1,6 +1,7 @@
 sim-stand|seating_sit|gohere|carry|putdown|put_down|sleep|bed_relax|nap|cook|lounge|sit_passive|stand_passive
 socialpicker|social_adjustment|collect_dish|sink_washdish|generic_treadmill|eat_to_clean
-generic_karaoke|toilet-use|generic_toilet|generic_shower|dishwasher|throw_away|grill|eat_active|eat_passive
+generic_karaoke|toilet-use|generic_toilet|generic_shower|dishwasher|throw_away|grill|eat_active|eat_passive|drink_passive
 motionbasedgaming|generic_dance|generic_beach|generic_kneel|createtool|addlog|campfire_roast|campfire_play
 generic_workout|generic_jump|generic_bath|generic_bubble|hottub|laugh|generic_swing|cleanup_dishes|generic_telescope
-rollerskate|stereo_listen|waiter|bonfire_play|wicked|generic_barmakedrink|career|pool_sit|chat
+rollerskate|stereo_listen|waiter|bonfire_play|wicked|generic_barmakedrink|career|pool_sit|drink_active
+idle_chatting_stc|mixer_social|sim_chat|emotion_idle|idle_buff
