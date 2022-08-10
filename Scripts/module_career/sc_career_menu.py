@@ -1,11 +1,13 @@
 import os
 from os.path import isfile, join
 
+import camera
 import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from module_career.sc_career_custom import sc_CareerCustom
 from module_career.sc_career_functions import get_routine_objects_by_title
 from module_career.sc_career_routines import sc_CareerRoutine
+from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_jobs import assign_title, clear_sim_instance, push_sim_function, distance_to, debugger
 from scripts_core.sc_menu_class import MainMenu
@@ -24,6 +26,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
         self.sc_career_menu_choices = ("Set Menu",
+                                       "Exams",
                                        "Add Routine To Sim",
                                        "Routine Info")
 
@@ -41,6 +44,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         self.sc_career_menu = MainMenu(*args, **kwargs)
         self.sc_vendor_menu = MainMenu(*args, **kwargs)
         self.script_choice = MainMenu(*args, **kwargs)
+        self.sc_bulletin = sc_Bulletin()
 
     def _run_interaction_gen(self, timeline):
         self.sc_career_menu.MAX_MENU_ITEMS_TO_LIST = 10
@@ -65,6 +69,9 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
 
     def add_routine_to_sim(self, timeline):
         inputbox("Add Routine To Sim", "Enter the routine title. Add a + to the beginning for 24 hour duty.", self._add_routine_to_sim_callback)
+
+    def exams(self, timeline):
+        self.sc_bulletin.show_exams(camera.focus_on_object)
 
     def _add_routine_to_sim_callback(self, role_title: str):
         full_duty = False

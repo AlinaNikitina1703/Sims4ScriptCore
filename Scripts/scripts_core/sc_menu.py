@@ -65,16 +65,15 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
-        self.sc_menu_choices = ("Get Info",
-                                "Fixes Menu",
-                                "Sims On Lot",
-                                "Routine Sims",
-                                "Exams",
-                                "Weather Menu",
-                                "Effects Menu",
-                                "Sims Menu",
-                                "Time Menu",
-                                "Control Menu")
+        self.sc_menu_choices = ("<font color='#009900'>Get Info</font>",
+                                "<font color='#000099'>Sims On Lot</font>",
+                                "<font color='#000099'>Routine Sims</font>",
+                                "<font color='#000000'>Fixes Menu</font>",
+                                "<font color='#000000'>Weather Menu</font>",
+                                "<font color='#000000'>Effects Menu</font>",
+                                "<font color='#000000'>Sims Menu</font>",
+                                "<font color='#000000'>Time Menu</font>",
+                                "<font color='#000000'>Control Menu</font>")
 
         self.sc_weather_choices = ()
         self.sc_fixes_choices = ("Grab Drink",
@@ -1143,9 +1142,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def routine_sims(self, timeline):
         self.sc_bulletin.show_routine_staff(camera.focus_on_object)
-
-    def exams(self, timeline):
-        self.sc_bulletin.show_exams(camera.focus_on_object)
 
     def get_info(self, timeline):
         try:
