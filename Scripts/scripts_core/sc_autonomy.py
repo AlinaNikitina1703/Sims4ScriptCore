@@ -282,6 +282,10 @@ class sc_Autonomy:
     def run_routine_filter(self, interaction):
         action = interaction.__class__.__name__.lower()
         autonomy = interaction.sim.sim_info.autonomy
+        zone = services.current_zone_id()
+        current_venue = build_buy.get_current_venue(zone)
+        venue_manager = services.get_instance_manager(sims4.resources.Types.VENUE)
+        venue_tuning = venue_manager.get(current_venue)
 
         if autonomy == AutonomyState.FULL:
             return True
