@@ -812,7 +812,9 @@ def get_career_level(sim_info):
         error_trap(e)
 
 def assign_role_title(sim):
-    title_filter = ["rolestate", "state", "hospital", "generic", "background", "open streets", "master", "fanstan", "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls", "npc", "situation", "dj"]
+    title_filter = ["rolestate", "state", "hospital", "generic", "background", "open streets", "master", "fanstan",
+                    "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",
+                    "npc", "situation", "dj", "packb"]
     role_name = None
     if not hasattr(sim, "autonomy_component"):
         return

@@ -66,6 +66,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
         self.sc_menu_choices = ("<font color='#009900'>Get Info</font>",
+                                "<font color='#990000'>Delete Object</font>",
                                 "<font color='#000099'>Sims On Lot</font>",
                                 "<font color='#000099'>Routine Sims</font>",
                                 "<font color='#000000'>Fixes Menu</font>",
@@ -135,8 +136,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                     "Teleport Vendor")
 
         self.sc_delete_choices = ("Delete All",
-                                "Delete Metal",
-                                "Delete Routine")
+                                  "Delete Instanced",
+                                  "Delete Metal",
+                                  "Delete Routine")
 
         self.sc_menu = MainMenu(*args, **kwargs)
         self.sc_fixes_menu = MainMenu(*args, **kwargs)
@@ -241,8 +243,17 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def teleport_vendor(self, timeline):
         self.teleport_sims("vendor")
 
+    def delete_object(self, timeline):
+        target = services.object_manager().get(self.target.id)
+        if target is None:
+            return
+        target.destroy()
+
     def delete_all(self, timeline):
         self.permanently_delete_sims()
+
+    def delete_instanced(self, timeline):
+        self.permanently_delete_sims("instanced")
 
     def delete_metal(self, timeline):
         self.permanently_delete_sims("metal")
@@ -371,6 +382,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             if "Trait_SimPreference_Likes_Music_Metal" in str(trait)]]
             elif "routine" in filter:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.routine]
+            elif "instanced" in filter:
+                all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.is_instanced()]
             else:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN]
 

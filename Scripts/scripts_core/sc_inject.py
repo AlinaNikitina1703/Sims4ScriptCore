@@ -3,9 +3,15 @@ from functools import wraps
 
 import services
 from clock import ClockSpeedMode
+from clubs.club_enums import ClubGatheringStartSource
+from clubs.club_gathering_situation import ClubGatheringSituation
+from clubs.club_service import ClubService
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
+from singletons import DEFAULT
+
 from scripts_core.sc_autonomy import sc_Autonomy
+from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
@@ -37,6 +43,55 @@ def safe_inject(target_object, target_function_name, safe=False):
         return wrap_function
 
     return _injected
+
+@safe_inject(ClubService, 'on_gathering_started')
+def c_zone_club_gathering_start(original, self, gathering, *args, **kwargs):
+    result = original(self, gathering, *args, **kwargs)
+    try:
+        sc_club_gathering_start_handler(self, gathering.associated_club)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
+    return result
+
+@safe_inject(ClubService, 'on_gathering_ended')
+def c_zone_club_gathering_end(original, self, gathering, *args, **kwargs):
+    result = original(self, gathering, *args, **kwargs)
+    try:
+        sc_club_gathering_end_handler(self, gathering.associated_club)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
+    return result
+
+@safe_inject(ClubService, 'start_gathering')
+def start_gathering(original, self, club,
+                    start_source=ClubGatheringStartSource.DEFAULT,
+                    host_sim_id=0,
+                    invited_sims=(),
+                    zone_id=DEFAULT,
+                    ignore_zone_validity=False, **kwargs):
+
+    result = original(self, club,
+                      start_source=start_source,
+                      host_sim_id=host_sim_id,
+                      invited_sims=invited_sims,
+                      zone_id=zone_id,
+                      ignore_zone_validity=True, **kwargs)
+    return result
+
+@safe_inject(ClubGatheringSituation, 'start_situation')
+def c_zone_club_situation_start(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
+    try:
+        sc_club_gathering_start_handler(self, self.associated_club)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
+    return result
 
 @safe_inject(MixerInteraction, 'notify_queue_head')
 def sc_notify_queue_head_inject(original, self, *args, **kwargs):

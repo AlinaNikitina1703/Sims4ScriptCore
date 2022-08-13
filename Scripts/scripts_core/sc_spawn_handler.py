@@ -2,8 +2,8 @@ import date_and_time
 import gsi_handlers
 import services
 import sims
-from scripts_core.sc_autonomy import AutonomyState, set_autonomy
-from scripts_core.sc_jobs import get_number_of_sims, get_venue, debugger
+
+from scripts_core.sc_jobs import get_number_of_sims, get_venue, debugger, get_filters
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim, error_trap
 from sims.sim_info_types import SimZoneSpinUpAction
@@ -70,6 +70,11 @@ class sc_SpawnHandler(SimSpawnerService):
                 if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and "venue_doctor" in venue:
                     debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
+                filters = get_filters("spawn")
+                if filters is not None:
+                    name = request._sim_info.first_name.lower() + " " + request._sim_info.last_name.lower()
+                    if [f for f in filters if f in name]:
+                        return
 
             success = sims.sim_spawner.SimSpawner.spawn_sim((request._sim_info), sim_position=(place_strategy.position),
               sim_location=location,
