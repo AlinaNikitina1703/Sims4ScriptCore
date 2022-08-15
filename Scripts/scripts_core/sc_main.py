@@ -6,6 +6,7 @@ import random
 import services
 import sims4
 from scripts_core.sc_autonomy import AutonomyState, set_autonomy, send_sim_home
+from scripts_core.sc_clubs import C_ZoneClubs
 from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims, \
     pause_routine, debugger, action_unclogger, get_filters, update_lights, \
     add_career_to_sim, remove_sim, set_proper_sim_outfit, remove_all_careers, \
@@ -172,6 +173,7 @@ class ScriptCoreMain:
             assign_title(sim_info, "")
 
     def init(self):
+        sc_club = C_ZoneClubs()
         try:
             if not sc_Vars._config_loaded and not sc_Vars._running:
                 if sc_Vars.DEBUG:
@@ -187,6 +189,7 @@ class ScriptCoreMain:
                 else:
                     sims4.commands.client_cheat("fps off", client.id)
                 update_lights(True, 0.0)
+                sc_club.club_setup_on_load(services.get_club_service())
                 sc_Vars._config_loaded = True
 
             if sc_Vars._running and not sc_Vars.DISABLE_MOD:
@@ -367,5 +370,6 @@ def set_random_trait_role(sim):
                     if sc_Vars.DEBUG:
                         debugger("Patient: {}".format(sim.first_name))
                     return True
+
     return False
 

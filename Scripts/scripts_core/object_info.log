@@ -1,0 +1,913 @@
+prototype
+[Zone Info:] 1115502318738542683
+[Object ID:] 59408226204849321
+[Object Definition ID:] 247136 (0x3c560)
+[Object Scale:] 0.800000011920929
+[Object Locked:] None
+[Object Dirty:] 100
+[Object Room ID:] 0
+[Object Level:] 0
+[Object Opacity:] None
+[Object Tags:] Build_Buy_World_Objects, BuyCat_Shareable
+[Object Location (Title):] None [ID:] None
+[Object Slot Hash:] 0
+[Object POS:] X:464.19329833984375 Y:149.97836303710938 Z:314.8912658691406
+[Object ROT:] X:0.0 Y:0.2933031916618347 Z:0.0 W:0.9560195803642273
+[Type:] class sims4.tuning.instances.prototype
+[Commodities:]
+
+
+
+INFO:
+
+(AffordanceTuning): None
+(AnimalHome): None
+(AnimalObject): None
+(AnimalPreference): None
+(Animation): None
+(AnimationOverlay): None
+(Audio): None
+(Autonomy): None
+(AutonomyMarker): None
+(Awareness): None
+(Buffs): None
+(Canvas): None
+(Carryable): None
+(Carrying): None
+(CensorGrid): None
+(CollectableComponent): None
+(ConsumableComponent): None
+(Crafting): None
+(CraftingStationComponent): None
+(Display): None
+(Effects): None
+(EnsembleComponent): None
+(EnvironmentScoreComponent): None
+(Example): None
+(FADE_DURATION): 1.2
+(FORWARD_OFFSET): 0.04
+(FishingLocation): None
+(FlowingPuddle): None
+(FocusComponent): None
+(Footprint): None
+(Game): None
+(Gameplay): None
+(Gardening): None
+(HOVERTIP_HANDLE): 0
+(INITIAL_DEPRECIATION): 0.2
+(INSTANCE_TUNABLES): _transient_tuning: TunableBool, additional_interaction_constraints: sims4.tuning.tunable.TunableList object at 0x00007FF47E5F2848, autonomy_modifiers: sims4.tuning.tunable.TunableList object at 0x00007FF47E602738, set_ico_as_carry_target: TunableBool, supported_posture_types: snippets.define_snippet.locals.SnippetVariant object at 0x00007FF47D3AA838, allow_preroll_multiple_targets: TunableBool, icon_override: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47D3ABF68, flammable_area: fire.flammability.TunableFlammableAreaVariant object at 0x00007FF47D39D1B0, _provided_mobile_posture: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47D3B0788, _remap_child_parenting: TunableBool, recycling_data: sims4.tuning.tunable.TunableTuple object at 0x00007FF47E619C88, tests_to_bypass_utility_requirement: sims4.tuning.tunable.TunableMapping object at 0x00007FF47D39D3C0
+(Idle): None
+(Inventory): None
+(InventoryItem): None
+(Lighting): None
+(LineOfSight): None
+(LinkedObject): None
+(LiveDrag): None
+(LiveDragTarget): None
+(Lock): None
+(LunarPhaseAware): None
+(MODULE_TUNABLES): INITIAL_DEPRECIATION: TunablePercent, FADE_DURATION: TunableSimMinute
+(Mannequin): None
+(ModularObject): None
+(Name): None
+(NarrativeAware): None
+(NewObject): None
+(ObjectAge): None
+(ObjectClaim): None
+(ObjectFashionMarketplace): None
+(ObjectMarketplace): None
+(ObjectRelationship): None
+(ObjectRouting): None
+(ObjectTeleportation): None
+(Ownable): None
+(OwningHousehold): None
+(ParentToSimHead): None
+(Portal): None
+(PortalAnimation): None
+(PortalLocking): None
+(Position): None
+(Privacy): None
+(ProceduralAnimation): None
+(Proximity): None
+(Render): None
+(Retail): None
+(Routing): None
+(ScholarshipLetter): None
+(SeasonAware): None
+(Sim): None
+(SituationScheduler): None
+(Slot): None
+(SpawnPoint): None
+(Spawner): None
+(StageMark): None
+(State): None
+(Statistic): None
+(Stereo): None
+(Stolen): None
+(StoredActorLocation): None
+(StoredAudio): None
+(StoredInfoComponent): None
+(StoredObjectInfo): None
+(StoredSimInfo): None
+(TimeOfDay): None
+(Tooltip): None
+(Topic): None
+(Utilities): None
+(VISIBLE_TO_AUTOMATION): True
+(Vehicle): None
+(Video): None
+(WaitingLine): None
+(WeatherAware): None
+(Whim): None
+(ZoneModifier): None
+(_NO_SLOTS): frozenset()
+(_UiObjectMetadata_sparse_value): distributor.sparse.SparseMessage object at 0x00007FF4AF678410
+(__class__): class sims4.tuning.instances.prototype
+(__delattr__): method-wrapper __delattr__ of prototype object at 0x00007FF467E8B490
+(__dict__): _routing_context: ObjectID: 0, Radius: 0.2394, Key11872483435713132484,3548561239,0, FootprintID: 115115, ConectivityHandles: () FlagsIgnoreOwnFootprint, _raycast_context: None, _suppress_statistic_callback_alarm_calculation: False, _component_instances: live_drag_component: LiveDragComponent(prototype:0x00d30f778bad14a9), footprint_component: FootprintComponent(prototype:0x00d30f778bad14a9), focus_component: FocusComponent(prototype:0x00d30f778bad14a9), state_component: StateComponent(prototype:0x00d30f778bad14a9), statistic_component: StatisticComponent(prototype:0x00d30f778bad14a9), id: 59408226204849321, manager: objects.object_manager.ObjectManager object at 0x00007FF442E2CBD0, definition: Definition: 247136, _visible_to_client: True, _interaction_refs: None, _parts: None, content_source: 0, wall_or_fence_placement: False, live_drag_component: LiveDragComponent(prototype:0x00d30f778bad14a9), _component_definitions: (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent), footprint_component: FootprintComponent(prototype:0x00d30f778bad14a9), _dynamic_commodity_flags_map: None, _dynamic_animation_overrides: None, _cached_commodity_flags: frozenset(), _cached_locations_for_posture: (), _cached_position_and_routing_surface_for_posture: (), _get_locations_for_posture_internal: bound method ScriptObject._rebind_and_get_locations_for_posture_internal of prototype(0x00d30f778bad14a9), get_locations_for_posture: bound method ScriptObject._cache_and_return_get_locations_for_posture of prototype(0x00d30f778bad14a9), get_position_and_routing_surface_for_posture: bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of prototype(0x00d30f778bad14a9), item_location: ItemLocation.FROM_OPEN_STREET  6, focus_component: FocusComponent(prototype:0x00d30f778bad14a9), state_component: StateComponent(prototype:0x00d30f778bad14a9), _persistence_group: PersistenceGroups.IN_OPEN_STREET  3, _registered_transition_controllers: None, _reservation_handlers: (), _on_reservation_handlers_changed: bound method LiveDragComponent._on_owner_in_use_list_changed of LiveDragComponent(prototype:0x00d30f778bad14a9), _reservation_clobberers: None, _model: 00000000a4c388c81b63f7c4.01661233, _material_variant: None, _rig: 000000000000000000000000.00000000, _slot: 000000000000000000000000.00000000, _slots_resource: None, _state_index: 0, _ui_metadata_stack: None, _ui_metadata_handles: None, _ui_metadata_cache: None, primitives: DistributionSet(set()), _location: Location(Transform(Vector3(464.193298, 149.978363, 314.891266), Quaternion(0.000000, 0.293303, 0.000000, 0.956020)), F7B0F72DE89105B,0,World, joint_name_or_hashNone, parentNone, slot_hash0), _children_objects: None, _scale: 0.800000011920929, _parent_type: 0, _parent_location: 0, _build_buy_lockout: False, _build_buy_lockout_alarm_handler: None, _tint: None, _opacity: None, _censor_state: None, _geometry_state: None, _geometry_state_overrides: None, _standin_model: None, _visibility: None, _visibility_flags: None, _material_state: None, _reference_arb: None, _audio_effects: None, _video_playlist: None, _painting_state: None, custom_name: None, custom_description: None, _multicolor: None, _display_number: None, _awareness_scores: None, _scratched: False, _voice_suffix_overrides: None, _base_value: 0, _needs_post_bb_fixup: False, _needs_depreciation: False, _swapping_to_parent: None, _swapping_from_parent: None, _on_children_changed: None, allow_opacity_change: True, _wind_speed_effect: None, _baby_skin_tone_and_cloth: None, _on_location_changed_callbacks: function GameObject._location_changed at 0x00007FF47D3B5950, _transient: None, _created_constraints: None, _created_constraints_dirty: True, _household_owner_id: None, new_in_inventory: True, is_new_object: False, _provided_surface: None, _hidden_flags: 0, _local_tags: set(), _persisted_tags: None, _is_surface: None, _build_buy_use_flags: 0, _scheduled_elements: None, _work_locks: _weakrefset.WeakSet object at 0x00007FF467E8BB90, _on_hidden_or_shown_callbacks: None, _provided_mobile_posture_operations: None, _super_affordances: (class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.CCC_CareerMenu, class sims4.tuning.instances.DCC_FindSim, class sims4.tuning.instances.DCC_Menu, class sims4.tuning.instances.DCC_Teleport, class sims4.tuning.instances.terrain-gonear_BringTheLightning, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_General_Object_CheatDebug_Info), _UiObjectMetadata_sparse_value: distributor.sparse.SparseMessage object at 0x00007FF4AF678410, statistic_component: StatisticComponent(prototype:0x00d30f778bad14a9)
+(__dir__): built-in method __dir__ of prototype object at 0x00007FF467E8B490
+(__doc__): None
+(__eq__): method-wrapper __eq__ of prototype object at 0x00007FF467E8B490
+(__format__): built-in method __format__ of prototype object at 0x00007FF467E8B490
+(__ge__): method-wrapper __ge__ of prototype object at 0x00007FF467E8B490
+(__getattr__): bound method ComponentContainer.__getattr__ of prototype(0x00d30f778bad14a9)
+(__getattribute__): method-wrapper __getattribute__ of prototype object at 0x00007FF467E8B490
+(__gt__): method-wrapper __gt__ of prototype object at 0x00007FF467E8B490
+(__hash__): method-wrapper __hash__ of prototype object at 0x00007FF467E8B490
+(__init__): bound method GameObject.__init__ of prototype(0x00d30f778bad14a9)
+(__init_subclass__): built-in method __init_subclass__ of HashedTunedInstanceMetaclass object at 0x00007FF45C455E30
+(__le__): method-wrapper __le__ of prototype object at 0x00007FF467E8B490
+(__lt__): method-wrapper __lt__ of prototype object at 0x00007FF467E8B490
+(__module__): sims4.tuning.instances
+(__ne__): method-wrapper __ne__ of prototype object at 0x00007FF467E8B490
+(__new__): built-in method __new__ of type object at 0x0000000020DDE9C0
+(__reduce__): built-in method __reduce__ of prototype object at 0x00007FF467E8B490
+(__reduce_ex__): built-in method __reduce_ex__ of prototype object at 0x00007FF467E8B490
+(__reload_context__): bound method restore_component_methods of prototype(0x00d30f778bad14a9)
+(__reload_update_class__): function ScriptObject.__reload_update_class__ at 0x00007FF47CC873B0
+(__repr__): bound method BaseObject.__repr__ of prototype(0x00d30f778bad14a9)
+(__setattr__): method-wrapper __setattr__ of prototype object at 0x00007FF467E8B490
+(__sizeof__): built-in method __sizeof__ of prototype object at 0x00007FF467E8B490
+(__str__): bound method BaseObject.__str__ of prototype(0x00d30f778bad14a9)
+(__subclasshook__): built-in method __subclasshook__ of HashedTunedInstanceMetaclass object at 0x00007FF45C455E30
+(__weakref__): weakref at 0x00007FF4807A5F70 to prototype at 0x00007FF467E8B490
+(_add_child): bound method ClientObjectMixin._add_child of prototype(0x00d30f778bad14a9)
+(_add_to_world): bound method GameObject._add_to_world of prototype(0x00d30f778bad14a9)
+(_anim_overrides): None
+(_anim_overrides_cls): None
+(_anim_overrides_for_children): None
+(_anim_overrides_internal): AnimationOverrides(params_sims4_collections.frozendict(isParented: False, heightAboveFloor: low, objectPosition: Vector3Immutable(464.193298, 149.978363, 314.891266), objectOrientation: QuaternionImmutable(0.000000, 0.293303, 0.000000, 0.956020), hasChildren: False, isBobbing: False))
+(_audio_effects): None
+(_awareness_scores): None
+(_baby_skin_tone_and_cloth): None
+(_base_value): 0
+(_bind_get_locations_for_posture_internal): bound method ScriptObject._bind_get_locations_for_posture_internal of prototype(0x00d30f778bad14a9)
+(_build_buy_lockout): False
+(_build_buy_lockout_alarm_handler): None
+(_build_buy_use_flags): 0
+(_cache_and_return_get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of prototype(0x00d30f778bad14a9)
+(_cache_and_return_get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of prototype(0x00d30f778bad14a9)
+(_cached_commodity_flags): frozenset()
+(_cached_get_locations_for_posture): bound method ScriptObject._cached_get_locations_for_posture of prototype(0x00d30f778bad14a9)
+(_cached_get_position_and_routing_surface_for_posture): bound method ScriptObject._cached_get_position_and_routing_surface_for_posture of prototype(0x00d30f778bad14a9)
+(_cached_locations_for_posture): ()
+(_cached_position_and_routing_surface_for_posture): ()
+(_can_show_affordance): function ScriptObject._can_show_affordance at 0x00007FF47CC39680
+(_censor_state): None
+(_children_objects): None
+(_children_recursive_fast_gen): bound method ClientObjectMixin._children_recursive_fast_gen of prototype(0x00d30f778bad14a9)
+(_clamp_opacity): bound method ClientObjectMixin._clamp_opacity of prototype(0x00d30f778bad14a9)
+(_client_scale): 0.800000011920929
+(_combined_part_cache): None
+(_commodity_flags): frozenset()
+(_component_definitions): (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent)
+(_component_instances): live_drag_component: LiveDragComponent(prototype:0x00d30f778bad14a9), footprint_component: FootprintComponent(prototype:0x00d30f778bad14a9), focus_component: FocusComponent(prototype:0x00d30f778bad14a9), state_component: StateComponent(prototype:0x00d30f778bad14a9), statistic_component: StatisticComponent(prototype:0x00d30f778bad14a9)
+(_component_reload_hooks): live_drag_component: class objects.components.live_drag_component.LiveDragComponent, footprint_component: class objects.components.footprint_component.FootprintComponent, focus_component: class animation.focus.focus_component.FocusComponent, state_component: class objects.components.state.StateComponent, slot_component: class objects.components.slot_component.SlotComponent, statistic_component: class objects.components.statistic_component.StatisticComponent, newobject_component: class objects.components.new_object_component.NewObjectComponent
+(_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: None, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: TunableStateComponentWrapper.StateComponent, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(_components_native): ImmutableSlots(Slot: None, Video: None)
+(_create_raycast_context): bound method ScriptObject._create_raycast_context of prototype(0x00d30f778bad14a9)
+(_create_routing_context): bound method HasFootprintComponent._create_routing_context of prototype(0x00d30f778bad14a9)
+(_created_constraints): None
+(_created_constraints_dirty): True
+(_default_anim_params): _sims4_collections.frozendict()
+(_destroy_if_not_in_use): bound method GameObject._destroy_if_not_in_use of prototype(0x00d30f778bad14a9)
+(_disable_child_footprint_and_shadow): False
+(_display_number): None
+(_dynamic_animation_overrides): None
+(_dynamic_commodity_flags_map): None
+(_fill_ignored_objects_and_test_halfwalls): bound method ScriptObject._fill_ignored_objects_and_test_halfwalls of prototype(0x00d30f778bad14a9)
+(_fixup_pool_surface): bound method GameObject._fixup_pool_surface of prototype(0x00d30f778bad14a9)
+(_generic_ui_metadata_setters): hover_tip: function SparseField.generic_setter.locals.generic_setter at 0x00007FF43084FCB0, recipe_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A6E70170, recipe_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A6E70290, stolen_from_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A6E70320, quality_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4245F9CB0, crafter_sim_id: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4245F9440, crafted_by_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A6D857A0, quality: function SparseField.generic_setter.locals.generic_setter at 0x00007FF40E8DB290, percentage_left: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4AC030680, subtext: function SparseField.generic_setter.locals.generic_setter at 0x00007FF417842050, spoiled_time: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A3BCE560, sub_icons: function SparseField.generic_setter.locals.generic_setter at 0x00007FF430736B90, style_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF430736CB0, main_icon: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4307363B0
+(_geometry_state): None
+(_geometry_state_overrides): None
+(_get_geometry_state_for_value): bound method ClientObjectMixin._get_geometry_state_for_value of prototype(0x00d30f778bad14a9)
+(_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of prototype(0x00d30f778bad14a9)
+(_get_locations_for_posture_internal_forward_wall_padding): bound method ScriptObject._get_locations_for_posture_internal_forward_wall_padding of prototype(0x00d30f778bad14a9)
+(_get_locations_for_posture_internal_no_location): bound method ScriptObject._get_locations_for_posture_internal_no_location of prototype(0x00d30f778bad14a9)
+(_get_locations_for_posture_internal_world_transform): bound method ScriptObject._get_locations_for_posture_internal_world_transform of prototype(0x00d30f778bad14a9)
+(_get_next_ui_metadata_handle): uid.UniqueIdGenerator object at 0x00007FF482622248
+(_get_or_add_statistic_component): bound method HasStatisticComponent._get_or_add_statistic_component of prototype(0x00d30f778bad14a9)
+(_get_tuning_suggestions): bound method ScriptObject._get_tuning_suggestions of class sims4.tuning.instances.prototype
+(_get_wall_object_positional_padding): bound method ScriptObject._get_wall_object_positional_padding of prototype(0x00d30f778bad14a9)
+(_has_placement_flag): bound method BaseObject._has_placement_flag of prototype(0x00d30f778bad14a9)
+(_has_reservation_tests): False
+(_hidden_flags): 0
+(_household_owner_id): None
+(_icon_override_gen): bound method GameObject._icon_override_gen of prototype(0x00d30f778bad14a9)
+(_inside_status_change): bound method GameObject._inside_status_change of prototype(0x00d30f778bad14a9)
+(_interaction_refs): None
+(_is_surface): None
+(_local_tags): set()
+(_location): Location(Transform(Vector3(464.193298, 149.978363, 314.891266), Quaternion(0.000000, 0.293303, 0.000000, 0.956020)), F7B0F72DE89105B,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
+(_location_changed): function GameObject._location_changed at 0x00007FF47D3B5950
+(_location_field_internal): prototype:0x00d30f778bad14a9
+(_material_state): None
+(_material_variant): None
+(_model): 00000000a4c388c81b63f7c4.01661233
+(_multicolor): None
+(_natural_ground_status_change): bound method GameObject._natural_ground_status_change of prototype(0x00d30f778bad14a9)
+(_needs_depreciation): False
+(_needs_post_bb_fixup): False
+(_notify_buildbuy_of_location_change): bound method GameObject._notify_buildbuy_of_location_change of prototype(0x00d30f778bad14a9)
+(_object_state_remaps): ()
+(_on_children_changed): None
+(_on_hidden_or_shown_callbacks): None
+(_on_location_changed_callbacks): function GameObject._location_changed at 0x00007FF47D3B5950
+(_on_reservation_handlers_changed): bound method LiveDragComponent._on_owner_in_use_list_changed of LiveDragComponent(prototype:0x00d30f778bad14a9)
+(_on_try_depreciation): bound method ClientObjectMixin._on_try_depreciation of prototype(0x00d30f778bad14a9)
+(_on_visibility_changed): bound method ClientObjectMixin._on_visibility_changed of prototype(0x00d30f778bad14a9)
+(_opacity): None
+(_painting_state): None
+(_parent_location): 0
+(_parent_type): 0
+(_part_data): ()
+(_part_data_map): _sims4_collections.frozendict()
+(_parts): None
+(_persisted_tags): None
+(_persistence): PersistenceType.FULL
+(_persistence_group): PersistenceGroups.IN_OPEN_STREET
+(_potential_behavior_affordances_gen): bound method ScriptObject._potential_behavior_affordances_gen of prototype(0x00d30f778bad14a9)
+(_preroll_commodity_flags): frozenset()
+(_preroll_super_affordances): ()
+(_provided_mobile_posture): None
+(_provided_mobile_posture_operations): None
+(_provided_mobile_posture_types): None
+(_provided_surface): None
+(_raycast_context): None
+(_rebind_and_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of prototype(0x00d30f778bad14a9)
+(_reference_arb): None
+(_registered_transition_controllers): None
+(_remap_child_parenting): False
+(_remove_child): bound method ClientObjectMixin._remove_child of prototype(0x00d30f778bad14a9)
+(_remove_from_world): bound method GameObject._remove_from_world of prototype(0x00d30f778bad14a9)
+(_resend_client_scale): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(_resend_current_value): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(_resend_household_owner_id): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(_resend_parent_type_info): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(_resend_video_playlist): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(_reservation_clobberers): None
+(_reservation_handlers): ()
+(_reset_reference_arb): bound method ClientObjectMixin._reset_reference_arb of prototype(0x00d30f778bad14a9)
+(_rig): 000000000000000000000000.00000000
+(_routing_context): ObjectID: 0, Radius: 0.2394, Key11872483435713132484,3548561239,0, FootprintID: 115115, ConectivityHandles: () FlagsIgnoreOwnFootprint
+(_scale): 0.800000011920929
+(_scheduled_elements): None
+(_scratched): False
+(_search_forwarded_interactions): bound method ScriptObject._search_forwarded_interactions of prototype(0x00d30f778bad14a9)
+(_set_placed_inside): bound method StateComponent._set_placed_inside of prototype(0x00d30f778bad14a9)
+(_set_placed_off_natural_ground): bound method StateComponent._set_placed_off_natural_ground of prototype(0x00d30f778bad14a9)
+(_set_placed_on_natural_ground): bound method StateComponent._set_placed_on_natural_ground of prototype(0x00d30f778bad14a9)
+(_set_placed_outside): bound method StateComponent._set_placed_outside of prototype(0x00d30f778bad14a9)
+(_setup_used_utilities): bound method ScriptObject._setup_used_utilities of class sims4.tuning.instances.prototype
+(_should_invalidate_location): bound method GameObject._should_invalidate_location of prototype(0x00d30f778bad14a9)
+(_slot): 000000000000000000000000.00000000
+(_slots_resource): None
+(_specific_supported_posture_types): None
+(_standin_model): None
+(_state_index): 0
+(_super_affordances): (class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.CCC_CareerMenu, class sims4.tuning.instances.DCC_FindSim, class sims4.tuning.instances.DCC_Menu, class sims4.tuning.instances.DCC_Teleport, class sims4.tuning.instances.terrain-gonear_BringTheLightning, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_General_Object_CheatDebug_Info)
+(_supported_posture_families): None
+(_suppress_statistic_callback_alarm_calculation): False
+(_surface_type_changed): bound method StateComponent._surface_type_changed of prototype(0x00d30f778bad14a9)
+(_swapping_from_parent): None
+(_swapping_parents): bound method ClientObjectMixin._swapping_parents of prototype(0x00d30f778bad14a9)
+(_swapping_to_parent): None
+(_tint): None
+(_transient): None
+(_transient_tuning): False
+(_tuning_loaded_callback): bound method ScriptObject._tuning_loaded_callback of class sims4.tuning.instances.prototype
+(_ui_metadata_cache): None
+(_ui_metadata_handles): None
+(_ui_metadata_stack): None
+(_update_location_callbacks): bound method GameObject._update_location_callbacks of prototype(0x00d30f778bad14a9)
+(_update_persistence_group): bound method GameObject._update_persistence_group of prototype(0x00d30f778bad14a9)
+(_update_preroll_commodity_flags): bound method ScriptObject._update_preroll_commodity_flags of class sims4.tuning.instances.prototype
+(_use_locations_for_posture_for_connect_to_sim_test): False
+(_used_utilities): None
+(_verify_tuning_callback): bound method GameObject._verify_tuning_callback of class sims4.tuning.instances.prototype
+(_video_playlist): None
+(_visibility): None
+(_visibility_flags): None
+(_visible_to_client): True
+(_voice_suffix_overrides): None
+(_wind_speed_effect): None
+(_work_locks): _weakrefset.WeakSet object at 0x00007FF467E8BB90
+(_world_file_object_persists): False
+(add_auto_constraint): bound method GameObject.add_auto_constraint of class sims4.tuning.instances.prototype
+(add_awareness_scores): bound method ClientObjectMixin.add_awareness_scores of prototype(0x00d30f778bad14a9)
+(add_client_state_suppressor): bound method StateComponent.add_client_state_suppressor of prototype(0x00d30f778bad14a9)
+(add_component): bound method BaseObject.add_component of prototype(0x00d30f778bad14a9)
+(add_dynamic_animation_overrides): bound method ScriptObject.add_dynamic_animation_overrides of prototype(0x00d30f778bad14a9)
+(add_dynamic_commodity_flags): bound method ScriptObject.add_dynamic_commodity_flags of prototype(0x00d30f778bad14a9)
+(add_dynamic_component): bound method ScriptObject.add_dynamic_component of prototype(0x00d30f778bad14a9)
+(add_geometry_state_override): bound method ClientObjectMixin.add_geometry_state_override of prototype(0x00d30f778bad14a9)
+(add_interaction_reference): bound method BaseObject.add_interaction_reference of prototype(0x00d30f778bad14a9)
+(add_modifiers_for_interaction): bound method StatisticComponent.add_modifiers_for_interaction of prototype(0x00d30f778bad14a9)
+(add_modifiers_for_skill): bound method StatisticComponent.add_modifiers_for_skill of prototype(0x00d30f778bad14a9)
+(add_name_changed_callback): function NameComponent.lambda at 0x00007FF47F3A0EF0
+(add_reservation_clobberer): bound method ReservationMixin.add_reservation_clobberer of prototype(0x00d30f778bad14a9)
+(add_reservation_handler): bound method ReservationMixin.add_reservation_handler of prototype(0x00d30f778bad14a9)
+(add_spawner_data): function SpawnerComponent.lambda at 0x00007FF47CACB050
+(add_state_changed_callback): bound method StateComponent.add_state_changed_callback of prototype(0x00d30f778bad14a9)
+(add_statistic_component): bound method HasStatisticComponent.add_statistic_component of prototype(0x00d30f778bad14a9)
+(add_statistic_modifier): bound method StatisticComponent.add_statistic_modifier of prototype(0x00d30f778bad14a9)
+(add_to_collection_tracker): function CollectableComponent.lambda at 0x00007FF481EAEDD0
+(add_to_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47C66A710
+(add_ui_metadata): bound method ClientObjectMixin.add_ui_metadata of prototype(0x00d30f778bad14a9)
+(add_voice_suffix_override): bound method ClientObjectMixin.add_voice_suffix_override of prototype(0x00d30f778bad14a9)
+(add_work_lock): bound method GameObject.add_work_lock of prototype(0x00d30f778bad14a9)
+(additional_interaction_constraints): ()
+(all_valid_slot_types): frozenset()
+(allow_aop_forward): bound method ScriptObject.allow_aop_forward of prototype(0x00d30f778bad14a9)
+(allow_opacity_change): True
+(allow_preroll_multiple_targets): False
+(ancestry_gen): bound method ScriptObject.ancestry_gen of prototype(0x00d30f778bad14a9)
+(anim_boundary_conditions_check_carry): False
+(animation_actor): prototype:0x00d30f778bad14a9
+(aop_forward_data): ImmutableSlots(child_obj_tags: frozenset(), should_search_forwarded_child_aop: False, should_search_forwarded_parent_aop: False, should_search_forwarded_sim_aop: False)
+(append_audio_effect): bound method ClientObjectMixin.append_audio_effect of prototype(0x00d30f778bad14a9)
+(append_tags): bound method GameObject.append_tags of prototype(0x00d30f778bad14a9)
+(apply_children_component_anim_overrides): False
+(apply_definition): bound method ClientObjectMixin.apply_definition of prototype(0x00d30f778bad14a9)
+(attempt_to_remap_parent): bound method ClientObjectMixin.attempt_to_remap_parent of prototype(0x00d30f778bad14a9)
+(attributes): None
+(audio_effects): None
+(autonomy_modifiers): ()
+(awareness_scores): None
+(baby_cloth): None
+(base_value): 0
+(blocking_balloon_overrides): None
+(bone_name_hash): 0
+(build_buy_lockout): False
+(build_buy_use_flags): 0
+(camera_view): None
+(can_add_component): bound method ComponentContainer.can_add_component of prototype(0x00d30f778bad14a9)
+(can_go_in_inventory_type): function InventoryItemComponent.lambda at 0x00007FF47C6DC4D0
+(can_reset): True
+(can_trigger_teleport_style): function BuffComponent.lambda at 0x00007FF47A4B0DD0
+(cancel_interactions_running_on_object): bound method BaseObject.cancel_interactions_running_on_object of prototype(0x00d30f778bad14a9)
+(catalog_description): 0
+(catalog_name): 0
+(catalog_value): 0
+(ceiling_placement): False
+(censor_state): None
+(check_affordance_for_suppression): bound method StatisticComponent.check_affordance_for_suppression of prototype(0x00d30f778bad14a9)
+(check_line_of_sight): bound method ScriptObject.check_line_of_sight of prototype(0x00d30f778bad14a9)
+(child_provided_aops_gen): bound method SlotComponent.child_provided_aops_gen of prototype(0x00d30f778bad14a9)
+(children): ()
+(children_recursive_gen): bound method ClientObjectMixin.children_recursive_gen of prototype(0x00d30f778bad14a9)
+(claim): bound method ScriptObject.claim of prototype(0x00d30f778bad14a9)
+(clear_check_line_of_sight_cache): built-in method clear of collections.OrderedDict object at 0x00007FF47CC8BB00
+(clear_commodity_flags): bound method ScriptObject.clear_commodity_flags of class sims4.tuning.instances.prototype
+(clear_default_children): bound method ClientObjectMixin.clear_default_children of prototype(0x00d30f778bad14a9)
+(clear_parent): bound method ClientObjectMixin.clear_parent of prototype(0x00d30f778bad14a9)
+(clear_raycast_context): bound method HasFootprintComponent.clear_raycast_context of prototype(0x00d30f778bad14a9)
+(clear_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF47F5EA5F0
+(clone): bound method ScriptObject.clone of prototype(0x00d30f778bad14a9)
+(commodity_flags): frozenset()
+(commodity_tracker): statistics.commodity_tracker.CommodityTracker object at 0x00007FF4AEEB08F0
+(component_anim_overrides_gen): bound method ScriptObject.component_anim_overrides_gen of prototype(0x00d30f778bad14a9)
+(component_definitions): (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent)
+(component_interactable_gen): bound method ScriptObject.component_interactable_gen of prototype(0x00d30f778bad14a9)
+(component_potential_interactions_gen): bound method ScriptObject.component_potential_interactions_gen of prototype(0x00d30f778bad14a9)
+(component_reset): bound method BaseObject.component_reset of prototype(0x00d30f778bad14a9)
+(component_super_affordances_gen): bound method ScriptObject.component_super_affordances_gen of prototype(0x00d30f778bad14a9)
+(component_zone_modifiers_gen): bound method ScriptObject.component_zone_modifiers_gen of prototype(0x00d30f778bad14a9)
+(components): dict_values(LiveDragComponent(prototype:0x00d30f778bad14a9), FootprintComponent(prototype:0x00d30f778bad14a9), FocusComponent(prototype:0x00d30f778bad14a9), StateComponent(prototype:0x00d30f778bad14a9), StatisticComponent(prototype:0x00d30f778bad14a9))
+(components_sorted_gen): bound method ComponentContainer.components_sorted_gen of prototype(0x00d30f778bad14a9)
+(connectivity_handles): , ConectivityHandles: ()
+(content_source): 0
+(copy_state_values): bound method StateComponent.copy_state_values of prototype(0x00d30f778bad14a9)
+(create_auto_ensembles): function EnsembleComponent.lambda at 0x00007FF47B6E6320
+(create_parent_location): bound method ClientObjectMixin.create_parent_location of prototype(0x00d30f778bad14a9)
+(create_statistic_tracker): bound method StatisticComponent.create_statistic_tracker of prototype(0x00d30f778bad14a9)
+(curfew): None
+(current_value): 0
+(custom_description): None
+(custom_name): None
+(deco_slot_size): 0
+(deco_slot_types): frozenset()
+(definition): Definition: 247136
+(delist): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47EFEAE60
+(depreciated): True
+(depreciated_value): 0
+(destroy): bound method ScriptObject.destroy of prototype(0x00d30f778bad14a9)
+(disable_los_reference_point): False
+(disable_slot): bound method SlotComponent.disable_slot of prototype(0x00d30f778bad14a9)
+(disable_slots): bound method SlotComponent.disable_slots of prototype(0x00d30f778bad14a9)
+(disallow_social_group_placement): False
+(display_number): None
+(does_state_reset_on_load): bound method StateComponent.does_state_reset_on_load of prototype(0x00d30f778bad14a9)
+(enable_slot): bound method SlotComponent.enable_slot of prototype(0x00d30f778bad14a9)
+(enable_slots): bound method SlotComponent.enable_slots of prototype(0x00d30f778bad14a9)
+(enter_distress): bound method StatisticComponent.enter_distress of prototype(0x00d30f778bad14a9)
+(environment_score_trait_modifiers): _sims4_collections.frozendict()
+(exit_distress): bound method StatisticComponent.exit_distress of prototype(0x00d30f778bad14a9)
+(fade_in): bound method ClientObjectMixin.fade_in of prototype(0x00d30f778bad14a9)
+(fade_opacity): bound method ClientObjectMixin.fade_opacity of prototype(0x00d30f778bad14a9)
+(fade_out): bound method ClientObjectMixin.fade_out of prototype(0x00d30f778bad14a9)
+(favorite_prop_animation_overrides): FavoritePropAnimationOverrides(overrides_by_prop_name_sims4_collections.frozendict())
+(finalize): bound method GameObject.finalize of prototype(0x00d30f778bad14a9)
+(finalize_statistics): bound method HasStatisticComponent.finalize_statistics of prototype(0x00d30f778bad14a9)
+(fire_retardant): False
+(flammable): False
+(flammable_area): fire.flammability.DefaultObjectRadialFlammability object at 0x00007FF47D3A7A90
+(focus_component): FocusComponent(prototype:0x00d30f778bad14a9)
+(footprint): 00000000a4c388c81b63f7c4.d382bf57
+(footprint_component): FootprintComponent(prototype:0x00d30f778bad14a9)
+(footprint_polygon): CompoundPolygon: Polygon464.270447,315.312378464.080597,315.032104464.360870,314.842255464.550720,315.122559 FlagsCCW
+(force_multi_surface_constraints): False
+(force_spawn_object): function SpawnerComponent.lambda at 0x00007FF47CAC69E0
+(forward): Vector3(0.560807, 0.000000, 0.827946)
+(forward_direction_for_picking): Vector3(0.000000, 0.000000, 1.000000)
+(forward_offset_on_connectivity_check): None
+(forwarded_pick_targets): frozenset()
+(geometry_state): None
+(get_active_teleport_style): function BuffComponent.lambda at 0x00007FF47A4B0D40
+(get_added_monetary_value): bound method StatisticComponent.get_added_monetary_value of prototype(0x00d30f778bad14a9)
+(get_affordance_basic_content): function AffordanceTuningComponent.lambda at 0x00007FF47C5FE170
+(get_affordance_basic_extras): function AffordanceTuningComponent.lambda at 0x00007FF47C5FE290
+(get_affordance_false_ads): function AffordanceTuningComponent.lambda at 0x00007FF47C5CAEF0
+(get_affordance_loot_list): function AffordanceTuningComponent.lambda at 0x00007FF47C5CACB0
+(get_affordance_outcome): function AffordanceTuningComponent.lambda at 0x00007FF47C5FE050
+(get_affordance_skill_loot_data): function AffordanceTuningComponent.lambda at 0x00007FF47C5CADD0
+(get_affordance_tests): function AffordanceTuningComponent.lambda at 0x00007FF47C5CAC20
+(get_all_buffs_with_tag): function BuffComponent.lambda at 0x00007FF47A4AF710
+(get_all_children_gen): bound method ClientObjectMixin.get_all_children_gen of prototype(0x00d30f778bad14a9)
+(get_all_stats_gen): bound method StatisticComponent.get_all_stats_gen of prototype(0x00d30f778bad14a9)
+(get_allowed_hands): functools.partial(function ScriptObject.get_allowed_hands at 0x00007FF47CC87B90, class sims4.tuning.instances.prototype, prototype(0x00d30f778bad14a9))
+(get_anim_overrides): bound method BaseObject.get_anim_overrides of prototype(0x00d30f778bad14a9)
+(get_attribute_save_data): bound method ScriptObject.get_attribute_save_data of prototype(0x00d30f778bad14a9)
+(get_bounding_box): bound method HasFootprintComponent.get_bounding_box of prototype(0x00d30f778bad14a9)
+(get_canvas_texture_effect): function CanvasComponent.lambda at 0x00007FF47EF363B0
+(get_canvas_texture_id): function CanvasComponent.lambda at 0x00007FF47EF36290
+(get_class_for_obj_state): bound method BaseObject.get_class_for_obj_state of class sims4.tuning.instances.prototype
+(get_client_states): bound method StateComponent.get_client_states of prototype(0x00d30f778bad14a9)
+(get_closest_parts_to_position): bound method ScriptObject.get_closest_parts_to_position of prototype(0x00d30f778bad14a9)
+(get_collectible_quality): function CollectableComponent.lambda at 0x00007FF481EDE0E0
+(get_collectible_slot): function CollectableComponent.lambda at 0x00007FF481EAEE60
+(get_compatible_parts): bound method ScriptObject.get_compatible_parts of prototype(0x00d30f778bad14a9)
+(get_component): bound method ComponentContainer.get_component of prototype(0x00d30f778bad14a9)
+(get_component_managed_state_distributable): bound method StateComponent.get_component_managed_state_distributable of prototype(0x00d30f778bad14a9)
+(get_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47CA2B050
+(get_craftable_property): function CraftingComponent.lambda at 0x00007FF479ED5320
+(get_create_after_objs): bound method ClientObjectMixin.get_create_after_objs of prototype(0x00d30f778bad14a9)
+(get_create_op): bound method ClientObjectMixin.get_create_op of prototype(0x00d30f778bad14a9)
+(get_created_constraint): bound method GameObject.get_created_constraint of prototype(0x00d30f778bad14a9)
+(get_deco_slot_hashes): bound method SlotComponent.get_deco_slot_hashes of prototype(0x00d30f778bad14a9)
+(get_delete_op): bound method ClientObjectMixin.get_delete_op of prototype(0x00d30f778bad14a9)
+(get_disabled_slot_hashes): bound method SlotComponent.get_disabled_slot_hashes of prototype(0x00d30f778bad14a9)
+(get_distance_to_object_based_multiplier): bound method StatisticComponent.get_distance_to_object_based_multiplier of prototype(0x00d30f778bad14a9)
+(get_dynamic_portal_locations_gen): function PortalComponent.lambda at 0x00007FF47CA97EF0
+(get_dynamic_tags): bound method GameObject.get_dynamic_tags of prototype(0x00d30f778bad14a9)
+(get_edge_constraint): bound method GameObject.get_edge_constraint of prototype(0x00d30f778bad14a9)
+(get_edges): bound method GameObject.get_edges of prototype(0x00d30f778bad14a9)
+(get_environment_score): function EnvironmentScoreComponent.lambda at 0x00007FF47BC51170
+(get_focus_bone): bound method FocusComponent.get_focus_bone of prototype(0x00d30f778bad14a9)
+(get_fooptrint_polygon_bounds): bound method HasFootprintComponent.get_fooptrint_polygon_bounds of prototype(0x00d30f778bad14a9)
+(get_footprint): bound method FootprintComponent.get_footprint of prototype(0x00d30f778bad14a9)
+(get_game_animation_definition): function CollectableComponent.lambda at 0x00007FF481EAEF80
+(get_gsi_portal_items): bound method GameObject.get_gsi_portal_items of prototype(0x00d30f778bad14a9)
+(get_household_owner_id): bound method GameObject.get_household_owner_id of prototype(0x00d30f778bad14a9)
+(get_icon_info_data): bound method GameObject.get_icon_info_data of prototype(0x00d30f778bad14a9)
+(get_icon_override): bound method GameObject.get_icon_override of prototype(0x00d30f778bad14a9)
+(get_ignored_objects_for_line_of_sight): bound method ScriptObject.get_ignored_objects_for_line_of_sight of prototype(0x00d30f778bad14a9)
+(get_interaction_score_modifier): bound method StatisticComponent.get_interaction_score_modifier of prototype(0x00d30f778bad14a9)
+(get_inventory): function InventoryItemComponent.lambda at 0x00007FF47C6DC440
+(get_inventory_plex_id): function InventoryItemComponent.lambda at 0x00007FF47C6DD3B0
+(get_inventory_visual_state): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47FDAC050
+(get_joint_transform_for_joint): bound method GameObject.get_joint_transform_for_joint of prototype(0x00d30f778bad14a9)
+(get_lightning_strike_multiplier): function WeatherAwareComponent.lambda at 0x00007FF47CBE2560
+(get_linked_objects_gen): function LinkedObjectComponent.lambda at 0x00007FF47C703050
+(get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of prototype(0x00d30f778bad14a9)
+(get_locked_reason_list): bound method StatisticComponent.get_locked_reason_list of prototype(0x00d30f778bad14a9)
+(get_locking_component): function BaseLockingComponent.lambda at 0x00007FF47C717A70
+(get_lost_and_found_registration_info): function InventoryItemComponent.lambda at 0x00007FF47C6DCB00
+(get_mapped_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47CA2B290
+(get_notebook_information): function CraftingComponent.lambda at 0x00007FF479ED54D0
+(get_object_property): bound method GameObject.get_object_property of prototype(0x00d30f778bad14a9)
+(get_object_rarity_string): bound method StateComponent.get_object_rarity_string of prototype(0x00d30f778bad14a9)
+(get_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47CA2AD40
+(get_off_lot_autonomy_rule): bound method StatisticComponent.get_off_lot_autonomy_rule of prototype(0x00d30f778bad14a9)
+(get_or_create_routing_context): bound method HasFootprintComponent.get_or_create_routing_context of prototype(0x00d30f778bad14a9)
+(get_outside_object_score_modification): bound method StatisticComponent.get_outside_object_score_modification of prototype(0x00d30f778bad14a9)
+(get_param_overrides): bound method BaseObject.get_param_overrides of prototype(0x00d30f778bad14a9)
+(get_parent): bound method ClientObjectMixin.get_parent of prototype(0x00d30f778bad14a9)
+(get_parenting_root): bound method ClientObjectMixin.get_parenting_root of prototype(0x00d30f778bad14a9)
+(get_part_by_index): bound method BaseObject.get_part_by_index of prototype(0x00d30f778bad14a9)
+(get_part_by_part_group_index): bound method BaseObject.get_part_by_part_group_index of prototype(0x00d30f778bad14a9)
+(get_part_data): bound method ScriptObject.get_part_data of class sims4.tuning.instances.prototype
+(get_parts_for_posture): bound method ScriptObject.get_parts_for_posture of prototype(0x00d30f778bad14a9)
+(get_polygon_from_footprint_name_hashes): bound method HasFootprintComponent.get_polygon_from_footprint_name_hashes of prototype(0x00d30f778bad14a9)
+(get_portal_by_id): function PortalComponent.lambda at 0x00007FF47CA97E60
+(get_portal_data): function PortalComponent.lambda at 0x00007FF47CA97B00
+(get_portal_key_make_for_carry): function CarryableComponent.lambda at 0x00007FF47C45D9E0
+(get_portal_pairs): function PortalComponent.lambda at 0x00007FF47CA979E0
+(get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of prototype(0x00d30f778bad14a9)
+(get_posture_aops_gen): bound method ScriptObject.get_posture_aops_gen of prototype(0x00d30f778bad14a9)
+(get_provided_slot_types): bound method SlotComponent.get_provided_slot_types of prototype(0x00d30f778bad14a9)
+(get_raycast_root): bound method HasFootprintComponent.get_raycast_root of prototype(0x00d30f778bad14a9)
+(get_relationship_score_multiplier_for_buff_on_target): bound method StatisticComponent.get_relationship_score_multiplier_for_buff_on_target of prototype(0x00d30f778bad14a9)
+(get_reservation_handler): bound method ReservationMixin.get_reservation_handler of prototype(0x00d30f778bad14a9)
+(get_reservation_handlers): bound method ReservationMixin.get_reservation_handlers of prototype(0x00d30f778bad14a9)
+(get_routing_location_for_transform): bound method ClientObjectMixin.get_routing_location_for_transform of prototype(0x00d30f778bad14a9)
+(get_running_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47CA2A830
+(get_runtime_slots_gen): bound method SlotComponent.get_runtime_slots_gen of prototype(0x00d30f778bad14a9)
+(get_save_lot_coords_and_level): bound method GameObject.get_save_lot_coords_and_level of prototype(0x00d30f778bad14a9)
+(get_score_multiplier): bound method StatisticComponent.get_score_multiplier of prototype(0x00d30f778bad14a9)
+(get_sim_owner_id): function OwnableComponent.lambda at 0x00007FF47F36AB90
+(get_sit_posture_transition_penalties): bound method StatisticComponent.get_sit_posture_transition_penalties of prototype(0x00d30f778bad14a9)
+(get_situation_type_social_score_multiplier): bound method StatisticComponent.get_situation_type_social_score_multiplier of prototype(0x00d30f778bad14a9)
+(get_slot_info): bound method SlotComponent.get_slot_info of prototype(0x00d30f778bad14a9)
+(get_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47CA2ADD0
+(get_stack_sort_order): function InventoryItemComponent.lambda at 0x00007FF47C6DC950
+(get_stat_instance): bound method StatisticComponent.get_stat_instance of prototype(0x00d30f778bad14a9)
+(get_stat_multiplier): bound method StatisticComponent.get_stat_multiplier of prototype(0x00d30f778bad14a9)
+(get_stat_value): bound method StatisticComponent.get_stat_value of prototype(0x00d30f778bad14a9)
+(get_state): bound method StateComponent.get_state of prototype(0x00d30f778bad14a9)
+(get_state_strings): function TooltipComponent.lambda at 0x00007FF47F2C67A0
+(get_state_value_from_stat_type): bound method StateComponent.get_state_value_from_stat_type of prototype(0x00d30f778bad14a9)
+(get_statistic_modifier): bound method StatisticComponent.get_statistic_modifier of prototype(0x00d30f778bad14a9)
+(get_statistic_modifiers_gen): bound method StatisticComponent.get_statistic_modifiers_gen of prototype(0x00d30f778bad14a9)
+(get_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF47F5EA560
+(get_stored_sim_id): function StoredSimInfoComponent.lambda at 0x00007FF47F27E8C0
+(get_stored_sim_info): function ScholarshipLetterComponent.lambda at 0x00007FF47CB9FDD0
+(get_stored_sim_info_or_name_data): function StoredSimInfoComponent.lambda at 0x00007FF47F27EA70
+(get_stored_sim_name_data): function StoredSimInfoComponent.lambda at 0x00007FF47F27EB90
+(get_surface_access_animation): bound method SlotComponent.get_surface_access_animation of prototype(0x00d30f778bad14a9)
+(get_surface_access_constraint): bound method SlotComponent.get_surface_access_constraint of prototype(0x00d30f778bad14a9)
+(get_surface_override_for_posture): bound method GameObject.get_surface_override_for_posture of prototype(0x00d30f778bad14a9)
+(get_tags): bound method GameObject.get_tags of prototype(0x00d30f778bad14a9)
+(get_teleport_cost): function BuffComponent.lambda at 0x00007FF47A4B0EF0
+(get_template_content_overrides): function CraftingComponent.lambda at 0x00007FF479ED3710
+(get_tested_relationship_score_multipliers): bound method StatisticComponent.get_tested_relationship_score_multipliers of prototype(0x00d30f778bad14a9)
+(get_tooltip_field): function TooltipComponent.lambda at 0x00007FF47F2C6B00
+(get_tracker): bound method HasStatisticComponent.get_tracker of prototype(0x00d30f778bad14a9)
+(get_ui_metadata): bound method ClientObjectMixin.get_ui_metadata of prototype(0x00d30f778bad14a9)
+(get_unlocked_reason_list): bound method StatisticComponent.get_unlocked_reason_list of prototype(0x00d30f778bad14a9)
+(get_use_list_handler): bound method ReservationMixin.get_use_list_handler of prototype(0x00d30f778bad14a9)
+(get_users): bound method ReservationMixin.get_users of prototype(0x00d30f778bad14a9)
+(get_waiting_line_autonomy_multiplier): function WaitingLineComponent.lambda at 0x00007FF47864DDD0
+(give_weather_loot): function WeatherAwareComponent.lambda at 0x00007FF47CBE24D0
+(guid): 3565403361
+(guid64): 15013
+(has_any_tag): bound method GameObject.has_any_tag of prototype(0x00d30f778bad14a9)
+(has_component): bound method ComponentContainer.has_component of prototype(0x00d30f778bad14a9)
+(has_custom_description): function NameComponent.lambda at 0x00007FF47F3A0B00
+(has_custom_name): function NameComponent.lambda at 0x00007FF47F3A0A70
+(has_hidden_flags): bound method GameObject.has_hidden_flags of prototype(0x00d30f778bad14a9)
+(has_id): True
+(has_lock_data): function BaseLockingComponent.lambda at 0x00007FF47C717DD0
+(has_locking_component): function BaseLockingComponent.lambda at 0x00007FF47C7179E0
+(has_portals): function PortalComponent.lambda at 0x00007FF47CA97950
+(has_posture_portals): function PortalComponent.lambda at 0x00007FF47CA98950
+(has_servings_statistic): function CraftingComponent.lambda at 0x00007FF479ED58C0
+(has_slot): bound method SlotComponent.has_slot of prototype(0x00d30f778bad14a9)
+(has_state): bound method StateComponent.has_state of prototype(0x00d30f778bad14a9)
+(has_statistic): bound method StatisticComponent.has_statistic of prototype(0x00d30f778bad14a9)
+(has_tag): bound method GameObject.has_tag of prototype(0x00d30f778bad14a9)
+(has_trait_statistic_tracker): False
+(has_updated_commodity_flags): bound method ScriptObject.has_updated_commodity_flags of class sims4.tuning.instances.prototype
+(has_work_locks): False
+(hide): bound method GameObject.hide of prototype(0x00d30f778bad14a9)
+(household_owner_id): None
+(hover_tip): None
+(icon): 000000000000000000000000.00000000
+(icon_info): (247136, 1)
+(icon_override): None
+(id): 59408226204849321
+(ideal_slot_types): frozenset()
+(in_pool): False
+(in_use): False
+(in_use_by): bound method ReservationMixin.in_use_by of prototype(0x00d30f778bad14a9)
+(intended_forward): Vector3(0.560807, 0.000000, 0.827946)
+(intended_position): Vector3Immutable(464.193298, 149.978363, 314.891266)
+(intended_position_with_forward_offset): Vector3(464.215729, 149.978363, 314.924377)
+(intended_routing_surface): F7B0F72DE89105B,0,World
+(intended_transform): Transform(Vector3(464.193298, 149.978363, 314.891266), Quaternion(0.000000, 0.293303, 0.000000, 0.956020))
+(interactable): True
+(interaction_refs): ()
+(is_connected): bound method ScriptObject.is_connected of prototype(0x00d30f778bad14a9)
+(is_disabled): bound method ScriptObject.is_disabled of prototype(0x00d30f778bad14a9)
+(is_downloaded): False
+(is_fire_related_object): False
+(is_from_gallery): False
+(is_hidden): bound method GameObject.is_hidden of prototype(0x00d30f778bad14a9)
+(is_in_distress): bound method StatisticComponent.is_in_distress of prototype(0x00d30f778bad14a9)
+(is_in_inventory): function InventoryItemComponent.lambda at 0x00007FF47C6D1B90
+(is_in_locked_commodities): bound method StatisticComponent.is_in_locked_commodities of prototype(0x00d30f778bad14a9)
+(is_in_navmesh): True
+(is_in_sim_inventory): function InventoryItemComponent.lambda at 0x00007FF47C6D1F80
+(is_inside_building): False
+(is_locked): bound method StatisticComponent.is_locked of prototype(0x00d30f778bad14a9)
+(is_new_object): False
+(is_object_usable): bound method StateComponent.is_object_usable of prototype(0x00d30f778bad14a9)
+(is_on_active_lot): bound method GameObject.is_on_active_lot of prototype(0x00d30f778bad14a9)
+(is_on_hidden_or_shown_callback_registered): bound method GameObject.is_on_hidden_or_shown_callback_registered of prototype(0x00d30f778bad14a9)
+(is_on_location_changed_callback_registered): bound method GameObject.is_on_location_changed_callback_registered of prototype(0x00d30f778bad14a9)
+(is_on_natural_ground): bound method GameObject.is_on_natural_ground of prototype(0x00d30f778bad14a9)
+(is_outside): True
+(is_part): False
+(is_persistable): bound method ScriptObject.is_persistable of prototype(0x00d30f778bad14a9)
+(is_prop): False
+(is_reservation_clobberer): bound method ReservationMixin.is_reservation_clobberer of prototype(0x00d30f778bad14a9)
+(is_routing_surface_overlapped_at_position): bound method GameObject.is_routing_surface_overlapped_at_position of prototype(0x00d30f778bad14a9)
+(is_same_object_or_part): bound method ScriptObject.is_same_object_or_part of prototype(0x00d30f778bad14a9)
+(is_scorable): bound method StatisticComponent.is_scorable of prototype(0x00d30f778bad14a9)
+(is_set_as_head): False
+(is_sim): False
+(is_skill_bar_suppressed): bound method StatisticComponent.is_skill_bar_suppressed of prototype(0x00d30f778bad14a9)
+(is_social_group): False
+(is_stat_type_locked): bound method StatisticComponent.is_stat_type_locked of prototype(0x00d30f778bad14a9)
+(is_statistic_type_added_by_modifier): bound method StatisticComponent.is_statistic_type_added_by_modifier of prototype(0x00d30f778bad14a9)
+(is_surface): bound method GameObject.is_surface of prototype(0x00d30f778bad14a9)
+(is_terrain): False
+(is_valid_for_height_checks): True
+(is_valid_pack): bound method ComponentContainer.is_valid_pack of prototype(0x00d30f778bad14a9)
+(is_valid_posture_graph_object): False
+(item_location): ItemLocation.FROM_OPEN_STREET
+(level): 0
+(list): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47EFEAB90
+(live_drag_component): LiveDragComponent(prototype:0x00d30f778bad14a9)
+(load): bound method ScriptObject.load of prototype(0x00d30f778bad14a9)
+(load_object): bound method GameObject.load_object of prototype(0x00d30f778bad14a9)
+(location): Location(Transform(Vector3(464.193298, 149.978363, 314.891266), Quaternion(0.000000, 0.293303, 0.000000, 0.956020)), F7B0F72DE89105B,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
+(lock): function BaseLockingComponent.lambda at 0x00007FF47C717B90
+(lock_portal_on_use): function PortalComponent.lambda at 0x00007FF47CA98320
+(lock_sim): function BaseLockingComponent.lambda at 0x00007FF47C717710
+(lock_statistic): bound method StatisticComponent.lock_statistic of prototype(0x00d30f778bad14a9)
+(make_transient): bound method GameObject.make_transient of prototype(0x00d30f778bad14a9)
+(manager): object_manager
+(manager_id): 1
+(mark_get_locations_for_posture_needs_update): bound method ScriptObject.mark_get_locations_for_posture_needs_update of prototype(0x00d30f778bad14a9)
+(material_hash): 0
+(material_state): None
+(material_variant): None
+(may_move): False
+(may_reserve): bound method GameObject.may_reserve of prototype(0x00d30f778bad14a9)
+(model): 00000000a4c388c81b63f7c4.01661233
+(model_with_material_variant): (00000000a4c388c81b63f7c4.01661233, None)
+(modify_interactable_flags): bound method ScriptObject.modify_interactable_flags of prototype(0x00d30f778bad14a9)
+(move_to): bound method ClientObjectMixin.move_to of prototype(0x00d30f778bad14a9)
+(multicolor): None
+(new_in_inventory): True
+(non_deletable_by_user): False
+(object_bounds_for_flammable_object): bound method GameObject.object_bounds_for_flammable_object of prototype(0x00d30f778bad14a9)
+(object_manager_for_create): object_manager
+(object_radius): 0.2393776774406433
+(object_tags_override_off_lot_autonomy_ref_count): bound method StatisticComponent.object_tags_override_off_lot_autonomy_ref_count of prototype(0x00d30f778bad14a9)
+(on_add): bound method GameObject.on_add of prototype(0x00d30f778bad14a9)
+(on_add_to_client): bound method BaseObject.on_add_to_client of prototype(0x00d30f778bad14a9)
+(on_added_to_inventory): bound method GameObject.on_added_to_inventory of prototype(0x00d30f778bad14a9)
+(on_before_added_to_inventory): bound method BaseObject.on_before_added_to_inventory of prototype(0x00d30f778bad14a9)
+(on_before_removed_from_inventory): bound method BaseObject.on_before_removed_from_inventory of prototype(0x00d30f778bad14a9)
+(on_buildbuy_exit): bound method GameObject.on_buildbuy_exit of prototype(0x00d30f778bad14a9)
+(on_child_added): bound method GameObject.on_child_added of prototype(0x00d30f778bad14a9)
+(on_child_removed): bound method GameObject.on_child_removed of prototype(0x00d30f778bad14a9)
+(on_client_connect): bound method BaseObject.on_client_connect of prototype(0x00d30f778bad14a9)
+(on_client_suppressor_added): function IdleComponent.lambda at 0x00007FF47C694050
+(on_client_suppressor_removed): function IdleComponent.lambda at 0x00007FF47C6940E0
+(on_failed_to_load_component): bound method ComponentContainer.on_failed_to_load_component of prototype(0x00d30f778bad14a9)
+(on_finalize_load): bound method ScriptObject.on_finalize_load of prototype(0x00d30f778bad14a9)
+(on_hovertip_requested): bound method GameObject.on_hovertip_requested of prototype(0x00d30f778bad14a9)
+(on_leaf_child_changed): bound method GameObject.on_leaf_child_changed of prototype(0x00d30f778bad14a9)
+(on_location_changed): bound method GameObject.on_location_changed of prototype(0x00d30f778bad14a9)
+(on_object_added_to_inventory): bound method BaseObject.on_object_added_to_inventory of prototype(0x00d30f778bad14a9)
+(on_object_removed_from_inventory): bound method BaseObject.on_object_removed_from_inventory of prototype(0x00d30f778bad14a9)
+(on_object_replaced): bound method BaseObject.on_object_replaced of prototype(0x00d30f778bad14a9)
+(on_object_stack_id_updated): bound method BaseObject.on_object_stack_id_updated of prototype(0x00d30f778bad14a9)
+(on_parent_change): bound method ClientObjectMixin.on_parent_change of prototype(0x00d30f778bad14a9)
+(on_placed_in_slot): bound method StateComponent.on_placed_in_slot of prototype(0x00d30f778bad14a9)
+(on_post_bb_fixup): bound method ClientObjectMixin.on_post_bb_fixup of prototype(0x00d30f778bad14a9)
+(on_post_load): bound method ScriptObject.on_post_load of prototype(0x00d30f778bad14a9)
+(on_remove): bound method GameObject.on_remove of prototype(0x00d30f778bad14a9)
+(on_remove_from_client): bound method ClientObjectMixin.on_remove_from_client of prototype(0x00d30f778bad14a9)
+(on_removed_from_inventory): bound method GameObject.on_removed_from_inventory of prototype(0x00d30f778bad14a9)
+(on_removed_from_slot): bound method StateComponent.on_removed_from_slot of prototype(0x00d30f778bad14a9)
+(on_reset_component_get_interdependent_reset_records): bound method BaseObject.on_reset_component_get_interdependent_reset_records of prototype(0x00d30f778bad14a9)
+(on_reset_destroy): bound method BaseObject.on_reset_destroy of prototype(0x00d30f778bad14a9)
+(on_reset_early_detachment): bound method ScriptObject.on_reset_early_detachment of prototype(0x00d30f778bad14a9)
+(on_reset_element_hard_stop): bound method GameObject.on_reset_element_hard_stop of prototype(0x00d30f778bad14a9)
+(on_reset_get_elements_to_hard_stop): bound method GameObject.on_reset_get_elements_to_hard_stop of prototype(0x00d30f778bad14a9)
+(on_reset_get_interdependent_reset_records): bound method ClientObjectMixin.on_reset_get_interdependent_reset_records of prototype(0x00d30f778bad14a9)
+(on_reset_internal_state): bound method ClientObjectMixin.on_reset_internal_state of prototype(0x00d30f778bad14a9)
+(on_reset_notification): bound method BaseObject.on_reset_notification of prototype(0x00d30f778bad14a9)
+(on_reset_restart): bound method BaseObject.on_reset_restart of prototype(0x00d30f778bad14a9)
+(on_reset_send_op): bound method ClientObjectMixin.on_reset_send_op of prototype(0x00d30f778bad14a9)
+(on_restock): bound method ScriptObject.on_restock of prototype(0x00d30f778bad14a9)
+(on_set_sold): bound method ScriptObject.on_set_sold of prototype(0x00d30f778bad14a9)
+(on_state_changed): bound method ScriptObject.on_state_changed of prototype(0x00d30f778bad14a9)
+(opacity): None
+(orientation): QuaternionImmutable(0.000000, 0.293303, 0.000000, 0.956020)
+(parent): None
+(parent_object): bound method ClientObjectMixin.parent_object of prototype(0x00d30f778bad14a9)
+(parent_slot): None
+(parent_type): 0
+(parent_type_info): (0, 0)
+(parenting_hierarchy_gen): bound method ClientObjectMixin.parenting_hierarchy_gen of prototype(0x00d30f778bad14a9)
+(part_suffix): None
+(parts): None
+(persistence_group): PersistenceGroups.IN_OPEN_STREET
+(placement_footprint_hash_set): frozenset()
+(populate_icon_canvas_texture_info): function CanvasComponent.lambda at 0x00007FF47EF36200
+(populate_localization_token): bound method GameObject.populate_localization_token of prototype(0x00d30f778bad14a9)
+(portal_added_callback): bound method GameObject.portal_added_callback of prototype(0x00d30f778bad14a9)
+(position): Vector3Immutable(464.193298, 149.978363, 314.891266)
+(position_with_forward_offset): Vector3(464.215729, 149.978363, 314.924377)
+(post_component_reset): bound method BaseObject.post_component_reset of prototype(0x00d30f778bad14a9)
+(post_remove): bound method ClientObjectMixin.post_remove of prototype(0x00d30f778bad14a9)
+(post_tooltip_save_data_stored): function SpoilableObjectMixin.lambda at 0x00007FF47CB273B0
+(posture_transition_target_tag): PostureTransitionTargetPreferenceTag.INVALID
+(potential_interactions): bound method ScriptObject.potential_interactions of prototype(0x00d30f778bad14a9)
+(potential_preroll_interactions): bound method ScriptObject.potential_preroll_interactions of prototype(0x00d30f778bad14a9)
+(pre_add): bound method BaseObject.pre_add of prototype(0x00d30f778bad14a9)
+(pre_parent_change): bound method ClientObjectMixin.pre_parent_change of prototype(0x00d30f778bad14a9)
+(preroll_commodity_flags): frozenset()
+(primitives): DistributionSet(set())
+(provided_mobile_posture_affordances): frozenset()
+(provided_mobile_posture_operations): set()
+(provided_mobile_posture_types): frozenset()
+(provided_routing_surface): None
+(provides_ocean_interactions): False
+(provides_terrain_interactions): False
+(raycast_context): bound method HasFootprintComponent.raycast_context of prototype(0x00d30f778bad14a9)
+(recycling_data): ImmutableSlots(recycling_loot: (), recycling_values: _sims4_collections.frozendict(BucksType.RecycleBitsBucks  66: 0.5, BucksType.RecyclePiecesBucks  67: 0.5))
+(ref): bound method BaseObject.ref of prototype(0x00d30f778bad14a9)
+(reference_arb): None
+(refresh_locks): function BaseLockingComponent.lambda at 0x00007FF47C7174D0
+(register_for_on_children_changed_callback): bound method ClientObjectMixin.register_for_on_children_changed_callback of prototype(0x00d30f778bad14a9)
+(register_on_hidden_or_shown): bound method GameObject.register_on_hidden_or_shown of prototype(0x00d30f778bad14a9)
+(register_on_location_changed): bound method GameObject.register_on_location_changed of prototype(0x00d30f778bad14a9)
+(register_on_use_list_changed): bound method ReservationMixin.register_on_use_list_changed of prototype(0x00d30f778bad14a9)
+(register_rebate_tests): bound method GameObject.register_rebate_tests of prototype(0x00d30f778bad14a9)
+(register_reset_element): bound method GameObject.register_reset_element of prototype(0x00d30f778bad14a9)
+(register_transition_controller): bound method ScriptObject.register_transition_controller of prototype(0x00d30f778bad14a9)
+(register_tuned_animation): bound method GameObject.register_tuned_animation of class sims4.tuning.instances.prototype
+(reloadable): True
+(remap_child_parenting): False
+(remove_audio_effect): bound method ClientObjectMixin.remove_audio_effect of prototype(0x00d30f778bad14a9)
+(remove_awareness_scores): bound method ClientObjectMixin.remove_awareness_scores of prototype(0x00d30f778bad14a9)
+(remove_children_from_posture_graph_on_delete): True
+(remove_claim_requirement): bound method ScriptObject.remove_claim_requirement of prototype(0x00d30f778bad14a9)
+(remove_client_state_suppressor): bound method StateComponent.remove_client_state_suppressor of prototype(0x00d30f778bad14a9)
+(remove_component): bound method BaseObject.remove_component of prototype(0x00d30f778bad14a9)
+(remove_disallowed_sim): function PortalLockingComponent.lambda at 0x00007FF47C71CE60
+(remove_dynamic_animation_overrides): bound method ScriptObject.remove_dynamic_animation_overrides of prototype(0x00d30f778bad14a9)
+(remove_dynamic_commodity_flags): bound method ScriptObject.remove_dynamic_commodity_flags of prototype(0x00d30f778bad14a9)
+(remove_dynamic_tags): bound method GameObject.remove_dynamic_tags of prototype(0x00d30f778bad14a9)
+(remove_from_client): bound method BaseObject.remove_from_client of prototype(0x00d30f778bad14a9)
+(remove_from_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47C66A7A0
+(remove_geometry_state_override): bound method ClientObjectMixin.remove_geometry_state_override of prototype(0x00d30f778bad14a9)
+(remove_interaction_reference): bound method BaseObject.remove_interaction_reference of prototype(0x00d30f778bad14a9)
+(remove_name_changed_callback): function NameComponent.lambda at 0x00007FF47F3A0F80
+(remove_reference_from_parent): bound method ClientObjectMixin.remove_reference_from_parent of prototype(0x00d30f778bad14a9)
+(remove_reservation_clobberer): bound method ReservationMixin.remove_reservation_clobberer of prototype(0x00d30f778bad14a9)
+(remove_reservation_handler): bound method GameObject.remove_reservation_handler of prototype(0x00d30f778bad14a9)
+(remove_state_changed_callback): bound method StateComponent.remove_state_changed_callback of prototype(0x00d30f778bad14a9)
+(remove_statistic_modifier): bound method StatisticComponent.remove_statistic_modifier of prototype(0x00d30f778bad14a9)
+(remove_ui_metadata): bound method ClientObjectMixin.remove_ui_metadata of prototype(0x00d30f778bad14a9)
+(remove_voice_suffix_override): bound method ClientObjectMixin.remove_voice_suffix_override of prototype(0x00d30f778bad14a9)
+(remove_work_lock): bound method GameObject.remove_work_lock of prototype(0x00d30f778bad14a9)
+(resend_audio_effects): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_awareness_scores): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_display_number): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_interactable): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_location): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_model_with_material_variant): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_multicolor): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_slot): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_state_index): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_tint): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(resend_voice_suffix_overrides): bound method Field.get_resend.locals._resend of prototype(0x00d30f778bad14a9)
+(reset): bound method BaseObject.reset of prototype(0x00d30f778bad14a9)
+(reset_reason): bound method BaseObject.reset_reason of prototype(0x00d30f778bad14a9)
+(reset_states_to_default): bound method StateComponent.reset_states_to_default of prototype(0x00d30f778bad14a9)
+(resolve): bound method BaseObject.resolve of prototype(0x00d30f778bad14a9)
+(resolve_retarget): bound method BaseObject.resolve_retarget of prototype(0x00d30f778bad14a9)
+(resource_key): 000000000000000000003aa5.b61de6b4
+(resume_statistic_modifier): bound method StatisticComponent.resume_statistic_modifier of prototype(0x00d30f778bad14a9)
+(rig): 000000000000000000000000.00000000
+(route_target): (RouteTargetType.OBJECT  2, prototype(0x00d30f778bad14a9))
+(routing_context): ObjectID: 0, Radius: 0.2394, Key11872483435713132484,3548561239,0, FootprintID: 115115, ConectivityHandles: () FlagsIgnoreOwnFootprint
+(routing_location): F7B0F72DE89105B,0,World:0.000,0.293,0.000,0.956:464.193298,149.978363,314.891266
+(routing_surface): F7B0F72DE89105B,0,World
+(save): bound method ScriptObject.save of prototype(0x00d30f778bad14a9)
+(save_object): bound method GameObject.save_object of prototype(0x00d30f778bad14a9)
+(scale): 0.800000011920929
+(scale_modifiers_gen): bound method ClientObjectMixin.scale_modifiers_gen of prototype(0x00d30f778bad14a9)
+(schedule_destroy_asap): bound method BaseObject.schedule_destroy_asap of prototype(0x00d30f778bad14a9)
+(schedule_element): bound method GameObject.schedule_element of prototype(0x00d30f778bad14a9)
+(schedule_reset_asap): bound method BaseObject.schedule_reset_asap of prototype(0x00d30f778bad14a9)
+(scratched): False
+(self_or_part_in_use): False
+(sell): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47EFEAEF0
+(set_build_buy_lockout_state): bound method GameObject.set_build_buy_lockout_state of prototype(0x00d30f778bad14a9)
+(set_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47CA2B170
+(set_definition): bound method ClientObjectMixin.set_definition of prototype(0x00d30f778bad14a9)
+(set_dynamic_timed_state): bound method StateComponent.set_dynamic_timed_state of prototype(0x00d30f778bad14a9)
+(set_household_owner_id): bound method GameObject.set_household_owner_id of prototype(0x00d30f778bad14a9)
+(set_ico_as_carry_target): True
+(set_location): bound method ClientObjectMixin.set_location of prototype(0x00d30f778bad14a9)
+(set_location_without_distribution): bound method ClientObjectMixin.set_location_without_distribution of prototype(0x00d30f778bad14a9)
+(set_object_def_state_index): bound method GameObject.set_object_def_state_index of prototype(0x00d30f778bad14a9)
+(set_parent): bound method ClientObjectMixin.set_parent of prototype(0x00d30f778bad14a9)
+(set_post_bb_fixup_needed): bound method ClientObjectMixin.set_post_bb_fixup_needed of prototype(0x00d30f778bad14a9)
+(set_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47CA2AEF0
+(set_stack_count): function InventoryItemComponent.lambda at 0x00007FF47C6D1D40
+(set_stack_id): function InventoryItemComponent.lambda at 0x00007FF47C6DC7A0
+(set_stat_value): bound method StatisticComponent.set_stat_value of prototype(0x00d30f778bad14a9)
+(set_state): bound method StateComponent.set_state of prototype(0x00d30f778bad14a9)
+(set_state_dynamically): bound method StateComponent.set_state_dynamically of prototype(0x00d30f778bad14a9)
+(set_statistics_callback_alarm_calculation_supression): bound method HasStatisticComponent.set_statistics_callback_alarm_calculation_supression of prototype(0x00d30f778bad14a9)
+(should_mark_as_new): True
+(show): bound method GameObject.show of prototype(0x00d30f778bad14a9)
+(skill_bar_suppression): bound method StatisticComponent.skill_bar_suppression of prototype(0x00d30f778bad14a9)
+(slot): 000000000000000000000000.00000000
+(slot_cost_modifiers): _sims4_collections.frozendict()
+(slot_hash): 0
+(slot_object): bound method SlotComponent.slot_object of prototype(0x00d30f778bad14a9)
+(slot_type_set): None
+(slot_types): frozenset()
+(slots_resource): None
+(social_clustering): None
+(stack_count): function InventoryItemComponent.lambda at 0x00007FF47C6D1C20
+(standin_model): None
+(state_component): StateComponent(prototype:0x00d30f778bad14a9)
+(state_index): 0
+(state_value_active): bound method StateComponent.state_value_active of prototype(0x00d30f778bad14a9)
+(static_commodity_tracker): statistics.base_statistic_tracker.BaseStatisticTracker object at 0x00007FF41C39A270
+(statistic_component): StatisticComponent(prototype:0x00d30f778bad14a9)
+(statistic_tracker): statistics.statistic_tracker.StatisticTracker object at 0x00007FF40FD7F170
+(stop_running_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47CA2AA70
+(super_affordances): functools.partial(function ScriptObject.super_affordances at 0x00007FF47CC887A0, class sims4.tuning.instances.prototype, prototype(0x00d30f778bad14a9))
+(supported_posture_types): ()
+(supports_affordance): bound method ScriptObject.supports_affordance of prototype(0x00d30f778bad14a9)
+(supports_posture_type): bound method ScriptObject.supports_posture_type of prototype(0x00d30f778bad14a9)
+(suspend_statistic_modifier): bound method StatisticComponent.suspend_statistic_modifier of prototype(0x00d30f778bad14a9)
+(swapping_from_parent): None
+(swapping_to_parent): None
+(tests_to_bypass_utility_requirement): _sims4_collections.frozendict()
+(tint): None
+(trait_statistic_tracker): statistics.trait_statistic_tracker.TraitStatisticTracker object at 0x00007FF4AFA47780
+(transform): Transform(Vector3(464.193298, 149.978363, 314.891266), Quaternion(0.000000, 0.293303, 0.000000, 0.956020))
+(transient): False
+(try_mark_as_new_object): bound method GameObject.try_mark_as_new_object of prototype(0x00d30f778bad14a9)
+(try_post_bb_fixup): bound method ClientObjectMixin.try_post_bb_fixup of prototype(0x00d30f778bad14a9)
+(try_split_object_from_stack): function InventoryItemComponent.lambda at 0x00007FF47C6DC9E0
+(tuned_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: None, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: TunableStateComponentWrapper.StateComponent, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(tuning_manager): InstanceManager_object
+(ui_metadata): distributor.sparse.SparseMessage object at 0x00007FF4AF678410
+(ui_metadata_immediate): distributor.sparse.SparseMessage object at 0x00007FF4AF678410
+(unlock): function BaseLockingComponent.lambda at 0x00007FF47C717CB0
+(unlock_statistic): bound method StatisticComponent.unlock_statistic of prototype(0x00d30f778bad14a9)
+(unregister_for_on_children_changed_callback): bound method ClientObjectMixin.unregister_for_on_children_changed_callback of prototype(0x00d30f778bad14a9)
+(unregister_on_hidden_or_shown): bound method GameObject.unregister_on_hidden_or_shown of prototype(0x00d30f778bad14a9)
+(unregister_on_location_changed): bound method GameObject.unregister_on_location_changed of prototype(0x00d30f778bad14a9)
+(unregister_on_use_list_changed): bound method ReservationMixin.unregister_on_use_list_changed of prototype(0x00d30f778bad14a9)
+(unregister_reset_element): bound method GameObject.unregister_reset_element of prototype(0x00d30f778bad14a9)
+(unregister_transition_controller): bound method ScriptObject.unregister_transition_controller of prototype(0x00d30f778bad14a9)
+(update_all_commodities): bound method StatisticComponent.update_all_commodities of prototype(0x00d30f778bad14a9)
+(update_commodity_flags): bound method ScriptObject.update_commodity_flags of class sims4.tuning.instances.prototype
+(update_component_commodity_flags): bound method ScriptObject.update_component_commodity_flags of prototype(0x00d30f778bad14a9)
+(update_current_value): bound method ClientObjectMixin.update_current_value of prototype(0x00d30f778bad14a9)
+(update_display_number): bound method ClientObjectMixin.update_display_number of prototype(0x00d30f778bad14a9)
+(update_object_tooltip): function TooltipComponent.lambda at 0x00007FF47F2C65F0
+(update_ownership): bound method GameObject.update_ownership of prototype(0x00d30f778bad14a9)
+(update_reference_arb): bound method ClientObjectMixin.update_reference_arb of prototype(0x00d30f778bad14a9)
+(update_stack_count): function InventoryItemComponent.lambda at 0x00007FF47C6D1E60
+(update_tooltip_field): function TooltipComponent.lambda at 0x00007FF47F2C6A70
+(update_ui_metadata): bound method ClientObjectMixin.update_ui_metadata of prototype(0x00d30f778bad14a9)
+(usable_by_transition_controller): bound method ReservationMixin.usable_by_transition_controller of prototype(0x00d30f778bad14a9)
+(use_base_object_for_slot_constraints): False
+(valid_for_distribution): True
+(validate_definition): bound method GameObject.validate_definition of prototype(0x00d30f778bad14a9)
+(video_playlist): None
+(visibility): None
+(visibility_flags): None
+(visible_to_client): True
+(voice_suffix_overrides): None
+(wall_object_padding): None
+(wall_or_fence_placement): False
+(wind_speed_level): None
+(with_skill_bar_suppression): bound method StatisticComponent.with_skill_bar_suppression of prototype(0x00d30f778bad14a9)
+(zone_id): 1115502318738542683

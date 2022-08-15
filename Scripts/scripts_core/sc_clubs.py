@@ -32,6 +32,11 @@ class C_ZoneClubs:
         else:
             return None
 
+    def club_setup_on_load(self, club_service):
+        for club in list(club_service.clubs):
+            gathering = club_service.clubs_to_gatherings_map.get(club)
+            if gathering:
+                self.label_club_members(club)
 
 sc_club = C_ZoneClubs()
 
@@ -42,5 +47,10 @@ def sc_club_gathering_start_handler(self, club, *args, **kwargs):
 def sc_club_gathering_end_handler(self, club, *args, **kwargs):
     global sc_club
     sc_club.clear_label_from_club_members(club)
+    return
+
+def sc_club_on_zone_load_handler(self, *args, **kwargs):
+    global sc_club
+    sc_club.club_setup_on_load(self)
     return
 

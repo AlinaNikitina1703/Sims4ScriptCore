@@ -11,7 +11,8 @@ from interactions.base.super_interaction import SuperInteraction
 from singletons import DEFAULT
 
 from scripts_core.sc_autonomy import sc_Autonomy
-from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler
+from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
+    sc_club_on_zone_load_handler
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
@@ -60,6 +61,17 @@ def c_zone_club_gathering_end(original, self, gathering, *args, **kwargs):
     result = original(self, gathering, *args, **kwargs)
     try:
         sc_club_gathering_end_handler(self, gathering.associated_club)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
+    return result
+
+@safe_inject(ClubService, 'on_zone_load')
+def c_zone_club_on_zone_load(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
+    try:
+        sc_club_on_zone_load_handler(self)
     except BaseException as e:
         error_trap(e)
         pass
