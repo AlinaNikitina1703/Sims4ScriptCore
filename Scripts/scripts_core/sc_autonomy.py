@@ -146,11 +146,12 @@ class sc_Autonomy:
     def append(self, interaction):
         result = None
 
-        if not sc_Autonomy.run_interaction_filter(self, interaction):
-            return result
+        if not sc_Vars.DISABLE_MOD:
+            if not sc_Autonomy.run_interaction_filter(self, interaction):
+                return result
 
-        if not sc_Autonomy.run_routine_filter(self, interaction):
-            return result
+            if not sc_Autonomy.run_routine_filter(self, interaction):
+                return result
 
         log_interaction('Enqueue', interaction)
         result = self._append(interaction)
@@ -159,11 +160,12 @@ class sc_Autonomy:
     def insert_next(self, interaction, **kwargs):
         result = None
 
-        if not sc_Autonomy.run_interaction_filter(self, interaction):
-            return result
+        if not sc_Vars.DISABLE_MOD:
+            if not sc_Autonomy.run_interaction_filter(self, interaction):
+                return result
 
-        if not sc_Autonomy.run_routine_filter(self, interaction):
-            return result
+            if not sc_Autonomy.run_routine_filter(self, interaction):
+                return result
 
         log_interaction('Enqueue_Next', interaction)
         result = (self._insert_next)(interaction, **kwargs)
