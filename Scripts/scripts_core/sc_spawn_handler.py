@@ -57,7 +57,8 @@ class sc_SpawnHandler(SimSpawnerService):
                 if sc_Vars.DISABLE_SPAWNS:
                     debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
-                if services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
+                if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start \
+                        and sc_Vars.spawn_time_start > 0 or not sc_Vars.DISABLE_CULLING and \
                         services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
                     debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
