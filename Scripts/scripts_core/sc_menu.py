@@ -1033,6 +1033,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def load_config(self, timeline):
         self.sc_main.config_ini()
+        self.sc_main.show_mod_status(True)
 
     def load_routine(self, timeline):
         sc_Vars._running = False

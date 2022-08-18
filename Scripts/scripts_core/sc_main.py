@@ -5,6 +5,7 @@ import random
 
 import services
 import sims4
+
 from scripts_core.sc_autonomy import AutonomyState, set_autonomy, send_sim_home
 from scripts_core.sc_clubs import C_ZoneClubs
 from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims, \
@@ -15,7 +16,7 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn_handler import sc_SpawnHandler
-from scripts_core.sc_util import message_box, error_trap_console, init_sim
+from scripts_core.sc_util import message_box, error_trap_console, init_sim, error_trap
 from sims.sim_info_types import Age
 from sims.sim_spawner_service import SimSpawnerService
 
@@ -120,6 +121,11 @@ class ScriptCoreMain:
             config.write(configfile)
 
     def config_ini(self, live=False):
+        try:
+            from module_simulation.sc_simulation import reset_simulation_to_vanilla, set_simulation_to_custom
+        except:
+            message_box(None, None, "Simulation", "Cannot load simulation mode!", "GREEN")
+            pass
         datapath = os.path.abspath(os.path.dirname(__file__))
         filename = datapath + r"\Data\config.ini"
         if not os.path.exists(filename):
@@ -134,12 +140,21 @@ class ScriptCoreMain:
         sc_Vars.DISABLE_ROUTINE = config.getboolean("control", "disable_routine")
         sc_Vars.DISABLE_SPAWNS = config.getboolean("control", "disable_spawns")
         sc_Vars.DISABLE_CULLING = config.getboolean("control", "disable_culling")
+        sc_Vars.DISABLE_SIMULATION = config.getboolean("control", "disable_simulation")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
         sc_Vars.chance_role_trait = config.getfloat("control", "chance_role_trait")
         SimSpawnerService.NPC_SOFT_CAP = 255
         services.sim_spawner_service().set_npc_soft_cap_override(sc_Vars.MAX_SIMS)
+        try:
+            if sc_Vars.DISABLE_SIMULATION:
+                reset_simulation_to_vanilla()
+            else:
+                set_simulation_to_custom()
+        except:
+            message_box(None, None, "Simulation", "Cannot switch simulation mode!", "GREEN")
+            pass
 
     def show_mod_status(self, live=False):
         venue = get_venue()
@@ -316,10 +331,10 @@ class ScriptCoreMain:
                         set_autonomy(sim.sim_info, autonomy_setting)
                         return
                     elif is_sim_in_group(sim):
-                        set_autonomy(sim.sim_info, autonomy_setting)
+                        set_autonomy(sim.sim_info, AutonomyState.FULL)
                         return
                     elif sim.sim_info in services.active_household():
-                        set_autonomy(sim.sim_info, autonomy_setting)
+                        set_autonomy(sim.sim_info, AutonomyState.FULL)
                         return
                     elif sim.sim_info.household.home_zone_id == zone.id:
                         set_autonomy(sim.sim_info, AutonomyState.FULL)
@@ -342,13 +357,15 @@ def has_allowed_role(sim):
         return True
     if sc_Vars.DISABLE_SPAWNS:
         return False
-    if sc_Vars.DISABLE_CULLING:
-        return True
-    if services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
-            services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
+    if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
+            not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
         return False
     if set_random_trait_role(sim):
         return True
+    # if disable culling is true that means no sims will be removed, always return true role sims or not.
+    if sc_Vars.DISABLE_CULLING:
+        return True
+    # no role sims get auto removed.
     if not len(sim.autonomy_component.active_roles()):
         return False
 

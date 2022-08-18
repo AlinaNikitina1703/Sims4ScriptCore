@@ -1042,6 +1042,7 @@ def get_sim_info(sim=None):
                      "[ID:] {}\n" \
                      "[Career:] {}\n" \
                      "[Role({}):] {}\n" \
+                     "[Selectable:] {}\n" \
                      "[Interactions:]\n{}\n" \
                      "[Mood:] {}\n[Age:] {} Days\n[Room:] {}\n[Level:] {}\n[Zone ID:] {}\n" \
                      "[Pos:] {}\n[Orient:] {}".\
@@ -1049,6 +1050,7 @@ def get_sim_info(sim=None):
             activeCareer,
             len(sim.autonomy_component.active_roles()),
             roleStateName,
+            sim.sim_info.is_selectable,
             intQueue,
             sim_mood, time_alive, room, sim.level, zone.id,
             get_object_pos(sim), get_object_rotate(sim))

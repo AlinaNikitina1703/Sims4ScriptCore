@@ -81,6 +81,7 @@ class sc_Vars:
     DISABLE_CULLING = True
     DISABLE_WALKBYS = False
     DISABLE_ROUTINE = False
+    DISABLE_SIMULATION = False
     MAX_SIMS = 20
     MAX_ZONE_SITUATION_SIMS = 3
     chance_switch_action = 10.0

@@ -44,10 +44,24 @@ sim_delay = date_and_time.TimeSpan(1)
 
 old_run_gen = ArbSequenceElement._run_gen
 old_run_full_autonomy_callback_gen = autonomy.autonomy_component.AutonomyComponent._run_full_autonomy_callback_gen
+old_create_full_autonomy_alarm = autonomy.autonomy_component.AutonomyComponent._create_full_autonomy_alarm
 old_build_journal_seed = distributor.system.Journal._build_journal_seed
 
 # default is 25
 # date_and_time.REAL_MILLISECONDS_PER_SIM_SECOND = 250
+
+def reset_simulation_to_vanilla():
+    global old_run_gen, old_run_full_autonomy_callback_gen, old_create_full_autonomy_alarm, old_build_journal_seed
+    ArbSequenceElement._run_gen = old_run_gen
+    autonomy.autonomy_component.AutonomyComponent._run_full_autonomy_callback_gen = old_run_full_autonomy_callback_gen
+    autonomy.autonomy_component.AutonomyComponent._create_full_autonomy_alarm = old_create_full_autonomy_alarm
+    distributor.system.Journal._build_journal_seed = old_build_journal_seed
+
+def set_simulation_to_custom():
+    ArbSequenceElement._run_gen = arbs_run_gen
+    autonomy.autonomy_component.AutonomyComponent._run_full_autonomy_callback_gen = _run_full_autonomy_callback_gen
+    autonomy.autonomy_component.AutonomyComponent._create_full_autonomy_alarm = _create_full_autonomy_alarm
+    distributor.system.Journal._build_journal_seed = _build_journal_seed
 
 def set_distance_score(score=10):
     global MAX_DISTANCE_SCORE
