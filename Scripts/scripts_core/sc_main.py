@@ -342,7 +342,7 @@ def has_allowed_role(sim):
         return True
     if sc_Vars.DISABLE_SPAWNS:
         return False
-    if not sc_Vars.DISABLE_CULLING:
+    if sc_Vars.DISABLE_CULLING:
         return True
     if services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
             services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
