@@ -188,11 +188,6 @@ class sc_Autonomy:
                     file.write("{}\n{}\n".format(target, info_string))
                     file.close()
 
-        #pick = interaction.context.pick.pick_type
-        #pick_target = interaction.context.pick.target
-        #pick_location = interaction.context.pick.location
-        #to_zone_id = interaction.context.pick.get_zone_id_from_pick_location()
-        #routing_surface_type = interaction.context.pick.routing_surface.type
         autonomy = interaction.sim.sim_info.autonomy
         now = services.time_service().sim_now
         if not hasattr(interaction, "interaction_timeout"):
@@ -213,12 +208,6 @@ class sc_Autonomy:
                 if interaction.sim.sim_info.has_trait(key) and autonomy == AutonomyState.FULL:
                     autonomy = AutonomyState.NO_CLEANING
                     interaction.sim.sim_info.autonomy = AutonomyState.NO_CLEANING
-
-        if sc_Vars.tag_sim_for_debugging:
-            name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
-            if name in sc_Vars.tag_sim_for_debugging:
-                debugger("Sim: {} {} - Queue: ({}) {} Target: {} User Directed: {}".format(interaction.sim.first_name, interaction.sim.last_name,
-                    interaction.guid64, action, target, interaction.is_user_directed), 2, True)
 
         if "mixer_social" in action:
             if now - interaction.interaction_timeout > date_and_time.create_time_span(minutes=1):

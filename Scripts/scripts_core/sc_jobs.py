@@ -664,7 +664,7 @@ def remove_sim(sim):
 
 def get_work_hours(start, finish):
     try:
-        if sc_Vars.DISABLE_EMPLOYEES:
+        if sc_Vars.DISABLE_ROUTINE:
             return False
         if start == 0 and finish == 0:
             return True

@@ -110,6 +110,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             "Teleport Menu",
                             "Delete Menu",
                             "Goto Sim",
+                            "Add Object To Inventory",
                             "Select And Fix Sim Icons")
 
         self.sc_control_choices = ("Push Sim",
@@ -227,6 +228,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_delete_menu.commands.append("<font color='#990000'>[Menu]</font>")
         self.sc_delete_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_delete_menu.show(timeline, self, 0, self.sc_delete_choices, "Delete Sim Menu", "Make a selection.")
+
+    def add_object_to_inventory(self, timeline):
+        add_to_inventory(self.sim, self.target)
 
     def teleport_all(self, timeline):
         self.teleport_sims()
@@ -1033,13 +1037,13 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def load_routine(self, timeline):
         sc_Vars._running = False
         sc_Vars._config_loaded = False
-        sc_Vars.DISABLE_EMPLOYEES = False
+        sc_Vars.DISABLE_ROUTINE = False
+        sc_Vars.DISABLE_MOD = False
 
     def toggle_routine(self, timeline):
-        sc_Vars._running = False
-        sc_Vars._config_loaded = False
-        sc_Vars.DISABLE_EMPLOYEES = False
-        sc_Vars.DISABLE_MOD = not sc_Vars.DISABLE_MOD
+        sc_Vars.DISABLE_ROUTINE = not sc_Vars.DISABLE_ROUTINE
+        sc_Vars.DISABLE_MOD = False
+        self.sc_main.show_mod_status(True)
 
     def toggle_debug(self, timeline):
         client = services.client_manager().get_first_client()

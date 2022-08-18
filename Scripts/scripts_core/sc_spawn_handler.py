@@ -54,7 +54,7 @@ class sc_SpawnHandler(SimSpawnerService):
 
                 venue = get_venue()
                 sims_on_lot = get_number_of_sims()
-                if sc_Vars.DISABLE_ALL_SPAWNS:
+                if sc_Vars.DISABLE_SPAWNS:
                     debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
                 if services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \

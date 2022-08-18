@@ -119,20 +119,7 @@ class ScriptCoreMain:
         with open(filename, 'w') as configfile:
             config.write(configfile)
 
-    def config_ini(self):
-        venue = get_venue()
-        zone = services.current_zone()
-        lot_x_size = int(services.current_zone().lot.size_x)
-        lot_z_size = int(services.current_zone().lot.size_z)
-        objects = services.object_manager().get_all()
-        number_objects = len(objects)
-        number_sims = get_number_of_sims()
-        font_color1 = "000000"
-        font_color2 = "aa88ff"
-        font_text1 = "<font color='#{}'>".format(font_color1)
-        font_text2 = "<font color='#{}'>".format(font_color2)
-        end_font_text = "</font>"
-        config_text = ""
+    def config_ini(self, live=False):
         datapath = os.path.abspath(os.path.dirname(__file__))
         filename = datapath + r"\Data\config.ini"
         if not os.path.exists(filename):
@@ -144,12 +131,38 @@ class ScriptCoreMain:
         sc_Vars.MAX_SIMS = config.getint("control", "max_sims")
         sc_Vars.DEBUG = config.getboolean("control", "debug")
         sc_Vars.DISABLE_MOD = config.getboolean("control", "disable_mod")
-        sc_Vars.DISABLE_EMPLOYEES = config.getboolean("control", "disable_routine")
+        sc_Vars.DISABLE_ROUTINE = config.getboolean("control", "disable_routine")
+        sc_Vars.DISABLE_SPAWNS = config.getboolean("control", "disable_spawns")
+        sc_Vars.DISABLE_CULLING = config.getboolean("control", "disable_culling")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
         sc_Vars.chance_role_trait = config.getfloat("control", "chance_role_trait")
-        SimSpawnerService.NPC_SOFT_CAP = 50
+        SimSpawnerService.NPC_SOFT_CAP = 255
+        services.sim_spawner_service().set_npc_soft_cap_override(sc_Vars.MAX_SIMS)
+
+    def show_mod_status(self, live=False):
+        venue = get_venue()
+        zone = services.current_zone()
+        lot_x_size = int(services.current_zone().lot.size_x)
+        lot_z_size = int(services.current_zone().lot.size_z)
+        objects = services.object_manager().get_all()
+        number_objects = len(objects)
+        number_sims = get_number_of_sims()
+        font_color1 = "000000"
+        font_color2 = "aa88ff"
+        font_color3 = "aa4444"
+        font_text1 = "<font color='#{}'>".format(font_color1)
+        font_text2 = "<font color='#{}'>".format(font_color2)
+        font_text3 = "<font color='#{}'>".format(font_color3)
+        end_font_text = "</font>"
+        config_text = ""
+        datapath = os.path.abspath(os.path.dirname(__file__))
+        filename = datapath + r"\Data\config.ini"
+        if not os.path.exists(filename):
+            return
+        config = configparser.ConfigParser()
+        config.read(filename)
 
         status_text = "[Venue:] {}\n".format(venue)
         status_text = status_text + "[Zone:] {}\n".format(zone.id)
@@ -159,9 +172,25 @@ class ScriptCoreMain:
 
         for each_section in config.sections():
             for (each_key, each_val) in config.items(each_section):
-                config_text = config_text + "[{}:] {}\n".format(each_key, each_val)
+                if live and "disable" in each_key:
+                    if "spawns" in each_key:
+                        each_val = sc_Vars.DISABLE_SPAWNS
+                    elif "mod" in each_key:
+                        each_val = sc_Vars.DISABLE_MOD
+                    elif "routine" in each_key:
+                        each_val = sc_Vars.DISABLE_ROUTINE
+                    elif "culling" in each_key:
+                        each_val = sc_Vars.DISABLE_CULLING
+                    config_text = config_text + "[{}:] ({})\n".format(each_key, each_val)
+                elif live and "max_sims" in each_key:
+                    each_val = sc_Vars.MAX_SIMS
+                    config_text = config_text + "[{}:] ({})\n".format(each_key, each_val)
+                else:
+                    config_text = config_text + "[{}:] {}\n".format(each_key, each_val)
+
 
         config_text = config_text.replace("[", font_text1).replace("]", end_font_text)
+        config_text = config_text.replace("(", font_text3).replace(")", end_font_text)
         status_text = status_text.replace("[", font_text2).replace("]", end_font_text)
         message_box(None, None, "Script Core Menu", "{}\n{}".format(status_text, config_text), "PURPLE")
 
@@ -184,6 +213,7 @@ class ScriptCoreMain:
                 sc_Vars.custom_routine.alarm_ini()
                 ScriptCoreMain.sims_ini(self)
                 ScriptCoreMain.config_ini(self)
+                ScriptCoreMain.show_mod_status(self)
                 if sc_Vars.DEBUG:
                     sims4.commands.client_cheat("fps on", client.id)
                 else:
@@ -235,12 +265,12 @@ class ScriptCoreMain:
                         action_unclogger(sim, filters)
                     update_lights(False, 0.0)
 
-                    if not sc_Vars.DISABLE_EMPLOYEES and [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
+                    if not sc_Vars.DISABLE_ROUTINE and [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
                         ScriptCoreMain.index = 0
                         sc_Vars._running = False
                         sc_Vars._config_loaded = False
                         return
-                    elif sim.sim_info.routine and not sc_Vars.DISABLE_EMPLOYEES:
+                    elif sim.sim_info.routine and not sc_Vars.DISABLE_ROUTINE:
                         if not sim.sim_info.routine_info.title:
                             if not has_role(sim):
                                 remove_sim(sim)
@@ -273,14 +303,14 @@ class ScriptCoreMain:
                             if sc_Vars.career_function:
                                 sc_Vars.career_function.routine_handler(sim.sim_info)
                         return
-                    elif sim.sim_info.routine and sc_Vars.DISABLE_EMPLOYEES:
+                    elif sim.sim_info.routine and sc_Vars.DISABLE_ROUTINE:
                         remove_sim(sim)
                         return
                     elif sim == services.get_active_sim():
                         if not selected_sim_autonomy_enabled:
                             set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
                         else:
-                            set_autonomy(sim.sim_info, autonomy_setting)
+                            set_autonomy(sim.sim_info, AutonomyState.FULL)
                         return
                     elif sim.sim_info.is_selectable:
                         set_autonomy(sim.sim_info, autonomy_setting)
@@ -310,8 +340,10 @@ class ScriptCoreMain:
 def has_allowed_role(sim):
     if sim.sim_info.routine:
         return True
-    if sc_Vars.DISABLE_ALL_SPAWNS:
+    if sc_Vars.DISABLE_SPAWNS:
         return False
+    if not sc_Vars.DISABLE_CULLING:
+        return True
     if services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
             services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
         return False

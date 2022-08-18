@@ -77,9 +77,10 @@ class sc_Vars:
     DISABLE_MOD = False
     DISABLE_STAFF_ONLY = False
     DISABLE_PATIENTS = False
-    DISABLE_ALL_SPAWNS = False
+    DISABLE_SPAWNS = False
+    DISABLE_CULLING = True
     DISABLE_WALKBYS = False
-    DISABLE_EMPLOYEES = False
+    DISABLE_ROUTINE = False
     MAX_SIMS = 20
     MAX_ZONE_SITUATION_SIMS = 3
     chance_switch_action = 10.0
@@ -100,6 +101,7 @@ class sc_Vars:
     routine_start_times = []
     _running = False
     _config_loaded = False
+    live_update = False
     tag_sim_for_debugging = None
     exam_list = []
     roles = []
