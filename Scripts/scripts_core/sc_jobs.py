@@ -888,6 +888,15 @@ def pause_routine(timeout):
     sc_Vars.timestamp = now
     return False
 
+def sleep_routine(timeout):
+    now = time.time()
+    if not sc_Vars.timestamp:
+        sc_Vars.timestamp = now
+    if now - sc_Vars.timestamp < (timeout * 60.0):
+        return True
+    sc_Vars.timestamp = now
+    return False
+
 def get_number_of_sims():
     count = 0
     for sim in services.sim_info_manager().instanced_sims_gen():
@@ -1159,10 +1168,13 @@ def is_sim_in_group(sim):
         return True
     return False
 
-def debugger(debug_text, frame=1, full_frame=False, write=False, console_only=False):
+def debugger(debug_text, frame=1, full_frame=False, write=False, console_only=False, sim_time=True):
     try:
         # 0 is root function info, 1 is function info from where its running and 2 is parent calling function
-        now = services.time_service().sim_now
+        if sim_time:
+            now = services.time_service().sim_now
+        else:
+            now = time.time()
         total_stack = inspect.stack()  # total complete stack
         func_name = None
         filename = None

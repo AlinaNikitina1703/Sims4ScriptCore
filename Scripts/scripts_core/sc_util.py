@@ -48,7 +48,7 @@ def ld_file_loader(dirname: str, module: str, _connection=None):
     else:
         try:
             filename = os.path.join(dirname, filetitle) + ".py"
-            if "simulation" in filename:
+            if "simulation.py" in filename:
                 ld_notice(None, "Load Script", "Error loading simulation module. Access denied".format(filename), False,
                           "ORANGE")
                 return False

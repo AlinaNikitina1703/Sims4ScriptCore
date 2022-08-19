@@ -12,7 +12,7 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
     pause_routine, debugger, action_unclogger, get_filters, update_lights, \
     add_career_to_sim, remove_sim, set_proper_sim_outfit, remove_all_careers, \
     remove_annoying_buffs, has_role, \
-    assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours
+    assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, sleep_routine
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn_handler import sc_SpawnHandler
@@ -146,6 +146,7 @@ class ScriptCoreMain:
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
         sc_Vars.chance_role_trait = config.getfloat("control", "chance_role_trait")
         SimSpawnerService.NPC_SOFT_CAP = 255
+        sc_Vars.timestamp = 0
         services.sim_spawner_service().set_npc_soft_cap_override(sc_Vars.MAX_SIMS)
         try:
             if sc_Vars.DISABLE_SIMULATION:
@@ -237,7 +238,7 @@ class ScriptCoreMain:
                 sc_club.club_setup_on_load(services.get_club_service())
                 sc_Vars._config_loaded = True
 
-            if sc_Vars._running and not sc_Vars.DISABLE_MOD:
+            elif sc_Vars._running and not sc_Vars.DISABLE_MOD:
 
                 for sim_info in list(sc_SpawnHandler.spawned_sims):
                     sim = init_sim(sim_info)
@@ -248,103 +249,115 @@ class ScriptCoreMain:
                             set_proper_sim_outfit(sim, False)
                         sc_SpawnHandler.spawned_sims.remove(sim_info)
 
-                if not pause_routine(sc_Vars.update_speed):
-                    zone = services.current_zone()
-                    now = services.time_service().sim_now
-                    sims = list(services.sim_info_manager().instanced_sims_gen())
-                    if ScriptCoreMain.index >= len(sims):
-                        ScriptCoreMain.index = 0
-                    try:
-                        sim = sims[ScriptCoreMain.index]
-                    except:
-                        sim = sims[0]
-                        pass
+                zone = services.current_zone()
+                now = services.time_service().sim_now
+                sims = list(services.sim_info_manager().instanced_sims_gen())
+                if ScriptCoreMain.index >= len(sims):
+                    ScriptCoreMain.index = 0
+                try:
+                    sim = sims[ScriptCoreMain.index]
+                except:
+                    sim = sims[0]
+                    pass
 
-                    remove_annoying_buffs(sim.sim_info)
+                remove_annoying_buffs(sim.sim_info)
 
-                    autonomy_service = services.autonomy_service()
-                    account_data_msg = services.get_persistence_service().get_account_proto_buff()
-                    options_proto = account_data_msg.gameplay_account_data.gameplay_options
-                    selected_sim_autonomy_enabled = autonomy_service._selected_sim_autonomy_enabled
-                    if options_proto.autonomy_level == options_proto.OFF or options_proto.autonomy_level == options_proto.LIMITED:
-                        autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
-                    else:
-                        autonomy_setting = AutonomyState.FULL
+                autonomy_service = services.autonomy_service()
+                account_data_msg = services.get_persistence_service().get_account_proto_buff()
+                options_proto = account_data_msg.gameplay_account_data.gameplay_options
+                selected_sim_autonomy_enabled = autonomy_service._selected_sim_autonomy_enabled
+                if options_proto.autonomy_level == options_proto.OFF or options_proto.autonomy_level == options_proto.LIMITED:
+                    autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
+                else:
+                    autonomy_setting = AutonomyState.FULL
 
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - index: {} autonomy_setting: {}".format(sim.first_name, ScriptCoreMain.index, sim.autonomy))
-                    ScriptCoreMain.index += 1
+                if sc_Vars.DEBUG:
+                    debugger("Sim: {} - index: {} autonomy_setting: {}".format(sim.first_name, ScriptCoreMain.index, sim.autonomy))
+                ScriptCoreMain.index += 1
 
-                    filters = get_filters("unclogger")
-                    if filters:
-                        action_unclogger(sim, filters)
-                    update_lights(False, 0.0)
+                filters = get_filters("unclogger")
+                if filters:
+                    action_unclogger(sim, filters)
+                update_lights(False, 0.0)
 
-                    if not sc_Vars.DISABLE_ROUTINE and [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
-                        ScriptCoreMain.index = 0
-                        sc_Vars._running = False
-                        sc_Vars._config_loaded = False
-                        return
-                    elif sim.sim_info.routine and not sc_Vars.DISABLE_ROUTINE:
-                        if not sim.sim_info.routine_info.title:
-                            if not has_role(sim):
-                                remove_sim(sim)
-                                return
-                        if now.hour() >= sim.sim_info.routine_info.off_duty and not sim == services.get_active_sim() \
-                                and not sim.sim_info.routine_info.off_duty == 0 and not sim.sim_info.is_selectable or \
-                                now.hour() < sim.sim_info.routine_info.on_duty and not sim == services.get_active_sim() \
-                                and not sim.sim_info.routine_info.on_duty == 0 and not sim.sim_info.is_selectable:
-                            if sc_Vars.DEBUG:
-                                debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
-                                    sim.sim_info.routine_info.off_duty, now.hour()))
-                            send_sim_home(sim)
+                if not sc_Vars.DISABLE_ROUTINE and [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
+                    ScriptCoreMain.index = 0
+                    sc_Vars._running = False
+                    sc_Vars._config_loaded = False
+                    return
+                elif sim.sim_info.routine and not sc_Vars.DISABLE_ROUTINE:
+                    if not sim.sim_info.routine_info.title:
+                        if not has_role(sim):
+                            remove_sim(sim)
                             return
+                    if now.hour() >= sim.sim_info.routine_info.off_duty and not sim == services.get_active_sim() \
+                            and not sim.sim_info.routine_info.off_duty == 0 and not sim.sim_info.is_selectable or \
+                            now.hour() < sim.sim_info.routine_info.on_duty and not sim == services.get_active_sim() \
+                            and not sim.sim_info.routine_info.on_duty == 0 and not sim.sim_info.is_selectable:
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
+                                sim.sim_info.routine_info.off_duty, now.hour()))
+                        send_sim_home(sim)
+                        return
 
-                        if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0 or \
-                                now.hour() < sim.sim_info.routine_info.on_duty and not sim.sim_info.routine_info.on_duty == 0:
-                            if sc_Vars.DEBUG:
-                                debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
-                                    sim.sim_info.routine_info.off_duty, now.hour()))
-                            clear_jobs(sim.sim_info)
-                            assign_role_title(sim)
-                            sim.sim_info.routine = False
+                    if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0 or \
+                            now.hour() < sim.sim_info.routine_info.on_duty and not sim.sim_info.routine_info.on_duty == 0:
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
+                                sim.sim_info.routine_info.off_duty, now.hour()))
+                        clear_jobs(sim.sim_info)
+                        assign_role_title(sim)
+                        sim.sim_info.routine = False
 
-                        if not selected_sim_autonomy_enabled and sim == services.get_active_sim():
-                            set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
-                        elif sim.sim_info.is_selectable and autonomy_setting != AutonomyState.FULL:
-                            set_autonomy(sim.sim_info, autonomy_setting)
-                        elif sim.sim_info.routine:
-                            set_autonomy(sim.sim_info, sim.sim_info.routine_info.autonomy)
-                            if sc_Vars.career_function:
-                                sc_Vars.career_function.routine_handler(sim.sim_info)
-                        return
-                    elif sim.sim_info.routine and sc_Vars.DISABLE_ROUTINE:
-                        remove_sim(sim)
-                        return
-                    elif sim == services.get_active_sim():
-                        if not selected_sim_autonomy_enabled:
-                            set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
-                        else:
-                            set_autonomy(sim.sim_info, AutonomyState.FULL)
-                        return
-                    elif sim.sim_info.is_selectable:
+                    if not selected_sim_autonomy_enabled and sim == services.get_active_sim():
+                        set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
+                    elif sim.sim_info.is_selectable and autonomy_setting != AutonomyState.FULL:
                         set_autonomy(sim.sim_info, autonomy_setting)
-                        return
-                    elif is_sim_in_group(sim):
-                        set_autonomy(sim.sim_info, AutonomyState.FULL)
-                        return
-                    elif sim.sim_info in services.active_household():
-                        set_autonomy(sim.sim_info, AutonomyState.FULL)
-                        return
-                    elif sim.sim_info.household.home_zone_id == zone.id:
-                        set_autonomy(sim.sim_info, AutonomyState.FULL)
-                        return
-                    elif has_allowed_role(sim):
-                        set_autonomy(sim.sim_info, AutonomyState.FULL)
-                        return
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Filtered".format(sim.first_name))
+                    elif sim.sim_info.routine:
+                        set_autonomy(sim.sim_info, sim.sim_info.routine_info.autonomy)
+                        if sc_Vars.career_function:
+                            sc_Vars.career_function.routine_handler(sim.sim_info)
+                    return
+                elif sim.sim_info.routine and sc_Vars.DISABLE_ROUTINE:
                     remove_sim(sim)
+                    return
+                elif sim == services.get_active_sim():
+                    if not selected_sim_autonomy_enabled:
+                        set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
+                    else:
+                        set_autonomy(sim.sim_info, AutonomyState.FULL)
+                    return
+                elif sim.sim_info.is_selectable:
+                    set_autonomy(sim.sim_info, autonomy_setting)
+                    return
+                elif is_sim_in_group(sim):
+                    set_autonomy(sim.sim_info, AutonomyState.FULL)
+                    return
+                elif sim.sim_info in services.active_household():
+                    set_autonomy(sim.sim_info, AutonomyState.FULL)
+                    return
+                elif sim.sim_info.household.home_zone_id == zone.id:
+                    set_autonomy(sim.sim_info, AutonomyState.FULL)
+                    return
+                elif has_allowed_role(sim):
+                    set_autonomy(sim.sim_info, AutonomyState.FULL)
+                    return
+                if sc_Vars.DEBUG:
+                    debugger("Sim: {} - Filtered".format(sim.first_name))
+                remove_sim(sim)
+            elif sc_Vars.DISABLE_MOD:
+                if not pause_routine(sc_Vars.update_speed):
+                    if sc_Vars.DEBUG:
+                        sims = list(services.sim_info_manager().instanced_sims_gen())
+                        if ScriptCoreMain.index >= len(sims):
+                            ScriptCoreMain.index = 0
+                        try:
+                            sim = sims[ScriptCoreMain.index]
+                        except:
+                            sim = sims[0]
+                            pass
+                        debugger("Mod disabled!\nSim: {} - index: {} autonomy_setting: {}".format(sim.first_name, ScriptCoreMain.index, sim.autonomy), 0, True)
+                        ScriptCoreMain.index += 1
 
         except BaseException as e:
             error_trap_console(e)

@@ -153,6 +153,10 @@ class sc_Autonomy:
             if not sc_Autonomy.run_routine_filter(self, interaction):
                 return result
 
+        if sc_Vars.DEBUG_AUTONOMY and not interaction.is_user_directed:
+            action = interaction.__class__.__name__.lower()
+            debugger("Sim: {} {} - Append: {}".format(interaction.sim.first_name, interaction.sim.last_name, action), 0, True)
+
         log_interaction('Enqueue', interaction)
         result = self._append(interaction)
         return result
@@ -166,6 +170,10 @@ class sc_Autonomy:
 
             if not sc_Autonomy.run_routine_filter(self, interaction):
                 return result
+
+        if sc_Vars.DEBUG_AUTONOMY and not interaction.is_user_directed:
+            action = interaction.__class__.__name__.lower()
+            debugger("Sim: {} {} - Insert Next: {}".format(interaction.sim.first_name, interaction.sim.last_name, action), 0, True)
 
         log_interaction('Enqueue_Next', interaction)
         result = (self._insert_next)(interaction, **kwargs)
