@@ -126,7 +126,6 @@ def sc_prepare_gen_inject(original, self, *args, **kwargs):
     result = original(self, *args, **kwargs)
     return result
 
-
 @safe_inject(Zone, 'on_loading_screen_animation_finished')
 def sc_run_zone_load_module(original, self, *args, **kwargs):
     result = original(self, *args, **kwargs)
