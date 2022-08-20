@@ -83,6 +83,7 @@ class sc_Vars:
     DISABLE_ROUTINE = False
     DISABLE_SIMULATION = False
     DISABLE_ROLE_TITLES = False
+    DISABLE_CAREER_TITLES = False
     MAX_SIMS = 20
     MAX_ZONE_SITUATION_SIMS = 3
     chance_switch_action = 10.0

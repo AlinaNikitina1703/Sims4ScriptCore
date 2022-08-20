@@ -144,6 +144,7 @@ class ScriptCoreMain:
         sc_Vars.DISABLE_CULLING = config.getboolean("control", "disable_culling")
         sc_Vars.DISABLE_SIMULATION = config.getboolean("control", "disable_simulation")
         sc_Vars.DISABLE_ROLE_TITLES = config.getboolean("control", "disable_role_titles")
+        sc_Vars.DISABLE_CAREER_TITLES = config.getboolean("control", "disable_career_titles")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
@@ -293,6 +294,11 @@ class ScriptCoreMain:
                 if filters:
                     action_unclogger(sim, filters)
                 update_lights(False, 0.0)
+
+                # Fix for disable career titles
+                if sc_Vars.DISABLE_CAREER_TITLES:
+                    if sim.sim_info.routine or sim._at_work:
+                        assign_title(sim.sim_info, "")
 
                 if not sc_Vars.DISABLE_ROUTINE and [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
                     ScriptCoreMain.index = 0
