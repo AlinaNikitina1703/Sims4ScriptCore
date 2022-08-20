@@ -223,8 +223,9 @@ class ScriptCoreMain:
             assign_title(sim_info, "")
 
     def init(self):
-        sc_club = C_ZoneClubs()
         venue = get_venue()
+        zone = services.current_zone()
+        sc_club = C_ZoneClubs()
         try:
             if not sc_Vars._config_loaded and not sc_Vars._running:
                 if sc_Vars.DEBUG:
@@ -255,7 +256,8 @@ class ScriptCoreMain:
 
                     #Update fix to lock doors to sims not part of household
                     if "residential" in venue or "rentable" in venue:
-                        if not sim.sim_info.is_selectable:
+                        if not sim.sim_info.is_selectable or sim.sim_info in services.active_household() or \
+                                sim.sim_info.household.home_zone_id == zone.id:
                             for portal in doors:
                                 if hasattr(portal, "add_disallowed_sim"):
                                     portal.add_disallowed_sim(sim, portal)
@@ -275,7 +277,6 @@ class ScriptCoreMain:
                             set_proper_sim_outfit(sim, False)
                         sc_SpawnHandler.spawned_sims.remove(sim_info)
 
-                zone = services.current_zone()
                 now = services.time_service().sim_now
                 sims = list(services.sim_info_manager().instanced_sims_gen())
                 if ScriptCoreMain.index >= len(sims):
