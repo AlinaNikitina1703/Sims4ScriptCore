@@ -249,9 +249,10 @@ class ScriptCoreMain:
                 doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
                 for sim in services.sim_info_manager().instanced_sims_gen():
                     if sim.sim_info.is_selectable:
-                        if client.active_sim.sim_info.is_in_travel_group():
-                            travel_group = get_sim_travel_group(client.active_sim, False)
-                            sim.sim_info.assign_to_travel_group(travel_group)
+                        if client.active_sim:
+                            if client.active_sim.sim_info.is_in_travel_group() and client.active_sim.sim_info in services.active_household():
+                                travel_group = get_sim_travel_group(client.active_sim, False)
+                                sim.sim_info.assign_to_travel_group(travel_group)
                         make_sim_at_work(sim.sim_info)
                         activate_sim_icon(sim.sim_info)
 
@@ -287,6 +288,9 @@ class ScriptCoreMain:
                 except:
                     sim = sims[0]
                     pass
+
+                if not sim:
+                    return
 
                 remove_annoying_buffs(sim.sim_info)
 
