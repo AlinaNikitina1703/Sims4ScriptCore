@@ -12,7 +12,8 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
     pause_routine, debugger, action_unclogger, get_filters, update_lights, \
     add_career_to_sim, remove_sim, set_proper_sim_outfit, remove_all_careers, \
     remove_annoying_buffs, has_role, \
-    assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, sleep_routine
+    assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, sleep_routine, \
+    get_sim_travel_group, make_sim_at_work, activate_sim_icon
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn_handler import sc_SpawnHandler
@@ -236,7 +237,17 @@ class ScriptCoreMain:
                 else:
                     sims4.commands.client_cheat("fps off", client.id)
                 update_lights(True, 0.0)
+
+                for sim in services.sim_info_manager().instanced_sims_gen():
+                    if sim.sim_info.is_selectable:
+                        if client.active_sim.sim_info.is_in_travel_group():
+                            travel_group = get_sim_travel_group(client.active_sim, False)
+                            sim.sim_info.assign_to_travel_group(travel_group)
+                        make_sim_at_work(sim.sim_info)
+                        activate_sim_icon(sim.sim_info)
+
                 sc_club.club_setup_on_load(services.get_club_service())
+
                 sc_Vars._config_loaded = True
 
             elif sc_Vars._running and not sc_Vars.DISABLE_MOD:
