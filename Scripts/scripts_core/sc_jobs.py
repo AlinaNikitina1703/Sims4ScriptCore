@@ -811,6 +811,16 @@ def get_career_level(sim_info):
     except BaseException as e:
         error_trap(e)
 
+
+def get_sim_travel_group(sim_info, is_target):
+    travel_group = sim_info.travel_group
+    if travel_group is None:
+        if not is_target:
+            travel_group = sim_info.household.get_travel_group()
+    if travel_group is not None:
+        return travel_group
+    return None
+
 def assign_role_title(sim):
     title_filter = ["lt:", "rolestate", "island", "situations", "state", "hospital", "generic", "background", "open streets", "master", "fanstan",
                     "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",

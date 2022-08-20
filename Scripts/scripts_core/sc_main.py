@@ -136,6 +136,7 @@ class ScriptCoreMain:
         sc_Vars.SELECTED_SIMS_AUTONOMY = config.getint("control", "selected_sims_autonomy")
         sc_Vars.MAX_SIMS = config.getint("control", "max_sims")
         sc_Vars.DEBUG = config.getboolean("control", "debug")
+        sc_Vars.DEBUG_AUTONOMY = config.getboolean("control", "debug_autonomy")
         sc_Vars.DISABLE_MOD = config.getboolean("control", "disable_mod")
         sc_Vars.DISABLE_ROUTINE = config.getboolean("control", "disable_routine")
         sc_Vars.DISABLE_SPAWNS = config.getboolean("control", "disable_spawns")

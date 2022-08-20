@@ -28,7 +28,8 @@ from scripts_core.sc_jobs import get_tag_name, get_sim_info, advance_game_time_a
     add_career_to_sim, get_career_name_from_string, get_current_temperature, push_sim_function, distance_to_by_room, \
     assign_role, add_to_inventory, add_to_inventory_by_id, go_here_routine, make_sim_at_work, end_career_session, \
     debugger, clear_sim_instance, assign_role_title, assign_title, remove_sim_from_rabbithole, activate_sim_icon, \
-    get_career_name, get_career_level, get_object_info, get_trait_name_from_string, add_trait_by_name
+    get_career_name, get_career_level, get_object_info, get_trait_name_from_string, add_trait_by_name, \
+    get_sim_travel_group
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_object_menu import ObjectMenuNoFile
 from scripts_core.sc_main import ScriptCoreMain
@@ -373,6 +374,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             for interaction in sim.get_all_running_and_queued_interactions():
                                 if interaction is not None:
                                     interaction.cancel(FinishingType.RESET, 'Stop')
+                            client = services.client_manager().get_first_client()
+                            if client.active_sim.sim_info.is_in_travel_group():
+                                travel_group = get_sim_travel_group(client.active_sim, False)
+                                sim.sim_info.remove_from_travel_group(travel_group)
                             make_sim_unselectable(sim.sim_info)
                             sim.destroy()
                         services.sim_info_manager().remove_permanently(sim_info)
@@ -501,6 +506,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 return
             try:
                 for sim in dialog.get_result_tags():
+                    client = services.client_manager().get_first_client()
+                    if client.active_sim.sim_info.is_in_travel_group():
+                        travel_group = get_sim_travel_group(client.active_sim, False)
+                        sim.sim_info.assign_to_travel_group(travel_group)
                     make_sim_at_work(sim.sim_info)
                     activate_sim_icon(sim.sim_info)
             except BaseException as e:
@@ -804,6 +813,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     else:
                         sim_info.set_zone_on_spawn()
                         self.sc_spawn.spawn_sim(sim_info, sim_location, level)
+                    client = services.client_manager().get_first_client()
+                    if client.active_sim.sim_info.is_in_travel_group():
+                        travel_group = get_sim_travel_group(client.active_sim, False)
+                        sim_info.assign_to_travel_group(travel_group)
                     make_sim_at_work(sim_info)
                     activate_sim_icon(sim_info)
 
@@ -835,6 +848,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             try:
                 for sim in dialog.get_result_tags():
                     sim_info = sim.sim_info
+                    client = services.client_manager().get_first_client()
+                    if client.active_sim.sim_info.is_in_travel_group():
+                        travel_group = get_sim_travel_group(client.active_sim, False)
+                        sim.sim_info.remove_from_travel_group(travel_group)
                     make_sim_unselectable(sim_info)
                     send_sim_home(sim)
             except BaseException as e:
@@ -949,6 +966,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
             elif self.target.is_sim:
                 client = services.client_manager().get_first_client()
+                if client.active_sim.sim_info.is_in_travel_group():
+                    travel_group = get_sim_travel_group(client.active_sim, False)
+                    self.target.sim_info.remove_from_travel_group(travel_group)
                 make_sim_unselectable(self.target.sim_info)
                 sim_info_home_zone_id = self.target.sim_info.household.home_zone_id
                 self.target.sim_info.inject_into_inactive_zone(sim_info_home_zone_id, skip_instanced_check=True)
@@ -967,7 +987,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     return
                 for sim in dialog.get_result_tags():
                     sim_info = sim.sim_info
-                    make_sim_selectable(sim_info)
+                    client = services.client_manager().get_first_client()
+                    if client.active_sim.sim_info.is_in_travel_group():
+                        travel_group = get_sim_travel_group(client.active_sim, False)
+                        sim_info.assign_to_travel_group(travel_group)
+                    make_sim_selectable(sim_info)1
 
             self.picker("Select Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
         except BaseException as e:
@@ -980,6 +1004,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     return
                 for sim in dialog.get_result_tags():
                     sim_info = sim.sim_info
+                    client = services.client_manager().get_first_client()
+                    if client.active_sim.sim_info.is_in_travel_group():
+                        travel_group = get_sim_travel_group(client.active_sim, False)
+                        sim_info.remove_from_travel_group(travel_group)
                     make_sim_unselectable(sim_info)
 
             self.picker("Unselect Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
@@ -992,6 +1020,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             active_sim = services.get_active_sim()
             for sim_info in client.selectable_sims:
                 if sim_info != active_sim.sim_info:
+                    client = services.client_manager().get_first_client()
+                    if client.active_sim.sim_info.is_in_travel_group():
+                        travel_group = get_sim_travel_group(client.active_sim, False)
+                        sim_info.remove_from_travel_group(travel_group)
                     make_sim_unselectable(sim_info)
         except BaseException as e:
             error_trap(e)
@@ -1000,6 +1032,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def select_everyone(self, timeline):
         try:
             for sim in services.sim_info_manager().instanced_sims_gen():
+                client = services.client_manager().get_first_client()
+                if client.active_sim.sim_info.is_in_travel_group():
+                    travel_group = get_sim_travel_group(client.active_sim, False)
+                    sim.sim_info.assign_to_travel_group(travel_group)
                 make_sim_selectable(sim.sim_info)
         except BaseException as e:
             error_trap(e)
