@@ -78,8 +78,11 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
             now = services.time_service().sim_now
             if hasattr(interaction.target, "definition"):
                 obj_id = interaction.target.definition.id
-            else:
+            elif hasattr(interaction.target, "id"):
                 obj_id = interaction.target.id
+            else:
+                obj_id = interaction.target.guid64
+
             failure = "\n{} {}\nRoute Fail at {}\nBlocking Object: {}\nAction: {}\nReason: {}\nRoute Fail Objects:\n{}".\
                 format(interaction.sim.first_name, interaction.sim.last_name, now, obj_id, str(interaction), failure_reason, route_obj_list)
             client = services.client_manager().get_first_client()

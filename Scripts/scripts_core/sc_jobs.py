@@ -812,7 +812,7 @@ def get_career_level(sim_info):
         error_trap(e)
 
 def assign_role_title(sim):
-    title_filter = ["rolestate", "state", "hospital", "generic", "background", "open streets", "master", "fanstan",
+    title_filter = ["lt:", "rolestate", "island", "situations", "state", "hospital", "generic", "background", "open streets", "master", "fanstan",
                     "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",
                     "npc", "situation", "dj", "packb"]
     role_name = None
@@ -825,6 +825,8 @@ def assign_role_title(sim):
         if "club_gathering" in role_name.lower():
             return
         role_name = role_name.replace("_", " ").lower()
+        role_name = role_name.replace('"', "")
+        role_name = " ".join(dict.fromkeys(role_name.split()))
         for title in title_filter:
             role_name = role_name.replace(title, "")
             role_name = role_name.replace("  ", " ").lower()

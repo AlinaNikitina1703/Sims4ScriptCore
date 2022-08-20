@@ -1,0 +1,842 @@
+oceanpoint(object_ocean)
+[Zone Info:] 378036983766527594
+[Object ID:] 844160509605578582
+[Object Definition ID:] 207279 (0x329af)
+[Object Scale:] 1
+[Object Locked:] None
+[Object Dirty:] 100
+[Object Room ID:] 0
+[Object Level:] 0
+[Object Opacity:] None
+[Object Tags:] Func_Insane_TalkToObjects
+[Object Location (Title):] None [ID:] None
+[Object Slot Hash:] 0
+[Object POS:] X:261.0846862792969 Y:150.0 Z:266.7052917480469
+[Object ROT:] X:0.0 Y:0.0 Z:0.0 W:1.0
+[Type:] class sims4.tuning.instances.object_Ocean
+[Commodities:]
+
+
+[MORE]
+
+(AffordanceTuning): None
+(AnimalHome): None
+(AnimalObject): None
+(AnimalPreference): None
+(Animation): None
+(AnimationOverlay): None
+(Audio): None
+(Autonomy): None
+(AutonomyMarker): None
+(Awareness): None
+(Buffs): None
+(Canvas): None
+(Carryable): None
+(Carrying): None
+(CensorGrid): None
+(CollectableComponent): None
+(ConsumableComponent): None
+(Crafting): None
+(CraftingStationComponent): None
+(Display): None
+(EDGE_PORTAL_BACKSET): Vector3(-0.000000, -0.000000, -0.250000)
+(EDGE_TEST_POINT_OFFSET): Vector3(0.000000, 0.000000, 0.050000)
+(Effects): None
+(EnsembleComponent): None
+(EnvironmentScoreComponent): None
+(Example): None
+(FADE_DURATION): 1.2
+(FORWARD_OFFSET): 0.04
+(FishingLocation): None
+(FlowingPuddle): None
+(FocusComponent): None
+(Footprint): None
+(Game): None
+(Gameplay): None
+(Gardening): None
+(HOVERTIP_HANDLE): 0
+(INITIAL_DEPRECIATION): 0.2
+(INSTANCE_TUNABLES): _transient_tuning: TunableBool, additional_interaction_constraints: sims4.tuning.tunable.TunableList object at 0x00007FF47C4CC160, autonomy_modifiers: sims4.tuning.tunable.TunableList object at 0x00007FF47C4CC270, set_ico_as_carry_target: TunableBool, supported_posture_types: snippets.define_snippet.locals.SnippetVariant object at 0x00007FF47C4CA610, allow_preroll_multiple_targets: TunableBool, icon_override: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47C4CD830, flammable_area: fire.flammability.TunableFlammableAreaVariant object at 0x00007FF47C490730, _provided_mobile_posture: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47C4D6050, _remap_child_parenting: TunableBool, recycling_data: sims4.tuning.tunable.TunableTuple object at 0x00007FF47C4CC628, tests_to_bypass_utility_requirement: sims4.tuning.tunable.TunableMapping object at 0x00007FF47C490940
+(Idle): None
+(Inventory): None
+(InventoryItem): None
+(Lighting): None
+(LineOfSight): None
+(LinkedObject): None
+(LiveDrag): None
+(LiveDragTarget): None
+(Lock): None
+(LunarPhaseAware): None
+(MODULE_TUNABLES): INITIAL_DEPRECIATION: TunablePercent, FADE_DURATION: TunableSimMinute
+(Mannequin): None
+(ModularObject): None
+(Name): None
+(NarrativeAware): None
+(NewObject): None
+(ObjectAge): None
+(ObjectClaim): None
+(ObjectFashionMarketplace): None
+(ObjectMarketplace): None
+(ObjectRelationship): None
+(ObjectRouting): None
+(ObjectTeleportation): None
+(Ownable): None
+(OwningHousehold): None
+(ParentToSimHead): None
+(Portal): None
+(PortalAnimation): None
+(PortalLocking): None
+(Position): None
+(Privacy): None
+(ProceduralAnimation): None
+(Proximity): None
+(Render): None
+(Retail): None
+(Routing): None
+(ScholarshipLetter): None
+(SeasonAware): None
+(Sim): None
+(SituationScheduler): None
+(Slot): None
+(SpawnPoint): None
+(Spawner): None
+(StageMark): None
+(State): None
+(Statistic): None
+(Stereo): None
+(Stolen): None
+(StoredActorLocation): None
+(StoredAudio): None
+(StoredInfoComponent): None
+(StoredObjectInfo): None
+(StoredSimInfo): None
+(TimeOfDay): None
+(Tooltip): None
+(Topic): None
+(Utilities): None
+(VISIBLE_TO_AUTOMATION): True
+(Vehicle): None
+(Video): None
+(WaitingLine): None
+(WeatherAware): None
+(Whim): None
+(ZoneModifier): None
+(_NO_SLOTS): frozenset()
+(__class__): class sims4.tuning.instances.OceanPoint(object_Ocean)
+(__delattr__): bound method ProxyObject.__delattr__ of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__dict__): _proxied_obj: object_Ocean(0x0bb70f82cc740756), _pick_location: Location(Transform(Vector3(261.084686, 150.000000, 266.705292), Quaternion(0.000000, 0.000000, 0.000000, 1.000000)), 53F0EA2415D2E6A,0,Pool, joint_name_or_hashNone, parentNone, slot_hash0)
+(__dir__): built-in method __dir__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__doc__): This is a class for proxying instances of class sims4.tuning.instances.object_Ocean.
+(__eq__): method-wrapper __eq__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__format__): built-in method __format__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__ge__): method-wrapper __ge__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__getattr__): bound method ProxyObject.__getattr__ of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__getattribute__): method-wrapper __getattribute__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__gt__): method-wrapper __gt__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__hash__): method-wrapper __hash__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__init__): bound method OceanPoint.__init__ of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__init_subclass__): built-in method __init_subclass__ of HashedTunedInstanceMetaclass object at 0x00007FF4B0DFB290
+(__le__): method-wrapper __le__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__lt__): method-wrapper __lt__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__module__): sims4.tuning.instances
+(__ne__): method-wrapper __ne__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__new__): function OceanPoint.__new__ at 0x00007FF47E5B5710
+(__reduce__): built-in method __reduce__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__reduce_ex__): built-in method __reduce_ex__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__reload_context__): bound method restore_component_methods of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__reload_update_class__): function ScriptObject.__reload_update_class__ at 0x00007FF47E5444D0
+(__repr__): bound method _LocationPoint.__repr__ of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__setattr__): bound method ProxyObject.__setattr__ of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__sizeof__): built-in method __sizeof__ of OceanPoint(object_Ocean) object at 0x00007FF448C24E10
+(__str__): bound method _LocationPoint.__str__ of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(__subclasshook__): built-in method __subclasshook__ of HashedTunedInstanceMetaclass object at 0x00007FF4B0DFB290
+(__weakref__): None
+(_add_child): bound method ClientObjectMixin._add_child of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_add_to_world): bound method GameObject._add_to_world of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_anim_overrides): TunableAnimationObjectOverridesWrapper._factory
+(_anim_overrides_cls): AnimationOverrides(params_sims4_collections.frozendict(isOcean: True))
+(_anim_overrides_for_children): None
+(_anim_overrides_internal): AnimationOverrides(params_sims4_collections.frozendict(isParented: False, heightAboveFloor: low, objectPosition: Vector3Immutable(261.084686, 150.000000, 266.705292), objectOrientation: QuaternionImmutable(0.000000, 0.000000, 0.000000, 1.000000), hasChildren: False, isBobbing: True, isOcean: True))
+(_bind_get_locations_for_posture_internal): bound method ScriptObject._bind_get_locations_for_posture_internal of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_build_routing_surfaces): bound method SwimmingMixin._build_routing_surfaces of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_cache_and_return_get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_cache_and_return_get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_cached_get_locations_for_posture): bound method ScriptObject._cached_get_locations_for_posture of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_cached_get_position_and_routing_surface_for_posture): bound method ScriptObject._cached_get_position_and_routing_surface_for_posture of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_can_show_affordance): function ScriptObject._can_show_affordance at 0x00007FF47E5147A0
+(_children_recursive_fast_gen): bound method ClientObjectMixin._children_recursive_fast_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_clamp_opacity): bound method ClientObjectMixin._clamp_opacity of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_class_proxy_cache): class sims4.tuning.instances.object_Ocean: class sims4.tuning.instances.OceanPoint(object_Ocean)
+(_clean_lot_transforms_and_portals): bound method Ocean._clean_lot_transforms_and_portals of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_client_scale): 1
+(_combined_part_cache): None
+(_commodity_flags): (class sims4.tuning.instances.commodity_Motive_Thirst, class sims4.tuning.instances.commodity_Trait_Autonomy_LovesOutdoors, class sims4.tuning.instances.commodity_Trait_Autonomy_Lazy, class sims4.tuning.instances.Club_Encouragement_348763587606020176, class sims4.tuning.instances.commodity_Trait_Autonomy_Active, class sims4.tuning.instances.StaticCommodity_PlayWithToys, class sims4.tuning.instances.Club_Encouragement_1109872020712459629, class sims4.tuning.instances.motive_Energy, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.motive_PlantSim_Water, class sims4.tuning.instances.staticCommodity_Autonomy_Venue_Beach_WaterEnthusiast, class sims4.tuning.instances.staticCommodity_WaterScooterWalkby_Deploy)
+(_component_definitions): ()
+(_component_reload_hooks): live_drag_component: class objects.components.live_drag_component.LiveDragComponent, focus_component: class animation.focus.focus_component.FocusComponent, portal_component: class routing.portals.portal_component.PortalComponent, statistic_component: class objects.components.statistic_component.StatisticComponent
+(_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: TunablePortalComponentWrapper.PortalComponent, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: None, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(_components_native): ImmutableSlots(Slot: None, Video: None)
+(_create_all_transforms_and_portals_for_initial_transforms): bound method Ocean._create_all_transforms_and_portals_for_initial_transforms of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_create_raycast_context): bound method ScriptObject._create_raycast_context of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_create_routing_context): bound method HasFootprintComponent._create_routing_context of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_default_anim_params): _sims4_collections.frozendict()
+(_destroy_if_not_in_use): bound method GameObject._destroy_if_not_in_use of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_disable_child_footprint_and_shadow): False
+(_fill_ignored_objects_and_test_halfwalls): bound method ScriptObject._fill_ignored_objects_and_test_halfwalls of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_fixup_pool_surface): bound method GameObject._fixup_pool_surface of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_generic_ui_metadata_setters): hover_tip: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4AD790680, recipe_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4AD7908C0, recipe_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4AD7909E0, stolen_from_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A63A8050, crafter_sim_id: function SparseField.generic_setter.locals.generic_setter at 0x00007FF47CAA78C0, servings: function SparseField.generic_setter.locals.generic_setter at 0x00007FF427DB47A0, quality: function SparseField.generic_setter.locals.generic_setter at 0x00007FF41F583200, crafted_by_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A666FA70, quality_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF42E9DAD40, spoiled_time: function SparseField.generic_setter.locals.generic_setter at 0x00007FF47CA4E8C0, percentage_left: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4AD5E3A70, main_icon: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4AD5E3710, subtext: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A67F5C20, sub_icons: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A67F5B00, style_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A67F59E0, rarity_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF43119DF80, simoleon_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF430C835F0, season_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A97B09E0
+(_get_geometry_state_for_value): bound method ClientObjectMixin._get_geometry_state_for_value of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_get_locations_for_posture_internal_forward_wall_padding): bound method ScriptObject._get_locations_for_posture_internal_forward_wall_padding of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_get_locations_for_posture_internal_no_location): bound method ScriptObject._get_locations_for_posture_internal_no_location of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_get_locations_for_posture_internal_world_transform): bound method ScriptObject._get_locations_for_posture_internal_world_transform of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_get_lot_locator_transforms): bound method Ocean._get_lot_locator_transforms of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_get_next_ui_metadata_handle): uid.UniqueIdGenerator object at 0x00007FF48EED29E0
+(_get_or_add_statistic_component): bound method HasStatisticComponent._get_or_add_statistic_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_get_raw_normal): function Ocean._get_raw_normal at 0x00007FF479D3C7A0
+(_get_transform_1): function Ocean._get_transform_1 at 0x00007FF479D3C710
+(_get_transform_2): function Ocean._get_transform_2 at 0x00007FF479D3C8C0
+(_get_transform_3): function Ocean._get_transform_3 at 0x00007FF479D3C950
+(_get_tuning_suggestions): bound method ScriptObject._get_tuning_suggestions of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(_get_wall_object_positional_padding): bound method ScriptObject._get_wall_object_positional_padding of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_has_placement_flag): bound method BaseObject._has_placement_flag of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_has_reservation_tests): False
+(_icon_override_gen): bound method GameObject._icon_override_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_inside_status_change): bound method GameObject._inside_status_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_location_changed): function GameObject._location_changed at 0x00007FF47C4DAA70
+(_location_field_internal): OceanPoint(object_Ocean):(261.085, 150.000, 266.705)
+(_natural_ground_status_change): bound method GameObject._natural_ground_status_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_notify_buildbuy_of_location_change): bound method GameObject._notify_buildbuy_of_location_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_object_state_remaps): ()
+(_on_try_depreciation): bound method ClientObjectMixin._on_try_depreciation of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_on_visibility_changed): bound method ClientObjectMixin._on_visibility_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_part_data): ()
+(_part_data_map): _sims4_collections.frozendict()
+(_persistence): PersistenceType.NONE
+(_pick_location): Location(Transform(Vector3(261.084686, 150.000000, 266.705292), Quaternion(0.000000, 0.000000, 0.000000, 1.000000)), 53F0EA2415D2E6A,0,Pool, joint_name_or_hashNone, parentNone, slot_hash0)
+(_potential_behavior_affordances_gen): bound method ScriptObject._potential_behavior_affordances_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_preroll_commodity_flags): frozenset()
+(_preroll_super_affordances): ()
+(_provided_mobile_posture): ImmutableSlots(affordances: frozenset(class sims4.tuning.instances.dog_swim, class sims4.tuning.instances.sim-floating, class sims4.tuning.instances.sim-swim), placement_footprint_name_set: frozenset(2227755845))
+(_provided_mobile_posture_types): frozenset(class sims4.tuning.instances.posture_Swim, class sims4.tuning.instances.posture_floating)
+(_proxied_obj): object_Ocean:0x0bb70f82cc740756
+(_rebind_and_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_remap_child_parenting): False
+(_remove_child): bound method ClientObjectMixin._remove_child of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_remove_from_world): bound method GameObject._remove_from_world of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_reorient_lot_transforms): bound method Ocean._reorient_lot_transforms of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_resend_client_scale): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_resend_current_value): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_resend_household_owner_id): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_resend_parent_type_info): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_resend_video_playlist): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_reset_reference_arb): bound method ClientObjectMixin._reset_reference_arb of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_search_forwarded_interactions): bound method ScriptObject._search_forwarded_interactions of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_set_placed_inside): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(_set_placed_off_natural_ground): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(_set_placed_on_natural_ground): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(_set_placed_outside): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(_setup_used_utilities): bound method ScriptObject._setup_used_utilities of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(_should_invalidate_location): bound method GameObject._should_invalidate_location of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_specific_supported_posture_types): _sims4_collections.frozendict(class sims4.tuning.instances.posture_Swim: class sims4.tuning.instances.sim-swim)
+(_super_affordances): (class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.sim-swim, class sims4.tuning.instances.pool-FloatOnBack, class sims4.tuning.instances.terrain-Swimhere, class sims4.tuning.instances.terrain-Swim_andChatHere, class sims4.tuning.instances.terrain-Swim_Skinnydip, class sims4.tuning.instances.terrain-WaterScooter, class sims4.tuning.instances.waypoint_IslandCanoe_RideAround, class sims4.tuning.instances.waypoint_WaterScooter_RideAround, class sims4.tuning.instances.terrain-IslandCanoe, class sims4.tuning.instances.swimWith_Picker, class sims4.tuning.instances.AggregateSI_Vehicle_WaterScooter_RideHere, class sims4.tuning.instances.waterScooter_Picker_RideHere_Terrain_Auto, class sims4.tuning.instances.simpicker_SkinnyDip, class sims4.tuning.instances.Toddler_PlayInOcean, class sims4.tuning.instances.AggregateSI_Vehicle_IslandCanoe_RideHere, class sims4.tuning.instances.IslandCanoe_Picker_RideHere_Terrain_Auto, class sims4.tuning.instances.dolphin_NameOverride_Ocean, class sims4.tuning.instances.debug_Create_WaterVehicle, class sims4.tuning.instances.terrain-Swim_Skinnydip_Proper, class sims4.tuning.instances.pool-swim_Mermaid_Sleep, class sims4.tuning.instances.pool-swim_Mermaid_Sleep_Autonomous, class sims4.tuning.instances.pool-swim_Mermaid_Sunbathe, class sims4.tuning.instances.waterScooter_Dummy, class sims4.tuning.instances.dolphin_NameOverride_Merfolk_Ocean, class sims4.tuning.instances.deployWaterScooterInOcean, class sims4.tuning.instances.terrain-gohere_Toddler_PlayInOcean, class sims4.tuning.instances.terrain-Swimhere_Fire, class sims4.tuning.instances.terrain-SwimAround_Ocean, class sims4.tuning.instances.terrain-gohere_GatherWater_Ocean, class sims4.tuning.instances.Scumbumbo_MCCC_AutonomyScan, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_EnableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Climax, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToFavorites, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Next, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisableFloorFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeSexLocation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_EnableFloorFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToPlaylist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_story)
+(_supported_posture_families): frozenset(movingStand)
+(_surface_type_changed): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(_swapping_parents): bound method ClientObjectMixin._swapping_parents of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_transient_tuning): False
+(_tuning_loaded_callback): bound method ScriptObject._tuning_loaded_callback of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(_unproxied_attributes): _proxied_obj, _pick_location, __weakref__, __dict__, __module__
+(_update_location_callbacks): bound method GameObject._update_location_callbacks of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_update_persistence_group): bound method GameObject._update_persistence_group of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(_update_preroll_commodity_flags): bound method ScriptObject._update_preroll_commodity_flags of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(_use_locations_for_posture_for_connect_to_sim_test): False
+(_used_utilities): None
+(_verify_tuning_callback): bound method GameObject._verify_tuning_callback of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(_world_file_object_persists): False
+(add_auto_constraint): bound method GameObject.add_auto_constraint of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(add_awareness_scores): bound method ClientObjectMixin.add_awareness_scores of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_component): bound method BaseObject.add_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_dynamic_animation_overrides): bound method ScriptObject.add_dynamic_animation_overrides of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_dynamic_commodity_flags): bound method ScriptObject.add_dynamic_commodity_flags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_dynamic_component): bound method ScriptObject.add_dynamic_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_geometry_state_override): bound method ClientObjectMixin.add_geometry_state_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_interaction_reference): bound method BaseObject.add_interaction_reference of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_modifiers_for_interaction): bound method StatisticComponent.add_modifiers_for_interaction of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_modifiers_for_skill): bound method StatisticComponent.add_modifiers_for_skill of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_name_changed_callback): function NameComponent.lambda at 0x00007FF480DC6050
+(add_portal_data): bound method PortalComponent.add_portal_data of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_portal_events): bound method PortalComponent.add_portal_events of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_reservation_clobberer): bound method ReservationMixin.add_reservation_clobberer of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_reservation_handler): bound method ReservationMixin.add_reservation_handler of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_spawner_data): function SpawnerComponent.lambda at 0x00007FF47D77B170
+(add_statistic_component): bound method HasStatisticComponent.add_statistic_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_statistic_modifier): bound method StatisticComponent.add_statistic_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_to_collection_tracker): function CollectableComponent.lambda at 0x00007FF48EC03EF0
+(add_to_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47D8B8830
+(add_ui_metadata): bound method ClientObjectMixin.add_ui_metadata of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_voice_suffix_override): bound method ClientObjectMixin.add_voice_suffix_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(add_work_lock): bound method GameObject.add_work_lock of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(additional_interaction_constraints): ()
+(all_valid_slot_types): frozenset()
+(allow_aop_forward): bound method ScriptObject.allow_aop_forward of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(allow_preroll_multiple_targets): False
+(ancestry_gen): bound method ScriptObject.ancestry_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(anim_boundary_conditions_check_carry): False
+(animation_actor): OceanPoint(object_Ocean):(261.085, 150.000, 266.705)
+(aop_forward_data): ImmutableSlots(child_obj_tags: frozenset(), should_search_forwarded_child_aop: False, should_search_forwarded_parent_aop: False, should_search_forwarded_sim_aop: False)
+(append_audio_effect): bound method ClientObjectMixin.append_audio_effect of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(append_tags): bound method GameObject.append_tags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(apply_children_component_anim_overrides): False
+(apply_definition): bound method ClientObjectMixin.apply_definition of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(attempt_to_remap_parent): bound method ClientObjectMixin.attempt_to_remap_parent of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(attributes): None
+(audio_effects): None
+(autonomy_modifiers): ()
+(awareness_scores): None
+(baby_cloth): None
+(base_value): 0
+(blocking_balloon_overrides): None
+(bone_name_hash): 0
+(build_buy_lockout): False
+(build_buy_use_flags): 0
+(c_api_get_portal_duration): bound method PortalComponent.c_api_get_portal_duration of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(camera_view): None
+(can_add_component): bound method ComponentContainer.can_add_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(can_go_in_inventory_type): function InventoryItemComponent.lambda at 0x00007FF47E1385F0
+(can_reset): True
+(can_trigger_teleport_style): function BuffComponent.lambda at 0x00007FF47BAE4EF0
+(cancel_interactions_running_on_object): bound method BaseObject.cancel_interactions_running_on_object of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(catalog_description): 0
+(catalog_name): 0
+(catalog_value): 0
+(ceiling_placement): False
+(censor_state): None
+(check_affordance_for_suppression): bound method StatisticComponent.check_affordance_for_suppression of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(check_line_of_sight): bound method _LocationPoint.check_line_of_sight of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(child_provided_aops_gen): function SlotComponent.lambda at 0x00007FF47D854950
+(children): ()
+(children_recursive_gen): bound method ClientObjectMixin.children_recursive_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(claim): bound method ScriptObject.claim of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(clear_check_line_of_sight_cache): built-in method clear of collections.OrderedDict object at 0x00007FF47E54AC20
+(clear_commodity_flags): bound method ScriptObject.clear_commodity_flags of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(clear_default_children): bound method ClientObjectMixin.clear_default_children of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(clear_parent): bound method ClientObjectMixin.clear_parent of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(clear_portal_cost_override): bound method PortalComponent.clear_portal_cost_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(clear_raycast_context): bound method HasFootprintComponent.clear_raycast_context of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(clear_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF480781710
+(client_objects_gen): generator object ProxyObject.client_objects_gen at 0x00007FF459186050
+(clone): bound method ScriptObject.clone of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(commodity_flags): frozenset(class sims4.tuning.instances.commodity_Motive_Thirst, class sims4.tuning.instances.commodity_Trait_Autonomy_Lazy, class sims4.tuning.instances.commodity_Trait_Autonomy_LovesOutdoors, class sims4.tuning.instances.Club_Encouragement_348763587606020176, class sims4.tuning.instances.commodity_Trait_Autonomy_Active, class sims4.tuning.instances.Club_Encouragement_1109872020712459629, class sims4.tuning.instances.motive_Energy, class sims4.tuning.instances.StaticCommodity_PlayWithToys, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.motive_PlantSim_Water, class sims4.tuning.instances.staticCommodity_Autonomy_Venue_Beach_WaterEnthusiast, class sims4.tuning.instances.staticCommodity_WaterScooterWalkby_Deploy)
+(commodity_tracker): statistics.commodity_tracker.CommodityTracker object at 0x00007FF420CC3838
+(component_anim_overrides_gen): bound method ScriptObject.component_anim_overrides_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(component_definitions): (class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.live_drag_component.LiveDragComponent, class routing.portals.portal_component.PortalComponent)
+(component_interactable_gen): bound method ScriptObject.component_interactable_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(component_potential_interactions_gen): bound method ScriptObject.component_potential_interactions_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(component_reset): bound method BaseObject.component_reset of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(component_super_affordances_gen): bound method ScriptObject.component_super_affordances_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(component_zone_modifiers_gen): bound method ScriptObject.component_zone_modifiers_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(components): dict_values(LiveDragComponent(object_Ocean:0x0bb70f82cc740756), FocusComponent(object_Ocean:0x0bb70f82cc740756), PortalComponent(object_Ocean:0x0bb70f82cc740756), StatisticComponent(object_Ocean:0x0bb70f82cc740756))
+(components_sorted_gen): bound method ComponentContainer.components_sorted_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(connectivity_handles): None
+(create_auto_ensembles): function EnsembleComponent.lambda at 0x00007FF47CD0C440
+(create_for_position_and_orientation): bound method _LocationPoint.create_for_position_and_orientation of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(create_parent_location): bound method ClientObjectMixin.create_parent_location of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(create_statistic_tracker): bound method StatisticComponent.create_statistic_tracker of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(curfew): None
+(current_value): 0
+(deco_slot_size): 0
+(deco_slot_types): frozenset()
+(delist): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4817C0F80
+(depreciated): True
+(depreciated_value): 0.0
+(destroy): bound method ScriptObject.destroy of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(disable_los_reference_point): False
+(disable_slot): function SlotComponent.lambda at 0x00007FF47D84EDD0
+(disable_slots): function SlotComponent.lambda at 0x00007FF47D84EC20
+(disallow_social_group_placement): False
+(display_number): None
+(enable_slot): function SlotComponent.lambda at 0x00007FF47D84EEF0
+(enable_slots): function SlotComponent.lambda at 0x00007FF47D84ECB0
+(enter_distress): bound method StatisticComponent.enter_distress of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(environment_score_trait_modifiers): _sims4_collections.frozendict()
+(exit_distress): bound method StatisticComponent.exit_distress of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(fade_in): bound method ClientObjectMixin.fade_in of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(fade_opacity): bound method ClientObjectMixin.fade_opacity of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(fade_out): bound method ClientObjectMixin.fade_out of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(favorite_prop_animation_overrides): FavoritePropAnimationOverrides(overrides_by_prop_name_sims4_collections.frozendict())
+(finalize): bound method GameObject.finalize of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(finalize_statistics): bound method HasStatisticComponent.finalize_statistics of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(fire_retardant): False
+(flammable): False
+(flammable_area): fire.flammability.DefaultObjectRadialFlammability object at 0x00007FF47C4CE2D0
+(footprint): None
+(footprint_polygon): CompoundPolygon: Polygon261.084686,266.705292 FlagsCCWConvex
+(force_multi_surface_constraints): False
+(force_spawn_object): function SpawnerComponent.lambda at 0x00007FF47D775B00
+(forward): Vector3(0.000000, 0.000000, 1.000000)
+(forward_direction_for_picking): Vector3(0.000000, 0.000000, 1.000000)
+(forward_offset_on_connectivity_check): None
+(forwarded_pick_targets): frozenset()
+(geometry_state): None
+(get_active_teleport_style): function BuffComponent.lambda at 0x00007FF47BAE4E60
+(get_added_monetary_value): bound method StatisticComponent.get_added_monetary_value of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_affordance_basic_content): function AffordanceTuningComponent.lambda at 0x00007FF47E0B5290
+(get_affordance_basic_extras): function AffordanceTuningComponent.lambda at 0x00007FF47E0B53B0
+(get_affordance_false_ads): function AffordanceTuningComponent.lambda at 0x00007FF47E0B5050
+(get_affordance_loot_list): function AffordanceTuningComponent.lambda at 0x00007FF47E07DDD0
+(get_affordance_outcome): function AffordanceTuningComponent.lambda at 0x00007FF47E0B5170
+(get_affordance_skill_loot_data): function AffordanceTuningComponent.lambda at 0x00007FF47E07DEF0
+(get_affordance_tests): function AffordanceTuningComponent.lambda at 0x00007FF47E07DD40
+(get_all_buffs_with_tag): function BuffComponent.lambda at 0x00007FF47BAE2830
+(get_all_children_gen): bound method ClientObjectMixin.get_all_children_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_all_stats_gen): bound method StatisticComponent.get_all_stats_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_allowed_hands): functools.partial(function ScriptObject.get_allowed_hands at 0x00007FF47E544CB0, class sims4.tuning.instances.OceanPoint(object_Ocean), OceanPoint(object_Ocean)((261.085, 150.000, 266.705)))
+(get_anim_overrides): bound method BaseObject.get_anim_overrides of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_attribute_save_data): bound method ScriptObject.get_attribute_save_data of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_bounding_box): bound method Ocean.get_bounding_box of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_canvas_texture_effect): function CanvasComponent.lambda at 0x00007FF4804584D0
+(get_canvas_texture_id): function CanvasComponent.lambda at 0x00007FF4804583B0
+(get_class_for_obj_state): bound method BaseObject.get_class_for_obj_state of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(get_closest_parts_to_position): bound method ScriptObject.get_closest_parts_to_position of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_collectible_quality): function CollectableComponent.lambda at 0x00007FF48EBF9200
+(get_collectible_slot): function CollectableComponent.lambda at 0x00007FF48EC03F80
+(get_compatible_parts): bound method ScriptObject.get_compatible_parts of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_component): bound method ComponentContainer.get_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47E450170
+(get_craftable_property): function CraftingComponent.lambda at 0x00007FF47B4F1440
+(get_create_after_objs): bound method ClientObjectMixin.get_create_after_objs of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_create_op): bound method ClientObjectMixin.get_create_op of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_created_constraint): bound method GameObject.get_created_constraint of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_delete_op): bound method ClientObjectMixin.get_delete_op of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_disabled_slot_hashes): function SlotComponent.lambda at 0x00007FF47D854050
+(get_distance_to_object_based_multiplier): bound method StatisticComponent.get_distance_to_object_based_multiplier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_dynamic_portal_locations_gen): bound method PortalComponent.get_dynamic_portal_locations_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_dynamic_tags): bound method GameObject.get_dynamic_tags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_edge_constraint): bound method Ocean.get_edge_constraint of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_edges): bound method GameObject.get_edges of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_entry_clothing_change): bound method PortalComponent.get_entry_clothing_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_environment_score): function EnvironmentScoreComponent.lambda at 0x00007FF47D278290
+(get_exit_clothing_change): bound method PortalComponent.get_exit_clothing_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_focus_bone): bound method FocusComponent.get_focus_bone of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_fooptrint_polygon_bounds): bound method HasFootprintComponent.get_fooptrint_polygon_bounds of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_game_animation_definition): function CollectableComponent.lambda at 0x00007FF48EBF90E0
+(get_gsi_portal_items): bound method GameObject.get_gsi_portal_items of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_gsi_portal_items_list): bound method PortalComponent.get_gsi_portal_items_list of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_household_owner_id): bound method GameObject.get_household_owner_id of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_icon_info_data): bound method GameObject.get_icon_info_data of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_icon_override): bound method GameObject.get_icon_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_ignored_objects_for_line_of_sight): bound method ScriptObject.get_ignored_objects_for_line_of_sight of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_interaction_score_modifier): bound method StatisticComponent.get_interaction_score_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_inventory): function InventoryItemComponent.lambda at 0x00007FF47E138560
+(get_inventory_plex_id): function InventoryItemComponent.lambda at 0x00007FF47E1394D0
+(get_inventory_visual_state): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4817C6170
+(get_joint_transform_for_joint): bound method GameObject.get_joint_transform_for_joint of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_lightning_strike_multiplier): function WeatherAwareComponent.lambda at 0x00007FF47D630680
+(get_linked_objects_gen): function LinkedObjectComponent.lambda at 0x00007FF47E145170
+(get_locked_reason_list): bound method StatisticComponent.get_locked_reason_list of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_locking_component): function BaseLockingComponent.lambda at 0x00007FF47E159B90
+(get_lost_and_found_registration_info): function InventoryItemComponent.lambda at 0x00007FF47E138C20
+(get_mapped_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47E4503B0
+(get_nearest_constraint_start_location): bound method Ocean.get_nearest_constraint_start_location of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_nearest_posture_change): bound method PortalComponent.get_nearest_posture_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_notebook_information): function CraftingComponent.lambda at 0x00007FF47B4F15F0
+(get_object_property): bound method GameObject.get_object_property of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_object_rarity_string): function StateComponent.lambda at 0x00007FF480CB0440
+(get_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47E44FE60
+(get_off_lot_autonomy_rule): bound method StatisticComponent.get_off_lot_autonomy_rule of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_on_entry_outfit): bound method PortalComponent.get_on_entry_outfit of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_on_exit_outfit): bound method PortalComponent.get_on_exit_outfit of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_or_create_routing_context): bound method _LocationPoint.get_or_create_routing_context of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_outside_object_score_modification): bound method StatisticComponent.get_outside_object_score_modification of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_param_overrides): bound method BaseObject.get_param_overrides of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_parent): bound method ClientObjectMixin.get_parent of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_parenting_root): bound method ClientObjectMixin.get_parenting_root of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_part_by_index): bound method BaseObject.get_part_by_index of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_part_by_part_group_index): bound method BaseObject.get_part_by_part_group_index of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_part_data): bound method ScriptObject.get_part_data of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(get_parts_for_posture): bound method ScriptObject.get_parts_for_posture of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_polygon_from_footprint_name_hashes): bound method HasFootprintComponent.get_polygon_from_footprint_name_hashes of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_asm_params): bound method PortalComponent.get_portal_asm_params of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_by_id): bound method PortalComponent.get_portal_by_id of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_cost): bound method PortalComponent.get_portal_cost of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_cost_override): bound method PortalComponent.get_portal_cost_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_data): bound method PortalComponent.get_portal_data of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_disallowed_tags): bound method PortalComponent.get_portal_disallowed_tags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_instances): bound method PortalComponent.get_portal_instances of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_key_make_for_carry): function CarryableComponent.lambda at 0x00007FF47D8A9B00
+(get_portal_owner): bound method PortalComponent.get_portal_owner of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_pairs): bound method PortalComponent.get_portal_pairs of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_portal_type): bound method PortalComponent.get_portal_type of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_posture_aops_gen): bound method ScriptObject.get_posture_aops_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_posture_change): bound method PortalComponent.get_posture_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_provided_slot_types): function SlotComponent.lambda at 0x00007FF47D854680
+(get_raycast_root): bound method HasFootprintComponent.get_raycast_root of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_relationship_score_multiplier_for_buff_on_target): bound method StatisticComponent.get_relationship_score_multiplier_for_buff_on_target of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_reservation_handler): bound method ReservationMixin.get_reservation_handler of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_reservation_handlers): bound method ReservationMixin.get_reservation_handlers of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_routing_location_for_transform): bound method ClientObjectMixin.get_routing_location_for_transform of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_running_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47E44F950
+(get_runtime_slots_gen): function SlotComponent.lambda at 0x00007FF47D854710
+(get_save_lot_coords_and_level): bound method GameObject.get_save_lot_coords_and_level of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_score_multiplier): bound method StatisticComponent.get_score_multiplier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_sim_owner_id): function OwnableComponent.lambda at 0x00007FF48088CCB0
+(get_single_portal_locations): bound method PortalComponent.get_single_portal_locations of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_sit_posture_transition_penalties): bound method StatisticComponent.get_sit_posture_transition_penalties of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_situation_type_social_score_multiplier): bound method StatisticComponent.get_situation_type_social_score_multiplier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47E44FEF0
+(get_stack_sort_order): function InventoryItemComponent.lambda at 0x00007FF47E138A70
+(get_stat_instance): bound method StatisticComponent.get_stat_instance of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_stat_multiplier): bound method StatisticComponent.get_stat_multiplier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_stat_value): bound method StatisticComponent.get_stat_value of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_state_strings): function TooltipComponent.lambda at 0x00007FF4807E98C0
+(get_statistic_modifier): bound method StatisticComponent.get_statistic_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_statistic_modifiers_gen): bound method StatisticComponent.get_statistic_modifiers_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF480781680
+(get_stored_sim_id): function StoredSimInfoComponent.lambda at 0x00007FF4807989E0
+(get_stored_sim_info): function ScholarshipLetterComponent.lambda at 0x00007FF47D619EF0
+(get_stored_sim_info_or_name_data): function StoredSimInfoComponent.lambda at 0x00007FF480798B90
+(get_stored_sim_name_data): function StoredSimInfoComponent.lambda at 0x00007FF480798CB0
+(get_surface_override_for_posture): bound method GameObject.get_surface_override_for_posture of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_tags): bound method GameObject.get_tags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_target_surface): bound method PortalComponent.get_target_surface of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_teleport_cost): function BuffComponent.lambda at 0x00007FF47BAE7050
+(get_template_content_overrides): function CraftingComponent.lambda at 0x00007FF47B4EB830
+(get_tested_relationship_score_multipliers): bound method StatisticComponent.get_tested_relationship_score_multipliers of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_tooltip_field): function TooltipComponent.lambda at 0x00007FF4807E9C20
+(get_tracker): bound method HasStatisticComponent.get_tracker of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_ui_metadata): bound method ClientObjectMixin.get_ui_metadata of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_unlocked_reason_list): bound method StatisticComponent.get_unlocked_reason_list of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_use_list_handler): bound method ReservationMixin.get_use_list_handler of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_users): bound method _LocationPoint.get_users of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(get_waiting_line_autonomy_multiplier): function WaitingLineComponent.lambda at 0x00007FF479C65EF0
+(give_weather_loot): function WeatherAwareComponent.lambda at 0x00007FF47D6305F0
+(guid): 165116407
+(guid64): 197984
+(has_any_tag): bound method GameObject.has_any_tag of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_component): bound method ComponentContainer.has_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_custom_description): function NameComponent.lambda at 0x00007FF480DC1C20
+(has_custom_name): function NameComponent.lambda at 0x00007FF480DC1B90
+(has_hidden_flags): bound method GameObject.has_hidden_flags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_id): True
+(has_lock_data): function BaseLockingComponent.lambda at 0x00007FF47E159EF0
+(has_locking_component): function BaseLockingComponent.lambda at 0x00007FF47E159B00
+(has_portals): bound method PortalComponent.has_portals of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_posture_portals): bound method PortalComponent.has_posture_portals of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_servings_statistic): function CraftingComponent.lambda at 0x00007FF47B4F19E0
+(has_state): function StateComponent.lambda at 0x00007FF480CB0170
+(has_statistic): bound method StatisticComponent.has_statistic of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_tag): bound method GameObject.has_tag of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(has_trait_statistic_tracker): True
+(has_updated_commodity_flags): bound method ScriptObject.has_updated_commodity_flags of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(has_work_locks): False
+(hide): bound method GameObject.hide of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(household_owner_id): None
+(hover_tip): None
+(icon): 000000000000000000000000.00000000
+(icon_info): (207279, 1)
+(icon_override): None
+(ideal_slot_types): frozenset()
+(in_pool): False
+(in_use): False
+(in_use_by): bound method ReservationMixin.in_use_by of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(intended_forward): Vector3(0.000000, 0.000000, 1.000000)
+(intended_position): Vector3Immutable(261.084686, 150.000000, 266.705292)
+(intended_position_with_forward_offset): Vector3(261.084686, 150.000000, 266.745300)
+(intended_routing_surface): 53F0EA2415D2E6A,0,Pool
+(intended_transform): Transform(Vector3(261.084686, 150.000000, 266.705292), Quaternion(0.000000, 0.000000, 0.000000, 1.000000))
+(interactable): True
+(interaction_refs): SI terrain-SwimAround_Ocean id:12891 sim:
+(is_connected): bound method ScriptObject.is_connected of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_disabled): bound method ScriptObject.is_disabled of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_downloaded): False
+(is_fire_related_object): False
+(is_from_gallery): False
+(is_hidden): bound method _LocationPoint.is_hidden of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_in_distress): bound method StatisticComponent.is_in_distress of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_in_inventory): function InventoryItemComponent.lambda at 0x00007FF47E130CB0
+(is_in_locked_commodities): bound method StatisticComponent.is_in_locked_commodities of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_in_navmesh): False
+(is_in_sim_inventory): function InventoryItemComponent.lambda at 0x00007FF47E1380E0
+(is_inside_building): bound method _LocationPoint.is_inside_building of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_locked): bound method StatisticComponent.is_locked of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_on_active_lot): bound method _LocationPoint.is_on_active_lot of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_on_hidden_or_shown_callback_registered): bound method GameObject.is_on_hidden_or_shown_callback_registered of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_on_location_changed_callback_registered): bound method GameObject.is_on_location_changed_callback_registered of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_on_natural_ground): bound method _LocationPoint.is_on_natural_ground of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_outside): bound method _LocationPoint.is_outside of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_part): False
+(is_persistable): bound method ScriptObject.is_persistable of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_prop): False
+(is_reservation_clobberer): bound method ReservationMixin.is_reservation_clobberer of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_routing_surface_overlapped_at_position): bound method _LocationPoint.is_routing_surface_overlapped_at_position of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_same_object_or_part): bound method ScriptObject.is_same_object_or_part of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_scorable): bound method StatisticComponent.is_scorable of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_set_as_head): False
+(is_sim): False
+(is_skill_bar_suppressed): bound method StatisticComponent.is_skill_bar_suppressed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_social_group): False
+(is_stat_type_locked): bound method StatisticComponent.is_stat_type_locked of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_statistic_type_added_by_modifier): bound method StatisticComponent.is_statistic_type_added_by_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_surface): bound method GameObject.is_surface of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_terrain): True
+(is_ungreeted_sim_disallowed): bound method PortalComponent.is_ungreeted_sim_disallowed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_valid_for_height_checks): True
+(is_valid_pack): bound method ComponentContainer.is_valid_pack of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(is_valid_posture_graph_object): True
+(level): 0
+(list): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4817C0CB0
+(load): bound method ScriptObject.load of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(load_object): bound method GameObject.load_object of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(location): Location(Transform(Vector3(261.084686, 150.000000, 266.705292), Quaternion(0.000000, 0.000000, 0.000000, 1.000000)), 53F0EA2415D2E6A,0,Pool, joint_name_or_hashNone, parentNone, slot_hash0)
+(lock): function BaseLockingComponent.lambda at 0x00007FF47E159CB0
+(lock_portal_on_use): bound method PortalComponent.lock_portal_on_use of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(lock_sim): function BaseLockingComponent.lambda at 0x00007FF47E159830
+(lock_statistic): bound method StatisticComponent.lock_statistic of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(make_transient): bound method GameObject.make_transient of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(manager_id): 1
+(mark_get_locations_for_posture_needs_update): bound method ScriptObject.mark_get_locations_for_posture_needs_update of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(material_hash): 0
+(material_state): None
+(material_variant): None
+(may_move): False
+(may_reserve): bound method GameObject.may_reserve of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(model): 000000000000000000000000.00000000
+(model_with_material_variant): (000000000000000000000000.00000000, None)
+(modify_interactable_flags): bound method ScriptObject.modify_interactable_flags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(move_to): bound method ClientObjectMixin.move_to of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(multicolor): None
+(non_deletable_by_user): False
+(object_bounds_for_flammable_object): bound method GameObject.object_bounds_for_flammable_object of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(object_manager_for_create): object_manager
+(object_radius): 0.0
+(object_tags_override_off_lot_autonomy_ref_count): bound method StatisticComponent.object_tags_override_off_lot_autonomy_ref_count of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_add): bound method GameObject.on_add of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_add_to_client): bound method BaseObject.on_add_to_client of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_added_to_inventory): bound method GameObject.on_added_to_inventory of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_before_added_to_inventory): bound method BaseObject.on_before_added_to_inventory of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_before_removed_from_inventory): bound method BaseObject.on_before_removed_from_inventory of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_buildbuy_exit): bound method Ocean.on_buildbuy_exit of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_child_added): bound method GameObject.on_child_added of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_child_removed): bound method GameObject.on_child_removed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_client_connect): bound method BaseObject.on_client_connect of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_client_suppressor_added): function IdleComponent.lambda at 0x00007FF47D8DC170
+(on_client_suppressor_removed): function IdleComponent.lambda at 0x00007FF47D8DC200
+(on_failed_to_load_component): bound method ComponentContainer.on_failed_to_load_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_finalize_load): bound method Ocean.on_finalize_load of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_hovertip_requested): bound method GameObject.on_hovertip_requested of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_leaf_child_changed): bound method GameObject.on_leaf_child_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_location_changed): bound method Ocean.on_location_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_object_added_to_inventory): bound method BaseObject.on_object_added_to_inventory of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_object_removed_from_inventory): bound method BaseObject.on_object_removed_from_inventory of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_object_replaced): bound method BaseObject.on_object_replaced of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_object_stack_id_updated): bound method BaseObject.on_object_stack_id_updated of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_parent_change): bound method ClientObjectMixin.on_parent_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_placed_in_slot): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(on_post_bb_fixup): bound method ClientObjectMixin.on_post_bb_fixup of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_post_load): bound method ScriptObject.on_post_load of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_proxied_object_removed): bound method ProxyObject.on_proxied_object_removed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_remove): bound method GameObject.on_remove of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_remove_from_client): bound method ClientObjectMixin.on_remove_from_client of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_removed_from_inventory): bound method GameObject.on_removed_from_inventory of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_removed_from_slot): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
+(on_reset_component_get_interdependent_reset_records): bound method BaseObject.on_reset_component_get_interdependent_reset_records of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_destroy): bound method BaseObject.on_reset_destroy of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_early_detachment): bound method ScriptObject.on_reset_early_detachment of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_element_hard_stop): bound method GameObject.on_reset_element_hard_stop of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_get_elements_to_hard_stop): bound method GameObject.on_reset_get_elements_to_hard_stop of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_get_interdependent_reset_records): bound method ClientObjectMixin.on_reset_get_interdependent_reset_records of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_internal_state): bound method ClientObjectMixin.on_reset_internal_state of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_notification): bound method BaseObject.on_reset_notification of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_restart): bound method BaseObject.on_reset_restart of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_reset_send_op): bound method ClientObjectMixin.on_reset_send_op of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_restock): bound method ScriptObject.on_restock of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_set_sold): bound method ScriptObject.on_set_sold of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(on_state_changed): bound method ScriptObject.on_state_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(opacity): None
+(orientation): QuaternionImmutable(0.000000, 0.000000, 0.000000, 1.000000)
+(parent): None
+(parent_object): bound method ClientObjectMixin.parent_object of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(parent_slot): None
+(parent_type): ObjectParentType.PARENT_NONE
+(parent_type_info): (ObjectParentType.PARENT_NONE  0, 0)
+(parenting_hierarchy_gen): bound method ClientObjectMixin.parenting_hierarchy_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(part_suffix): None
+(parts): None
+(persistence_group): PersistenceGroups.NONE
+(placement_footprint_hash_set): frozenset(2227755845)
+(populate_icon_canvas_texture_info): function CanvasComponent.lambda at 0x00007FF480458320
+(populate_localization_token): bound method GameObject.populate_localization_token of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(portal_added_callback): bound method GameObject.portal_added_callback of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(position): Vector3Immutable(261.084686, 150.000000, 266.705292)
+(position_with_forward_offset): Vector3(261.084686, 150.000000, 266.745300)
+(post_component_reset): bound method BaseObject.post_component_reset of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(post_remove): bound method ClientObjectMixin.post_remove of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(post_tooltip_save_data_stored): function SpoilableObjectMixin.lambda at 0x00007FF47D6A24D0
+(posture_transition_target_tag): PostureTransitionTargetPreferenceTag.INVALID
+(potential_interactions): bound method ScriptObject.potential_interactions of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(potential_preroll_interactions): bound method ScriptObject.potential_preroll_interactions of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(pre_add): bound method BaseObject.pre_add of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(pre_parent_change): bound method ClientObjectMixin.pre_parent_change of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(preroll_commodity_flags): frozenset()
+(provide_route_events): bound method PortalComponent.provide_route_events of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(provided_mobile_posture_affordances): frozenset(class sims4.tuning.instances.dog_swim, class sims4.tuning.instances.sim-floating, class sims4.tuning.instances.sim-swim)
+(provided_mobile_posture_operations): PostureOperationBodyTransition(posture_Swim), PostureOperationBodyTransition(posture_floating), PostureOperationBodyTransition(posture_Swim)
+(provided_mobile_posture_types): frozenset(class sims4.tuning.instances.posture_Swim, class sims4.tuning.instances.posture_floating)
+(provided_routing_surface): None
+(provides_ocean_interactions): False
+(provides_terrain_interactions): False
+(proxied_obj): object_Ocean:0x0bb70f82cc740756
+(raycast_context): bound method HasFootprintComponent.raycast_context of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(recycling_data): ImmutableSlots(recycling_loot: (), recycling_values: _sims4_collections.frozendict(BucksType.RecycleBitsBucks  66: 0.5, BucksType.RecyclePiecesBucks  67: 0.5))
+(ref): bound method ProxyObject.ref of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(reference_arb): None
+(refresh_locks): function BaseLockingComponent.lambda at 0x00007FF47E1595F0
+(register_for_on_children_changed_callback): bound method ClientObjectMixin.register_for_on_children_changed_callback of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_on_hidden_or_shown): bound method GameObject.register_on_hidden_or_shown of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_on_location_changed): bound method GameObject.register_on_location_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_on_use_list_changed): bound method ReservationMixin.register_on_use_list_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_rebate_tests): bound method GameObject.register_rebate_tests of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_reset_element): bound method GameObject.register_reset_element of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_transition_controller): bound method ScriptObject.register_transition_controller of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(register_tuned_animation): bound method GameObject.register_tuned_animation of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(reloadable): True
+(remap_child_parenting): False
+(remove_audio_effect): bound method ClientObjectMixin.remove_audio_effect of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_awareness_scores): bound method ClientObjectMixin.remove_awareness_scores of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_children_from_posture_graph_on_delete): True
+(remove_claim_requirement): bound method ScriptObject.remove_claim_requirement of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_component): bound method BaseObject.remove_component of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_disallowed_sim): function PortalLockingComponent.lambda at 0x00007FF47E163F80
+(remove_dynamic_animation_overrides): bound method ScriptObject.remove_dynamic_animation_overrides of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_dynamic_commodity_flags): bound method ScriptObject.remove_dynamic_commodity_flags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_dynamic_tags): bound method GameObject.remove_dynamic_tags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_from_client): bound method BaseObject.remove_from_client of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_from_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47D8B88C0
+(remove_geometry_state_override): bound method ClientObjectMixin.remove_geometry_state_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_interaction_reference): bound method BaseObject.remove_interaction_reference of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_name_changed_callback): function NameComponent.lambda at 0x00007FF480DC60E0
+(remove_reference_from_parent): bound method ClientObjectMixin.remove_reference_from_parent of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_reservation_clobberer): bound method ReservationMixin.remove_reservation_clobberer of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_reservation_handler): bound method GameObject.remove_reservation_handler of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_statistic_modifier): bound method StatisticComponent.remove_statistic_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_ui_metadata): bound method ClientObjectMixin.remove_ui_metadata of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_voice_suffix_override): bound method ClientObjectMixin.remove_voice_suffix_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(remove_work_lock): bound method GameObject.remove_work_lock of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_audio_effects): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_awareness_scores): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_display_number): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_interactable): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_location): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_model_with_material_variant): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_multicolor): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_slot): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_state_index): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_tint): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resend_voice_suffix_overrides): bound method Field.get_resend.locals._resend of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(reset): bound method BaseObject.reset of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(reset_reason): bound method BaseObject.reset_reason of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resolve): bound method BaseObject.resolve of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resolve_retarget): bound method BaseObject.resolve_retarget of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(resource_key): 000000000000000000030560.b61de6b4
+(resume_statistic_modifier): bound method StatisticComponent.resume_statistic_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(rig): 000000000000000000000000.00000000
+(route_target): (RouteTargetType.OBJECT  2, OceanPoint(object_Ocean)((261.085, 150.000, 266.705)))
+(routing_context): None
+(routing_location): 53F0EA2415D2E6A,0,Pool:0.000,0.000,0.000,1.000:261.084686,150.000000,266.705292
+(routing_surface): 53F0EA2415D2E6A,0,Pool
+(save): bound method ScriptObject.save of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(save_object): bound method GameObject.save_object of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(scale): 1
+(scale_modifiers_gen): bound method ClientObjectMixin.scale_modifiers_gen of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(schedule_destroy_asap): bound method BaseObject.schedule_destroy_asap of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(schedule_element): bound method GameObject.schedule_element of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(schedule_reset_asap): bound method BaseObject.schedule_reset_asap of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(scratched): False
+(self_or_part_in_use): False
+(sell): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4817C6050
+(set_build_buy_lockout_state): bound method GameObject.set_build_buy_lockout_state of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47E450290
+(set_definition): bound method ClientObjectMixin.set_definition of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_household_owner_id): bound method GameObject.set_household_owner_id of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_ico_as_carry_target): True
+(set_location): bound method ClientObjectMixin.set_location of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_location_without_distribution): bound method ClientObjectMixin.set_location_without_distribution of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_object_def_state_index): bound method GameObject.set_object_def_state_index of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_parent): bound method ClientObjectMixin.set_parent of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_portal_cost_override): bound method PortalComponent.set_portal_cost_override of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_post_bb_fixup_needed): bound method ClientObjectMixin.set_post_bb_fixup_needed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47E450050
+(set_stack_count): function InventoryItemComponent.lambda at 0x00007FF47E130E60
+(set_stack_id): function InventoryItemComponent.lambda at 0x00007FF47E1388C0
+(set_stat_value): bound method StatisticComponent.set_stat_value of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(set_statistics_callback_alarm_calculation_supression): bound method HasStatisticComponent.set_statistics_callback_alarm_calculation_supression of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(should_mark_as_new): True
+(show): bound method GameObject.show of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(skill_bar_suppression): bound method StatisticComponent.skill_bar_suppression of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(slot): 000000000000000000000000.00000000
+(slot_cost_modifiers): _sims4_collections.frozendict()
+(slot_hash): 0
+(slot_object): function SlotComponent.lambda at 0x00007FF47D854830
+(slot_type_set): None
+(slot_types): frozenset()
+(slots_resource): None
+(social_clustering): None
+(split_path_on_portal): bound method PortalComponent.split_path_on_portal of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(stack_count): function InventoryItemComponent.lambda at 0x00007FF47E130D40
+(standin_model): None
+(state_index): 0
+(state_value_active): function StateComponent.lambda at 0x00007FF480CB0200
+(static_commodity_tracker): statistics.base_statistic_tracker.BaseStatisticTracker object at 0x00007FF4A6E2CB78
+(statistic_tracker): statistics.statistic_tracker.StatisticTracker object at 0x00007FF4778D1D40
+(stop_running_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47E44FB90
+(super_affordances): functools.partial(function ScriptObject.super_affordances at 0x00007FF47E5458C0, class sims4.tuning.instances.OceanPoint(object_Ocean), OceanPoint(object_Ocean)((261.085, 150.000, 266.705)))
+(supported_posture_types): ()
+(supports_affordance): bound method ScriptObject.supports_affordance of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(supports_posture_type): bound method ScriptObject.supports_posture_type of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(suspend_statistic_modifier): bound method StatisticComponent.suspend_statistic_modifier of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(swapping_from_parent): None
+(swapping_to_parent): None
+(tests_to_bypass_utility_requirement): _sims4_collections.frozendict()
+(tint): None
+(trait_statistic_tracker): statistics.trait_statistic_tracker.TraitStatisticTracker object at 0x00007FF4A63F13E8
+(transform): Transform(Vector3(261.084686, 150.000000, 266.705292), Quaternion(0.000000, 0.000000, 0.000000, 1.000000))
+(transient): False
+(try_mark_as_new_object): bound method GameObject.try_mark_as_new_object of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(try_post_bb_fixup): bound method ClientObjectMixin.try_post_bb_fixup of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(try_split_object_from_stack): function InventoryItemComponent.lambda at 0x00007FF47E138B00
+(tuned_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: TunablePortalComponentWrapper.PortalComponent, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: None, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(tuning_manager): InstanceManager_object
+(ui_metadata): distributor.sparse.SparseMessage object at 0x00007FF447DD7F10
+(ui_metadata_immediate): distributor.sparse.SparseMessage object at 0x00007FF447DD7F10
+(unlock): function BaseLockingComponent.lambda at 0x00007FF47E159DD0
+(unlock_statistic): bound method StatisticComponent.unlock_statistic of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(unregister_for_on_children_changed_callback): bound method ClientObjectMixin.unregister_for_on_children_changed_callback of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(unregister_on_hidden_or_shown): bound method GameObject.unregister_on_hidden_or_shown of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(unregister_on_location_changed): bound method GameObject.unregister_on_location_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(unregister_on_use_list_changed): bound method ReservationMixin.unregister_on_use_list_changed of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(unregister_reset_element): bound method GameObject.unregister_reset_element of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(unregister_transition_controller): bound method ScriptObject.unregister_transition_controller of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_all_commodities): bound method StatisticComponent.update_all_commodities of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_commodity_flags): bound method ScriptObject.update_commodity_flags of class sims4.tuning.instances.OceanPoint(object_Ocean)
+(update_component_commodity_flags): bound method ScriptObject.update_component_commodity_flags of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_current_value): bound method ClientObjectMixin.update_current_value of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_display_number): bound method ClientObjectMixin.update_display_number of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_object_tooltip): function TooltipComponent.lambda at 0x00007FF4807E9710
+(update_ownership): bound method GameObject.update_ownership of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_portal_cache): bound method PortalComponent.update_portal_cache of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_reference_arb): bound method ClientObjectMixin.update_reference_arb of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(update_stack_count): function InventoryItemComponent.lambda at 0x00007FF47E130F80
+(update_tooltip_field): function TooltipComponent.lambda at 0x00007FF4807E9B90
+(update_ui_metadata): bound method ClientObjectMixin.update_ui_metadata of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(usable_by_transition_controller): bound method ReservationMixin.usable_by_transition_controller of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(use_base_object_for_slot_constraints): False
+(valid_for_distribution): True
+(validate_definition): bound method GameObject.validate_definition of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(video_playlist): None
+(visibility): None
+(visibility_flags): None
+(visible_to_client): True
+(voice_suffix_overrides): None
+(wall_object_padding): None
+(wind_speed_level): None
+(with_skill_bar_suppression): bound method StatisticComponent.with_skill_bar_suppression of OceanPoint(object_Ocean)((261.085, 150.000, 266.705))
+(world_routing_surface): 53F0EA2415D2E6A,0,World
+(zone_id): 378036983766527594

@@ -272,7 +272,7 @@ class ScriptCoreMain:
                     autonomy_setting = AutonomyState.FULL
 
                 if sc_Vars.DEBUG:
-                    debugger("Sim: {} - index: {} autonomy_setting: {}".format(sim.first_name, ScriptCoreMain.index, sim.autonomy))
+                    debugger("Sim: {} - index: {} autonomy_setting: {}".format(sim.first_name, ScriptCoreMain.index, sim.sim_info.autonomy))
                 ScriptCoreMain.index += 1
 
                 filters = get_filters("unclogger")
@@ -366,6 +366,10 @@ class ScriptCoreMain:
         update_lights(True, 0.0)
 
 def has_allowed_role(sim):
+    disallowed_roles = ["leave", "patient", "employee", "coworker", "gym", "barista", "bartender", "walkby_wait_for", "doctor_npc", "dogwalker",
+                        "infected", "frontdesk", "caterer", "chef", "doctor_npc", "gaming", "maid", "caterer", "celebrity",
+                        "chef", "frontdesk", "computeruser", "landlord", "vendor", "military", "visitor"]
+
     if sim.sim_info.routine:
         return True
     if sc_Vars.DISABLE_SPAWNS:
@@ -375,18 +379,14 @@ def has_allowed_role(sim):
         return False
     if set_random_trait_role(sim):
         return True
+    if [role for role in disallowed_roles if has_role(sim, role)] and not sc_Vars.DISABLE_ROUTINE:
+        return False
     # if disable culling is true that means no sims will be removed, always return true role sims or not.
     if sc_Vars.DISABLE_CULLING:
+        assign_role_title(sim)
         return True
     # no role sims get auto removed.
     if not len(sim.autonomy_component.active_roles()):
-        return False
-
-    disallowed_roles = ["leave", "patient", "employee", "coworker", "gym", "barista", "bartender", "walkby_wait_for", "doctor_npc", "dogwalker",
-                        "infected", "frontdesk", "caterer", "chef", "doctor_npc", "gaming", "maid", "caterer",
-                        "chef", "frontdesk", "computeruser", "landlord", "vendor", "military", "visitor"]
-
-    if [role for role in disallowed_roles if has_role(sim, role)]:
         return False
 
     assign_role_title(sim)

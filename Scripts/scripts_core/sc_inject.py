@@ -15,6 +15,7 @@ from singletons import DEFAULT
 from scripts_core.sc_autonomy import sc_Autonomy
 from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
     sc_club_on_zone_load_handler
+from scripts_core.sc_jobs import sleep_routine
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_thread import sc_Watcher
@@ -124,6 +125,19 @@ def sc_on_added_to_queue_inject(original, self, *args, **kwargs):
 def sc_prepare_gen_inject(original, self, *args, **kwargs):
     sc_Autonomy.prepare_gen(self)
     result = original(self, *args, **kwargs)
+    return result
+
+@safe_inject(Zone, 'update')
+def sc_run_zone_update_module(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
+    try:
+        if self.is_in_build_buy:
+            if not sleep_routine(0.025):
+                ScriptCoreMain.on_build_buy_enter_handler(self)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
     return result
 
 @safe_inject(Zone, 'on_loading_screen_animation_finished')
