@@ -991,7 +991,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     if client.active_sim.sim_info.is_in_travel_group():
                         travel_group = get_sim_travel_group(client.active_sim, False)
                         sim_info.assign_to_travel_group(travel_group)
-                    make_sim_selectable(sim_info)1
+                    make_sim_selectable(sim_info)
 
             self.picker("Select Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
         except BaseException as e:
@@ -1018,9 +1018,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         try:
             client = services.client_manager().get_first_client()
             active_sim = services.get_active_sim()
+            client = services.client_manager().get_first_client()
             for sim_info in client.selectable_sims:
-                if sim_info != active_sim.sim_info:
-                    client = services.client_manager().get_first_client()
+                if sim_info != active_sim.sim_info and sim_info != client.active_sim.sim_info and not sim_info.is_player_sim:
                     if client.active_sim.sim_info.is_in_travel_group():
                         travel_group = get_sim_travel_group(client.active_sim, False)
                         sim_info.remove_from_travel_group(travel_group)
