@@ -5,6 +5,7 @@ import random
 
 import services
 import sims4
+from objects.components.types import PORTAL_COMPONENT
 
 from scripts_core.sc_autonomy import AutonomyState, set_autonomy, send_sim_home
 from scripts_core.sc_clubs import C_ZoneClubs
@@ -223,6 +224,7 @@ class ScriptCoreMain:
 
     def init(self):
         sc_club = C_ZoneClubs()
+        venue = get_venue()
         try:
             if not sc_Vars._config_loaded and not sc_Vars._running:
                 if sc_Vars.DEBUG:
@@ -241,6 +243,8 @@ class ScriptCoreMain:
                 update_lights(True, 0.0)
 
                 #Updated fix for grey selected sim icons on load
+                object_manager = services.object_manager()
+                doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
                 for sim in services.sim_info_manager().instanced_sims_gen():
                     if sim.sim_info.is_selectable:
                         if client.active_sim.sim_info.is_in_travel_group():
@@ -248,6 +252,13 @@ class ScriptCoreMain:
                             sim.sim_info.assign_to_travel_group(travel_group)
                         make_sim_at_work(sim.sim_info)
                         activate_sim_icon(sim.sim_info)
+
+                    #Update fix to lock doors to sims not part of household
+                    if "residential" in venue or "rentable" in venue:
+                        if not sim.sim_info.is_selectable:
+                            for portal in doors:
+                                if hasattr(portal, "add_disallowed_sim"):
+                                    portal.add_disallowed_sim(sim, portal)
 
                 sc_club.club_setup_on_load(services.get_club_service())
 
