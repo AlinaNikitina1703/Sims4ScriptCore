@@ -106,7 +106,8 @@ class sc_CareerMedical(sc_CareerRoutine):
                 sim = exam.patient
                 sc_Vars.exam_list.remove(exam)
         if sim:
-            assign_title(sim.sim_info, "Treated")
+            if not sc_Vars.DISABLE_CAREER_TITLES:
+                assign_title(sim.sim_info, "Treated")
             now = services.time_service().sim_now
             sc_Vars.exam_list.append(sc_CareerMedicalExams(doctor, sim, -1, now))
             set_exam_info(sim.sim_info)

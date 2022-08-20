@@ -26,14 +26,15 @@ class sc_CareerCustom(sc_CareerMedical):
         self.sc_career_spawn = sc_Spawn() 
 
     def init(self):
-        sc_career = sc_CareerCustom()
-        if sc_Vars._config_loaded and not sc_Vars._running:
+        if sc_Vars._config_loaded and not sc_Vars._running and not sc_Vars.DISABLE_ROUTINE and not sc_Vars.DISABLE_MOD:
+            sc_career = sc_CareerCustom()
             sc_career.load_roles()
             sc_career.setup_sims()
-            if not sc_Vars.DISABLE_MOD:
-                sc_career.load_sims()
+            sc_career.load_sims()
             if not sc_Vars.career_function:
                 sc_Vars.career_function = sc_CareerCustom()
+            sc_Vars._running = True
+        elif sc_Vars._config_loaded and not sc_Vars._running:
             sc_Vars._running = True
 
     def load_roles(self):
@@ -244,7 +245,8 @@ class sc_CareerCustom(sc_CareerMedical):
         if sim_info.routine_info.title != "none":
             for buff in list(sim_info.routine_info.buffs):
                 add_sim_buff(int(buff), sim_info)
-            assign_title(sim_info, sim_info.routine_info.title.title())
+            if not sc_Vars.DISABLE_CAREER_TITLES:
+                assign_title(sim_info, sim_info.routine_info.title.title())
             assign_role(sim_info.routine_info.role, sim_info)
         else:
             sim_info.routine = False
@@ -259,7 +261,8 @@ class sc_CareerCustom(sc_CareerMedical):
         if sim:
             clear_queue_of_duplicates(sim)
             set_all_motives_by_sim(sim)
-            assign_title(sim_info, sim_info.routine_info.title.title())
+            if not sc_Vars.DISABLE_CAREER_TITLES:
+                assign_title(sim_info, sim_info.routine_info.title.title())
             assign_role(sim_info.routine_info.role, sim_info)
             if not sim_info.routine_info.routine:
                 sim_info.routine_info.routine.append(sim_info.routine_info.title + "_routine")
