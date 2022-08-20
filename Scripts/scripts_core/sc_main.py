@@ -243,14 +243,15 @@ class ScriptCoreMain:
                     sims4.commands.client_cheat("fps off", client.id)
                 update_lights(True, 0.0)
 
+                sc_Vars.head_of_household = client.active_sim
+
                 #Updated fix for grey selected sim icons on load
-                object_manager = services.object_manager()
                 doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
                 for sim in services.sim_info_manager().instanced_sims_gen():
-                    if client.active_sim.sim_info.is_in_travel_group():
-                        travel_group = get_sim_travel_group(client.active_sim, False)
-                        sim.sim_info.assign_to_travel_group(travel_group)
                     if sim.sim_info.is_selectable:
+                        if client.active_sim.sim_info.is_in_travel_group():
+                            travel_group = get_sim_travel_group(client.active_sim, False)
+                            sim.sim_info.assign_to_travel_group(travel_group)
                         make_sim_at_work(sim.sim_info)
                         activate_sim_icon(sim.sim_info)
 

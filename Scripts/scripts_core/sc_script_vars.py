@@ -110,6 +110,7 @@ class sc_Vars:
     roles = []
     career_function = None
     custom_routine = None
+    head_of_household = None
 
     def __init__(self):
         super().__init__()
