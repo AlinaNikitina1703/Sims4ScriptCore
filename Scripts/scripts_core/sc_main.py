@@ -143,6 +143,7 @@ class ScriptCoreMain:
         sc_Vars.DISABLE_SPAWNS = config.getboolean("control", "disable_spawns")
         sc_Vars.DISABLE_CULLING = config.getboolean("control", "disable_culling")
         sc_Vars.DISABLE_SIMULATION = config.getboolean("control", "disable_simulation")
+        sc_Vars.DISABLE_ROLE_TITLES = config.getboolean("control", "disable_role_titles")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
@@ -238,6 +239,7 @@ class ScriptCoreMain:
                     sims4.commands.client_cheat("fps off", client.id)
                 update_lights(True, 0.0)
 
+                #Updated fix for grey selected sim icons on load
                 for sim in services.sim_info_manager().instanced_sims_gen():
                     if sim.sim_info.is_selectable:
                         if client.active_sim.sim_info.is_in_travel_group():
@@ -395,13 +397,15 @@ def has_allowed_role(sim):
         return False
     # if disable culling is true that means no sims will be removed, always return true role sims or not.
     if sc_Vars.DISABLE_CULLING:
-        assign_role_title(sim)
+        if not sc_Vars.DISABLE_ROLE_TITLES:
+            assign_role_title(sim)
         return True
     # no role sims get auto removed.
     if not len(sim.autonomy_component.active_roles()):
         return False
 
-    assign_role_title(sim)
+    if not sc_Vars.DISABLE_ROLE_TITLES:
+        assign_role_title(sim)
     return True
 
 def set_random_trait_role(sim):
