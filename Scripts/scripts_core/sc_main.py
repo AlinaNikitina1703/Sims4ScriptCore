@@ -223,7 +223,6 @@ class ScriptCoreMain:
             assign_title(sim_info, "")
 
     def init(self):
-        venue = get_venue()
         zone = services.current_zone()
         sc_club = C_ZoneClubs()
         try:
@@ -242,28 +241,6 @@ class ScriptCoreMain:
                 else:
                     sims4.commands.client_cheat("fps off", client.id)
                 update_lights(True, 0.0)
-
-                sc_Vars.head_of_household = client.active_sim
-
-                #Updated fix for grey selected sim icons on load
-                doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
-                for sim in services.sim_info_manager().instanced_sims_gen():
-                    if sim.sim_info.is_selectable:
-                        if client.active_sim:
-                            if client.active_sim.sim_info.is_in_travel_group() and client.active_sim.sim_info in services.active_household():
-                                travel_group = get_sim_travel_group(client.active_sim, False)
-                                sim.sim_info.assign_to_travel_group(travel_group)
-                        make_sim_at_work(sim.sim_info)
-                        activate_sim_icon(sim.sim_info)
-
-                    #Update fix to lock doors to sims not part of household
-                    if "residential" in venue or "rentable" in venue:
-                        if not sim.sim_info.is_selectable or sim.sim_info in services.active_household() or \
-                                sim.sim_info.household.home_zone_id == zone.id:
-                            for portal in doors:
-                                if hasattr(portal, "add_disallowed_sim"):
-                                    portal.add_disallowed_sim(sim, portal)
-
                 sc_club.club_setup_on_load(services.get_club_service())
 
                 sc_Vars._config_loaded = True

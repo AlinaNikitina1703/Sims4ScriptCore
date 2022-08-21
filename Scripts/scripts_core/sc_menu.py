@@ -15,7 +15,7 @@ from date_and_time import create_time_span
 from ensemble.ensemble_service import EnsembleService
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from interactions.interaction_finisher import FinishingType
-from objects.components.types import LIGHTING_COMPONENT, PORTAL_COMPONENT
+from objects.components.types import LIGHTING_COMPONENT
 from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
 from vfx import PlayEffect
@@ -984,10 +984,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             error_trap(e)
 
     def select_sims(self, timeline):
-        venue = get_venue()
-        zone = services.current_zone()
         client = services.client_manager().get_first_client()
-        doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
         try:
             def get_simpicker_results_callback(dialog):
                 if not dialog.accepted:
@@ -998,14 +995,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                         travel_group = get_sim_travel_group(client.active_sim, False)
                         sim_info.assign_to_travel_group(travel_group)
 
-                    #Update fix to lock doors to sims not part of household
-                    if "residential" in venue or "rentable" in venue:
-                        if not sim_info.is_selectable or sim_info in services.active_household() or \
-                                sim_info.household.home_zone_id == zone.id:
-                            for portal in doors:
-                                if hasattr(portal, "add_disallowed_sim"):
-                                    portal.add_disallowed_sim(sim, portal)
-
                     make_sim_selectable(sim_info)
 
             self.picker("Select Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
@@ -1013,10 +1002,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             error_trap(e)
 
     def unselect_sims(self, timeline):
-        venue = get_venue()
-        zone = services.current_zone()
         client = services.client_manager().get_first_client()
-        doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
         try:
             def get_simpicker_results_callback(dialog):
                 if not dialog.accepted:
@@ -1027,14 +1013,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                         travel_group = get_sim_travel_group(client.active_sim, False)
                         sim_info.remove_from_travel_group(travel_group)
 
-                    #Update fix to lock doors to sims not part of household
-                    if "residential" in venue or "rentable" in venue:
-                        if not sim_info.is_selectable or sim_info in services.active_household() or \
-                                sim_info.household.home_zone_id == zone.id:
-                            for portal in doors:
-                                if hasattr(portal, "add_disallowed_sim"):
-                                    portal.remove_disallowed_sim(sim, portal)
-
                     make_sim_unselectable(sim_info)
 
             self.picker("Unselect Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
@@ -1042,25 +1020,14 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             error_trap(e)
 
     def unselect_everyone(self, timeline):
-        venue = get_venue()
-        zone = services.current_zone()
         client = services.client_manager().get_first_client()
-        doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
         try:
             active_sim = services.get_active_sim()
             for sim_info in client.selectable_sims:
-                if sim_info != active_sim.sim_info and sim_info != client.active_sim.sim_info and not sim_info.is_player_sim:
+                if sim_info not in services.active_household():
                     if client.active_sim.sim_info.is_in_travel_group() and client.active_sim.sim_info in services.active_household():
                         travel_group = get_sim_travel_group(client.active_sim, False)
                         sim_info.remove_from_travel_group(travel_group)
-
-                    #Update fix to lock doors to sims not part of household
-                    if "residential" in venue or "rentable" in venue:
-                        if not sim_info.is_selectable or sim_info in services.active_household() or \
-                                sim_info.household.home_zone_id == zone.id:
-                            for portal in doors:
-                                if hasattr(portal, "add_disallowed_sim"):
-                                    portal.add_disallowed_sim(sim_info.get_sim_instance(), portal)
 
                     make_sim_unselectable(sim_info)
         except BaseException as e:
@@ -1068,23 +1035,12 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             pass
 
     def select_everyone(self, timeline):
-        venue = get_venue()
-        zone = services.current_zone()
         client = services.client_manager().get_first_client()
-        doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
         try:
             for sim in services.sim_info_manager().instanced_sims_gen():
                 if client.active_sim.sim_info.is_in_travel_group() and client.active_sim.sim_info in services.active_household():
                     travel_group = get_sim_travel_group(client.active_sim, False)
                     sim.sim_info.assign_to_travel_group(travel_group)
-
-                    #Update fix to lock doors to sims not part of household
-                    if "residential" in venue or "rentable" in venue:
-                        if not sim.sim_info.is_selectable or sim.sim_info in services.active_household() or \
-                                sim.sim_info.household.home_zone_id == zone.id:
-                            for portal in doors:
-                                if hasattr(portal, "add_disallowed_sim"):
-                                    portal.remove_disallowed_sim(sim, portal)
 
                 make_sim_selectable(sim.sim_info)
         except BaseException as e:

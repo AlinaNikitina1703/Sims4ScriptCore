@@ -88,8 +88,8 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
             client = services.client_manager().get_first_client()
             sims4.commands.cheat_output(failure, client.id)
             message_box(interaction.sim, interaction.target, "Route Fail", failure, "GREEN")
-            if hasattr(interaction.target, "position"):
-                camera.focus_on_position(interaction.target.position, client)
+            #if hasattr(interaction.target, "position"):
+            #    camera.focus_on_position(interaction.target.position, client)
 
         if "puddle" in str(interaction.target).lower() or "dust" in str(interaction.target).lower():
             interaction.target.destroy()
