@@ -1,0 +1,73 @@
+
+
+11:03:22.800 day:1 week:9
+Sim: Sybill - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:03:22.800 day:1 week:9
+Sim: Alexandria - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:13:01.216 day:1 week:9
+Sim: Aurore - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:13:01.688 day:1 week:9
+Sim: Kaylyn - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:23:01.216 day:1 week:9
+Sim: Sybill - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:23:02.656 day:1 week:9
+Sim: Vanessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:32:17.120 day:1 week:9
+Sim: Joyce Thayer - Killed: mixer_social_askaboutday_targeted_friendly_alwayson
+@178 - ai_autonomy.py - notify_queue_head
+
+11:39:25.912 day:1 week:9
+Sim: Raven Winds - Killed: mixer_social_respectfulintroduction_greetings
+@178 - ai_autonomy.py - notify_queue_head
+
+11:39:45.912 day:1 week:9
+Sim: Raven Winds - Killed: mixer_social_funnyintroduction_greetings
+@178 - ai_autonomy.py - notify_queue_head
+
+11:40:09.252 day:1 week:9
+Sim: Raven Winds - Killed: mixer_social_funnyintroduction_greetings
+@178 - ai_autonomy.py - notify_queue_head
+
+11:43:00.044 day:1 week:9
+Sim: Carrie - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:43:28.320 day:1 week:9
+Sim: Raven Winds - Killed: mixer_social_respectfulintroduction_greetings
+@178 - ai_autonomy.py - notify_queue_head
+
+11:44:01.876 day:1 week:9
+Sim: Minerva - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:53:00.252 day:1 week:9
+Sim: Vanessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:53:00.252 day:1 week:9
+Sim: Dennis - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:03:17.808 day:1 week:9
+Sim: Martine - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:03:17.808 day:1 week:9
+Sim: Paige - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:03:17.808 day:1 week:9
+Sim: Paige - Spawn Filtered
+@77 - sc_spawn_handler.py - _spawn_requested_sim
