@@ -5,8 +5,9 @@ import services
 from module_career.sc_career_functions import get_routine_sims
 from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_autonomy import set_autonomy
+from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import check_actions, clear_sim_instance, action_timeout, get_action_timestamp, \
-    find_all_objects_by_title, push_sim_function, debugger, get_career_level, get_skill_level, remove_sim_buff, \
+    find_all_objects_by_title, push_sim_function, get_career_level, get_skill_level, remove_sim_buff, \
     distance_to_by_room, assign_title, assign_routine, set_exam_info
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim
@@ -106,8 +107,7 @@ class sc_CareerMedical(sc_CareerRoutine):
                 sim = exam.patient
                 sc_Vars.exam_list.remove(exam)
         if sim:
-            if not sc_Vars.DISABLE_CAREER_TITLES:
-                assign_title(sim.sim_info, "Treated")
+            assign_title(sim.sim_info, "Treated")
             now = services.time_service().sim_now
             sc_Vars.exam_list.append(sc_CareerMedicalExams(doctor, sim, -1, now))
             set_exam_info(sim.sim_info)

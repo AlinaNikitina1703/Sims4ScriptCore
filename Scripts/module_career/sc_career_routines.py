@@ -1,4 +1,5 @@
 import random
+import time
 
 import alarms
 import build_buy
@@ -13,19 +14,22 @@ from event_testing import test_events
 from module_career.sc_career_functions import get_routine_objects_by_title, find_empty_random_bed, find_empty_computer, \
     find_empty_register, find_empty_desk_by_id, find_empty_desk
 from objects import ALL_HIDDEN_REASONS
+
+from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance, go_here_routine, push_sim_function, \
-    debugger, set_all_motives_by_sim, clear_jobs, get_awake_hours, make_clean, \
+    set_all_motives_by_sim, clear_jobs, get_awake_hours, make_clean, \
     object_is_dirty, make_dirty, create_dust, get_dust_action_and_vacuum, remove_object_from_list, check_action_list, \
     find_all_objects_by_title, distance_to_by_level, push_sim_out, remove_sim, make_sim_leave, \
-    get_spawn_point_by_distance, distance_to_pos, distance_to_by_room, assign_routine
+    get_spawn_point_by_distance, distance_to_pos, distance_to_by_room, assign_routine, get_venue
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_util import init_sim, message_box, error_trap, clean_string
+from scripts_core.sc_util import init_sim, error_trap, clean_string
 from server_commands.argument_helpers import get_tunable_instance
 from sims.sim_spawner import SimSpawner
 from sims4.math import Vector3
 from sims4.random import weighted_random_item
 from sims4.resources import Types
-from terrain import get_terrain_center, get_terrain_height
+from terrain import get_terrain_center, get_terrain_height, get_terrain_size
 from world import get_lot_id_from_instance_id
 from world.travel_service import travel_sim_to_zone
 from world.travel_tuning import TravelSimLiability
@@ -234,17 +238,6 @@ class sc_CareerRoutine:
                     sim_info.use_object_index = 0
                 obj = objs[sim_info.use_object_index]
                 if obj:
-                    if not check_actions(sim, "gohere") and distance_to(sim, obj) > 5:
-                        clear_sim_instance(sim_info)
-                        go_here_routine(sim, obj.position, obj.level, 2.0)
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Obj: {} Action: gohere".format(sim_info.first_name, str(obj)))
-                        return True
-                    if check_actions(sim, "clean") and distance_to(sim, obj) < 5:
-                        clear_sim_instance(sim_info, "clean", True)
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Obj: {} Action: clean".format(sim_info.first_name, str(obj)))
-                        return True
                     if sim_info.routine_info.actions:
                         if check_actions(sim, "chat") and distance_to(sim, obj) < 5:
                             clear_sim_instance(sim_info, "|".join(sim_info.routine_info.actions))
@@ -253,39 +246,63 @@ class sc_CareerRoutine:
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - Obj: {} Action: chat".format(sim_info.first_name, str(obj)))
                             return True
-                        if check_action_list(sim, sim_info.routine_info.actions) and distance_to(sim, obj) < 5:
+                        if check_action_list(sim, sim_info.routine_info.actions):
                             if sim_info.routine_info.object_action1:
                                 clear_sim_instance(sim_info, sim_info.routine_info.object_action1)
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - Obj: {} Action: actions".format(sim_info.first_name, str(obj)))
                             return True
-                    if sim_info.routine_info.object_action1:
+
+                    if not check_actions(sim, "gohere") and distance_to(sim, obj) > 5:
+                        clear_sim_instance(sim_info)
+                        go_here_routine(sim, obj.position, obj.level, 2.0)
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - Obj: {} Action: gohere".format(sim_info.first_name, str(obj)))
+                        return True
+
+                    now = time.time()
+                    random.seed(now)
+                    chance = random.uniform(0.0, 100.0)
+                    if sim_info.routine_info.object_action1 and sim_info.routine_info.object_action2 and \
+                            chance < sc_Vars.chance_switch_action:
+                        action_choice = random.randint(0, 1)
+                    else:
+                        action_choice = 0
+
+                    if "object_sim" in sim_info.routine_info.use_object2:
+                        objs2 = [sim, ]
+                    else:
+                        objs2 = [o for o in services.object_manager().get_all() if sim_info.routine_info.use_object2 in str(o).lower() and object_is_dirty(o)]
+
+                    if sc_Vars.DEBUG:
+                        debugger("Routine {} {} - Chance: {:.2f}% - Choice: {}".format(sim.first_name, sim.last_name, chance, action_choice))
+                    if action_choice == 0:
                         if obj.in_use and not obj.in_use_by(sim):
                             sim_info.use_object_index += 1
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - Obj Index: {}".format(sim_info.first_name, sim_info.use_object_index))
                             return True
-                        if not check_actions(sim, sim_info.routine_info.object_action1) and distance_to(sim, obj) < 5:
-                            clear_sim_instance(sim_info, "stand|wicked|social|chat", True)
+                        if not check_actions(sim, sim_info.routine_info.object_action1) and not check_actions(sim, sim_info.routine_info.object_action2) and distance_to(sim, obj) < 5:
+                            clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
                             push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - Obj: {} Action1: {}".format(sim_info.first_name, str(obj), sim_info.routine_info.object_action1))
                             return True
 
-                    if sim_info.routine_info.object_action2:
-                        if "object_sim" in sim_info.routine_info.use_object2:
-                            objs2 = [sim, ]
+                    if action_choice == 1 and objs2:
+                        obj2 = objs2[0]
+                        if not check_actions(sim, sim_info.routine_info.object_action2) and object_is_dirty(obj2):
+                            clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action2), True)
+                            push_sim_function(sim, obj2, sim_info.routine_info.object_action2, False)
+                            if sim_info.routine_info.object_action3 and not check_actions(sim, sim_info.routine_info.object_action2):
+                                push_sim_function(sim, obj2, sim_info.routine_info.object_action3, False)
+                            if sc_Vars.DEBUG:
+                                debugger("Sim: {} - Obj: {} Action2: {}".format(sim_info.first_name, str(obj2), sim_info.routine_info.object_action2))
+                            return True
                         else:
-                            objs2 = find_all_objects_by_title(sim, sim_info.routine_info.use_object2, sc_Vars.MIN_LEVEL, sc_Vars.MAX_DISTANCE, False, True)
+                            clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
+                            push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
 
-                        if objs2:
-                            obj2 = objs2[0]
-                            if not check_actions(sim, sim_info.routine_info.object_action2) and distance_to(sim, obj2) < 5:
-                                clear_sim_instance(sim_info, "stand|wicked|social|chat", True)
-                                push_sim_function(sim, obj2, sim_info.routine_info.object_action2, False)
-                                if sc_Vars.DEBUG:
-                                    debugger("Sim: {} - Obj: {} Action2: {}".format(sim_info.first_name, str(obj2), sim_info.routine_info.object_action2))
-                                return True
         return True
 
     def metalhead_routine(self, sim_info):
@@ -471,7 +488,7 @@ class sc_CareerRoutine:
                         str(slab), dist, room_sim_is_in,
                         room_slab_is_in))
 
-                if sim_info.routine_info.title == "pathologist" or sim_info.routine_info.title == "pathologist":
+                if sim_info.routine_info.title == "pathologist" or "technician" in sim_info.routine_info.title:
                     if dist > 10 and room_sim_is_in != room_slab_is_in:
                         if not check_actions(sim, "gohere"):
                             clear_sim_instance(sim.sim_info, "gohere", True)
@@ -589,6 +606,9 @@ class sc_CareerRoutine:
         return True
 
     def security_check_lot_routine(self, sim_info):
+        venue = get_venue()
+        zone = services.current_zone()
+        zone_id = zone.id
         sim = init_sim(sim_info)
         if sim:
             now = services.time_service().sim_now
@@ -597,7 +617,11 @@ class sc_CareerRoutine:
             center_pos = lot.position
             lot_x_size = int(lot.size_x)
             lot_z_size = int(lot.size_z)
-            lot_size = (lot_x_size + lot_z_size) * 0.5 - 10
+            if "residential" in venue:
+                lot_size = (lot_x_size + lot_z_size) * 0.5 - 10
+            else:
+                terrain_size = get_terrain_size(zone_id)
+                lot_size = (terrain_size.x + terrain_size.z) * 0.15
             check_point = Vector3(center_pos.x + random.uniform(-lot_size, lot_size),
                                   center_pos.y,
                                   center_pos.z + random.uniform(-lot_size, lot_size))
@@ -705,7 +729,7 @@ class sc_CareerRoutine:
         except BaseException as e:
             error_trap(e)
 
-    def staff_routine(self, sim_info):
+    def assigned_staff_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
             if check_actions(sim, "xray"):
@@ -727,11 +751,26 @@ class sc_CareerRoutine:
                         push_sim_function(sim, computer, 104626, False)
         return True
 
+    def staff_routine(self, sim_info):
+        sim = init_sim(sim_info)
+        if sim:
+            if check_actions(sim, "xray"):
+                return True
+            desk, chair = find_empty_desk(sim)
+            if desk and chair:
+                computers = find_all_objects_by_title(desk, "computer", desk.level, 1.0)
+                for computer in computers:
+                    if sc_Vars.DEBUG:
+                        debugger("Front Desk - {}".format(sim.first_name))
+                    if not check_actions(sim, "frontdesk"):
+                        clear_sim_instance(sim.sim_info, "frontdesk", True)
+                        push_sim_function(sim, computer, 104626, False)
+        return True
 
-CareerBase.attend_work = sc_CareerRoutine.attend_work
-TravelSimLiability._travel_sim = sc_CareerRoutine._travel_sim
-CareerEventManager.start_top_career_event = sc_CareerRoutine.start_top_career_event
-CareerEvent.get_required_zone_id = sc_CareerRoutine.get_required_zone_id
-RequiredCareerEventZoneCustomerLot.get_required_zone_id = sc_CareerRoutine.get_required_zone_id_customer_lot
-RequiredCareerEventZoneRandom.get_required_zone_id = sc_CareerRoutine.get_required_zone_id_random
-RequiredCareerEventZoneLotDescription.get_required_zone_id = sc_CareerRoutine.get_required_zone_id_description
+#CareerBase.attend_work = sc_CareerRoutine.attend_work
+#TravelSimLiability._travel_sim = sc_CareerRoutine._travel_sim
+#CareerEventManager.start_top_career_event = sc_CareerRoutine.start_top_career_event
+#CareerEvent.get_required_zone_id = sc_CareerRoutine.get_required_zone_id
+#RequiredCareerEventZoneCustomerLot.get_required_zone_id = sc_CareerRoutine.get_required_zone_id_customer_lot
+#RequiredCareerEventZoneRandom.get_required_zone_id = sc_CareerRoutine.get_required_zone_id_random
+#RequiredCareerEventZoneLotDescription.get_required_zone_id = sc_CareerRoutine.get_required_zone_id_description

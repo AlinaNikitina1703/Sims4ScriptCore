@@ -1,19 +1,19 @@
 import os
 from os.path import isfile, join
 
-import camera
 import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from module_career.sc_career_custom import sc_CareerCustom
 from module_career.sc_career_functions import get_routine_objects_by_title
 from module_career.sc_career_routines import sc_CareerRoutine
-from scripts_core.sc_bulletin import sc_Bulletin
+from scripts_core.sc_debugger import debugger
 from scripts_core.sc_input import inputbox
-from scripts_core.sc_jobs import assign_title, clear_sim_instance, push_sim_function, distance_to, debugger
+from scripts_core.sc_jobs import assign_title, clear_sim_instance, push_sim_function, distance_to, assign_situation
 from scripts_core.sc_menu_class import MainMenu
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_info import sc_RoutineInfo
 from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_util import error_trap, ld_file_loader, message_box, clean_string
+from scripts_core.sc_util import error_trap, ld_file_loader
 from sims4.localization import LocalizationHelperTuning
 from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
@@ -26,8 +26,8 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
         self.sc_career_menu_choices = ("Set Menu",
-                                       "Exams",
                                        "Add Routine To Sim",
+                                       "Add Situation To Sim",
                                        "Routine Info")
 
         self.sc_vendor_choices = ("Mexican",
@@ -44,7 +44,6 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         self.sc_career_menu = MainMenu(*args, **kwargs)
         self.sc_vendor_menu = MainMenu(*args, **kwargs)
         self.script_choice = MainMenu(*args, **kwargs)
-        self.sc_bulletin = sc_Bulletin()
 
     def _run_interaction_gen(self, timeline):
         self.sc_career_menu.MAX_MENU_ITEMS_TO_LIST = 10
@@ -67,11 +66,26 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         self.sc_vendor_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_vendor_menu.show(timeline, self, 0, self.sc_vendor_choices, "Vendor Menu", "Make a selection.")
 
+    def add_situation_to_sim(self, timeline):
+        inputbox("Add Situation To Sim", "Enter the situation ID.", self._add_situation_to_sim_callback)
+
+    def _add_situation_to_sim_callback(self, situation_id: str):
+        full_duty = False
+        if situation_id == "" or situation_id is None:
+            return
+
+        def get_simpicker_results_callback(dialog):
+            if not dialog.accepted:
+                return
+            for sim in dialog.get_result_tags():
+                assign_situation(int(situation_id), sim.sim_info)
+                message_box(sim, None, "{}".format(situation_id), "Situation assigned to sim!", "GREEN")
+
+
+        self.picker("Add Situation {} To Sim".format(situation_id), "Pick up to 50 Sims", 50, get_simpicker_results_callback)
+
     def add_routine_to_sim(self, timeline):
         inputbox("Add Routine To Sim", "Enter the routine title. Add a + to the beginning for 24 hour duty.", self._add_routine_to_sim_callback)
-
-    def exams(self, timeline):
-        self.sc_bulletin.show_exams(camera.focus_on_object)
 
     def _add_routine_to_sim_callback(self, role_title: str):
         full_duty = False
@@ -97,7 +111,8 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                     sim.sim_info.routine_info.on_duty = 0
                     sim.sim_info.routine_info.off_duty = 0
                 sc_CareerCustom.assign_sim(self, sim.sim_info)
-                message_box(sim, None, "{}".format(roles[0].title.title()), "Routine assigned to sim!", "GREEN")
+                message_box(sim, None, "{}".format(roles[0].title.title()), "Routine assigned to sim! On Duty: {}"
+                    " Off Duty: {}".format(sim.sim_info.routine_info.on_duty, sim.sim_info.routine_info.off_duty), "GREEN")
 
 
         self.picker("Add Routine {} To Sim".format(role_title.title()), "Pick up to 50 Sims", 50, get_simpicker_results_callback)

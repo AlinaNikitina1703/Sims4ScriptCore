@@ -2,8 +2,8 @@ import random
 
 import services
 from scripts_core.sc_jobs import find_all_objects_by_title, find_all_objects_by_id
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_util import message_box
 
 def get_routine_sims():
     return [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
@@ -23,7 +23,7 @@ def get_routine_objects_by_title(title, objects):
 def find_empty_random_bed(sim):
     now = services.time_service().sim_now
     random.seed(int(now.second()))
-    beds = find_all_objects_by_title(sim, "bed")
+    beds = find_all_objects_by_title(sim, "object_bed")
     if beds:
         index = random.randint(0, len(beds))
         for i, bed in enumerate(beds):
