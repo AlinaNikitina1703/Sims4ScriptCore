@@ -6,7 +6,8 @@ import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_menu_class import MainMenu
-from scripts_core.sc_util import error_trap, message_box, ld_file_loader
+from scripts_core.sc_message_box import message_box
+from scripts_core.sc_util import error_trap, ld_file_loader
 from protocolbuffers import S4Common_pb2, Outfits_pb2
 from sims.outfits.outfit_enums import OutfitCategory, BodyType
 from sims.sim_info import SimInfo
