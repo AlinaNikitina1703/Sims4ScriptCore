@@ -4,7 +4,8 @@ import sims4
 import services
 from reset import ResettableElement
 
-from scripts_core.sc_jobs import debugger, clear_sim_instance
+from scripts_core.sc_debugger import debugger
+from scripts_core.sc_jobs import clear_sim_instance
 from scripts_core.sc_util import clean_string, error_trap, error_trap_console
 
 
@@ -29,6 +30,7 @@ def simulation_timeout(timeline, handle):
             timeline.hard_stop(handle)
         else:
             timeline.hard_stop(handle)
+
     except BaseException as e:
         error_trap(e)
         pass
