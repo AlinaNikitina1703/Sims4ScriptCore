@@ -273,7 +273,7 @@ class sc_CareerCustom(sc_CareerMedical):
 
             if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and not sc_Vars.dont_sleep_on_lot:
                 self.sleep_routine(sim_info)
-            if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and sc_Vars.dont_sleep_on_lot and get_awake_hours(sim):
+            if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and sc_Vars.dont_sleep_on_lot and not get_awake_hours(sim):
                 send_sim_home(sim)
             if [buff for buff in sim_info.routine_info.buffs if buff == 115830]:
                 self.room_check_routine(sim_info)
