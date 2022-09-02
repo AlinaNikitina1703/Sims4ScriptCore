@@ -136,6 +136,18 @@ def paint_selected_object(target, amount=10, area=2.5, height=0.25):
             random_orientation(obj)
             random_scale(obj, 1.0, 0.25)
 
+def replace_selected_object(obj):
+    level = obj.location.level
+    scale = obj.scale
+    translation = obj.location.transform.translation
+    orientation = obj.location.transform.orientation
+    obj.destroy()
+    clone = create_game_object(TMToolData.SelectedObject.definition.id)
+    zone_id = services.current_zone_id()
+    routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+    clone.location = sims4.math.Location(sims4.math.Transform(translation, orientation), routing_surface)
+    clone.scale = scale
+
 def point_object_at(target):
     orig = TMToolData.SelectedObject.location.transform.translation
     point = target.location.transform.translation

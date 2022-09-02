@@ -11,7 +11,7 @@ from ui.ui_dialog_notification import UiDialogNotification
 
 from module_editor.sc_editor_functions import point_object_at, random_orientation, get_similar_objects, \
     rotate_selected_objects, random_scale, scale_selected_objects, reset_scale_selected, reset_scale, \
-    paint_selected_object
+    paint_selected_object, create_game_object, replace_selected_object
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_jobs import get_tag_name, get_object_info, get_sim_info
 from scripts_core.sc_menu_class import MainMenu, ObjectMenu
@@ -34,7 +34,8 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                                         "<font color='#000000'>Object Delete Menu</font>",
                                         "<font color='#000000'>Object Rotate Menu</font>",
                                         "<font color='#000000'>Object Scale Menu</font>",
-                                       "<font color='#000000'>Object Clone Menu</font>")
+                                       "<font color='#000000'>Object Clone Menu</font>",
+                                       "<font color='#000000'>Object Replace Menu</font>")
 
         self.sc_rotate_menu_choices = ("Point Object",
                               "Rotate This Object",
@@ -49,6 +50,9 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_clone_menu_choices = ("Paint Selected Object",
                                       "Paint Selected Object Input")
 
+        self.sc_replace_menu_choices = ("Replace Similar Objects",
+                                        "Replace Selected Object")
+
         self.sc_editor_menu = MainMenu(*args, **kwargs)
         self.object_picker = ObjectMenu(*args, **kwargs)
         self.error_object_picker = ObjectMenuNoFile(*args, **kwargs)
@@ -57,6 +61,7 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_editor_rotate_menu = MainMenu(*args, **kwargs)
         self.sc_editor_scale_menu = MainMenu(*args, **kwargs)
         self.sc_editor_clone_menu = MainMenu(*args, **kwargs)
+        self.sc_editor_replace_menu = MainMenu(*args, **kwargs)
         self.script_choice = MainMenu(*args, **kwargs)
 
     def _run_interaction_gen(self, timeline):
@@ -108,6 +113,13 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_editor_clone_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_editor_clone_menu.show(timeline, self, 0, self.sc_clone_menu_choices, "Object Clone Menu", "Make a selection.")
 
+    def object_replace_menu(self, timeline):
+        self.sc_editor_replace_menu.MAX_MENU_ITEMS_TO_LIST = 10
+        self.sc_editor_replace_menu.commands = []
+        self.sc_editor_replace_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_editor_replace_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
+        self.sc_editor_replace_menu.show(timeline, self, 0, self.sc_replace_menu_choices, "Object Replace Menu", "Make a selection.")
+
     def get_info(self, timeline):
         try:
             output = ""
@@ -151,6 +163,15 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             file = open(filename, append_write)
             file.write("{}\n{}\n\nINFO:\n{}".format(self.target.__class__.__name__, info_string, output))
             file.close()
+
+        except BaseException as e:
+            error_trap(e)
+
+    def replace_similar_objects(self, timeline):
+        try:
+            for obj in services.object_manager().get_all():
+                if obj.definition.id == self.target.definition.id:
+                    replace_selected_object(obj)
 
         except BaseException as e:
             error_trap(e)
