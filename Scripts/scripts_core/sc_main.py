@@ -445,7 +445,7 @@ class ScriptCoreMain:
         update_lights(True, 0.0)
 
 def has_allowed_role(sim):
-    disallowed_roles = ["leave", "patient", "employee", "coworker", "gym", "barista", "bartender", "walkby_wait_for",
+    disallowed_roles = ["leave", "patient", "gym", "barista", "bartender", "walkby_wait_for",
                         "infected", "frontdesk", "caterer", "doctor_npc", "gaming", "maid", "celebrity",
                         "chef", "computeruser", "landlord", "vendor", "military"]
 

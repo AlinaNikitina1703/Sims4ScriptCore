@@ -10,7 +10,8 @@ from sims4.math import Location, Transform, Quaternion, Vector3
 from sims4.resources import Types, get_resource_key
 
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import add_sim_buff, clear_sim_instance, push_sim_function, get_filters
+from scripts_core.sc_jobs import add_sim_buff, clear_sim_instance, push_sim_function, get_filters, \
+    find_all_objects_by_title, distance_to_by_room
 from scripts_core.sc_util import init_sim
 
 
@@ -62,21 +63,24 @@ def save_sim_tracking(sim_info):
     zone_id = services.current_zone_id()
     position = sim.position
     orientation = sim.orientation
-    tracking_position = []
-    tracking_position.append(position.x)
-    tracking_position.append(position.y)
-    tracking_position.append(position.z)
-    tracking_orientation = []
-    tracking_orientation.append(orientation.x)
-    tracking_orientation.append(orientation.y)
-    tracking_orientation.append(orientation.z)
-    tracking_orientation.append(orientation.w)
+    tracking_position = [position.x, position.y, position.z]
+    tracking_orientation = [orientation.x, orientation.y, orientation.z, orientation.w]
     action_list = []
     target_list = []
     for action in sim.get_all_running_and_queued_interactions():
         if hasattr(action, "guid64") and hasattr(action.target, "id"):
+            target = action.target
+            if action.guid64 == 18240980946975959663:
+                client = services.client_manager().get_first_client()
+                objs = find_all_objects_by_title(client.active_sim, "stereo")
+                if objs:
+                    objs.sort(key=lambda obj: distance_to_by_room(obj, client.active_sim))
+                    target = objs[0]
+
+                action.guid64 = 18240980946975959664
+
             action_list.append(action.guid64)
-            target_list.append(action.target.id)
+            target_list.append(target.id)
 
     sim_name = "{}_{}".format(sim_info.first_name, sim_info.last_name)
     datapath = os.path.abspath(os.path.dirname(__file__))

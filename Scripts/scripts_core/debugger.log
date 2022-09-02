@@ -71,3 +71,543 @@ Sim: Paige - Spawn
 12:03:17.808 day:1 week:9
 Sim: Paige - Spawn Filtered
 @77 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:12:10.928 day:1 week:9
+Sim: Denise - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:21:17.524 day:1 week:9
+Sim: Vanessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:21:17.524 day:1 week:9
+Sim: Dominique - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:31:09.604 day:1 week:9
+Sim: Vanessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:31:09.604 day:1 week:9
+Sim: Hina - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:31:09.604 day:1 week:9
+Sim: Saanvi - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:32:02.832 day:1 week:9
+Sim: Hina Nakayama - Killed: socialmixer_greetings_dismiss
+@178 - ai_autonomy.py - notify_queue_head
+
+12:41:10.124 day:1 week:9
+Sim: Vanessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:41:10.124 day:1 week:9
+Sim: Alexandria - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:51:09.848 day:1 week:9
+Sim: Carrie - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:51:09.848 day:1 week:9
+Sim: Aubrey - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:01:09.100 day:1 week:9
+Sim: Carrie - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:01:09.100 day:1 week:9
+Sim: Serena - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:13:50.864 day:1 week:9
+Sim: Bobby McLaughlin - Killed: socialmixer_greetings_dismiss
+@178 - ai_autonomy.py - notify_queue_head
+
+13:13:50.864 day:1 week:9
+Sim: Lily Zhu - Killed: mixer_social_weathertemperaturesocials_talkabouttemperature
+@178 - ai_autonomy.py - notify_queue_head
+
+13:14:34.736 day:1 week:9
+Sim: Lily Zhu - Killed: social_funny_pubertychanges_joke_hair_face
+@178 - ai_autonomy.py - notify_queue_head
+
+13:15:13.508 day:1 week:9
+Sim: Raven - Push Sim Result: EnqueueResult: True ExecuteResult: True: (None) -  running opt_Listen:1816 on   (guaranteed)
+@516 - sc_menu.py - get_push_sim_callback
+
+13:15:43.280 day:1 week:9
+Sim: Raven - Push Sim Result: EnqueueResult: True ExecuteResult: True: (None) -  running opt_Listen:1994 on retro_stereo:0x0c530f7a2da202d3  (guaranteed)
+@516 - sc_menu.py - get_push_sim_callback
+
+13:18:05.548 day:1 week:9
+Sim: Sybill - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:18:23.644 day:1 week:9
+Sim: Bobby McLaughlin - Killed: socials_funny_autonomousonly_stc
+@178 - ai_autonomy.py - notify_queue_head
+
+13:19:53.268 day:1 week:9
+Sim: Vivian - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:25:27.052 day:1 week:9
+Sim: Bobby McLaughlin - Killed: mixer_social_askaboutday_targeted_friendly_alwayson
+@178 - ai_autonomy.py - notify_queue_head
+
+13:28:52.780 day:1 week:9
+Sim: Carrie - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:28:52.780 day:1 week:9
+Sim: Paige - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:28:52.780 day:1 week:9
+Sim: Paige - Spawn Filtered
+@77 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:38:51.212 day:1 week:9
+Sim: Aurore - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:38:51.212 day:1 week:9
+Sim: Keala - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:46:05.356 day:1 week:9
+Sim: Diane Stern - Killed: socialmixer_greetings_dismiss
+@178 - ai_autonomy.py - notify_queue_head
+
+13:48:54.384 day:1 week:9
+Sim: Terre - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:48:54.384 day:1 week:9
+Sim: Kendra - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:51:57.832 day:1 week:9
+Sim: Bobby McLaughlin - Killed: mixer_social_weathertemperaturesocials_complainaboutsnow
+@178 - ai_autonomy.py - notify_queue_head
+
+13:52:09.268 day:1 week:9
+Sim: Bobby McLaughlin - Killed: mixer_social_discusslocalfishingspots_targeted_friendly_alwayson_neighbor
+@178 - ai_autonomy.py - notify_queue_head
+
+13:52:30.464 day:1 week:9
+Sim: Lily Zhu - Killed: mixer_socials_telljoke_group_funny_alwayson
+@178 - ai_autonomy.py - notify_queue_head
+
+13:52:30.464 day:1 week:9
+Sim: Lily Zhu - Killed: mixer_social_weathertemperaturesocials_talkaboutweather
+@178 - ai_autonomy.py - notify_queue_head
+
+13:54:13.464 day:1 week:9
+Sim: Bobby McLaughlin - Killed: mixer_social_tellgrossjoke_group_funny_mediumscore_child
+@178 - ai_autonomy.py - notify_queue_head
+
+13:54:29.464 day:1 week:9
+Sim: Lily Zhu - Killed: socials_friendly_autonomousonly_stc
+@178 - ai_autonomy.py - notify_queue_head
+
+13:58:23.660 day:1 week:9
+Sim: Lily Zhu - Killed: mixer_social_askaboutday_targeted_friendly_alwayson
+@178 - ai_autonomy.py - notify_queue_head
+
+13:58:51.212 day:1 week:9
+Sim: Sybill - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:58:51.212 day:1 week:9
+Sim: Kaylyn - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:08:52.920 day:1 week:9
+Sim: Carrie - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:08:52.920 day:1 week:9
+Sim: Saanvi - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:18:51.212 day:1 week:9
+Sim: Terre - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:18:54.492 day:1 week:9
+Sim: Saori - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:28:51.212 day:1 week:9
+Sim: Agatha - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:44:54.336 day:1 week:9
+Sim: Saori - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+14:54:29.620 day:1 week:9
+Sim: Hector Laurent - Killed: mixer_social_lieaboutcareer_group_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+14:54:54.336 day:1 week:9
+Sim: Alexandria - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:02.216 day:1 week:9
+Sim: Aurore - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:02.216 day:1 week:9
+Sim: Jayden - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:05.908 day:1 week:9
+Sim: Kaylyn - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:05.908 day:1 week:9
+Sim: Marcel - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:05.908 day:1 week:9
+Sim: Christina - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:05.908 day:1 week:9
+Sim: Elsa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:05.908 day:1 week:9
+Sim: Lily - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:00:05.908 day:1 week:9
+Sim: Pierce - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:04:54.352 day:1 week:9
+Sim: Billie - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:14:54.336 day:1 week:9
+Sim: Tamika - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:14:57.752 day:1 week:9
+Sim: Tessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:24:54.336 day:1 week:9
+Sim: Tamara - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:35:06.336 day:1 week:9
+Sim: Tom - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:45:00.604 day:1 week:9
+Sim: Max - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+15:55:26.336 day:1 week:9
+Sim: Alycia - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:04:54.336 day:1 week:9
+Sim: Nymphadora - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:14:54.336 day:1 week:9
+Sim: Sierra - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:24:54.504 day:1 week:9
+Sim: Sierra - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:34:56.680 day:1 week:9
+Sim: Kaylyn - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:34:56.680 day:1 week:9
+Sim: Melina - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:41:56.604 day:1 week:9
+Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+16:41:56.604 day:1 week:9
+Sim: Tamika Ramses - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+16:41:56.604 day:1 week:9
+Sim: Tamika Ramses - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+16:44:54.336 day:1 week:9
+Sim: April - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:54:54.872 day:1 week:9
+Sim: Mariangela - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:55:00.604 day:1 week:9
+Sim: Minerva - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+16:55:00.604 day:1 week:9
+Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+17:02:40.780 day:1 week:9
+Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+17:02:44.604 day:1 week:9
+Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+17:02:44.604 day:1 week:9
+Sim: Tom Peeping - Killed: mixer_social_npc_greetings
+@178 - ai_autonomy.py - notify_queue_head
+
+17:04:54.336 day:1 week:9
+Sim: Camille - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+17:14:54.344 day:1 week:9
+Sim: Clara - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+17:24:54.476 day:1 week:9
+Sim: Nanami - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+17:27:18.336 day:1 week:9
+Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+17:35:41.272 day:1 week:9
+Sim: Alexandria - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+17:45:02.336 day:1 week:9
+Sim: Tessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+17:50:44.604 day:1 week:9
+Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+17:55:00.604 day:1 week:9
+Sim: Sierra - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+18:05:00.604 day:1 week:9
+Sim: Cassandra - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+18:14:54.336 day:1 week:9
+Sim: Nancy - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+18:25:00.604 day:1 week:9
+Sim: Tessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+18:44:54.336 day:1 week:9
+Sim: Saanvi - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+18:54:54.336 day:1 week:9
+Sim: Pearl - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+19:05:58.336 day:1 week:9
+Sim: Laura - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+19:11:34.336 day:1 week:9
+Sim: Hector Laurent - Killed: mixer_social_lieaboutcareer_group_mischief_skills
+@181 - ai_autonomy.py - notify_queue_head
+
+19:24:54.336 day:1 week:9
+Sim: Geoffrey - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+19:35:02.336 day:1 week:9
+Sim: Tessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+19:45:02.336 day:1 week:9
+Sim: Sierra - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+19:54:54.352 day:1 week:9
+Sim: Kevin - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+04:00:34.336 day:2 week:9
+Sim: Pearl - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+06:05:21.908 day:2 week:9
+Sim: Alexandria - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+06:34:54.384 day:2 week:9
+Sim: Lindsay - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+06:54:58.604 day:2 week:9
+Sim: Nancy - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:00:14.604 day:2 week:9
+Sim: Janae - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:00:27.424 day:2 week:9
+Sim: April - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:05:03.424 day:2 week:9
+Sim: Serena - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:05:15.424 day:2 week:9
+Sim: Geoffrey - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:25:35.424 day:2 week:9
+Sim: Tomi - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:34:55.424 day:2 week:9
+Sim: Aubrey - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+07:54:58.336 day:2 week:9
+Sim: Mariangela - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+08:05:05.428 day:2 week:9
+Sim: Amy - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+08:20:26.336 day:2 week:9
+Sim: Nymphadora - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+08:20:30.336 day:2 week:9
+Sim: Jacob - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+08:25:00.336 day:2 week:9
+Sim: Saanvi - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+08:34:58.336 day:2 week:9
+Sim: Ignacio - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+09:00:00.000 day:2 week:9
+Sim: Marcel - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+09:00:00.000 day:2 week:9
+Sim: Rory - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+09:00:00.000 day:2 week:9
+Sim: Olivia - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+09:08:40.336 day:2 week:9
+Sim: Vanessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+09:08:40.336 day:2 week:9
+Sim: Selina - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+09:25:11.424 day:2 week:9
+Sim: Doug - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:00:00.304 day:2 week:9
+Sim: Shigeru - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:00:10.336 day:2 week:9
+Sim: Rianni - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:00:10.336 day:2 week:9
+Sim: Hilda - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:15:30.336 day:2 week:9
+Sim: Hilary - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:25:18.056 day:2 week:9
+Sim: Sachiko - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:34:54.396 day:2 week:9
+Sim: Brytani - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:34:54.936 day:2 week:9
+Sim: Sybill - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:45:18.336 day:2 week:9
+Sim: Kaylyn - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+10:54:59.768 day:2 week:9
+Sim: Alika - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+11:05:18.336 day:2 week:9
+Sim: Arnessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:15:08.108 day:2 week:9
+Sim: Dominic - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:25:16.604 day:2 week:9
+Sim: Aubrey - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:35:22.336 day:2 week:9
+Sim: Mariangela - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:54:58.336 day:2 week:9
+Sim: Tessa - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+12:57:59.568 day:2 week:9
+Sim: Raven Winds - Killed: mixer_social_cheerfulintroduction_greetings_skills
+@178 - ai_autonomy.py - notify_queue_head
+
+13:04:55.040 day:2 week:9
+Sim: Mei - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+13:05:24.896 day:2 week:9
+Sim: Raven Winds - Killed: mixer_social_yellat_targeted_mean
+@181 - ai_autonomy.py - notify_queue_head

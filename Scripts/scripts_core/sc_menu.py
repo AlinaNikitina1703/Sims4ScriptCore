@@ -84,6 +84,14 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "<font color='#000000'>Control Menu</font>")
 
         self.sc_weather_choices = ()
+        self.sc_modify_weather_choices = ("Set To Sunny",
+                                          "Set To Cloudy",
+                                          "Set To Partly Cloudy",
+                                          "Set To Foggy",
+                                          "Set To No Moisture",
+                                          "Set To Rain",
+                                          "Set To Snow")
+
         self.sc_fixes_choices = ("Grab Drink",
                                 "Light Fire",
                                 "Extinguish Fire",
@@ -157,6 +165,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_fixes_menu = MainMenu(*args, **kwargs)
         self.sc_grab_drink_menu = MainMenu(*args, **kwargs)
         self.sc_weather_menu = MainMenu(*args, **kwargs)
+        self.sc_modify_weather_menu = MainMenu(*args, **kwargs)
         self.sc_effects_menu = MainMenu(*args, **kwargs)
         self.sc_time_menu = MainMenu(*args, **kwargs)
         self.sc_sims_menu = MainMenu(*args, **kwargs)
@@ -191,6 +200,13 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_weather_menu.commands.append("<font color='#990000'>[Menu]</font>")
         self.sc_weather_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_weather_menu.show(timeline, self, 0, self.sc_weather_choices, "Weather Menu", "Make a selection.")
+
+    def modify_weather(self, timeline):
+        self.sc_modify_weather_menu.MAX_MENU_ITEMS_TO_LIST = 10
+        self.sc_modify_weather_menu.commands = []
+        self.sc_modify_weather_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_modify_weather_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
+        self.sc_modify_weather_menu.show(timeline, self, 0, self.sc_modify_weather_choices, "Weather Menu", "Make a selection.")
 
     def fixes_menu(self, timeline):
         self.sc_fixes_menu.MAX_MENU_ITEMS_TO_LIST = 10
@@ -440,7 +456,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.is_instanced()]
             else:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN]
-                all_sims.sort(key=lambda sim_info: sim_info.sim_id)
 
             self.picker("Permanently Delete {} Sims".format(filter.title()), "Pick up to 50 Sims", 50, get_simpicker_results_callback, all_sims)
 
@@ -1156,6 +1171,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def weather_ini(self):
         self.sc_weather_choices = ()
         self.sc_weather_choices = self.sc_weather_choices + ("Reset Weather",)
+        self.sc_weather_choices = self.sc_weather_choices + ("Modify Weather",)
         self.sc_weather = []
         datapath = os.path.abspath(os.path.dirname(__file__))
         filename = datapath + r"\Data\weather.ini"
@@ -1209,6 +1225,100 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def reset_weather(self, timeline):
         services.weather_service().reset_forecasts()
+
+    def set_to_sunny(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(1.0, 0, 1.0, 0)
+        weather_service._send_weather_event_op()
+
+    def set_to_cloudy(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(1.0, 0, 1.0, 0)
+        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._send_weather_event_op()
+
+    def set_to_partly_cloudy(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(1.0, 0, 1.0, 0)
+        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._send_weather_event_op()
+
+    def set_to_foggy(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(1.01, 0, 1.01, 0)
+        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(0.1, 0, 0.1, 0)
+        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._send_weather_event_op()
+
+    def set_to_no_moisture(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._send_weather_event_op()
+
+    def set_to_rain(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(1.0, 0, 1.0, 0)
+        weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._send_weather_event_op()
+
+    def set_to_snow(self, timeline):
+        weather_service = services.weather_service()
+        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
+        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
+        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
+        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
+        weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(0.0, 0, 0.0, 0)
+        weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(1.0, 0, 1.0, 0)
+        weather_service._send_weather_event_op()
 
     def custom_function(self, option):
         if "weather" in option:
