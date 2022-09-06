@@ -3,11 +3,12 @@ import os
 from os.path import isfile, join
 
 import services
+import sims4
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
-from scripts_core.sc_util import error_trap, ld_file_loader
+from scripts_core.sc_util import error_trap, ld_file_loader, init_sim
 from protocolbuffers import S4Common_pb2, Outfits_pb2
 from sims.outfits.outfit_enums import OutfitCategory, BodyType
 from sims.sim_info import SimInfo
@@ -98,7 +99,8 @@ class OutfitCategoryMenu(ImmediateSuperInteraction):
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
-        self.outfit_menu_choices = ("All",
+        self.outfit_menu_choices = ("Modify Career Outfit",
+                                    "All",
                                     "Everyday",
                                     "Formal",
                                     "Athletic",
@@ -143,6 +145,7 @@ class OutfitCategoryMenu(ImmediateSuperInteraction):
     def _run_interaction_gen(self, timeline, sim_info=None, sims=None):
         try:
             if sim_info is not None:
+                OutfitCategoryMenu.outfit_selected_sim_list = []
                 OutfitCategoryMenu.outfit_selected_sim = sim_info
                 OutfitCategoryMenu.outfit_selected_sim_list.append(sim_info)
             elif sims is not None:
@@ -166,6 +169,14 @@ class OutfitCategoryMenu(ImmediateSuperInteraction):
     def _menu(self, timeline, sim_info: SimInfo, sims=None):
         self._run_interaction_gen(timeline, sim_info, sims)
 
+    def modify_career_outfit(self, timeline):
+        target = OutfitCategoryMenu.outfit_selected_sim
+        sim = init_sim(target)
+        client = services.client_manager().get_first_client()
+        _connection = client.id
+        sims4.commands.client_cheat('sims.exit2caswithhouseholdid {} {} career'.format(sim.id, sim.household_id),
+                                    _connection)
+
     def all(self, timeline):
         if len(OutfitCategoryMenu.outfit_selected_sim_list) > 1:
             for sim_info in OutfitCategoryMenu.outfit_selected_sim_list:
@@ -173,6 +184,9 @@ class OutfitCategoryMenu(ImmediateSuperInteraction):
                 if sim_info.has_outfit(picked_outfit):
                     sim_info._current_outfit = picked_outfit
         else:
+            if not OutfitCategoryMenu.outfit_selected_sim.has_outfit((OutfitCategory.CAREER, 0)):
+                OutfitCategoryMenu.outfit_data_clipboard = (OutfitCategoryMenu.outfit_selected_sim, OutfitCategory.SITUATION, 0)
+                self.paste_outfit(OutfitCategoryMenu.outfit_selected_sim, (OutfitCategory.CAREER, 0))
             self.outfit.show(OutfitCategoryMenu.outfit_selected_sim, self.outfit.CHANGE)
 
     def everyday(self, timeline):
@@ -233,9 +247,15 @@ class OutfitCategoryMenu(ImmediateSuperInteraction):
         if len(OutfitCategoryMenu.outfit_selected_sim_list) > 1:
             for sim_info in OutfitCategoryMenu.outfit_selected_sim_list:
                 picked_outfit = (OutfitCategory.CAREER, 0)
+                if not sim_info.has_outfit(picked_outfit):
+                    OutfitCategoryMenu.outfit_data_clipboard = (sim_info, OutfitCategory.SITUATION, 0)
+                    self.paste_outfit(sim_info, picked_outfit)
                 if sim_info.has_outfit(picked_outfit):
                     sim_info._current_outfit = picked_outfit
         else:
+            if not OutfitCategoryMenu.outfit_selected_sim.has_outfit((OutfitCategory.CAREER, 0)):
+                OutfitCategoryMenu.outfit_data_clipboard = (OutfitCategoryMenu.outfit_selected_sim, OutfitCategory.SITUATION, 0)
+                self.paste_outfit(OutfitCategoryMenu.outfit_selected_sim, (OutfitCategory.CAREER, 0))
             self.outfit.show(OutfitCategoryMenu.outfit_selected_sim, self.outfit.CHANGE, OutfitCategory.CAREER)
 
     def situation(self, timeline):
