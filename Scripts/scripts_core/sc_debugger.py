@@ -1,6 +1,7 @@
 import inspect
 import os
 import re
+import time
 
 import services
 import sims4
@@ -21,7 +22,7 @@ def debugger(debug_text, frame=1, full_frame=False, write=True, to_console=True,
     if file:
         file = os.path.basename(file)
 
-    now = services.time_service().sim_now
+    now = time.time()
     total_stack = inspect.stack()  # total complete stack
     func_name = None
     filename = None
@@ -36,7 +37,7 @@ def debugger(debug_text, frame=1, full_frame=False, write=True, to_console=True,
         filename = os.path.basename(frameinfo.f_code.co_filename)
         line_number = frameinfo.f_lineno  # of the call
 
-    debug_text = "\n{}\n".format(now) + debug_text
+    debug_text = "\n{}\n".format(time.ctime(now)) + debug_text
     if full_frame and not frame:
         for stack in total_stack:
             frameinfo = stack[0]

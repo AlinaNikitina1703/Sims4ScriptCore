@@ -8,8 +8,10 @@ from clubs.club_gathering_situation import ClubGatheringSituation
 from clubs.club_service import ClubService
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
-from sims.sim_spawner_service import SimSpawnerService
+from objects.object_enums import ResetReason
+from postures.posture_graph import PostureGraphService
 from singletons import DEFAULT
+from zone import Zone
 
 from scripts_core.sc_autonomy import sc_Autonomy
 from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
@@ -18,7 +20,6 @@ from scripts_core.sc_jobs import pause_routine
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
-from zone import Zone
 
 
 def safe_inject(target_object, target_function_name, safe=False):
@@ -166,4 +167,26 @@ def sc_on_zone_teardown(original, self, client, *args, **kwargs):
         pass
 
     result = original(self, client, *args, **kwargs)
+    return result
+
+@safe_inject(PostureGraphService, "get_segmented_paths")
+def sc_get_segmented_paths(original, self,
+                           sim, posture_dest_list,
+                           additional_template_list,
+                           interaction, participant_type,
+                           valid_destination_test,
+                           valid_edge_test, preferences,
+                           final_constraint, included_sis, *args, **kwargs):
+    result = None
+    try:
+        result = original(self, sim, posture_dest_list,
+                          additional_template_list,
+                          interaction, participant_type,
+                          valid_destination_test,
+                          valid_edge_test, preferences,
+                          final_constraint, included_sis, *args, **kwargs)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
     return result

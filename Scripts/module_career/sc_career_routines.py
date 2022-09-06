@@ -590,18 +590,18 @@ class sc_CareerRoutine:
                         choice = random.randint(0, 1)
 
                 if not check_actions(sim, "sit") and choice == 0:
-                    clear_sim_instance(sim_info)
+                    clear_sim_instance(sim_info, "sit", True)
                     if "stool" in str(chair).lower():
                         push_sim_function(sim, chair, 157667, False)
                     else:
                         push_sim_function(sim, chair, 31564, False)
                 elif not check_actions(sim, "clockin") and choice == 1:
-                    clear_sim_instance(sim_info)
+                    clear_sim_instance(sim_info, "sit", True)
                     push_sim_function(sim, register, 109691, False)
 
             elif register:
                 if not check_actions(sim, "clockin"):
-                    clear_sim_instance(sim_info)
+                    clear_sim_instance(sim_info, "sit", True)
                     push_sim_function(sim, register, 109691, False)
         return True
 

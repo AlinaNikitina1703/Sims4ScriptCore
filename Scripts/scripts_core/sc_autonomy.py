@@ -153,9 +153,9 @@ class sc_Autonomy:
             if not sc_Autonomy.run_routine_filter(self, interaction):
                 return result
 
-        if sc_Vars.DEBUG_AUTONOMY and not interaction.is_user_directed:
+        if sc_Vars.DEBUG_AUTONOMY:
             action = interaction.__class__.__name__.lower()
-            debugger("Sim: {} {} - Append: {}".format(interaction.sim.first_name, interaction.sim.last_name, action), 0, True)
+            debugger("Sim: {} {} - Append: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action), 0, True)
 
         log_interaction('Enqueue', interaction)
         result = self._append(interaction)
@@ -171,9 +171,9 @@ class sc_Autonomy:
             if not sc_Autonomy.run_routine_filter(self, interaction):
                 return result
 
-        if sc_Vars.DEBUG_AUTONOMY and not interaction.is_user_directed:
+        if sc_Vars.DEBUG_AUTONOMY:
             action = interaction.__class__.__name__.lower()
-            debugger("Sim: {} {} - Insert Next: {}".format(interaction.sim.first_name, interaction.sim.last_name, action), 0, True)
+            debugger("Sim: {} {} - Insert Next: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action), 0, True)
 
         log_interaction('Enqueue_Next', interaction)
         result = (self._insert_next)(interaction, **kwargs)
@@ -221,14 +221,14 @@ class sc_Autonomy:
 
         if "mixer_social" in action:
             if now - interaction.interaction_timeout > date_and_time.create_time_span(minutes=1):
-                debugger("Sim: {} {} - Timeout: {}".format(interaction.sim.first_name, interaction.sim.last_name, action))
+                debugger("Sim: {} {} - Timeout: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action))
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
                 return False
 
         if autonomy == AutonomyState.DISABLED and "chat" in action and not interaction.is_user_directed or \
                 autonomy == AutonomyState.DISABLED and "social" in action and not interaction.is_user_directed:
             if distance_to_by_room(interaction.sim, interaction.target) > 5:
-                debugger("Sim: {} {} - Long Distance: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, action, interaction.allow_autonomous), 2, True)
+                debugger("Sim: {} {} - Long Distance: ({}) {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action, interaction.allow_autonomous), 2, True)
                 for social_group in interaction.sim.get_groups_for_sim_gen():
                     social_group.remove(interaction.target)
                     social_group._resend_members()
@@ -243,7 +243,7 @@ class sc_Autonomy:
                     if sc_Vars.tag_sim_for_debugging:
                         name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                         if name in sc_Vars.tag_sim_for_debugging:
-                            debugger("Sim: {} {} - Enable Filtered: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, action, interaction.allow_autonomous), 2, True)
+                            debugger("Sim: {} {} - Enable Filtered: ({}) {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action, interaction.target, interaction.allow_autonomous), 2, True)
                     interaction.cancel(FinishingType.KILLED, 'Filtered')
                     return False
                 else:
@@ -262,7 +262,7 @@ class sc_Autonomy:
                         if sc_Vars.tag_sim_for_debugging:
                             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                             if name in sc_Vars.tag_sim_for_debugging:
-                                debugger("Sim: {} {} - Index: {} Filtered: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, index, action, interaction.allow_autonomous), 2, True)
+                                debugger("Sim: {} {} - Index: {} Filtered: ({}) {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, index, interaction.guid64, action, interaction.target, interaction.allow_autonomous), 2, True)
                         interaction.cancel(FinishingType.KILLED, 'Filtered')
                         return False
 
@@ -273,7 +273,7 @@ class sc_Autonomy:
                         if sc_Vars.tag_sim_for_debugging:
                             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                             if name in sc_Vars.tag_sim_for_debugging:
-                                debugger("Sim: {} {} - Role Filtered: {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, action, interaction.target, interaction.allow_autonomous), 2, True)
+                                debugger("Sim: {} {} - Role Filtered: ({}) {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action, interaction.target, interaction.allow_autonomous), 2, True)
                         interaction.cancel(FinishingType.USER_CANCEL, 'Filtered')
                         return False
         return True

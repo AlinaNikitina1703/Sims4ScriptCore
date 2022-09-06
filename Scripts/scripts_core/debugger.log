@@ -1,613 +1,825 @@
 
 
-11:03:22.800 day:1 week:9
-Sim: Sybill - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 21:58:06 2022
+Sim: Julie Fontaine - Interaction: sim-stand Target: None User Directed: False
+@407 - sc_autonomy.py - prepare_gen
 
-11:03:22.800 day:1 week:9
-Sim: Alexandria - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 21:58:07 2022
+Sim: Julie Fontaine - Interaction: sim-stand Target: None User Directed: False
+@407 - sc_autonomy.py - prepare_gen
 
-11:13:01.216 day:1 week:9
-Sim: Aurore - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 21:58:09 2022
+Sim: Julie Fontaine - Interaction: seating_sit_ctyae Target: object_sitBarstoolC_03:0x09f30f992d6202b0 User Directed: True
+@407 - sc_autonomy.py - prepare_gen
 
-11:13:01.688 day:1 week:9
-Sim: Kaylyn - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 21:58:11 2022
+Sim: Julie Fontaine - Interaction: sim-stand Target: None User Directed: False
+@407 - sc_autonomy.py - prepare_gen
 
-11:23:01.216 day:1 week:9
-Sim: Sybill - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:00:32 2022
+All But Filter: sim-stand
+@1295 - sc_jobs.py - clear_sim_instance
+@599 - sc_career_routines.py - cashier_routine
 
-11:23:02.656 day:1 week:9
-Sim: Vanessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:00:35 2022
+All But Filter: sim-stand
+@1295 - sc_jobs.py - clear_sim_instance
+@599 - sc_career_routines.py - cashier_routine
 
-11:32:17.120 day:1 week:9
-Sim: Joyce Thayer - Killed: mixer_social_askaboutday_targeted_friendly_alwayson
-@178 - ai_autonomy.py - notify_queue_head
+Mon Sep  5 22:01:02 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:39:25.912 day:1 week:9
-Sim: Raven Winds - Killed: mixer_social_respectfulintroduction_greetings
-@178 - ai_autonomy.py - notify_queue_head
+Mon Sep  5 22:01:02 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:39:45.912 day:1 week:9
-Sim: Raven Winds - Killed: mixer_social_funnyintroduction_greetings
-@178 - ai_autonomy.py - notify_queue_head
+Mon Sep  5 22:01:02 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:40:09.252 day:1 week:9
-Sim: Raven Winds - Killed: mixer_social_funnyintroduction_greetings
-@178 - ai_autonomy.py - notify_queue_head
+Mon Sep  5 22:01:02 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:43:00.044 day:1 week:9
-Sim: Carrie - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:02 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:43:28.320 day:1 week:9
-Sim: Raven Winds - Killed: mixer_social_respectfulintroduction_greetings
-@178 - ai_autonomy.py - notify_queue_head
+Mon Sep  5 22:01:02 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:44:01.876 day:1 week:9
-Sim: Minerva - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:03 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:53:00.252 day:1 week:9
-Sim: Vanessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:03 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-11:53:00.252 day:1 week:9
-Sim: Dennis - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:03 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:03:17.808 day:1 week:9
-Sim: Martine - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:03 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:03:17.808 day:1 week:9
-Sim: Paige - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:12 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:03:17.808 day:1 week:9
-Sim: Paige - Spawn Filtered
-@77 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:12 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:12:10.928 day:1 week:9
-Sim: Denise - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:12 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:21:17.524 day:1 week:9
-Sim: Vanessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:20 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:21:17.524 day:1 week:9
-Sim: Dominique - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:20 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:31:09.604 day:1 week:9
-Sim: Vanessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:01:20 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-12:31:09.604 day:1 week:9
-Sim: Hina - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-12:31:09.604 day:1 week:9
-Sim: Saanvi - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-12:32:02.832 day:1 week:9
-Sim: Hina Nakayama - Killed: socialmixer_greetings_dismiss
-@178 - ai_autonomy.py - notify_queue_head
-
-12:41:10.124 day:1 week:9
-Sim: Vanessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-12:41:10.124 day:1 week:9
-Sim: Alexandria - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-12:51:09.848 day:1 week:9
-Sim: Carrie - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-12:51:09.848 day:1 week:9
-Sim: Aubrey - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:01:09.100 day:1 week:9
-Sim: Carrie - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:01:09.100 day:1 week:9
-Sim: Serena - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:13:50.864 day:1 week:9
-Sim: Bobby McLaughlin - Killed: socialmixer_greetings_dismiss
-@178 - ai_autonomy.py - notify_queue_head
-
-13:13:50.864 day:1 week:9
-Sim: Lily Zhu - Killed: mixer_social_weathertemperaturesocials_talkabouttemperature
-@178 - ai_autonomy.py - notify_queue_head
-
-13:14:34.736 day:1 week:9
-Sim: Lily Zhu - Killed: social_funny_pubertychanges_joke_hair_face
-@178 - ai_autonomy.py - notify_queue_head
-
-13:15:13.508 day:1 week:9
-Sim: Raven - Push Sim Result: EnqueueResult: True ExecuteResult: True: (None) -  running opt_Listen:1816 on   (guaranteed)
-@516 - sc_menu.py - get_push_sim_callback
-
-13:15:43.280 day:1 week:9
-Sim: Raven - Push Sim Result: EnqueueResult: True ExecuteResult: True: (None) -  running opt_Listen:1994 on retro_stereo:0x0c530f7a2da202d3  (guaranteed)
-@516 - sc_menu.py - get_push_sim_callback
-
-13:18:05.548 day:1 week:9
-Sim: Sybill - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:18:23.644 day:1 week:9
-Sim: Bobby McLaughlin - Killed: socials_funny_autonomousonly_stc
-@178 - ai_autonomy.py - notify_queue_head
-
-13:19:53.268 day:1 week:9
-Sim: Vivian - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:25:27.052 day:1 week:9
-Sim: Bobby McLaughlin - Killed: mixer_social_askaboutday_targeted_friendly_alwayson
-@178 - ai_autonomy.py - notify_queue_head
-
-13:28:52.780 day:1 week:9
-Sim: Carrie - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:28:52.780 day:1 week:9
-Sim: Paige - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:28:52.780 day:1 week:9
-Sim: Paige - Spawn Filtered
-@77 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:38:51.212 day:1 week:9
-Sim: Aurore - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:38:51.212 day:1 week:9
-Sim: Keala - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:46:05.356 day:1 week:9
-Sim: Diane Stern - Killed: socialmixer_greetings_dismiss
-@178 - ai_autonomy.py - notify_queue_head
-
-13:48:54.384 day:1 week:9
-Sim: Terre - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:48:54.384 day:1 week:9
-Sim: Kendra - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:51:57.832 day:1 week:9
-Sim: Bobby McLaughlin - Killed: mixer_social_weathertemperaturesocials_complainaboutsnow
-@178 - ai_autonomy.py - notify_queue_head
-
-13:52:09.268 day:1 week:9
-Sim: Bobby McLaughlin - Killed: mixer_social_discusslocalfishingspots_targeted_friendly_alwayson_neighbor
-@178 - ai_autonomy.py - notify_queue_head
-
-13:52:30.464 day:1 week:9
-Sim: Lily Zhu - Killed: mixer_socials_telljoke_group_funny_alwayson
-@178 - ai_autonomy.py - notify_queue_head
-
-13:52:30.464 day:1 week:9
-Sim: Lily Zhu - Killed: mixer_social_weathertemperaturesocials_talkaboutweather
-@178 - ai_autonomy.py - notify_queue_head
-
-13:54:13.464 day:1 week:9
-Sim: Bobby McLaughlin - Killed: mixer_social_tellgrossjoke_group_funny_mediumscore_child
-@178 - ai_autonomy.py - notify_queue_head
-
-13:54:29.464 day:1 week:9
-Sim: Lily Zhu - Killed: socials_friendly_autonomousonly_stc
-@178 - ai_autonomy.py - notify_queue_head
-
-13:58:23.660 day:1 week:9
-Sim: Lily Zhu - Killed: mixer_social_askaboutday_targeted_friendly_alwayson
-@178 - ai_autonomy.py - notify_queue_head
-
-13:58:51.212 day:1 week:9
-Sim: Sybill - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-13:58:51.212 day:1 week:9
-Sim: Kaylyn - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:08:52.920 day:1 week:9
-Sim: Carrie - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:08:52.920 day:1 week:9
-Sim: Saanvi - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:18:51.212 day:1 week:9
-Sim: Terre - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:18:54.492 day:1 week:9
-Sim: Saori - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:28:51.212 day:1 week:9
-Sim: Agatha - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:44:54.336 day:1 week:9
-Sim: Saori - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-14:54:29.620 day:1 week:9
-Sim: Hector Laurent - Killed: mixer_social_lieaboutcareer_group_mischief_skills
+Mon Sep  5 22:01:49 2022
+Sim: Raven Winds - Killed: mixer_social_yellat_targeted_mean
 @181 - ai_autonomy.py - notify_queue_head
 
-14:54:54.336 day:1 week:9
-Sim: Alexandria - Spawn
+Mon Sep  5 22:01:49 2022
+Sim: Raven Winds - Killed: mixer_social_yellat_targeted_mean
+@181 - ai_autonomy.py - notify_queue_head
+
+Mon Sep  5 22:02:28 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:28 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:28 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:28 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:28 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:28 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:29 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:29 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:29 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:30 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:31 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:32 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:33 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:33 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:33 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:33 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:02:33 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:03:17 2022
+Sim: Valentina Nappi - Killed: socialmixer_greetings_dismiss
+@178 - ai_autonomy.py - notify_queue_head
+
+Mon Sep  5 22:03:21 2022
+Sim: Ida - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:02.216 day:1 week:9
-Sim: Aurore - Spawn
+Mon Sep  5 22:03:21 2022
+Sim: Brent - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:02.216 day:1 week:9
-Sim: Jayden - Spawn
+Mon Sep  5 22:03:21 2022
+Sim: Rosie - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:05.908 day:1 week:9
-Sim: Kaylyn - Spawn
+Mon Sep  5 22:03:21 2022
+Sim: Molly - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:05.908 day:1 week:9
-Sim: Marcel - Spawn
+Mon Sep  5 22:03:21 2022
+Sim: Luke - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:05.908 day:1 week:9
-Sim: Christina - Spawn
+Mon Sep  5 22:03:22 2022
+Sim: Ekram - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:05.908 day:1 week:9
-Sim: Elsa - Spawn
+Mon Sep  5 22:05:18 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:18 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:18 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:18 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:18 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:18 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:19 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:19 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:19 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:19 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:19 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:19 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:05:32 2022
+Sim: Beatriz - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:05.908 day:1 week:9
-Sim: Lily - Spawn
+Mon Sep  5 22:05:32 2022
+Sim: Doodle - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-15:00:05.908 day:1 week:9
-Sim: Pierce - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:04:54.352 day:1 week:9
-Sim: Billie - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:14:54.336 day:1 week:9
-Sim: Tamika - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:14:57.752 day:1 week:9
-Sim: Tessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:24:54.336 day:1 week:9
-Sim: Tamara - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:35:06.336 day:1 week:9
-Sim: Tom - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:45:00.604 day:1 week:9
-Sim: Max - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-15:55:26.336 day:1 week:9
+Mon Sep  5 22:05:32 2022
 Sim: Alycia - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-16:04:54.336 day:1 week:9
-Sim: Nymphadora - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-16:14:54.336 day:1 week:9
-Sim: Sierra - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-16:24:54.504 day:1 week:9
-Sim: Sierra - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-16:34:56.680 day:1 week:9
-Sim: Kaylyn - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-16:34:56.680 day:1 week:9
-Sim: Melina - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-16:41:56.604 day:1 week:9
-Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+Mon Sep  5 22:05:49 2022
+Sim: Raven Winds - Killed: mixer_social_rileup_targeted_mean_alwayson
 @181 - ai_autonomy.py - notify_queue_head
 
-16:41:56.604 day:1 week:9
-Sim: Tamika Ramses - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+Mon Sep  5 22:08:15 2022
+Sim: Lucile - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:08:15 2022
+Sim: Lucile - Spawn Filtered
+@65 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:08:15 2022
+Sim: Hector - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:08:15 2022
+Sim: Hector - Spawn Filtered
+@65 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:08:18 2022
+Sim: Anjelo Morlind - Killed: mixer_social_confessattraction_targeted_romance_middlescore
+@172 - ai_autonomy.py - notify_queue_head
+
+Mon Sep  5 22:08:19 2022
+Sim: Anjelo Morlind - Killed: mixer_social_confessattraction_targeted_romance_middlescore
+@172 - ai_autonomy.py - notify_queue_head
+
+Mon Sep  5 22:08:39 2022
+Sim: Raven Winds - Killed: mixer_social_insult_mean_stc
 @181 - ai_autonomy.py - notify_queue_head
 
-16:41:56.604 day:1 week:9
-Sim: Tamika Ramses - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+Mon Sep  5 22:10:23 2022
+Sim: Alicia - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:10:23 2022
+Sim: Alicia - Spawn Filtered
+@65 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:10:23 2022
+Sim: Brandy - Spawn
+@45 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:10:23 2022
+Sim: Brandy - Spawn Filtered
+@65 - sc_spawn_handler.py - _spawn_requested_sim
+
+Mon Sep  5 22:10:24 2022
+Sim: Raven Winds - Killed: mixer_social_implymotherisllama_targeted_mean_highscore
 @181 - ai_autonomy.py - notify_queue_head
 
-16:44:54.336 day:1 week:9
-Sim: April - Spawn
+Mon Sep  5 22:10:48 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:10:48 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:10:48 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:10:49 2022
+Sim: Agnes - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-16:54:54.872 day:1 week:9
-Sim: Mariangela - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Mon Sep  5 22:10:50 2022
+Sim: Agnes - Spawn Filtered
+@65 - sc_spawn_handler.py - _spawn_requested_sim
 
-16:55:00.604 day:1 week:9
-Sim: Minerva - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-16:55:00.604 day:1 week:9
-Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+Mon Sep  5 22:24:22 2022
+Sim: Alika Kahananui - Killed: mixer_social_lieaboutcareer_group_mischief_skills
 @181 - ai_autonomy.py - notify_queue_head
 
-17:02:40.780 day:1 week:9
-Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
+Mon Sep  5 22:24:42 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:24:42 2022
+Sim: Julie Fontaine - Index: sit_passive Filtered: (14244) sit_passive Target: object_sitBarstoolC_03:0x09f30f992d6202b0 Autonomy: True
+@265 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Mon Sep  5 22:24:42 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:43 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:43 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:46 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:46 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:46 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:48 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:48 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:48 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:48 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:24:49 2022
+Routine Sim: Julie Fontaine - Killed: emotion_idle
+@355 - sc_autonomy.py - run_routine_filter
+
+Mon Sep  5 22:26:37 2022
+Sim: Raven Winds - Killed: mixer_social_implymotherisllama_targeted_mean_highscore
 @181 - ai_autonomy.py - notify_queue_head
 
-17:02:44.604 day:1 week:9
-Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
-@181 - ai_autonomy.py - notify_queue_head
+Tue Sep  6 07:00:40 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:02:44.604 day:1 week:9
-Sim: Tom Peeping - Killed: mixer_social_npc_greetings
-@178 - ai_autonomy.py - notify_queue_head
+Tue Sep  6 07:03:21 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:04:54.336 day:1 week:9
-Sim: Camille - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Tue Sep  6 07:05:40 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:14:54.344 day:1 week:9
-Sim: Clara - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Tue Sep  6 07:15:49 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:24:54.476 day:1 week:9
-Sim: Nanami - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Tue Sep  6 07:16:15 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:27:18.336 day:1 week:9
-Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
-@181 - ai_autonomy.py - notify_queue_head
+Tue Sep  6 07:16:46 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:35:41.272 day:1 week:9
-Sim: Alexandria - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-17:45:02.336 day:1 week:9
+Tue Sep  6 07:16:52 2022
 Sim: Tessa - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-17:50:44.604 day:1 week:9
-Sim: Aurore Poustel - Killed: mixer_social_attempttoscare_targeted_mischief_skills
-@181 - ai_autonomy.py - notify_queue_head
+Tue Sep  6 07:16:53 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
 
-17:55:00.604 day:1 week:9
-Sim: Sierra - Spawn
+Tue Sep  6 07:17:19 2022
+Sim: Lucile - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-18:05:00.604 day:1 week:9
-Sim: Cassandra - Spawn
+Tue Sep  6 07:17:20 2022
+Sim: Linsha - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-18:14:54.336 day:1 week:9
-Sim: Nancy - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-18:25:00.604 day:1 week:9
-Sim: Tessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-18:44:54.336 day:1 week:9
-Sim: Saanvi - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-18:54:54.336 day:1 week:9
-Sim: Pearl - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-19:05:58.336 day:1 week:9
-Sim: Laura - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-19:11:34.336 day:1 week:9
-Sim: Hector Laurent - Killed: mixer_social_lieaboutcareer_group_mischief_skills
-@181 - ai_autonomy.py - notify_queue_head
-
-19:24:54.336 day:1 week:9
-Sim: Geoffrey - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-19:35:02.336 day:1 week:9
-Sim: Tessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-19:45:02.336 day:1 week:9
-Sim: Sierra - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-19:54:54.352 day:1 week:9
-Sim: Kevin - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-04:00:34.336 day:2 week:9
-Sim: Pearl - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-06:05:21.908 day:2 week:9
-Sim: Alexandria - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-06:34:54.384 day:2 week:9
-Sim: Lindsay - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-06:54:58.604 day:2 week:9
-Sim: Nancy - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-07:00:14.604 day:2 week:9
-Sim: Janae - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-07:00:27.424 day:2 week:9
-Sim: April - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-07:05:03.424 day:2 week:9
-Sim: Serena - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-07:05:15.424 day:2 week:9
-Sim: Geoffrey - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-07:25:35.424 day:2 week:9
-Sim: Tomi - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-07:34:55.424 day:2 week:9
+Tue Sep  6 07:17:20 2022
 Sim: Aubrey - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-07:54:58.336 day:2 week:9
-Sim: Mariangela - Spawn
+Tue Sep  6 07:17:20 2022
+Sim: June - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-08:05:05.428 day:2 week:9
-Sim: Amy - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-08:20:26.336 day:2 week:9
-Sim: Nymphadora - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-08:20:30.336 day:2 week:9
-Sim: Jacob - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-08:25:00.336 day:2 week:9
-Sim: Saanvi - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-08:34:58.336 day:2 week:9
-Sim: Ignacio - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-09:00:00.000 day:2 week:9
-Sim: Marcel - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-09:00:00.000 day:2 week:9
-Sim: Rory - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-09:00:00.000 day:2 week:9
-Sim: Olivia - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-09:08:40.336 day:2 week:9
-Sim: Vanessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-09:08:40.336 day:2 week:9
-Sim: Selina - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-09:25:11.424 day:2 week:9
-Sim: Doug - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:00:00.304 day:2 week:9
-Sim: Shigeru - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:00:10.336 day:2 week:9
-Sim: Rianni - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:00:10.336 day:2 week:9
-Sim: Hilda - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:15:30.336 day:2 week:9
-Sim: Hilary - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:25:18.056 day:2 week:9
-Sim: Sachiko - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:34:54.396 day:2 week:9
-Sim: Brytani - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:34:54.936 day:2 week:9
-Sim: Sybill - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
-
-10:45:18.336 day:2 week:9
+Tue Sep  6 07:17:20 2022
 Sim: Kaylyn - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-10:54:59.768 day:2 week:9
-Sim: Alika - Spawn
+Tue Sep  6 07:17:20 2022
+Sim: Paige - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-11:05:18.336 day:2 week:9
-Sim: Arnessa - Spawn
+Tue Sep  6 07:17:20 2022
+Sim: Paige - Spawn Filtered
+@77 - sc_spawn_handler.py - _spawn_requested_sim
+
+Tue Sep  6 07:17:20 2022
+Sim: Elliot - Spawn
 @45 - sc_spawn_handler.py - _spawn_requested_sim
 
-12:15:08.108 day:2 week:9
-Sim: Dominic - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Tue Sep  6 07:31:00 2022
+Error also reported in console. To open the console, press CTRL + SHIFT + C. To show previous messages in console, type help and enter, then scroll up.
 
-12:25:16.604 day:2 week:9
-Sim: Aubrey - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Script failed: {} 
+output argument 2 must be int, not Account
 
-12:35:22.336 day:2 week:9
-Sim: Mariangela - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+class 'TypeError', TypeError'output argument 2 must be int, not Account', traceback object at 0x00007FF3FBAAAB90
 
-12:54:58.336 day:2 week:9
-Sim: Tessa - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+Traceback most recent call last:
+   sc_menu_class.py, line 77 options
+    methodtimeline
+   sc_outfit.py, line 180 modify_career_outfit
+    _connection
+   commands.py, line 216 client_cheat
+TypeError: output argument 2 must be int, not Account
 
-12:57:59.568 day:2 week:9
-Sim: Raven Winds - Killed: mixer_social_cheerfulintroduction_greetings_skills
-@178 - ai_autonomy.py - notify_queue_head
 
-13:04:55.040 day:2 week:9
-Sim: Mei - Spawn
-@45 - sc_spawn_handler.py - _spawn_requested_sim
+@46 - sc_debugger.py - debugger
+@202 - sc_util.py - error_trap
+@79 - sc_menu_class.py - options
+@105 - sc_menu_class.py - handle_result
+@92 - sc_dialog.py - response_func
+@158 - callback_utils.py - __call__
+@393 - ui_dialog.py - respond
+@40 - sc_dialog.py - display_choices_dialog_respond_hook
+@43 - sc_io.py - _inject
+@47 - ai_dialog.py - display_choices_dialog_respond_hook
+@15 - ai_io.py - _inject
+@44 - bathroom_dialog.py - display_choices_dialog_respond_hook
+@14 - bathroom_io.py - _inject
+@44 - music_dialog.py - display_choices_dialog_respond_hook
+@45 - music_io.py - _inject
+@123 - S4WE_inc.py - display_choices_dialog_respond_hook
+@13 - S4WE_io.py - _inject
+@29 - ui_commands.py - ui_dialog_respond
+@399 - commands.py - invoke_command
 
-13:05:24.896 day:2 week:9
-Sim: Raven Winds - Killed: mixer_social_yellat_targeted_mean
-@181 - ai_autonomy.py - notify_queue_head
+Tue Sep  6 07:31:00 2022
+Script failed: {} 
+output() argument 2 must be int, not Account
+
+(<class 'TypeError'>, TypeError('output() argument 2 must be int, not Account'), <traceback object at 0x00007FF3FBAAAB90>)
+
+[Traceback (most recent call last):  File "sc_menu_class.py", line 77, in options    method(timeline)  File "sc_outfit.py", line 180, in modify_career_outfit    _connection)  File "commands.py", line 216, in client_cheatTypeError: output() argument 2 must be int, not Account]
+
+@46 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@203 - sc_util.py - error_trap
+@79 - sc_menu_class.py - options
+@105 - sc_menu_class.py - handle_result
+@92 - sc_dialog.py - response_func
+@158 - callback_utils.py - __call__
+@393 - ui_dialog.py - respond
+@40 - sc_dialog.py - display_choices_dialog_respond_hook
+@43 - sc_io.py - _inject
+@47 - ai_dialog.py - display_choices_dialog_respond_hook
+@15 - ai_io.py - _inject
+@44 - bathroom_dialog.py - display_choices_dialog_respond_hook
+@14 - bathroom_io.py - _inject
+@44 - music_dialog.py - display_choices_dialog_respond_hook
+@45 - music_io.py - _inject
+@123 - S4WE_inc.py - display_choices_dialog_respond_hook
+@13 - S4WE_io.py - _inject
+@29 - ui_commands.py - ui_dialog_respond
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:32:42 2022
+Error also reported in console. To open the console, press CTRL + SHIFT + C. To show previous messages in console, type help and enter, then scroll up.
+
+Script failed: {} 
+'NoneType' object has no attribute 'append'
+
+class 'AttributeError', AttributeError'NoneType' object has no attribute 'append', traceback object at 0x00007FF4AC97E5A8
+
+Traceback most recent call last:
+   sc_outfit.py, line 149 _run_interaction_gen
+    OutfitCategoryMenu.outfit_selected_sim_list.appendsim_info
+AttributeError: 'NoneType' object has no attribute 'append'
+
+
+@46 - sc_debugger.py - debugger
+@202 - sc_util.py - error_trap
+@166 - sc_outfit.py - _run_interaction_gen
+@29 - sc_outfit_menu.py - _run_interaction_gen
+@335 - elements.py - _run
+@216 - scheduling.py - simulate
+@49 - sc_unclogger.py - _reset_stuck_element
+@22 - sc_unclogger.py - _wrapped_function
+@192 - aop.py - execute_interaction
+@224 - aop.py - execute
+@236 - aop.py - test_and_execute
+@252 - choices.py - select
+@257 - client.py - select_interaction
+@984 - interaction_commands.py - select_choice
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:32:42 2022
+Script failed: {} 
+'NoneType' object has no attribute 'append'
+
+(<class 'AttributeError'>, AttributeError("'NoneType' object has no attribute 'append'"), <traceback object at 0x00007FF4AC97E5A8>)
+
+[Traceback (most recent call last):  File "sc_outfit.py", line 149, in _run_interaction_gen    OutfitCategoryMenu.outfit_selected_sim_list.append(sim_info)AttributeError: 'NoneType' object has no attribute 'append']
+
+@46 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@203 - sc_util.py - error_trap
+@166 - sc_outfit.py - _run_interaction_gen
+@29 - sc_outfit_menu.py - _run_interaction_gen
+@335 - elements.py - _run
+@216 - scheduling.py - simulate
+@49 - sc_unclogger.py - _reset_stuck_element
+@22 - sc_unclogger.py - _wrapped_function
+@192 - aop.py - execute_interaction
+@224 - aop.py - execute
+@236 - aop.py - test_and_execute
+@252 - choices.py - select
+@257 - client.py - select_interaction
+@984 - interaction_commands.py - select_choice
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:38:00 2022
+Error also reported in console. To open the console, press CTRL + SHIFT + C. To show previous messages in console, type help and enter, then scroll up.
+
+Script failed: {} 
+'NoneType' object has no attribute 'append'
+
+class 'AttributeError', AttributeError'NoneType' object has no attribute 'append', traceback object at 0x00007FF3FFED9E18
+
+Traceback most recent call last:
+   sc_outfit.py, line 149 _run_interaction_gen
+    OutfitCategoryMenu.outfit_selected_sim_list.appendself.target.sim_info
+AttributeError: 'NoneType' object has no attribute 'append'
+
+
+@46 - sc_debugger.py - debugger
+@202 - sc_util.py - error_trap
+@169 - sc_outfit.py - _run_interaction_gen
+@29 - sc_outfit_menu.py - _run_interaction_gen
+@335 - elements.py - _run
+@216 - scheduling.py - simulate
+@49 - sc_unclogger.py - _reset_stuck_element
+@22 - sc_unclogger.py - _wrapped_function
+@192 - aop.py - execute_interaction
+@224 - aop.py - execute
+@236 - aop.py - test_and_execute
+@252 - choices.py - select
+@257 - client.py - select_interaction
+@984 - interaction_commands.py - select_choice
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:38:00 2022
+Script failed: {} 
+'NoneType' object has no attribute 'append'
+
+(<class 'AttributeError'>, AttributeError("'NoneType' object has no attribute 'append'"), <traceback object at 0x00007FF3FFED9E18>)
+
+[Traceback (most recent call last):  File "sc_outfit.py", line 149, in _run_interaction_gen    OutfitCategoryMenu.outfit_selected_sim_list.append(self.target.sim_info)AttributeError: 'NoneType' object has no attribute 'append']
+
+@46 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@203 - sc_util.py - error_trap
+@169 - sc_outfit.py - _run_interaction_gen
+@29 - sc_outfit_menu.py - _run_interaction_gen
+@335 - elements.py - _run
+@216 - scheduling.py - simulate
+@49 - sc_unclogger.py - _reset_stuck_element
+@22 - sc_unclogger.py - _wrapped_function
+@192 - aop.py - execute_interaction
+@224 - aop.py - execute
+@236 - aop.py - test_and_execute
+@252 - choices.py - select
+@257 - client.py - select_interaction
+@984 - interaction_commands.py - select_choice
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:42:32 2022
+Error also reported in console. To open the console, press CTRL + SHIFT + C. To show previous messages in console, type help and enter, then scroll up.
+
+Script failed: {} 
+output argument 2 must be int, not None
+
+class 'TypeError', TypeError'output argument 2 must be int, not None', traceback object at 0x00007FF405DFEC68
+
+Traceback most recent call last:
+   sc_menu_class.py, line 77 options
+    methodtimeline
+   sc_outfit.py, line 178 modify_career_outfit
+    _connection
+   commands.py, line 216 client_cheat
+TypeError: output argument 2 must be int, not None
+
+
+@46 - sc_debugger.py - debugger
+@202 - sc_util.py - error_trap
+@79 - sc_menu_class.py - options
+@105 - sc_menu_class.py - handle_result
+@92 - sc_dialog.py - response_func
+@158 - callback_utils.py - __call__
+@393 - ui_dialog.py - respond
+@40 - sc_dialog.py - display_choices_dialog_respond_hook
+@43 - sc_io.py - _inject
+@47 - ai_dialog.py - display_choices_dialog_respond_hook
+@15 - ai_io.py - _inject
+@44 - bathroom_dialog.py - display_choices_dialog_respond_hook
+@14 - bathroom_io.py - _inject
+@44 - music_dialog.py - display_choices_dialog_respond_hook
+@45 - music_io.py - _inject
+@123 - S4WE_inc.py - display_choices_dialog_respond_hook
+@13 - S4WE_io.py - _inject
+@29 - ui_commands.py - ui_dialog_respond
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:42:32 2022
+Script failed: {} 
+output() argument 2 must be int, not None
+
+(<class 'TypeError'>, TypeError('output() argument 2 must be int, not None'), <traceback object at 0x00007FF405DFEC68>)
+
+[Traceback (most recent call last):  File "sc_menu_class.py", line 77, in options    method(timeline)  File "sc_outfit.py", line 178, in modify_career_outfit    _connection)  File "commands.py", line 216, in client_cheatTypeError: output() argument 2 must be int, not None]
+
+@46 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@203 - sc_util.py - error_trap
+@79 - sc_menu_class.py - options
+@105 - sc_menu_class.py - handle_result
+@92 - sc_dialog.py - response_func
+@158 - callback_utils.py - __call__
+@393 - ui_dialog.py - respond
+@40 - sc_dialog.py - display_choices_dialog_respond_hook
+@43 - sc_io.py - _inject
+@47 - ai_dialog.py - display_choices_dialog_respond_hook
+@15 - ai_io.py - _inject
+@44 - bathroom_dialog.py - display_choices_dialog_respond_hook
+@14 - bathroom_io.py - _inject
+@44 - music_dialog.py - display_choices_dialog_respond_hook
+@45 - music_io.py - _inject
+@123 - S4WE_inc.py - display_choices_dialog_respond_hook
+@13 - S4WE_io.py - _inject
+@29 - ui_commands.py - ui_dialog_respond
+@399 - commands.py - invoke_command
+
+Tue Sep  6 07:44:14 2022
+Sim: Paige Harris - Long Distance: (13155) chess_social Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@150 - sc_autonomy.py - append
+
+Tue Sep  6 07:52:27 2022
+Sim: Paige Harris - Long Distance: (171479) petsocial_simtopet_introduction_sniffhand_cautious Autonomy: True
+@231 - sc_autonomy.py - run_interaction_filter
+@421 - sc_autonomy.py - prepare_gen

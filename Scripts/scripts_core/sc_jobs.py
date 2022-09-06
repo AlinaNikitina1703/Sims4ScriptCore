@@ -137,7 +137,7 @@ def set_proper_sim_outfit(sim, is_player=False, use_career=False):
     if check_actions(sim, "wicked") or check_actions(sim, "toilet") or check_actions(sim, "basketball") or \
             check_actions(sim, "workout"):
         return
-    if sim.sim_info._current_outfit[0] == OutfitCategory.BATHING:
+    if sim.sim_info._current_outfit[0] == OutfitCategory.BATHING or sim.sim_info._current_outfit[0] == OutfitCategory.SWIMWEAR:
         return
 
     if not is_player:
@@ -162,6 +162,9 @@ def set_proper_sim_outfit(sim, is_player=False, use_career=False):
     elif t == Temperature.BURNING and not is_player:
         picked_outfit = (OutfitCategory.HOTWEATHER, 0)
     else:
+        picked_outfit = (OutfitCategory.CURRENT_OUTFIT, 0)
+
+    if has_role(sim) and not use_career and not is_player:
         picked_outfit = (OutfitCategory.CURRENT_OUTFIT, 0)
     if sim.sim_info.has_outfit(picked_outfit) and sim.sim_info._current_outfit != picked_outfit:
         sim.sim_info._current_outfit = picked_outfit
@@ -900,8 +903,9 @@ def give_sim_access(sim):
 
 
 def assign_role_title(sim):
-    title_filter = ["lt:", "rolestate", "basictrait", "island", "situations", "state", "hospital", "generic", "background",
-                    "open streets", "openstreets", "openstreet", "master", "fanstan",
+    title_filter = ["lt:", "autonomy", "petworld", " walker", " walk", "rolestates", "rolestate", "basictrait", "island",
+                    "situations", "state", "hospital", "generic", "background", "open streets", "openstreets", "openstreet",
+                    "master", "fanstan",
                     "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",
                     "npc", "situation", "dj", "packb"]
     role_name = None

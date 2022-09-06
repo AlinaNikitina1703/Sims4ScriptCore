@@ -1,20 +1,20 @@
-TerrainPoint(object_terrain)
-[Zone Info:] 378036983766593328
-[Object ID:] 0
-[Object Definition ID:] 816 (0x330)
-[Object Outside:] <bound method _LocationPoint.is_outside of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))>
+object_Sculpture_NoView
+[Zone Info:] 378036983766593327
+[Object ID:] 380289781437498749
+[Object Definition ID:] 82029470 (0x4e3ab9e)
+[Object Outside:] True
 [Object Scale:] 1
 [Object Locked:] None
-[Object Dirty:] 100
+[Object Dirty:] False
 [Object Room ID:] 0
 [Object Level:] 0
-[Object Opacity:] 1
-[Object Tags:] None
+[Object Opacity:] 1.0
+[Object Tags:] BuyCatLD_MiscDecoration
 [Object Location (Title):] None [ID:] None
-[Object Slot Hash:] None
-[Object POS:] X:53.03734588623047 Y:157.52801513671875 Z:239.8467254638672
-[Object ROT:] X:0.0 Y:0.0 Z:0.0 W:1.0
-[Type:] class sims4.tuning.instances.object_terrain
+[Object Slot Hash:] 0
+[Object POS:] X:17.51142120361328 Y:157.45350646972656 Z:246.29429626464844
+[Object ROT:] X:0.0 Y:1.0 Z:0.0 W:1.564621925354004e-07
+[Type:] class sims4.tuning.instances.object_Sculpture_NoView
 [Commodities:]
 
 
@@ -45,6 +45,8 @@ INFO:
 (EnsembleComponent): None
 (EnvironmentScoreComponent): None
 (Example): None
+(FADE_DURATION): 1.2
+(FORWARD_OFFSET): 0.04
 (FishingLocation): None
 (FlowingPuddle): None
 (FocusComponent): None
@@ -52,7 +54,9 @@ INFO:
 (Game): None
 (Gameplay): None
 (Gardening): None
-(INSTANCE_TUNABLES): _super_affordances: sims4.tuning.tunable.TunableList object at 0x00007FF47DA0C5A0, _preroll_super_affordances: sims4.tuning.tunable.TunableList object at 0x00007FF47DA0C6B0, _part_data: sims4.tuning.tunable.TunableList object at 0x00007FF47DA3A408, _part_data_map: objects.parts.part_data.TunablePartDataMapping object at 0x00007FF47DA08290, posture_transition_target_tag: TunableEnumEntry, _anim_overrides: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47DA14E18, _anim_overrides_for_children: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47DA436E0, _default_anim_params: animation.animation_overrides_tuning.TunableParameterMapping object at 0x00007FF47DA08410, social_clustering: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47DA3B788, aop_forward_data: sims4.tuning.tunable.TunableTuple object at 0x00007FF47DA53050, _disable_child_footprint_and_shadow: TunableBool, disable_los_reference_point: TunableBool, _components: sims4.tuning.tunable.TunableTuple object at 0x00007FF47DAB2738, _components_native: sims4.tuning.tunable.TunableTuple object at 0x00007FF47DAB2958, _persistence: TunableEnumEntry, _world_file_object_persists: TunableBool, _object_state_remaps: sims4.tuning.tunable.TunableList object at 0x00007FF47DAB27C0, environment_score_trait_modifiers: sims4.tuning.tunable.TunableMapping object at 0x00007FF47DA3F940, slot_cost_modifiers: sims4.tuning.tunable.TunableMapping object at 0x00007FF47DA3F9F0, fire_retardant: TunableBool, blocking_balloon_overrides: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47DAB9B78, provides_terrain_interactions: TunableBool, provides_ocean_interactions: TunableBool, forward_offset_on_connectivity_check: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47DAB9C20, apply_children_component_anim_overrides: TunableBool, force_multi_surface_constraints: TunableBool, disallow_social_group_placement: TunableBool, wall_object_padding: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47DAB9CC8, anim_boundary_conditions_check_carry: TunableBool, favorite_prop_animation_overrides: sims4.tuning.tunable.TunableFactory.create_auto_factory.locals.auto_factory object at 0x00007FF47DA8B3B0, use_base_object_for_slot_constraints: TunableBool
+(HOVERTIP_HANDLE): 0
+(INITIAL_DEPRECIATION): 0.2
+(INSTANCE_TUNABLES): _transient_tuning: TunableBool, additional_interaction_constraints: sims4.tuning.tunable.TunableList object at 0x00007FF47D3C2EA8, autonomy_modifiers: sims4.tuning.tunable.TunableList object at 0x00007FF47D3E4050, set_ico_as_carry_target: TunableBool, supported_posture_types: snippets.define_snippet.locals.SnippetVariant object at 0x00007FF47D3DC610, allow_preroll_multiple_targets: TunableBool, icon_override: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47D3E1788, flammable_area: fire.flammability.TunableFlammableAreaVariant object at 0x00007FF47D3B99F0, _provided_mobile_posture: sims4.tuning.tunable.OptionalTunable object at 0x00007FF47D3E1F68, _remap_child_parenting: TunableBool, recycling_data: sims4.tuning.tunable.TunableTuple object at 0x00007FF47D3E4408, tests_to_bypass_utility_requirement: sims4.tuning.tunable.TunableMapping object at 0x00007FF47D3B9C00
 (Idle): None
 (Inventory): None
 (InventoryItem): None
@@ -63,6 +67,7 @@ INFO:
 (LiveDragTarget): None
 (Lock): None
 (LunarPhaseAware): None
+(MODULE_TUNABLES): INITIAL_DEPRECIATION: TunablePercent, FADE_DURATION: TunableSimMinute
 (Mannequin): None
 (ModularObject): None
 (Name): None
@@ -85,7 +90,6 @@ INFO:
 (Privacy): None
 (ProceduralAnimation): None
 (Proximity): None
-(REMOVE_INSTANCE_TUNABLES): _persistence, provides_terrain_interactions, _world_file_object_persists
 (Render): None
 (Retail): None
 (Routing): None
@@ -110,502 +114,806 @@ INFO:
 (Tooltip): None
 (Topic): None
 (Utilities): None
+(VISIBLE_TO_AUTOMATION): True
 (Vehicle): None
 (Video): None
 (WaitingLine): None
 (WeatherAware): None
 (Whim): None
 (ZoneModifier): None
-(__class__): class sims4.tuning.instances.TerrainPoint(object_terrain)
-(__delattr__): bound method ProxyObject.__delattr__ of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__dict__): _proxied_obj: object_terrain(0x0000000000000000), _pick_location: Location(Transform(Vector3(53.037346, 157.528015, 239.846725), Quaternion(0.000000, 0.000000, 0.000000, 1.000000)), 53F0EA2415E2F30,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
-(__dir__): built-in method __dir__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__doc__): This is a class for proxying instances of class sims4.tuning.instances.object_terrain.
-(__eq__): method-wrapper __eq__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__format__): built-in method __format__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__ge__): method-wrapper __ge__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__getattr__): bound method ProxyObject.__getattr__ of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__getattribute__): method-wrapper __getattribute__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__gt__): method-wrapper __gt__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__hash__): method-wrapper __hash__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__init__): bound method TerrainPoint.__init__ of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__init_subclass__): built-in method __init_subclass__ of HashedTunedInstanceMetaclass object at 0x00007FF456CBE450
-(__le__): method-wrapper __le__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__lt__): method-wrapper __lt__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
+(_NO_SLOTS): frozenset()
+(_UiObjectMetadata_sparse_value): distributor.sparse.SparseMessage object at 0x00007FF44060DF50
+(__class__): class sims4.tuning.instances.object_Sculpture_NoView
+(__delattr__): method-wrapper __delattr__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__dict__): _routing_context: ObjectID: 0, Radius: 0.3311, Key14296806522263978807,3548561239,2147483648, FootprintID: 33141, ConectivityHandles: () FlagsIgnoreOwnFootprint, _raycast_context: None, _suppress_statistic_callback_alarm_calculation: False, _component_instances: live_drag_component: LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d), footprint_component: FootprintComponent(object_Sculpture_NoView:0x05470f8a964b057d), slot_component: SlotComponent(object_Sculpture_NoView:0x05470f8a964b057d), focus_component: FocusComponent(object_Sculpture_NoView:0x05470f8a964b057d), retail_component: RetailComponent(object_Sculpture_NoView:0x05470f8a964b057d), state_component: StateComponent(object_Sculpture_NoView:0x05470f8a964b057d), tooltip_component: TooltipComponent(object_Sculpture_NoView:0x05470f8a964b057d), environmentscore_component: EnvironmentScoreComponent(object_Sculpture_NoView:0x05470f8a964b057d), statistic_component: StatisticComponent(object_Sculpture_NoView:0x05470f8a964b057d), id: 380289781437498749, manager: objects.object_manager.ObjectManager object at 0x00007FF451723450, definition: Definition: 82029470, _visible_to_client: True, _interaction_refs: None, _parts: None, content_source: 0, wall_or_fence_placement: False, live_drag_component: LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d), _component_definitions: (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class retail.retail_component.RetailComponent, class broadcasters.environment_score.environment_score_component.EnvironmentScoreComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent, class objects.components.slot_component.SlotComponent, class objects.components.tooltip_component.TooltipComponent), footprint_component: FootprintComponent(object_Sculpture_NoView:0x05470f8a964b057d), slot_component: SlotComponent(object_Sculpture_NoView:0x05470f8a964b057d), _dynamic_commodity_flags_map: None, _dynamic_animation_overrides: None, _cached_commodity_flags: frozenset(class sims4.tuning.instances.commodity_Motive_Role_AlienVisit_Alien), _cached_locations_for_posture: (), _cached_position_and_routing_surface_for_posture: (), _get_locations_for_posture_internal: bound method ScriptObject._rebind_and_get_locations_for_posture_internal of object_Sculpture_NoView(0x05470f8a964b057d), get_locations_for_posture: bound method ScriptObject._cache_and_return_get_locations_for_posture of object_Sculpture_NoView(0x05470f8a964b057d), get_position_and_routing_surface_for_posture: bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of object_Sculpture_NoView(0x05470f8a964b057d), item_location: ItemLocation.FROM_OPEN_STREET  6, focus_component: FocusComponent(object_Sculpture_NoView:0x05470f8a964b057d), retail_component: RetailComponent(object_Sculpture_NoView:0x05470f8a964b057d), state_component: StateComponent(object_Sculpture_NoView:0x05470f8a964b057d), tooltip_component: TooltipComponent(object_Sculpture_NoView:0x05470f8a964b057d), _persistence_group: PersistenceGroups.IN_OPEN_STREET  3, _registered_transition_controllers: None, environmentscore_component: EnvironmentScoreComponent(object_Sculpture_NoView:0x05470f8a964b057d), _reservation_handlers: (), _on_reservation_handlers_changed: bound method LiveDragComponent._on_owner_in_use_list_changed of LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d), _reservation_clobberers: None, _model: 000000008c4c0a68f972c6c9.01661233, _material_variant: 4106034409, _rig: 00000000a5b515df1bba09c0.8eaf13de, _slot: 00000000a5b515df1bba09c0.d3044521, _slots_resource: sims4.ObjectSlots, _state_index: 0, _ui_metadata_stack: (0, hover_tip, 0, False), _ui_metadata_handles: 0: (0, hover_tip, 0, False), _ui_metadata_cache: hover_tip: 0, primitives: DistributionSet(set()), _location: Location(Transform(Vector3(17.511421, 157.453506, 246.294296), Quaternion(0.000000, 1.000000, 0.000000, 0.000000)), 53F0EA2415E2F2F,0,World, joint_name_or_hashNone, parentNone, slot_hash0), _children_objects: None, _scale: 1, _parent_type: 0, _parent_location: 0, _build_buy_lockout: False, _build_buy_lockout_alarm_handler: None, _tint: None, _opacity: 1.0, _censor_state: None, _geometry_state: None, _geometry_state_overrides: None, _standin_model: None, _visibility: None, _visibility_flags: None, _material_state: None, _reference_arb: None, _audio_effects: None, _video_playlist: None, _painting_state: None, custom_name: None, custom_description: None, _multicolor: None, _display_number: None, _awareness_scores: None, _scratched: False, _voice_suffix_overrides: None, _base_value: 13, _needs_post_bb_fixup: False, _needs_depreciation: False, _swapping_to_parent: None, _swapping_from_parent: None, _on_children_changed: None, allow_opacity_change: True, _wind_speed_effect: None, _baby_skin_tone_and_cloth: None, _on_location_changed_callbacks: bound method Broadcaster._on_broadcasting_object_moved of sims4.tuning.instances.broadcaster_EnvironmentScore object at 0x00007FF43BCFCC90, function GameObject._location_changed at 0x00007FF47D3EDA70, _transient: None, _created_constraints: None, _created_constraints_dirty: True, _household_owner_id: None, new_in_inventory: True, is_new_object: False, _provided_surface: None, _hidden_flags: 0, _local_tags: set(), _persisted_tags: None, _is_surface: (False, False): False, _build_buy_use_flags: 0, _scheduled_elements: None, _work_locks: _weakrefset.WeakSet object at 0x00007FF43BC7D7D0, _on_hidden_or_shown_callbacks: None, _provided_mobile_posture_operations: None, statistic_component: StatisticComponent(object_Sculpture_NoView:0x05470f8a964b057d), _super_affordances: (class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.simRay_Transform_Object, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.btn_ModuleEditorMenu, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.btn_ModuleEditorMenuDebug, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_General_Object_CheatDebug_Info), _UiObjectMetadata_sparse_value: distributor.sparse.SparseMessage object at 0x00007FF44060DF50
+(__dir__): built-in method __dir__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__doc__): None
+(__eq__): method-wrapper __eq__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__format__): built-in method __format__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__ge__): method-wrapper __ge__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__getattr__): bound method ComponentContainer.__getattr__ of object_Sculpture_NoView(0x05470f8a964b057d)
+(__getattribute__): method-wrapper __getattribute__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__gt__): method-wrapper __gt__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__hash__): method-wrapper __hash__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__init__): bound method GameObject.__init__ of object_Sculpture_NoView(0x05470f8a964b057d)
+(__init_subclass__): built-in method __init_subclass__ of HashedTunedInstanceMetaclass object at 0x00007FF456D12210
+(__le__): method-wrapper __le__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__lt__): method-wrapper __lt__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
 (__module__): sims4.tuning.instances
-(__ne__): method-wrapper __ne__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__new__): function TerrainPoint.__new__ at 0x00007FF47DB2B3B0
-(__reduce__): built-in method __reduce__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__reduce_ex__): built-in method __reduce_ex__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__reload_context__): bound method restore_component_methods of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__reload_update_class__): function ScriptObject.__reload_update_class__ at 0x00007FF47DABC4D0
-(__repr__): bound method _LocationPoint.__repr__ of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__setattr__): bound method ProxyObject.__setattr__ of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__sizeof__): built-in method __sizeof__ of TerrainPoint(object_terrain) object at 0x00007FF4B1D0B890
-(__str__): bound method _LocationPoint.__str__ of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(__subclasshook__): built-in method __subclasshook__ of HashedTunedInstanceMetaclass object at 0x00007FF456CBE450
-(__weakref__): None
+(__ne__): method-wrapper __ne__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__new__): built-in method __new__ of type object at 0x000000001E3AE9C0
+(__reduce__): built-in method __reduce__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__reduce_ex__): built-in method __reduce_ex__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__reload_context__): bound method restore_component_methods of object_Sculpture_NoView(0x05470f8a964b057d)
+(__reload_update_class__): function ScriptObject.__reload_update_class__ at 0x00007FF47CB5B4D0
+(__repr__): bound method BaseObject.__repr__ of object_Sculpture_NoView(0x05470f8a964b057d)
+(__setattr__): method-wrapper __setattr__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__sizeof__): built-in method __sizeof__ of object_Sculpture_NoView object at 0x00007FF43BC7DB90
+(__str__): bound method BaseObject.__str__ of object_Sculpture_NoView(0x05470f8a964b057d)
+(__subclasshook__): built-in method __subclasshook__ of HashedTunedInstanceMetaclass object at 0x00007FF456D12210
+(__weakref__): weakref at 0x00007FF4B3197A48 to object_Sculpture_NoView at 0x00007FF43BC7DB90
+(_add_child): bound method ClientObjectMixin._add_child of object_Sculpture_NoView(0x05470f8a964b057d)
+(_add_to_world): bound method GameObject._add_to_world of object_Sculpture_NoView(0x05470f8a964b057d)
 (_anim_overrides): None
 (_anim_overrides_cls): None
 (_anim_overrides_for_children): None
-(_bind_get_locations_for_posture_internal): bound method ScriptObject._bind_get_locations_for_posture_internal of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_cache_and_return_get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_cache_and_return_get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_cached_get_locations_for_posture): bound method ScriptObject._cached_get_locations_for_posture of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_cached_get_position_and_routing_surface_for_posture): bound method ScriptObject._cached_get_position_and_routing_surface_for_posture of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_can_show_affordance): function ScriptObject._can_show_affordance at 0x00007FF47DA8B7A0
-(_class_proxy_cache): class sims4.tuning.instances.object_terrain: class sims4.tuning.instances.TerrainPoint(object_terrain)
+(_anim_overrides_internal): AnimationOverrides(params_sims4_collections.frozendict(isParented: False, heightAboveFloor: low, objectPosition: Vector3Immutable(17.511421, 157.453506, 246.294296), objectOrientation: QuaternionImmutable(0.000000, 1.000000, 0.000000, 0.000000), hasChildren: False, isBobbing: False))
+(_audio_effects): None
+(_awareness_scores): None
+(_baby_skin_tone_and_cloth): None
+(_base_value): 13
+(_bind_get_locations_for_posture_internal): bound method ScriptObject._bind_get_locations_for_posture_internal of object_Sculpture_NoView(0x05470f8a964b057d)
+(_build_buy_lockout): False
+(_build_buy_lockout_alarm_handler): None
+(_build_buy_use_flags): 0
+(_cache_and_return_get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(_cache_and_return_get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(_cached_commodity_flags): frozenset(class sims4.tuning.instances.commodity_Motive_Role_AlienVisit_Alien)
+(_cached_get_locations_for_posture): bound method ScriptObject._cached_get_locations_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(_cached_get_position_and_routing_surface_for_posture): bound method ScriptObject._cached_get_position_and_routing_surface_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(_cached_locations_for_posture): ()
+(_cached_position_and_routing_surface_for_posture): ()
+(_can_show_affordance): function ScriptObject._can_show_affordance at 0x00007FF47CB067A0
+(_censor_state): None
+(_children_objects): None
+(_children_recursive_fast_gen): bound method ClientObjectMixin._children_recursive_fast_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(_clamp_opacity): bound method ClientObjectMixin._clamp_opacity of object_Sculpture_NoView(0x05470f8a964b057d)
+(_client_scale): 1
 (_combined_part_cache): None
-(_commodity_flags): None
-(_component_definitions): ()
-(_component_reload_hooks): live_drag_component: class objects.components.live_drag_component.LiveDragComponent, portal_component: class routing.portals.portal_component.PortalComponent, utilities_component: class objects.components.utilities_component.UtilitiesComponent, statistic_component: class objects.components.statistic_component.StatisticComponent
-(_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: None, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: TunablePortalComponentWrapper.PortalComponent, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: None, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(_commodity_flags): (class sims4.tuning.instances.commodity_Motive_Role_AlienVisit_Alien,)
+(_component_definitions): (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class retail.retail_component.RetailComponent, class broadcasters.environment_score.environment_score_component.EnvironmentScoreComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent, class objects.components.slot_component.SlotComponent, class objects.components.tooltip_component.TooltipComponent)
+(_component_instances): live_drag_component: LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d), footprint_component: FootprintComponent(object_Sculpture_NoView:0x05470f8a964b057d), slot_component: SlotComponent(object_Sculpture_NoView:0x05470f8a964b057d), focus_component: FocusComponent(object_Sculpture_NoView:0x05470f8a964b057d), retail_component: RetailComponent(object_Sculpture_NoView:0x05470f8a964b057d), state_component: StateComponent(object_Sculpture_NoView:0x05470f8a964b057d), tooltip_component: TooltipComponent(object_Sculpture_NoView:0x05470f8a964b057d), environmentscore_component: EnvironmentScoreComponent(object_Sculpture_NoView:0x05470f8a964b057d), statistic_component: StatisticComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(_component_reload_hooks): live_drag_component: class objects.components.live_drag_component.LiveDragComponent, footprint_component: class objects.components.footprint_component.FootprintComponent, slot_component: class objects.components.slot_component.SlotComponent, focus_component: class animation.focus.focus_component.FocusComponent, retail_component: class retail.retail_component.RetailComponent, state_component: class objects.components.state.StateComponent, tooltip_component: class objects.components.tooltip_component.TooltipComponent, statistic_component: class objects.components.statistic_component.StatisticComponent, environmentscore_component: class broadcasters.environment_score.environment_score_component.EnvironmentScoreComponent
+(_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: None, privacy: None, procedural_animation: None, proximity_component: None, retail_component: class sims4.tuning.instances.retailComponent_Default, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: TunableStateComponentWrapper.StateComponent, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: TunableTooltipComponentWrapper.TooltipComponent, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
 (_components_native): ImmutableSlots(Slot: None, Video: None)
-(_create_raycast_context): bound method ScriptObject._create_raycast_context of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_create_routing_context): bound method HasFootprintComponent._create_routing_context of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(_create_raycast_context): bound method ScriptObject._create_raycast_context of object_Sculpture_NoView(0x05470f8a964b057d)
+(_create_routing_context): bound method HasFootprintComponent._create_routing_context of object_Sculpture_NoView(0x05470f8a964b057d)
+(_created_constraints): None
+(_created_constraints_dirty): True
 (_default_anim_params): _sims4_collections.frozendict()
+(_destroy_if_not_in_use): bound method GameObject._destroy_if_not_in_use of object_Sculpture_NoView(0x05470f8a964b057d)
 (_disable_child_footprint_and_shadow): False
-(_fill_ignored_objects_and_test_halfwalls): bound method ScriptObject._fill_ignored_objects_and_test_halfwalls of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_get_locations_for_posture_internal_forward_wall_padding): bound method ScriptObject._get_locations_for_posture_internal_forward_wall_padding of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_get_locations_for_posture_internal_no_location): bound method ScriptObject._get_locations_for_posture_internal_no_location of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_get_locations_for_posture_internal_world_transform): bound method ScriptObject._get_locations_for_posture_internal_world_transform of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_get_or_add_statistic_component): bound method HasStatisticComponent._get_or_add_statistic_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_get_tuning_suggestions): bound method ScriptObject._get_tuning_suggestions of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(_get_ungreeted_overrides): bound method Terrain._get_ungreeted_overrides of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_get_wall_object_positional_padding): bound method ScriptObject._get_wall_object_positional_padding of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_has_placement_flag): bound method BaseObject._has_placement_flag of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(_display_number): None
+(_dynamic_animation_overrides): None
+(_dynamic_commodity_flags_map): None
+(_fill_ignored_objects_and_test_halfwalls): bound method ScriptObject._fill_ignored_objects_and_test_halfwalls of object_Sculpture_NoView(0x05470f8a964b057d)
+(_fixup_pool_surface): bound method GameObject._fixup_pool_surface of object_Sculpture_NoView(0x05470f8a964b057d)
+(_generic_ui_metadata_setters): hover_tip: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A643BE60, recipe_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A640E0E0, recipe_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A640E200, stolen_from_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4A72A9320, quality_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B0D148C0, crafter_sim_id: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B0D415F0, crafted_by_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B0CAFF80, quality: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B0CAF320, percentage_left: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B0C95B00, style_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF40D627B00, sub_icons: function SparseField.generic_setter.locals.generic_setter at 0x00007FF475644CB0, main_icon: function SparseField.generic_setter.locals.generic_setter at 0x00007FF475644A70, subtext: function SparseField.generic_setter.locals.generic_setter at 0x00007FF475675EF0
+(_geometry_state): None
+(_geometry_state_overrides): None
+(_get_geometry_state_for_value): bound method ClientObjectMixin._get_geometry_state_for_value of object_Sculpture_NoView(0x05470f8a964b057d)
+(_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of object_Sculpture_NoView(0x05470f8a964b057d)
+(_get_locations_for_posture_internal_forward_wall_padding): bound method ScriptObject._get_locations_for_posture_internal_forward_wall_padding of object_Sculpture_NoView(0x05470f8a964b057d)
+(_get_locations_for_posture_internal_no_location): bound method ScriptObject._get_locations_for_posture_internal_no_location of object_Sculpture_NoView(0x05470f8a964b057d)
+(_get_locations_for_posture_internal_world_transform): bound method ScriptObject._get_locations_for_posture_internal_world_transform of object_Sculpture_NoView(0x05470f8a964b057d)
+(_get_next_ui_metadata_handle): uid.UniqueIdGenerator object at 0x00007FF4823D0BD8
+(_get_or_add_statistic_component): bound method HasStatisticComponent._get_or_add_statistic_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(_get_tuning_suggestions): bound method ScriptObject._get_tuning_suggestions of class sims4.tuning.instances.object_Sculpture_NoView
+(_get_wall_object_positional_padding): bound method ScriptObject._get_wall_object_positional_padding of object_Sculpture_NoView(0x05470f8a964b057d)
+(_has_placement_flag): bound method BaseObject._has_placement_flag of object_Sculpture_NoView(0x05470f8a964b057d)
 (_has_reservation_tests): False
+(_hidden_flags): 0
+(_household_owner_id): None
+(_icon_override_gen): bound method GameObject._icon_override_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(_inside_status_change): bound method GameObject._inside_status_change of object_Sculpture_NoView(0x05470f8a964b057d)
+(_interaction_refs): None
+(_is_surface): (False, False): False
+(_local_tags): set()
+(_location): Location(Transform(Vector3(17.511421, 157.453506, 246.294296), Quaternion(0.000000, 1.000000, 0.000000, 0.000000)), 53F0EA2415E2F2F,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
+(_location_changed): function GameObject._location_changed at 0x00007FF47D3EDA70
+(_location_field_internal): object_Sculpture_NoView:0x05470f8a964b057d
+(_material_state): None
+(_material_variant): 4106034409
+(_model): 000000008c4c0a68f972c6c9.01661233
+(_multicolor): None
+(_natural_ground_status_change): bound method GameObject._natural_ground_status_change of object_Sculpture_NoView(0x05470f8a964b057d)
+(_needs_depreciation): False
+(_needs_post_bb_fixup): False
+(_notify_buildbuy_of_location_change): bound method GameObject._notify_buildbuy_of_location_change of object_Sculpture_NoView(0x05470f8a964b057d)
 (_object_state_remaps): ()
+(_on_children_changed): None
+(_on_hidden_or_shown_callbacks): None
+(_on_location_changed_callbacks): bound method Broadcaster._on_broadcasting_object_moved of sims4.tuning.instances.broadcaster_EnvironmentScore object at 0x00007FF43BCFCC90, function GameObject._location_changed at 0x00007FF47D3EDA70
+(_on_reservation_handlers_changed): bound method LiveDragComponent._on_owner_in_use_list_changed of LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(_on_try_depreciation): bound method ClientObjectMixin._on_try_depreciation of object_Sculpture_NoView(0x05470f8a964b057d)
+(_on_visibility_changed): bound method ClientObjectMixin._on_visibility_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(_opacity): 1.0
+(_painting_state): None
+(_parent_location): 0
+(_parent_type): 0
 (_part_data): ()
 (_part_data_map): _sims4_collections.frozendict()
-(_persistence): PersistenceType.NONE
-(_pick_location): Location(Transform(Vector3(53.037346, 157.528015, 239.846725), Quaternion(0.000000, 0.000000, 0.000000, 1.000000)), 53F0EA2415E2F30,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
-(_potential_behavior_affordances_gen): bound method ScriptObject._potential_behavior_affordances_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_preroll_commodity_flags): None
+(_parts): None
+(_persisted_tags): None
+(_persistence): PersistenceType.FULL
+(_persistence_group): PersistenceGroups.IN_OPEN_STREET
+(_potential_behavior_affordances_gen): bound method ScriptObject._potential_behavior_affordances_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(_preroll_commodity_flags): frozenset()
 (_preroll_super_affordances): ()
+(_provided_mobile_posture): None
+(_provided_mobile_posture_operations): None
 (_provided_mobile_posture_types): None
-(_proxied_obj): object_terrain:0x0000000000000000
-(_rebind_and_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_search_forwarded_interactions): bound method ScriptObject._search_forwarded_interactions of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(_set_placed_inside): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(_set_placed_off_natural_ground): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(_set_placed_on_natural_ground): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(_set_placed_outside): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(_setup_used_utilities): bound method ScriptObject._setup_used_utilities of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(_specific_supported_posture_types): _sims4_collections.frozendict(class sims4.tuning.instances.posture_LayDownOnGround: class sims4.tuning.instances.Generic_Fox_layDown)
-(_super_affordances): (class sims4.tuning.instances.terrain-gohere, class sims4.tuning.instances.terrain-teleport, class sims4.tuning.instances.street_simPicker_TravelWith, class sims4.tuning.instances.terrain-setuplot, class sims4.tuning.instances.terrain-createsim_male-child, class sims4.tuning.instances.terrain-createsim_female-adult, class sims4.tuning.instances.terrain-createsim_male-adult, class sims4.tuning.instances.terrain-createsim_female-youngadult, class sims4.tuning.instances.terrain-createsim_male-youngadult, class sims4.tuning.instances.terrain-createsim_male-baby, class sims4.tuning.instances.terrain-createsim_male-elder, class sims4.tuning.instances.terrain-createsim_female-baby, class sims4.tuning.instances.terrain-createsim_female-child, class sims4.tuning.instances.terrain-createsim_female-elder, class sims4.tuning.instances.terrain_setup_garden, class sims4.tuning.instances.terrain-createsim_male-teen, class sims4.tuning.instances.terrain-createsim_female-teen, class sims4.tuning.instances.terrain-runHere, class sims4.tuning.instances.terrain-travel_here_with_Picker, class sims4.tuning.instances.Apartment-travel_here_with_Picker_base, class sims4.tuning.instances.CareerProxy_Terrain, class sims4.tuning.instances.terrain-doPushUps, class sims4.tuning.instances.terrain-doSitUps, class sims4.tuning.instances.debug_StartFire, class sims4.tuning.instances.terrain-doStretching, class sims4.tuning.instances.terrain_Ghost_StartFire, class sims4.tuning.instances.terrain-sitHere, class sims4.tuning.instances.terrain-Lifeguard_StandWatch, class sims4.tuning.instances.terrain-gohere_SandActivities_PlayInSand, class sims4.tuning.instances.terrain-gohere_SandActivities_SandSculpture_Start, class sims4.tuning.instances.simPickerInteraction_SandActivities_SandSculpture, class sims4.tuning.instances.terrain-gohere_Toddler_PlayInOcean, class sims4.tuning.instances.setupLot_MagicObjects, class sims4.tuning.instances.crimeScene_SearchForClues, class sims4.tuning.instances.MoveInFromGallery, class sims4.tuning.instances.detective_PatrolTravelStreet, class sims4.tuning.instances.detective_CrimeSceneTravelStreet, class sims4.tuning.instances.terrain-cleanScorchMarks, class sims4.tuning.instances.doctor_ReturntoHospital_Street, class sims4.tuning.instances.detective_ReturnToPoliceStationStreet, class sims4.tuning.instances.meditation_Levitate_TeleportHere, class sims4.tuning.instances.terrain-WellnessTeleport, class sims4.tuning.instances.terrain-createdog_female-adult, class sims4.tuning.instances.debugCreateCraftable_Cauldron_Potion, class sims4.tuning.instances.teleportStyleSuperInteraction_WitchBroom_UserDirected, class sims4.tuning.instances.terrain-createcat_female-adult, class sims4.tuning.instances.terrain-createcat_female-adult_toppiemenu, class sims4.tuning.instances.terrain-createdog_female-adult_toppiemenu, class sims4.tuning.instances.terrain-createdog_female-elder, class sims4.tuning.instances.terrain-createcat_male_adult, class sims4.tuning.instances.terrain-gohere_chatHere, class sims4.tuning.instances.terrain-createdog_male-adult, class sims4.tuning.instances.terrain-sitHere_andChat, class sims4.tuning.instances.debugCreateCraftable_Drink, class sims4.tuning.instances.debugCreateCraftable_Food, class sims4.tuning.instances.sitOnGround_Cat, class sims4.tuning.instances.sitOnGround_Dog, class sims4.tuning.instances.terrain-gohere_ProtestForCause, class sims4.tuning.instances.vampire_SpiritPowers_TeleportAsMist, class sims4.tuning.instances.terrain-vampireRunHere, class sims4.tuning.instances.terrain-createcat_female-child, class sims4.tuning.instances.LayDown, class sims4.tuning.instances.terrain-createdog_female-child, class sims4.tuning.instances.layDown_Cat, class sims4.tuning.instances.terrain-createdog_male-elder, class sims4.tuning.instances.terrain-createsim_female-toddler, class sims4.tuning.instances.terrain-createcat_male_child, class sims4.tuning.instances.terrain-createsim_male-toddler, class sims4.tuning.instances.terrain-createdog_male-child, class sims4.tuning.instances.terrain-walkhere, class sims4.tuning.instances.debug_ForceAssert, class sims4.tuning.instances.terrain-createcat_female-elder, class sims4.tuning.instances.pet_PeePooInteraction_SimInitiated_Dog, class sims4.tuning.instances.terrain-gohere_AndSitOnGround, class sims4.tuning.instances.terrain-createcat_male_elder, class sims4.tuning.instances.setupLot_ToddlerObjects, class sims4.tuning.instances.setupLot_PetObjects, class sims4.tuning.instances.debug_CreateTrash, class sims4.tuning.instances.sleepOnGround_Dog, class sims4.tuning.instances.terrain_MakeAMess_Start, class sims4.tuning.instances.debug_ForceException, class sims4.tuning.instances.debug_ForceError, class sims4.tuning.instances.debugCreateCraftable_PetFood, class sims4.tuning.instances.debugCreateCraftable_Food_Appetizer, class sims4.tuning.instances.debugCreateCraftable_Food_Dessert, class sims4.tuning.instances.debugCreateCraftable_Food_Main, class sims4.tuning.instances.debugCreateCraftable_FlowerArrangement, class sims4.tuning.instances.sleepOnGround_Dog_ConeOfShame, class sims4.tuning.instances.debug_CreatePuddle, class sims4.tuning.instances.terrain-SurveyDigSite, class sims4.tuning.instances.terrain-rakeLeaf, class sims4.tuning.instances.terrain_SetupLot_SeasonObjects, class sims4.tuning.instances.terrain-gohere_Rain_Play, class sims4.tuning.instances.terrain-gohere_Rain_Shower, class sims4.tuning.instances.terrain-gonear_BringTheLightning, class sims4.tuning.instances.terrian_MarchAround, class sims4.tuning.instances.setupLot_StrangervilleObjects, class sims4.tuning.instances.debugCreateCraftable_CandleMakingStation_Candle, class sims4.tuning.instances.terrain-gohere_GatherSnow, class sims4.tuning.instances.terrain-gohere_Beachcombing_Seashells, class sims4.tuning.instances.terrain-gohere_Beachcombing_Trash, class sims4.tuning.instances.terrain-gohere_GatherWater_Ocean, class sims4.tuning.instances.droid_Distract_Here_Sim_Initiated, class sims4.tuning.instances.setupLot_IslandObjects, class sims4.tuning.instances.terrain_Vehicle_Bike-GoHere_BikeInInventory, class sims4.tuning.instances.droid_Stay_Here_Sim_Initiated, class sims4.tuning.instances.humanoid_Robots_Immediate_CreateRobot_Female_Debug, class sims4.tuning.instances.terrain_Vehicle_Bike-GoHere, class sims4.tuning.instances.humanoid_Robots_Immediate_CreateRobot_Male_Debug, class sims4.tuning.instances.eP10_Festivals_Interactions_CheckVoidCritter, class sims4.tuning.instances.cheat_IcyConditions_enable, class sims4.tuning.instances.debug_WildlifeEncounter_CreateBat, class sims4.tuning.instances.debug_WildlifeEncounter_CreateCentipede, class sims4.tuning.instances.debug_WildlifeEncounter_CreateDenkimushi, class sims4.tuning.instances.debug_WildlifeEncounter_CreateHornet, class sims4.tuning.instances.debug_WildlifeEncounter_CreateKodama, class sims4.tuning.instances.debug_WildlifeEncounter_CreateOnibi, class sims4.tuning.instances.debug_WildlifeEncounter_CreateFirefly, class sims4.tuning.instances.vampire_SpiritPowers_FlyAsBat, class sims4.tuning.instances.setupLot_HauntedObjects, class sims4.tuning.instances.terrain-gohere_VacuumHere, class sims4.tuning.instances.terrain-gohere_VacuumHere_Child_Handheld, class sims4.tuning.instances.terrain-gohere_CheckDustLevel, class sims4.tuning.instances.debug_CreateAnimalObjects_Chicken_Hen, class sims4.tuning.instances.debug_CreateAnimalObjects_Chicken_Rooster, class sims4.tuning.instances.terrain-gohere_InteriorDecorator_Montage_TakePhoto_After, class sims4.tuning.instances.Dust_AskForHelp_Picker, class sims4.tuning.instances.terrain-createfox_female_adult, class sims4.tuning.instances.terrain-gohere_InteriorDecorator_Montage_TakePhoto_Before, class sims4.tuning.instances.terrain-createfox_female_elder, class sims4.tuning.instances.terrain-createfox_male_adult, class sims4.tuning.instances.terrain-createfox_male_elder, class sims4.tuning.instances.Generic_Fox_layDown, class sims4.tuning.instances.Fox_Sit_onGround, class sims4.tuning.instances.debug_CreateAnimalObjects_Rabbit, class sims4.tuning.instances.debug_CreateAnimalObjects_Chicken_Chick, class sims4.tuning.instances.terrain-gohere_ThrowBouquet, class sims4.tuning.instances.teleportStyleSuperInteraction_Werewolf_Tunneler, class sims4.tuning.instances.terrain-gohere_SandPlay_Heart, class sims4.tuning.instances.terrain-gohere_SandPlay_Smiley, class sims4.tuning.instances.terrain-gohere_SandPlay_Star, class sims4.tuning.instances.terrain-gohere_TakeSample, class sims4.tuning.instances.Deaderpool_McCommander_GroundMenu, class sims4.tuning.instances.AG:Interactions_Terrain_SuperHero_TeleportHere Teleport Here Interaction, class sims4.tuning.instances.AG:Interactions_Terrain_SuperVillain_JumpHere Teleport Here Interaction, class sims4.tuning.instances.ZA:Terrain-runHere Go Here Interaction, class sims4.tuning.instances.btn_ModuleEditorMenu, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.btn_ModuleEditorMenuDebug, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToPlaylist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Climax, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisableFloorFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_EnableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeSexLocation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToFavorites, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Naturism_Go_To_Pee_Spot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Next, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Exhibitionism_Go_To_Pee_Spot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Main_Settings, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_EnableFloorFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_thighjob)
-(_supported_posture_families): frozenset(layDown)
-(_surface_type_changed): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(_tuning_loaded_callback): bound method ScriptObject._tuning_loaded_callback of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(_unproxied_attributes): __weakref__, __module__, _pick_location, __dict__, _proxied_obj
-(_update_preroll_commodity_flags): bound method ScriptObject._update_preroll_commodity_flags of class sims4.tuning.instances.TerrainPoint(object_terrain)
+(_provided_surface): None
+(_raycast_context): None
+(_rebind_and_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of object_Sculpture_NoView(0x05470f8a964b057d)
+(_reference_arb): None
+(_registered_transition_controllers): None
+(_remap_child_parenting): False
+(_remove_child): bound method ClientObjectMixin._remove_child of object_Sculpture_NoView(0x05470f8a964b057d)
+(_remove_from_world): bound method GameObject._remove_from_world of object_Sculpture_NoView(0x05470f8a964b057d)
+(_resend_client_scale): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(_resend_current_value): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(_resend_household_owner_id): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(_resend_parent_type_info): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(_resend_video_playlist): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(_reservation_clobberers): None
+(_reservation_handlers): ()
+(_reset_reference_arb): bound method ClientObjectMixin._reset_reference_arb of object_Sculpture_NoView(0x05470f8a964b057d)
+(_rig): 00000000a5b515df1bba09c0.8eaf13de
+(_routing_context): ObjectID: 0, Radius: 0.3311, Key14296806522263978807,3548561239,2147483648, FootprintID: 33141, ConectivityHandles: () FlagsIgnoreOwnFootprint
+(_scale): 1
+(_scheduled_elements): None
+(_scratched): False
+(_search_forwarded_interactions): bound method ScriptObject._search_forwarded_interactions of object_Sculpture_NoView(0x05470f8a964b057d)
+(_set_placed_inside): bound method StateComponent._set_placed_inside of object_Sculpture_NoView(0x05470f8a964b057d)
+(_set_placed_off_natural_ground): bound method StateComponent._set_placed_off_natural_ground of object_Sculpture_NoView(0x05470f8a964b057d)
+(_set_placed_on_natural_ground): bound method StateComponent._set_placed_on_natural_ground of object_Sculpture_NoView(0x05470f8a964b057d)
+(_set_placed_outside): bound method StateComponent._set_placed_outside of object_Sculpture_NoView(0x05470f8a964b057d)
+(_setup_used_utilities): bound method ScriptObject._setup_used_utilities of class sims4.tuning.instances.object_Sculpture_NoView
+(_should_invalidate_location): bound method GameObject._should_invalidate_location of object_Sculpture_NoView(0x05470f8a964b057d)
+(_slot): 00000000a5b515df1bba09c0.d3044521
+(_slots_resource): sims4.ObjectSlots
+(_specific_supported_posture_types): None
+(_standin_model): None
+(_state_index): 0
+(_super_affordances): (class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.simRay_Transform_Object, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.btn_ModuleEditorMenu, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.btn_ModuleEditorMenuDebug, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_General_Object_CheatDebug_Info)
+(_supported_posture_families): None
+(_suppress_statistic_callback_alarm_calculation): False
+(_surface_type_changed): bound method StateComponent._surface_type_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(_swapping_from_parent): None
+(_swapping_parents): bound method ClientObjectMixin._swapping_parents of object_Sculpture_NoView(0x05470f8a964b057d)
+(_swapping_to_parent): None
+(_tint): None
+(_transient): None
+(_transient_tuning): False
+(_tuning_loaded_callback): bound method ScriptObject._tuning_loaded_callback of class sims4.tuning.instances.object_Sculpture_NoView
+(_ui_metadata_cache): hover_tip: 0
+(_ui_metadata_handles): 0: (0, hover_tip, 0, False)
+(_ui_metadata_stack): (0, hover_tip, 0, False)
+(_update_location_callbacks): bound method GameObject._update_location_callbacks of object_Sculpture_NoView(0x05470f8a964b057d)
+(_update_persistence_group): bound method GameObject._update_persistence_group of object_Sculpture_NoView(0x05470f8a964b057d)
+(_update_preroll_commodity_flags): bound method ScriptObject._update_preroll_commodity_flags of class sims4.tuning.instances.object_Sculpture_NoView
 (_use_locations_for_posture_for_connect_to_sim_test): False
-(_used_utilities): Utilities.POWER  0
-(_verify_tuning_callback): bound method ScriptObject._verify_tuning_callback of class sims4.tuning.instances.TerrainPoint(object_terrain)
+(_used_utilities): None
+(_verify_tuning_callback): bound method GameObject._verify_tuning_callback of class sims4.tuning.instances.object_Sculpture_NoView
+(_video_playlist): None
+(_visibility): None
+(_visibility_flags): None
+(_visible_to_client): True
+(_voice_suffix_overrides): None
+(_wind_speed_effect): None
+(_work_locks): _weakrefset.WeakSet object at 0x00007FF43BC7D7D0
 (_world_file_object_persists): False
-(add_component): bound method BaseObject.add_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_dynamic_animation_overrides): bound method ScriptObject.add_dynamic_animation_overrides of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_dynamic_commodity_flags): bound method ScriptObject.add_dynamic_commodity_flags of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_dynamic_component): bound method ScriptObject.add_dynamic_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_interaction_reference): bound method BaseObject.add_interaction_reference of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_modifiers_for_interaction): bound method StatisticComponent.add_modifiers_for_interaction of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_modifiers_for_skill): bound method StatisticComponent.add_modifiers_for_skill of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_name_changed_callback): function NameComponent.lambda at 0x00007FF480075050
-(add_portal_data): bound method PortalComponent.add_portal_data of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_portal_events): bound method PortalComponent.add_portal_events of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_reservation_handler): bound method ScriptObject.add_reservation_handler of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_spawner_data): function SpawnerComponent.lambda at 0x00007FF47D901170
-(add_statistic_component): bound method HasStatisticComponent.add_statistic_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_statistic_modifier): bound method StatisticComponent.add_statistic_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(add_to_collection_tracker): function CollectableComponent.lambda at 0x00007FF48C47AEF0
-(add_to_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47D4A2830
-(additional_interaction_constraints): None
-(allow_aop_forward): bound method ScriptObject.allow_aop_forward of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(ancestry_gen): bound method ScriptObject.ancestry_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(add_auto_constraint): bound method GameObject.add_auto_constraint of class sims4.tuning.instances.object_Sculpture_NoView
+(add_awareness_scores): bound method ClientObjectMixin.add_awareness_scores of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_client_state_suppressor): bound method StateComponent.add_client_state_suppressor of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_component): bound method BaseObject.add_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_dynamic_animation_overrides): bound method ScriptObject.add_dynamic_animation_overrides of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_dynamic_commodity_flags): bound method ScriptObject.add_dynamic_commodity_flags of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_dynamic_component): bound method ScriptObject.add_dynamic_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_geometry_state_override): bound method ClientObjectMixin.add_geometry_state_override of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_interaction_reference): bound method BaseObject.add_interaction_reference of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_modifiers_for_interaction): bound method StatisticComponent.add_modifiers_for_interaction of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_modifiers_for_skill): bound method StatisticComponent.add_modifiers_for_skill of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_name_changed_callback): function NameComponent.lambda at 0x00007FF480330050
+(add_reservation_clobberer): bound method ReservationMixin.add_reservation_clobberer of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_reservation_handler): bound method ReservationMixin.add_reservation_handler of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_spawner_data): function SpawnerComponent.lambda at 0x00007FF47C9A1170
+(add_state_changed_callback): bound method StateComponent.add_state_changed_callback of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_statistic_component): bound method HasStatisticComponent.add_statistic_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_statistic_modifier): bound method StatisticComponent.add_statistic_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_to_collection_tracker): function CollectableComponent.lambda at 0x00007FF48C13BEF0
+(add_to_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47C4C7830
+(add_ui_metadata): bound method ClientObjectMixin.add_ui_metadata of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_voice_suffix_override): bound method ClientObjectMixin.add_voice_suffix_override of object_Sculpture_NoView(0x05470f8a964b057d)
+(add_work_lock): bound method GameObject.add_work_lock of object_Sculpture_NoView(0x05470f8a964b057d)
+(additional_interaction_constraints): ()
+(all_valid_slot_types): frozenset(class sims4.tuning.instances._gameplaySlot_Deco_Medium, class sims4.tuning.instances.slot_CloningMachineClone, class sims4.tuning.instances.slot_2x1ObjectSurface, class sims4.tuning.instances.slot_CloningMachineSource, class sims4.tuning.instances._gameplaySlot_Deco_Large)
+(allow_aop_forward): bound method ScriptObject.allow_aop_forward of object_Sculpture_NoView(0x05470f8a964b057d)
+(allow_opacity_change): True
+(allow_preroll_multiple_targets): False
+(ancestry_gen): bound method ScriptObject.ancestry_gen of object_Sculpture_NoView(0x05470f8a964b057d)
 (anim_boundary_conditions_check_carry): False
-(animation_actor): TerrainPoint(object_terrain):(53.037, 157.528, 239.847)
+(animation_actor): object_Sculpture_NoView:0x05470f8a964b057d
 (aop_forward_data): ImmutableSlots(child_obj_tags: frozenset(), should_search_forwarded_child_aop: False, should_search_forwarded_parent_aop: False, should_search_forwarded_sim_aop: False)
+(append_audio_effect): bound method ClientObjectMixin.append_audio_effect of object_Sculpture_NoView(0x05470f8a964b057d)
+(append_tags): bound method GameObject.append_tags of object_Sculpture_NoView(0x05470f8a964b057d)
 (apply_children_component_anim_overrides): False
+(apply_definition): bound method ClientObjectMixin.apply_definition of object_Sculpture_NoView(0x05470f8a964b057d)
+(attempt_to_remap_parent): bound method ClientObjectMixin.attempt_to_remap_parent of object_Sculpture_NoView(0x05470f8a964b057d)
 (attributes): None
+(audio_effects): None
+(autonomy_modifiers): ()
+(awareness_scores): None
+(baby_cloth): None
+(base_value): 13
 (blocking_balloon_overrides): None
+(bone_name_hash): 0
 (build_buy_lockout): False
-(c_api_get_portal_duration): bound method PortalComponent.c_api_get_portal_duration of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(build_buy_use_flags): 0
 (camera_view): None
-(can_add_component): bound method ComponentContainer.can_add_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(can_go_in_inventory_type): function InventoryItemComponent.lambda at 0x00007FF47D5135F0
+(can_add_component): bound method ComponentContainer.can_add_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(can_go_in_inventory_type): function InventoryItemComponent.lambda at 0x00007FF47C53D5F0
 (can_reset): True
-(can_trigger_teleport_style): function BuffComponent.lambda at 0x00007FF479E21EF0
-(cancel_interactions_running_on_object): bound method BaseObject.cancel_interactions_running_on_object of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(can_trigger_teleport_style): function BuffComponent.lambda at 0x00007FF47A601EF0
+(cancel_interactions_running_on_object): bound method BaseObject.cancel_interactions_running_on_object of object_Sculpture_NoView(0x05470f8a964b057d)
+(catalog_description): 2078472779
+(catalog_name): 1879272283
+(catalog_value): 13
 (ceiling_placement): False
-(check_affordance_for_suppression): bound method StatisticComponent.check_affordance_for_suppression of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(check_line_of_sight): bound method _LocationPoint.check_line_of_sight of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(child_provided_aops_gen): function SlotComponent.lambda at 0x00007FF47D6BB950
+(censor_state): None
+(check_affordance_for_suppression): bound method StatisticComponent.check_affordance_for_suppression of object_Sculpture_NoView(0x05470f8a964b057d)
+(check_line_of_sight): bound method ScriptObject.check_line_of_sight of object_Sculpture_NoView(0x05470f8a964b057d)
+(child_provided_aops_gen): bound method SlotComponent.child_provided_aops_gen of object_Sculpture_NoView(0x05470f8a964b057d)
 (children): ()
-(children_recursive_gen): bound method BaseObject.children_recursive_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(claim): bound method ScriptObject.claim of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(clear_check_line_of_sight_cache): built-in method clear of collections.OrderedDict object at 0x00007FF47DAC0C20
-(clear_commodity_flags): bound method ScriptObject.clear_commodity_flags of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(clear_portal_cost_override): bound method PortalComponent.clear_portal_cost_override of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(clear_raycast_context): bound method HasFootprintComponent.clear_raycast_context of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(clear_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF47F9DE710
-(client_objects_gen): generator object ProxyObject.client_objects_gen at 0x00007FF4B5F0DD50
-(clone): bound method ScriptObject.clone of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(commodity_flags): frozenset(class sims4.tuning.instances.Club_Encouragement_1109872020712459629, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_Hangout_Workout, class sims4.tuning.instances.Club_Encouragement_348763587606020176, class sims4.tuning.instances.commodity_Emotion_Autonomy_Energized, class sims4.tuning.instances.commodity_Motive_PetDog_Energy, class sims4.tuning.instances.Commodity_Age_Elder, class sims4.tuning.instances.Commodity_Age_Teen, class sims4.tuning.instances.commodity_Motive_Thirst, class sims4.tuning.instances.Triplis_LoveHate:StaticCommodity_LovesFitnessStrengthTraining, class sims4.tuning.instances.commodity_Trait_Autonomy_Active, class sims4.tuning.instances.motive_Hygiene_Fox, class sims4.tuning.instances.StaticCommodity_RoleAutonomy_Career_SocialMedia_PersuadedToWorkOut, class sims4.tuning.instances.staticCommodity_BeDog)
-(commodity_tracker): statistics.commodity_tracker.CommodityTracker object at 0x00007FF4B175DC88
-(component_anim_overrides_gen): bound method ScriptObject.component_anim_overrides_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(component_definitions): (class objects.components.statistic_component.StatisticComponent, class objects.components.live_drag_component.LiveDragComponent, class routing.portals.portal_component.PortalComponent, class objects.components.utilities_component.UtilitiesComponent)
-(component_interactable_gen): bound method ScriptObject.component_interactable_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(component_potential_interactions_gen): bound method ScriptObject.component_potential_interactions_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(component_reset): bound method BaseObject.component_reset of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(component_super_affordances_gen): bound method ScriptObject.component_super_affordances_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(component_zone_modifiers_gen): bound method ScriptObject.component_zone_modifiers_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(components): dict_values(LiveDragComponent(object_terrain:0x0000000000000000), PortalComponent(object_terrain:0x0000000000000000), UtilitiesComponent(object_terrain:0x0000000000000000), StatisticComponent(object_terrain:0x0000000000000000))
-(components_sorted_gen): bound method ComponentContainer.components_sorted_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(connectivity_handles): None
-(create_auto_ensembles): function EnsembleComponent.lambda at 0x00007FF47C436440
-(create_for_position_and_orientation): bound method _LocationPoint.create_for_position_and_orientation of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(create_statistic_tracker): bound method StatisticComponent.create_statistic_tracker of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(children_recursive_gen): bound method ClientObjectMixin.children_recursive_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(claim): bound method ScriptObject.claim of object_Sculpture_NoView(0x05470f8a964b057d)
+(clear_check_line_of_sight_cache): built-in method clear of collections.OrderedDict object at 0x00007FF47CB61C20
+(clear_commodity_flags): bound method ScriptObject.clear_commodity_flags of class sims4.tuning.instances.object_Sculpture_NoView
+(clear_default_children): bound method ClientObjectMixin.clear_default_children of object_Sculpture_NoView(0x05470f8a964b057d)
+(clear_parent): bound method ClientObjectMixin.clear_parent of object_Sculpture_NoView(0x05470f8a964b057d)
+(clear_raycast_context): bound method HasFootprintComponent.clear_raycast_context of object_Sculpture_NoView(0x05470f8a964b057d)
+(clear_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF480285710
+(clone): bound method ScriptObject.clone of object_Sculpture_NoView(0x05470f8a964b057d)
+(commodity_flags): frozenset(class sims4.tuning.instances.commodity_Motive_Role_AlienVisit_Alien)
+(commodity_tracker): statistics.commodity_tracker.CommodityTracker object at 0x00007FF41D40B838
+(component_anim_overrides_gen): bound method ScriptObject.component_anim_overrides_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(component_definitions): (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class retail.retail_component.RetailComponent, class broadcasters.environment_score.environment_score_component.EnvironmentScoreComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent, class objects.components.slot_component.SlotComponent, class objects.components.tooltip_component.TooltipComponent)
+(component_interactable_gen): bound method ScriptObject.component_interactable_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(component_potential_interactions_gen): bound method ScriptObject.component_potential_interactions_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(component_reset): bound method BaseObject.component_reset of object_Sculpture_NoView(0x05470f8a964b057d)
+(component_super_affordances_gen): bound method ScriptObject.component_super_affordances_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(component_zone_modifiers_gen): bound method ScriptObject.component_zone_modifiers_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(components): dict_values(LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d), FootprintComponent(object_Sculpture_NoView:0x05470f8a964b057d), SlotComponent(object_Sculpture_NoView:0x05470f8a964b057d), FocusComponent(object_Sculpture_NoView:0x05470f8a964b057d), RetailComponent(object_Sculpture_NoView:0x05470f8a964b057d), StateComponent(object_Sculpture_NoView:0x05470f8a964b057d), TooltipComponent(object_Sculpture_NoView:0x05470f8a964b057d), EnvironmentScoreComponent(object_Sculpture_NoView:0x05470f8a964b057d), StatisticComponent(object_Sculpture_NoView:0x05470f8a964b057d))
+(components_sorted_gen): bound method ComponentContainer.components_sorted_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(connectivity_handles): , ConectivityHandles: ()
+(content_source): 0
+(copy_state_values): bound method StateComponent.copy_state_values of object_Sculpture_NoView(0x05470f8a964b057d)
+(create_auto_ensembles): function EnsembleComponent.lambda at 0x00007FF47B149320
+(create_parent_location): bound method ClientObjectMixin.create_parent_location of object_Sculpture_NoView(0x05470f8a964b057d)
+(create_statistic_tracker): bound method StatisticComponent.create_statistic_tracker of object_Sculpture_NoView(0x05470f8a964b057d)
 (curfew): None
-(delist): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF480A32F80
-(destroy): bound method ScriptObject.destroy of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(current_value): 13
+(custom_description): None
+(custom_name): None
+(deco_slot_size): 2
+(deco_slot_types): frozenset(class sims4.tuning.instances._gameplaySlot_Deco_Medium, class sims4.tuning.instances._gameplaySlot_Deco_Large, class sims4.tuning.instances.slot_2x1ObjectSurface)
+(definition): Definition: 82029470
+(delist): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47F827F80
+(depreciated): True
+(depreciated_value): 10.4
+(destroy): bound method ScriptObject.destroy of object_Sculpture_NoView(0x05470f8a964b057d)
 (disable_los_reference_point): False
-(disable_slot): function SlotComponent.lambda at 0x00007FF47D6B6DD0
-(disable_slots): function SlotComponent.lambda at 0x00007FF47D6B6C20
+(disable_slot): bound method SlotComponent.disable_slot of object_Sculpture_NoView(0x05470f8a964b057d)
+(disable_slots): bound method SlotComponent.disable_slots of object_Sculpture_NoView(0x05470f8a964b057d)
 (disallow_social_group_placement): False
-(enable_slot): function SlotComponent.lambda at 0x00007FF47D6B6EF0
-(enable_slots): function SlotComponent.lambda at 0x00007FF47D6B6CB0
-(enter_distress): bound method StatisticComponent.enter_distress of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(display_number): None
+(does_state_reset_on_load): bound method StateComponent.does_state_reset_on_load of object_Sculpture_NoView(0x05470f8a964b057d)
+(enable_slot): bound method SlotComponent.enable_slot of object_Sculpture_NoView(0x05470f8a964b057d)
+(enable_slots): bound method SlotComponent.enable_slots of object_Sculpture_NoView(0x05470f8a964b057d)
+(enter_distress): bound method StatisticComponent.enter_distress of object_Sculpture_NoView(0x05470f8a964b057d)
 (environment_score_trait_modifiers): _sims4_collections.frozendict()
-(exit_distress): bound method StatisticComponent.exit_distress of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(environmentscore_component): EnvironmentScoreComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(exit_distress): bound method StatisticComponent.exit_distress of object_Sculpture_NoView(0x05470f8a964b057d)
+(fade_in): bound method ClientObjectMixin.fade_in of object_Sculpture_NoView(0x05470f8a964b057d)
+(fade_opacity): bound method ClientObjectMixin.fade_opacity of object_Sculpture_NoView(0x05470f8a964b057d)
+(fade_out): bound method ClientObjectMixin.fade_out of object_Sculpture_NoView(0x05470f8a964b057d)
 (favorite_prop_animation_overrides): FavoritePropAnimationOverrides(overrides_by_prop_name_sims4_collections.frozendict())
-(finalize): bound method ScriptObject.finalize of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(finalize_statistics): bound method HasStatisticComponent.finalize_statistics of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(finalize): bound method GameObject.finalize of object_Sculpture_NoView(0x05470f8a964b057d)
+(finalize_statistics): bound method HasStatisticComponent.finalize_statistics of object_Sculpture_NoView(0x05470f8a964b057d)
 (fire_retardant): False
 (flammable): False
-(footprint): None
-(footprint_polygon): CompoundPolygon: Polygon53.037346,239.846725 FlagsCCWConvex
+(flammable_area): fire.flammability.DefaultObjectRadialFlammability object at 0x00007FF47D3DE690
+(focus_component): FocusComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(footprint): 80000000c66875c8c6084337.d382bf57
+(footprint_component): FootprintComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(footprint_polygon): CompoundPolygon: Polygon17.745575,246.06013517.745575,246.52845817.277267,246.52845817.277267,246.060135 FlagsCCW
 (force_multi_surface_constraints): False
-(force_spawn_object): function SpawnerComponent.lambda at 0x00007FF47D8FDB00
-(forward): Vector3(0.000000, 0.000000, 1.000000)
+(force_spawn_object): function SpawnerComponent.lambda at 0x00007FF47C99BB00
+(forward): Vector3(0.000000, 0.000000, -1.000000)
+(forward_direction_for_picking): Vector3(0.000000, 0.000000, 1.000000)
 (forward_offset_on_connectivity_check): None
 (forwarded_pick_targets): frozenset()
-(get_active_teleport_style): function BuffComponent.lambda at 0x00007FF479E21E60
-(get_added_monetary_value): bound method StatisticComponent.get_added_monetary_value of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_affordance_basic_content): function AffordanceTuningComponent.lambda at 0x00007FF47CBBB290
-(get_affordance_basic_extras): function AffordanceTuningComponent.lambda at 0x00007FF47CBBB3B0
-(get_affordance_false_ads): function AffordanceTuningComponent.lambda at 0x00007FF47CBBB050
-(get_affordance_loot_list): function AffordanceTuningComponent.lambda at 0x00007FF47CB7FDD0
-(get_affordance_outcome): function AffordanceTuningComponent.lambda at 0x00007FF47CBBB170
-(get_affordance_skill_loot_data): function AffordanceTuningComponent.lambda at 0x00007FF47CB7FEF0
-(get_affordance_tests): function AffordanceTuningComponent.lambda at 0x00007FF47CB7FD40
-(get_all_buffs_with_tag): function BuffComponent.lambda at 0x00007FF479E22830
-(get_all_stats_gen): bound method StatisticComponent.get_all_stats_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_allowed_hands): functools.partial(function ScriptObject.get_allowed_hands at 0x00007FF47DABCCB0, class sims4.tuning.instances.TerrainPoint(object_terrain), TerrainPoint(object_terrain)((53.037, 157.528, 239.847)))
-(get_anim_overrides): bound method BaseObject.get_anim_overrides of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_attribute_save_data): bound method ScriptObject.get_attribute_save_data of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_bounding_box): bound method HasFootprintComponent.get_bounding_box of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_canvas_texture_effect): function CanvasComponent.lambda at 0x00007FF47F6374D0
-(get_canvas_texture_id): function CanvasComponent.lambda at 0x00007FF47F6373B0
-(get_center): bound method Terrain.get_center of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_class_for_obj_state): bound method BaseObject.get_class_for_obj_state of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(get_closest_parts_to_position): bound method ScriptObject.get_closest_parts_to_position of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_collectible_quality): function CollectableComponent.lambda at 0x00007FF487B57200
-(get_collectible_slot): function CollectableComponent.lambda at 0x00007FF48C47AF80
-(get_compatible_parts): bound method ScriptObject.get_compatible_parts of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_component): bound method ComponentContainer.get_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47D847170
-(get_craftable_property): function CraftingComponent.lambda at 0x00007FF47ABBC440
-(get_disabled_slot_hashes): function SlotComponent.lambda at 0x00007FF47D6BB050
-(get_distance_to_object_based_multiplier): bound method StatisticComponent.get_distance_to_object_based_multiplier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_dynamic_portal_locations_gen): bound method PortalComponent.get_dynamic_portal_locations_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_entry_clothing_change): bound method PortalComponent.get_entry_clothing_change of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_environment_score): function EnvironmentScoreComponent.lambda at 0x00007FF47A3B3290
-(get_exit_clothing_change): bound method PortalComponent.get_exit_clothing_change of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_fooptrint_polygon_bounds): bound method HasFootprintComponent.get_fooptrint_polygon_bounds of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_game_animation_definition): function CollectableComponent.lambda at 0x00007FF487B570E0
-(get_gsi_portal_items_list): bound method PortalComponent.get_gsi_portal_items_list of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_height_at): bound method Terrain.get_height_at of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_icon_info_data): bound method BaseObject.get_icon_info_data of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_ignored_objects_for_line_of_sight): bound method ScriptObject.get_ignored_objects_for_line_of_sight of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_interaction_score_modifier): bound method StatisticComponent.get_interaction_score_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_inventory): function InventoryItemComponent.lambda at 0x00007FF47D513560
-(get_inventory_plex_id): function InventoryItemComponent.lambda at 0x00007FF47D5144D0
-(get_inventory_visual_state): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF480A39170
-(get_lightning_strike_multiplier): function WeatherAwareComponent.lambda at 0x00007FF47DA0E680
-(get_linked_objects_gen): function LinkedObjectComponent.lambda at 0x00007FF47D51D170
-(get_locked_reason_list): bound method StatisticComponent.get_locked_reason_list of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_locking_component): function BaseLockingComponent.lambda at 0x00007FF47D532B90
-(get_lost_and_found_registration_info): function InventoryItemComponent.lambda at 0x00007FF47D513C20
-(get_mapped_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47D8473B0
-(get_nearest_posture_change): bound method PortalComponent.get_nearest_posture_change of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_notebook_information): function CraftingComponent.lambda at 0x00007FF47ABBC5F0
-(get_object_rarity_string): function StateComponent.lambda at 0x00007FF47FF80440
-(get_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47D846E60
-(get_off_lot_autonomy_rule): bound method StatisticComponent.get_off_lot_autonomy_rule of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_on_entry_outfit): bound method PortalComponent.get_on_entry_outfit of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_on_exit_outfit): bound method PortalComponent.get_on_exit_outfit of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_or_create_routing_context): bound method _LocationPoint.get_or_create_routing_context of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_outside_object_score_modification): bound method StatisticComponent.get_outside_object_score_modification of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_param_overrides): bound method BaseObject.get_param_overrides of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_parent): bound method ScriptObject.get_parent of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_part_by_index): bound method BaseObject.get_part_by_index of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_part_by_part_group_index): bound method BaseObject.get_part_by_part_group_index of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_part_data): bound method ScriptObject.get_part_data of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(get_parts_for_posture): bound method ScriptObject.get_parts_for_posture of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_polygon_from_footprint_name_hashes): bound method HasFootprintComponent.get_polygon_from_footprint_name_hashes of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_asm_params): bound method PortalComponent.get_portal_asm_params of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_by_id): bound method PortalComponent.get_portal_by_id of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_cost): bound method PortalComponent.get_portal_cost of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_cost_override): bound method PortalComponent.get_portal_cost_override of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_data): bound method PortalComponent.get_portal_data of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_disallowed_tags): bound method PortalComponent.get_portal_disallowed_tags of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_instances): bound method PortalComponent.get_portal_instances of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_key_make_for_carry): function CarryableComponent.lambda at 0x00007FF47D493B00
-(get_portal_owner): bound method PortalComponent.get_portal_owner of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_pairs): bound method PortalComponent.get_portal_pairs of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_portal_type): bound method PortalComponent.get_portal_type of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_posture_aops_gen): bound method ScriptObject.get_posture_aops_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_posture_change): bound method PortalComponent.get_posture_change of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_provided_slot_types): function SlotComponent.lambda at 0x00007FF47D6BB680
-(get_raycast_root): bound method HasFootprintComponent.get_raycast_root of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_relationship_score_multiplier_for_buff_on_target): bound method StatisticComponent.get_relationship_score_multiplier_for_buff_on_target of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_reservation_handlers): bound method ScriptObject.get_reservation_handlers of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_routing_location_for_transform): bound method Terrain.get_routing_location_for_transform of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_routing_surface_height_and_surface_object_at): bound method Terrain.get_routing_surface_height_and_surface_object_at of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_routing_surface_height_at): bound method Terrain.get_routing_surface_height_at of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_running_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47D846950
-(get_runtime_slots_gen): function SlotComponent.lambda at 0x00007FF47D6BB710
-(get_score_multiplier): bound method StatisticComponent.get_score_multiplier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_sim_owner_id): function OwnableComponent.lambda at 0x00007FF48025BCB0
-(get_single_portal_locations): bound method PortalComponent.get_single_portal_locations of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_sit_posture_transition_penalties): bound method StatisticComponent.get_sit_posture_transition_penalties of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_situation_type_social_score_multiplier): bound method StatisticComponent.get_situation_type_social_score_multiplier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47D846EF0
-(get_stack_sort_order): function InventoryItemComponent.lambda at 0x00007FF47D513A70
-(get_stat_instance): bound method StatisticComponent.get_stat_instance of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_stat_multiplier): bound method StatisticComponent.get_stat_multiplier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_stat_value): bound method StatisticComponent.get_stat_value of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_state_strings): function TooltipComponent.lambda at 0x00007FF4802B28C0
-(get_statistic_modifier): bound method StatisticComponent.get_statistic_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_statistic_modifiers_gen): bound method StatisticComponent.get_statistic_modifiers_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF47F9DE680
-(get_stored_sim_id): function StoredSimInfoComponent.lambda at 0x00007FF4802629E0
-(get_stored_sim_info): function ScholarshipLetterComponent.lambda at 0x00007FF47D9F1EF0
-(get_stored_sim_info_or_name_data): function StoredSimInfoComponent.lambda at 0x00007FF480262B90
-(get_stored_sim_name_data): function StoredSimInfoComponent.lambda at 0x00007FF480262CB0
-(get_target_surface): bound method PortalComponent.get_target_surface of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_teleport_cost): function BuffComponent.lambda at 0x00007FF479E25050
-(get_template_content_overrides): function CraftingComponent.lambda at 0x00007FF479FBC830
-(get_tested_relationship_score_multipliers): bound method StatisticComponent.get_tested_relationship_score_multipliers of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_tooltip_field): function TooltipComponent.lambda at 0x00007FF4802B2C20
-(get_tracker): bound method HasStatisticComponent.get_tracker of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_unlocked_reason_list): bound method StatisticComponent.get_unlocked_reason_list of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_users): bound method _LocationPoint.get_users of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(get_waiting_line_autonomy_multiplier): function WaitingLineComponent.lambda at 0x00007FF478B09EF0
-(give_weather_loot): function WeatherAwareComponent.lambda at 0x00007FF47DA0E5F0
-(guid): 1776049430
-(guid64): 14982
-(has_component): bound method ComponentContainer.has_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(has_custom_description): function NameComponent.lambda at 0x00007FF480071C20
-(has_custom_name): function NameComponent.lambda at 0x00007FF480071B90
+(geometry_state): None
+(get_active_teleport_style): function BuffComponent.lambda at 0x00007FF47A601E60
+(get_added_monetary_value): bound method StatisticComponent.get_added_monetary_value of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_affordance_basic_content): function AffordanceTuningComponent.lambda at 0x00007FF47D580290
+(get_affordance_basic_extras): function AffordanceTuningComponent.lambda at 0x00007FF47D5803B0
+(get_affordance_false_ads): function AffordanceTuningComponent.lambda at 0x00007FF47D580050
+(get_affordance_loot_list): function AffordanceTuningComponent.lambda at 0x00007FF47D546DD0
+(get_affordance_outcome): function AffordanceTuningComponent.lambda at 0x00007FF47D580170
+(get_affordance_skill_loot_data): function AffordanceTuningComponent.lambda at 0x00007FF47D546EF0
+(get_affordance_tests): function AffordanceTuningComponent.lambda at 0x00007FF47D546D40
+(get_all_buffs_with_tag): function BuffComponent.lambda at 0x00007FF47A600830
+(get_all_children_gen): bound method ClientObjectMixin.get_all_children_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_all_stats_gen): bound method StatisticComponent.get_all_stats_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_allowed_hands): functools.partial(function ScriptObject.get_allowed_hands at 0x00007FF47CB5BCB0, class sims4.tuning.instances.object_Sculpture_NoView, object_Sculpture_NoView(0x05470f8a964b057d))
+(get_anim_overrides): bound method BaseObject.get_anim_overrides of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_attribute_save_data): bound method ScriptObject.get_attribute_save_data of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_bounding_box): bound method HasFootprintComponent.get_bounding_box of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_canvas_texture_effect): function CanvasComponent.lambda at 0x00007FF47EDE34D0
+(get_canvas_texture_id): function CanvasComponent.lambda at 0x00007FF47EDE33B0
+(get_class_for_obj_state): bound method BaseObject.get_class_for_obj_state of class sims4.tuning.instances.object_Sculpture_NoView
+(get_client_states): bound method StateComponent.get_client_states of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_closest_parts_to_position): bound method ScriptObject.get_closest_parts_to_position of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_collectible_quality): function CollectableComponent.lambda at 0x00007FF48C14B200
+(get_collectible_slot): function CollectableComponent.lambda at 0x00007FF48C13BF80
+(get_compatible_parts): bound method ScriptObject.get_compatible_parts of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_component): bound method ComponentContainer.get_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_component_managed_state_distributable): bound method StateComponent.get_component_managed_state_distributable of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47C8FD170
+(get_craftable_property): function CraftingComponent.lambda at 0x00007FF479B65440
+(get_create_after_objs): bound method ClientObjectMixin.get_create_after_objs of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_create_op): bound method ClientObjectMixin.get_create_op of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_created_constraint): bound method GameObject.get_created_constraint of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_deco_slot_hashes): bound method SlotComponent.get_deco_slot_hashes of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_delete_op): bound method ClientObjectMixin.get_delete_op of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_disabled_slot_hashes): bound method SlotComponent.get_disabled_slot_hashes of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_distance_to_object_based_multiplier): bound method StatisticComponent.get_distance_to_object_based_multiplier of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_dynamic_portal_locations_gen): function PortalComponent.lambda at 0x00007FF47C96E050
+(get_dynamic_tags): bound method GameObject.get_dynamic_tags of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_edge_constraint): bound method GameObject.get_edge_constraint of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_edges): bound method GameObject.get_edges of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_environment_score): bound method EnvironmentScoreComponent.get_environment_score of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_focus_bone): bound method FocusComponent.get_focus_bone of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_fooptrint_polygon_bounds): bound method HasFootprintComponent.get_fooptrint_polygon_bounds of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_footprint): bound method FootprintComponent.get_footprint of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_game_animation_definition): function CollectableComponent.lambda at 0x00007FF48C14B0E0
+(get_gsi_portal_items): bound method GameObject.get_gsi_portal_items of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_household_owner_id): bound method GameObject.get_household_owner_id of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_icon_info_data): bound method GameObject.get_icon_info_data of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_icon_override): bound method GameObject.get_icon_override of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_ignored_objects_for_line_of_sight): bound method ScriptObject.get_ignored_objects_for_line_of_sight of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_interaction_score_modifier): bound method StatisticComponent.get_interaction_score_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_inventory): function InventoryItemComponent.lambda at 0x00007FF47C53D560
+(get_inventory_plex_id): function InventoryItemComponent.lambda at 0x00007FF47C53E4D0
+(get_inventory_visual_state): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47F879170
+(get_joint_transform_for_joint): bound method GameObject.get_joint_transform_for_joint of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_lightning_strike_multiplier): function WeatherAwareComponent.lambda at 0x00007FF47CAB4680
+(get_linked_objects_gen): function LinkedObjectComponent.lambda at 0x00007FF47C54A170
+(get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_locked_reason_list): bound method StatisticComponent.get_locked_reason_list of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_locking_component): function BaseLockingComponent.lambda at 0x00007FF47C55FB90
+(get_lost_and_found_registration_info): function InventoryItemComponent.lambda at 0x00007FF47C53DC20
+(get_mapped_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47C8FD3B0
+(get_notebook_information): function CraftingComponent.lambda at 0x00007FF479B655F0
+(get_object_property): bound method GameObject.get_object_property of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_object_rarity_string): bound method StateComponent.get_object_rarity_string of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47C8FCE60
+(get_off_lot_autonomy_rule): bound method StatisticComponent.get_off_lot_autonomy_rule of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_or_create_routing_context): bound method HasFootprintComponent.get_or_create_routing_context of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_outside_object_score_modification): bound method StatisticComponent.get_outside_object_score_modification of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_param_overrides): bound method BaseObject.get_param_overrides of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_parent): bound method ClientObjectMixin.get_parent of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_parenting_root): bound method ClientObjectMixin.get_parenting_root of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_part_by_index): bound method BaseObject.get_part_by_index of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_part_by_part_group_index): bound method BaseObject.get_part_by_part_group_index of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_part_data): bound method ScriptObject.get_part_data of class sims4.tuning.instances.object_Sculpture_NoView
+(get_parts_for_posture): bound method ScriptObject.get_parts_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_polygon_from_footprint_name_hashes): bound method HasFootprintComponent.get_polygon_from_footprint_name_hashes of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_portal_by_id): function PortalComponent.lambda at 0x00007FF47C96CF80
+(get_portal_data): function PortalComponent.lambda at 0x00007FF47C96CC20
+(get_portal_key_make_for_carry): function CarryableComponent.lambda at 0x00007FF47C4BDB00
+(get_portal_pairs): function PortalComponent.lambda at 0x00007FF47C96CB00
+(get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_posture_aops_gen): bound method ScriptObject.get_posture_aops_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_provided_slot_types): bound method SlotComponent.get_provided_slot_types of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_raycast_root): bound method HasFootprintComponent.get_raycast_root of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_relationship_score_multiplier_for_buff_on_target): bound method StatisticComponent.get_relationship_score_multiplier_for_buff_on_target of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_reservation_handler): bound method ReservationMixin.get_reservation_handler of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_reservation_handlers): bound method ReservationMixin.get_reservation_handlers of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_routing_location_for_transform): bound method ClientObjectMixin.get_routing_location_for_transform of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_running_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47C8FC950
+(get_runtime_slots_gen): bound method SlotComponent.get_runtime_slots_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_save_lot_coords_and_level): bound method GameObject.get_save_lot_coords_and_level of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_score_multiplier): bound method StatisticComponent.get_score_multiplier of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_sim_owner_id): function OwnableComponent.lambda at 0x00007FF48A807CB0
+(get_sit_posture_transition_penalties): bound method StatisticComponent.get_sit_posture_transition_penalties of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_situation_type_social_score_multiplier): bound method StatisticComponent.get_situation_type_social_score_multiplier of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_slot_info): bound method SlotComponent.get_slot_info of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47C8FCEF0
+(get_stack_sort_order): function InventoryItemComponent.lambda at 0x00007FF47C53DA70
+(get_stat_instance): bound method StatisticComponent.get_stat_instance of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_stat_multiplier): bound method StatisticComponent.get_stat_multiplier of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_stat_value): bound method StatisticComponent.get_stat_value of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_state): bound method StateComponent.get_state of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_state_strings): bound method TooltipComponent.get_state_strings of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_state_value_from_stat_type): bound method StateComponent.get_state_value_from_stat_type of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_statistic_modifier): bound method StatisticComponent.get_statistic_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_statistic_modifiers_gen): bound method StatisticComponent.get_statistic_modifiers_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF480285680
+(get_stored_sim_id): function StoredSimInfoComponent.lambda at 0x00007FF48A8459E0
+(get_stored_sim_info): function ScholarshipLetterComponent.lambda at 0x00007FF47CA9BEF0
+(get_stored_sim_info_or_name_data): function StoredSimInfoComponent.lambda at 0x00007FF48A845B90
+(get_stored_sim_name_data): function StoredSimInfoComponent.lambda at 0x00007FF48A845CB0
+(get_surface_access_animation): bound method SlotComponent.get_surface_access_animation of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_surface_access_constraint): bound method SlotComponent.get_surface_access_constraint of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_surface_override_for_posture): bound method GameObject.get_surface_override_for_posture of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_tags): bound method GameObject.get_tags of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_teleport_cost): function BuffComponent.lambda at 0x00007FF47A603050
+(get_template_content_overrides): function CraftingComponent.lambda at 0x00007FF479B62830
+(get_tested_relationship_score_multipliers): bound method StatisticComponent.get_tested_relationship_score_multipliers of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_tooltip_field): bound method TooltipComponent.get_tooltip_field of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_tooltip_override): bound method TooltipComponent.get_tooltip_override of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_tracker): bound method HasStatisticComponent.get_tracker of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_ui_metadata): bound method ClientObjectMixin.get_ui_metadata of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_unlocked_reason_list): bound method StatisticComponent.get_unlocked_reason_list of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_use_list_handler): bound method ReservationMixin.get_use_list_handler of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_users): bound method ReservationMixin.get_users of object_Sculpture_NoView(0x05470f8a964b057d)
+(get_waiting_line_autonomy_multiplier): function WaitingLineComponent.lambda at 0x00007FF47AC03EF0
+(give_weather_loot): function WeatherAwareComponent.lambda at 0x00007FF47CAB45F0
+(guid): 4005550689
+(guid64): 109495
+(has_any_tag): bound method GameObject.has_any_tag of object_Sculpture_NoView(0x05470f8a964b057d)
+(has_component): bound method ComponentContainer.has_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(has_custom_description): function NameComponent.lambda at 0x00007FF48032AC20
+(has_custom_name): function NameComponent.lambda at 0x00007FF48032AB90
+(has_hidden_flags): bound method GameObject.has_hidden_flags of object_Sculpture_NoView(0x05470f8a964b057d)
 (has_id): True
-(has_lock_data): function BaseLockingComponent.lambda at 0x00007FF47D532EF0
-(has_locking_component): function BaseLockingComponent.lambda at 0x00007FF47D532B00
-(has_portals): bound method PortalComponent.has_portals of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(has_posture_portals): bound method PortalComponent.has_posture_portals of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(has_servings_statistic): function CraftingComponent.lambda at 0x00007FF47ABBC9E0
-(has_state): function StateComponent.lambda at 0x00007FF47FF80170
-(has_statistic): bound method StatisticComponent.has_statistic of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(has_lock_data): function BaseLockingComponent.lambda at 0x00007FF47C55FEF0
+(has_locking_component): function BaseLockingComponent.lambda at 0x00007FF47C55FB00
+(has_portals): function PortalComponent.lambda at 0x00007FF47C96CA70
+(has_posture_portals): function PortalComponent.lambda at 0x00007FF47C96EA70
+(has_servings_statistic): function CraftingComponent.lambda at 0x00007FF479B659E0
+(has_slot): bound method SlotComponent.has_slot of object_Sculpture_NoView(0x05470f8a964b057d)
+(has_state): bound method StateComponent.has_state of object_Sculpture_NoView(0x05470f8a964b057d)
+(has_statistic): bound method StatisticComponent.has_statistic of object_Sculpture_NoView(0x05470f8a964b057d)
+(has_tag): bound method GameObject.has_tag of object_Sculpture_NoView(0x05470f8a964b057d)
 (has_trait_statistic_tracker): False
-(has_updated_commodity_flags): bound method ScriptObject.has_updated_commodity_flags of class sims4.tuning.instances.TerrainPoint(object_terrain)
+(has_updated_commodity_flags): bound method ScriptObject.has_updated_commodity_flags of class sims4.tuning.instances.object_Sculpture_NoView
+(has_work_locks): False
+(hide): bound method GameObject.hide of object_Sculpture_NoView(0x05470f8a964b057d)
+(household_owner_id): None
+(hover_tip): 0
 (icon): 000000000000000000000000.00000000
-(icon_info): (None, None)
+(icon_info): (82029470, 1)
+(icon_override): None
+(id): 380289781437498749
+(ideal_slot_types): frozenset()
 (in_pool): False
-(intended_forward): Vector3(0.000000, 0.000000, 1.000000)
-(intended_position): Vector3Immutable(53.037346, 157.528015, 239.846725)
-(intended_routing_surface): 53F0EA2415E2F30,0,World
-(intended_transform): Transform(Vector3(53.037346, 157.528015, 239.846725), Quaternion(0.000000, 0.000000, 0.000000, 1.000000))
+(in_use): False
+(in_use_by): bound method ReservationMixin.in_use_by of object_Sculpture_NoView(0x05470f8a964b057d)
+(intended_forward): Vector3(0.000000, 0.000000, -1.000000)
+(intended_position): Vector3Immutable(17.511421, 157.453506, 246.294296)
+(intended_position_with_forward_offset): Vector3(17.511421, 157.453506, 246.254303)
+(intended_routing_surface): 53F0EA2415E2F2F,0,World
+(intended_transform): Transform(Vector3(17.511421, 157.453506, 246.294296), Quaternion(0.000000, 1.000000, 0.000000, 0.000000))
 (interactable): True
 (interaction_refs): ()
-(is_connected): bound method ScriptObject.is_connected of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_disabled): bound method ScriptObject.is_disabled of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(is_connected): bound method ScriptObject.is_connected of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_disabled): bound method ScriptObject.is_disabled of object_Sculpture_NoView(0x05470f8a964b057d)
 (is_downloaded): False
+(is_fire_related_object): False
 (is_from_gallery): False
-(is_hidden): bound method _LocationPoint.is_hidden of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_in_distress): bound method StatisticComponent.is_in_distress of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_in_inventory): function InventoryItemComponent.lambda at 0x00007FF47D509CB0
-(is_in_locked_commodities): bound method StatisticComponent.is_in_locked_commodities of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_in_sim_inventory): function InventoryItemComponent.lambda at 0x00007FF47D5130E0
-(is_inside_building): bound method _LocationPoint.is_inside_building of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_locked): bound method StatisticComponent.is_locked of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_on_active_lot): bound method _LocationPoint.is_on_active_lot of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_on_natural_ground): bound method _LocationPoint.is_on_natural_ground of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_outside): bound method _LocationPoint.is_outside of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(is_hidden): bound method GameObject.is_hidden of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_in_distress): bound method StatisticComponent.is_in_distress of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_in_inventory): function InventoryItemComponent.lambda at 0x00007FF47C533CB0
+(is_in_locked_commodities): bound method StatisticComponent.is_in_locked_commodities of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_in_navmesh): True
+(is_in_sim_inventory): function InventoryItemComponent.lambda at 0x00007FF47C53D0E0
+(is_inside_building): False
+(is_locked): bound method StatisticComponent.is_locked of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_new_object): False
+(is_object_usable): bound method StateComponent.is_object_usable of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_on_active_lot): bound method GameObject.is_on_active_lot of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_on_hidden_or_shown_callback_registered): bound method GameObject.is_on_hidden_or_shown_callback_registered of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_on_location_changed_callback_registered): bound method GameObject.is_on_location_changed_callback_registered of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_on_natural_ground): bound method GameObject.is_on_natural_ground of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_outside): True
 (is_part): False
-(is_persistable): bound method ScriptObject.is_persistable of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_position_on_lot): bound method Terrain.is_position_on_lot of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(is_persistable): bound method ScriptObject.is_persistable of object_Sculpture_NoView(0x05470f8a964b057d)
 (is_prop): False
-(is_routing_surface_overlapped_at_position): bound method _LocationPoint.is_routing_surface_overlapped_at_position of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_same_object_or_part): bound method ScriptObject.is_same_object_or_part of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_scorable): bound method StatisticComponent.is_scorable of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(is_reservation_clobberer): bound method ReservationMixin.is_reservation_clobberer of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_routing_surface_overlapped_at_position): bound method GameObject.is_routing_surface_overlapped_at_position of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_same_object_or_part): bound method ScriptObject.is_same_object_or_part of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_scorable): bound method StatisticComponent.is_scorable of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_set_as_head): False
 (is_sim): False
-(is_skill_bar_suppressed): bound method StatisticComponent.is_skill_bar_suppressed of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(is_skill_bar_suppressed): bound method StatisticComponent.is_skill_bar_suppressed of object_Sculpture_NoView(0x05470f8a964b057d)
 (is_social_group): False
-(is_stat_type_locked): bound method StatisticComponent.is_stat_type_locked of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_statistic_type_added_by_modifier): bound method StatisticComponent.is_statistic_type_added_by_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_surface): bound method ScriptObject.is_surface of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_terrain): True
-(is_ungreeted_sim_disallowed): bound method PortalComponent.is_ungreeted_sim_disallowed of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(is_valid_pack): bound method ComponentContainer.is_valid_pack of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(is_stat_type_locked): bound method StatisticComponent.is_stat_type_locked of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_statistic_type_added_by_modifier): bound method StatisticComponent.is_statistic_type_added_by_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_surface): bound method GameObject.is_surface of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_terrain): False
+(is_valid_for_height_checks): True
+(is_valid_pack): bound method ComponentContainer.is_valid_pack of object_Sculpture_NoView(0x05470f8a964b057d)
+(is_valid_posture_graph_object): True
+(item_location): ItemLocation.FROM_OPEN_STREET
 (level): 0
-(list): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF480A32CB0
-(load): bound method ScriptObject.load of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(load_object): bound method ScriptObject.load_object of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(location): Location(Transform(Vector3(53.037346, 157.528015, 239.846725), Quaternion(0.000000, 0.000000, 0.000000, 1.000000)), 53F0EA2415E2F30,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
-(lock): function BaseLockingComponent.lambda at 0x00007FF47D532CB0
-(lock_portal_on_use): bound method PortalComponent.lock_portal_on_use of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(lock_sim): function BaseLockingComponent.lambda at 0x00007FF47D532830
-(lock_statistic): bound method StatisticComponent.lock_statistic of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(manager_id): 0
-(mark_get_locations_for_posture_needs_update): bound method ScriptObject.mark_get_locations_for_posture_needs_update of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(may_reserve): bound method ScriptObject.may_reserve of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(modify_interactable_flags): bound method ScriptObject.modify_interactable_flags of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(list): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47F827CB0
+(live_drag_component): LiveDragComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(load): bound method ScriptObject.load of object_Sculpture_NoView(0x05470f8a964b057d)
+(load_object): bound method GameObject.load_object of object_Sculpture_NoView(0x05470f8a964b057d)
+(location): Location(Transform(Vector3(17.511421, 157.453506, 246.294296), Quaternion(0.000000, 1.000000, 0.000000, 0.000000)), 53F0EA2415E2F2F,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
+(lock): function BaseLockingComponent.lambda at 0x00007FF47C55FCB0
+(lock_portal_on_use): function PortalComponent.lambda at 0x00007FF47C96E440
+(lock_sim): function BaseLockingComponent.lambda at 0x00007FF47C55F830
+(lock_statistic): bound method StatisticComponent.lock_statistic of object_Sculpture_NoView(0x05470f8a964b057d)
+(make_transient): bound method GameObject.make_transient of object_Sculpture_NoView(0x05470f8a964b057d)
+(manager): object_manager
+(manager_id): 1
+(mark_get_locations_for_posture_needs_update): bound method ScriptObject.mark_get_locations_for_posture_needs_update of object_Sculpture_NoView(0x05470f8a964b057d)
+(material_hash): 0
+(material_state): None
+(material_variant): 4106034409
+(may_move): False
+(may_reserve): bound method GameObject.may_reserve of object_Sculpture_NoView(0x05470f8a964b057d)
+(model): 000000008c4c0a68f972c6c9.01661233
+(model_with_material_variant): (000000008c4c0a68f972c6c9.01661233, 4106034409)
+(modify_interactable_flags): bound method ScriptObject.modify_interactable_flags of object_Sculpture_NoView(0x05470f8a964b057d)
+(move_to): bound method ClientObjectMixin.move_to of object_Sculpture_NoView(0x05470f8a964b057d)
+(multicolor): None
+(new_in_inventory): True
 (non_deletable_by_user): False
+(object_bounds_for_flammable_object): bound method GameObject.object_bounds_for_flammable_object of object_Sculpture_NoView(0x05470f8a964b057d)
 (object_manager_for_create): object_manager
-(object_radius): 0.0
-(object_tags_override_off_lot_autonomy_ref_count): bound method StatisticComponent.object_tags_override_off_lot_autonomy_ref_count of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_add): bound method BaseObject.on_add of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_add_to_client): bound method BaseObject.on_add_to_client of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_added_to_inventory): bound method BaseObject.on_added_to_inventory of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_before_added_to_inventory): bound method BaseObject.on_before_added_to_inventory of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_before_removed_from_inventory): bound method BaseObject.on_before_removed_from_inventory of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_client_connect): bound method BaseObject.on_client_connect of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_client_suppressor_added): function IdleComponent.lambda at 0x00007FF47D4C7170
-(on_client_suppressor_removed): function IdleComponent.lambda at 0x00007FF47D4C7200
-(on_failed_to_load_component): bound method ComponentContainer.on_failed_to_load_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_finalize_load): bound method ScriptObject.on_finalize_load of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_object_added_to_inventory): bound method BaseObject.on_object_added_to_inventory of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_object_removed_from_inventory): bound method BaseObject.on_object_removed_from_inventory of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_object_replaced): bound method BaseObject.on_object_replaced of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_object_stack_id_updated): bound method BaseObject.on_object_stack_id_updated of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_placed_in_slot): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(on_post_load): bound method ScriptObject.on_post_load of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_proxied_object_removed): bound method ProxyObject.on_proxied_object_removed of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_remove): bound method BaseObject.on_remove of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_remove_from_client): bound method BaseObject.on_remove_from_client of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_removed_from_inventory): bound method BaseObject.on_removed_from_inventory of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_removed_from_slot): bound method ComponentMetaclass._default_none_fallback_method of class objects.components.ComponentMetaclass
-(on_reset_component_get_interdependent_reset_records): bound method BaseObject.on_reset_component_get_interdependent_reset_records of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_destroy): bound method BaseObject.on_reset_destroy of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_early_detachment): bound method ScriptObject.on_reset_early_detachment of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_get_elements_to_hard_stop): bound method BaseObject.on_reset_get_elements_to_hard_stop of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_get_interdependent_reset_records): bound method ScriptObject.on_reset_get_interdependent_reset_records of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_internal_state): bound method ScriptObject.on_reset_internal_state of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_notification): bound method BaseObject.on_reset_notification of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_restart): bound method BaseObject.on_reset_restart of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_reset_send_op): bound method BaseObject.on_reset_send_op of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_restock): bound method ScriptObject.on_restock of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_set_sold): bound method ScriptObject.on_set_sold of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(on_state_changed): bound method ScriptObject.on_state_changed of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(orientation): QuaternionImmutable(0.000000, 0.000000, 0.000000, 1.000000)
+(object_radius): 0.33114880323410034
+(object_tags_override_off_lot_autonomy_ref_count): bound method StatisticComponent.object_tags_override_off_lot_autonomy_ref_count of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_add): bound method GameObject.on_add of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_add_to_client): bound method BaseObject.on_add_to_client of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_added_to_inventory): bound method GameObject.on_added_to_inventory of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_before_added_to_inventory): bound method BaseObject.on_before_added_to_inventory of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_before_removed_from_inventory): bound method BaseObject.on_before_removed_from_inventory of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_buildbuy_exit): bound method GameObject.on_buildbuy_exit of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_child_added): bound method GameObject.on_child_added of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_child_removed): bound method GameObject.on_child_removed of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_client_connect): bound method BaseObject.on_client_connect of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_client_suppressor_added): function IdleComponent.lambda at 0x00007FF47C4F0170
+(on_client_suppressor_removed): function IdleComponent.lambda at 0x00007FF47C4F0200
+(on_failed_to_load_component): bound method ComponentContainer.on_failed_to_load_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_finalize_load): bound method ScriptObject.on_finalize_load of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_hovertip_requested): bound method GameObject.on_hovertip_requested of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_leaf_child_changed): bound method GameObject.on_leaf_child_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_location_changed): bound method GameObject.on_location_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_object_added_to_inventory): bound method BaseObject.on_object_added_to_inventory of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_object_removed_from_inventory): bound method BaseObject.on_object_removed_from_inventory of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_object_replaced): bound method BaseObject.on_object_replaced of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_object_stack_id_updated): bound method BaseObject.on_object_stack_id_updated of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_parent_change): bound method ClientObjectMixin.on_parent_change of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_placed_in_slot): bound method StateComponent.on_placed_in_slot of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_post_bb_fixup): bound method ClientObjectMixin.on_post_bb_fixup of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_post_load): bound method ScriptObject.on_post_load of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_remove): bound method GameObject.on_remove of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_remove_from_client): bound method ClientObjectMixin.on_remove_from_client of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_removed_from_inventory): bound method GameObject.on_removed_from_inventory of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_removed_from_slot): bound method StateComponent.on_removed_from_slot of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_component_get_interdependent_reset_records): bound method BaseObject.on_reset_component_get_interdependent_reset_records of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_destroy): bound method BaseObject.on_reset_destroy of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_early_detachment): bound method ScriptObject.on_reset_early_detachment of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_element_hard_stop): bound method GameObject.on_reset_element_hard_stop of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_get_elements_to_hard_stop): bound method GameObject.on_reset_get_elements_to_hard_stop of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_get_interdependent_reset_records): bound method ClientObjectMixin.on_reset_get_interdependent_reset_records of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_internal_state): bound method ClientObjectMixin.on_reset_internal_state of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_notification): bound method BaseObject.on_reset_notification of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_restart): bound method BaseObject.on_reset_restart of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_reset_send_op): bound method ClientObjectMixin.on_reset_send_op of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_restock): bound method ScriptObject.on_restock of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_set_sold): bound method ScriptObject.on_set_sold of object_Sculpture_NoView(0x05470f8a964b057d)
+(on_state_changed): bound method ScriptObject.on_state_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(opacity): 1.0
+(orientation): QuaternionImmutable(0.000000, 1.000000, 0.000000, 0.000000)
 (parent): None
+(parent_object): bound method ClientObjectMixin.parent_object of object_Sculpture_NoView(0x05470f8a964b057d)
 (parent_slot): None
-(parenting_hierarchy_gen): bound method BaseObject.parenting_hierarchy_gen of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(parent_type): 0
+(parent_type_info): (0, 0)
+(parenting_hierarchy_gen): bound method ClientObjectMixin.parenting_hierarchy_gen of object_Sculpture_NoView(0x05470f8a964b057d)
 (part_suffix): None
 (parts): None
-(persistence_group): None
-(populate_icon_canvas_texture_info): function CanvasComponent.lambda at 0x00007FF47F637320
-(populate_localization_token): bound method Terrain.populate_localization_token of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(position): Vector3Immutable(53.037346, 157.528015, 239.846725)
-(post_component_reset): bound method BaseObject.post_component_reset of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(post_remove): bound method BaseObject.post_remove of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(post_tooltip_save_data_stored): function SpoilableObjectMixin.lambda at 0x00007FF47D9584D0
+(persistence_group): PersistenceGroups.IN_OPEN_STREET
+(placement_footprint_hash_set): frozenset()
+(populate_icon_canvas_texture_info): function CanvasComponent.lambda at 0x00007FF47EDE3320
+(populate_localization_token): bound method GameObject.populate_localization_token of object_Sculpture_NoView(0x05470f8a964b057d)
+(portal_added_callback): bound method GameObject.portal_added_callback of object_Sculpture_NoView(0x05470f8a964b057d)
+(position): Vector3Immutable(17.511421, 157.453506, 246.294296)
+(position_with_forward_offset): Vector3(17.511421, 157.453506, 246.254303)
+(post_component_reset): bound method BaseObject.post_component_reset of object_Sculpture_NoView(0x05470f8a964b057d)
+(post_remove): bound method ClientObjectMixin.post_remove of object_Sculpture_NoView(0x05470f8a964b057d)
+(post_tooltip_save_data_stored): function SpoilableObjectMixin.lambda at 0x00007FF47C9FD4D0
 (posture_transition_target_tag): PostureTransitionTargetPreferenceTag.INVALID
-(potential_interactions): bound method Terrain.potential_interactions of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(potential_preroll_interactions): bound method ScriptObject.potential_preroll_interactions of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(pre_add): bound method BaseObject.pre_add of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(potential_interactions): bound method ScriptObject.potential_interactions of object_Sculpture_NoView(0x05470f8a964b057d)
+(potential_preroll_interactions): bound method ScriptObject.potential_preroll_interactions of object_Sculpture_NoView(0x05470f8a964b057d)
+(pre_add): bound method BaseObject.pre_add of object_Sculpture_NoView(0x05470f8a964b057d)
+(pre_parent_change): bound method ClientObjectMixin.pre_parent_change of object_Sculpture_NoView(0x05470f8a964b057d)
 (preroll_commodity_flags): frozenset()
-(provide_route_events): bound method PortalComponent.provide_route_events of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(primitives): DistributionSet(set())
 (provided_mobile_posture_affordances): frozenset()
+(provided_mobile_posture_operations): set()
 (provided_mobile_posture_types): frozenset()
 (provided_routing_surface): None
 (provides_ocean_interactions): False
 (provides_terrain_interactions): False
-(proxied_obj): object_terrain:0x0000000000000000
-(raycast_context): bound method Terrain.raycast_context of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(ref): bound method ProxyObject.ref of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(refresh_locks): function BaseLockingComponent.lambda at 0x00007FF47D5325F0
-(register_on_location_changed): bound method Terrain.register_on_location_changed of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(register_transition_controller): bound method ScriptObject.register_transition_controller of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(raycast_context): bound method HasFootprintComponent.raycast_context of object_Sculpture_NoView(0x05470f8a964b057d)
+(recycling_data): ImmutableSlots(recycling_loot: (), recycling_values: _sims4_collections.frozendict(BucksType.RecycleBitsBucks  66: 0.5, BucksType.RecyclePiecesBucks  67: 0.5))
+(ref): bound method BaseObject.ref of object_Sculpture_NoView(0x05470f8a964b057d)
+(reference_arb): None
+(refresh_locks): function BaseLockingComponent.lambda at 0x00007FF47C55F5F0
+(register_for_on_children_changed_callback): bound method ClientObjectMixin.register_for_on_children_changed_callback of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_on_hidden_or_shown): bound method GameObject.register_on_hidden_or_shown of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_on_location_changed): bound method GameObject.register_on_location_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_on_use_list_changed): bound method ReservationMixin.register_on_use_list_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_rebate_tests): bound method GameObject.register_rebate_tests of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_reset_element): bound method GameObject.register_reset_element of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_transition_controller): bound method ScriptObject.register_transition_controller of object_Sculpture_NoView(0x05470f8a964b057d)
+(register_tuned_animation): bound method GameObject.register_tuned_animation of class sims4.tuning.instances.object_Sculpture_NoView
 (reloadable): True
+(remap_child_parenting): False
+(remove_audio_effect): bound method ClientObjectMixin.remove_audio_effect of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_awareness_scores): bound method ClientObjectMixin.remove_awareness_scores of object_Sculpture_NoView(0x05470f8a964b057d)
 (remove_children_from_posture_graph_on_delete): True
-(remove_claim_requirement): bound method ScriptObject.remove_claim_requirement of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_component): bound method BaseObject.remove_component of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_disallowed_sim): function PortalLockingComponent.lambda at 0x00007FF47D539F80
-(remove_dynamic_animation_overrides): bound method ScriptObject.remove_dynamic_animation_overrides of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_dynamic_commodity_flags): bound method ScriptObject.remove_dynamic_commodity_flags of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_from_client): bound method BaseObject.remove_from_client of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_from_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47D4A28C0
-(remove_interaction_reference): bound method BaseObject.remove_interaction_reference of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_name_changed_callback): function NameComponent.lambda at 0x00007FF4800750E0
-(remove_reservation_handler): bound method ScriptObject.remove_reservation_handler of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(remove_statistic_modifier): bound method StatisticComponent.remove_statistic_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(resend_interactable): bound method Field.get_resend.locals._resend of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(reset): bound method BaseObject.reset of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(reset_reason): bound method BaseObject.reset_reason of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(resolve): bound method BaseObject.resolve of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(resolve_retarget): bound method BaseObject.resolve_retarget of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(resource_key): 000000000000000000003a86.b61de6b4
-(resume_statistic_modifier): bound method StatisticComponent.resume_statistic_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(route_target): (RouteTargetType.NONE  1, None)
-(routing_context): None
-(routing_location): 53F0EA2415E2F30,0,World:0.000,0.000,0.000,1.000:53.037346,157.528015,239.846725
-(routing_surface): 53F0EA2415E2F30,0,World
-(save): bound method ScriptObject.save of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(save_object): bound method ScriptObject.save_object of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(schedule_destroy_asap): bound method BaseObject.schedule_destroy_asap of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(schedule_reset_asap): bound method BaseObject.schedule_reset_asap of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(sell): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF480A39050
-(set_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47D847290
-(set_portal_cost_override): bound method PortalComponent.set_portal_cost_override of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(set_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47D847050
-(set_stack_count): function InventoryItemComponent.lambda at 0x00007FF47D509E60
-(set_stack_id): function InventoryItemComponent.lambda at 0x00007FF47D5138C0
-(set_stat_value): bound method StatisticComponent.set_stat_value of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(set_statistics_callback_alarm_calculation_supression): bound method HasStatisticComponent.set_statistics_callback_alarm_calculation_supression of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(skill_bar_suppression): bound method StatisticComponent.skill_bar_suppression of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
+(remove_claim_requirement): bound method ScriptObject.remove_claim_requirement of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_client_state_suppressor): bound method StateComponent.remove_client_state_suppressor of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_component): bound method BaseObject.remove_component of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_disallowed_sim): function PortalLockingComponent.lambda at 0x00007FF47C567F80
+(remove_dynamic_animation_overrides): bound method ScriptObject.remove_dynamic_animation_overrides of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_dynamic_commodity_flags): bound method ScriptObject.remove_dynamic_commodity_flags of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_dynamic_tags): bound method GameObject.remove_dynamic_tags of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_from_client): bound method BaseObject.remove_from_client of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_from_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47C4C78C0
+(remove_geometry_state_override): bound method ClientObjectMixin.remove_geometry_state_override of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_interaction_reference): bound method BaseObject.remove_interaction_reference of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_name_changed_callback): function NameComponent.lambda at 0x00007FF4803300E0
+(remove_reference_from_parent): bound method ClientObjectMixin.remove_reference_from_parent of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_reservation_clobberer): bound method ReservationMixin.remove_reservation_clobberer of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_reservation_handler): bound method GameObject.remove_reservation_handler of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_state_changed_callback): bound method StateComponent.remove_state_changed_callback of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_statistic_modifier): bound method StatisticComponent.remove_statistic_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_ui_metadata): bound method ClientObjectMixin.remove_ui_metadata of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_voice_suffix_override): bound method ClientObjectMixin.remove_voice_suffix_override of object_Sculpture_NoView(0x05470f8a964b057d)
+(remove_work_lock): bound method GameObject.remove_work_lock of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_audio_effects): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_awareness_scores): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_display_number): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_interactable): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_location): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_model_with_material_variant): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_multicolor): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_slot): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_state_index): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_tint): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(resend_voice_suffix_overrides): bound method Field.get_resend.locals._resend of object_Sculpture_NoView(0x05470f8a964b057d)
+(reset): bound method BaseObject.reset of object_Sculpture_NoView(0x05470f8a964b057d)
+(reset_reason): bound method BaseObject.reset_reason of object_Sculpture_NoView(0x05470f8a964b057d)
+(reset_states_to_default): bound method StateComponent.reset_states_to_default of object_Sculpture_NoView(0x05470f8a964b057d)
+(resolve): bound method BaseObject.resolve of object_Sculpture_NoView(0x05470f8a964b057d)
+(resolve_retarget): bound method BaseObject.resolve_retarget of object_Sculpture_NoView(0x05470f8a964b057d)
+(resource_key): 00000000000000000001abb7.b61de6b4
+(resume_statistic_modifier): bound method StatisticComponent.resume_statistic_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(retail_component): RetailComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(rig): 00000000a5b515df1bba09c0.8eaf13de
+(route_target): (RouteTargetType.OBJECT  2, object_Sculpture_NoView(0x05470f8a964b057d))
+(routing_context): ObjectID: 0, Radius: 0.3311, Key14296806522263978807,3548561239,2147483648, FootprintID: 33141, ConectivityHandles: () FlagsIgnoreOwnFootprint
+(routing_location): 53F0EA2415E2F2F,0,World:0.000,1.000,0.000,0.000:17.511421,157.453506,246.294296
+(routing_surface): 53F0EA2415E2F2F,0,World
+(save): bound method ScriptObject.save of object_Sculpture_NoView(0x05470f8a964b057d)
+(save_object): bound method GameObject.save_object of object_Sculpture_NoView(0x05470f8a964b057d)
+(scale): 1
+(scale_modifiers_gen): bound method ClientObjectMixin.scale_modifiers_gen of object_Sculpture_NoView(0x05470f8a964b057d)
+(schedule_destroy_asap): bound method BaseObject.schedule_destroy_asap of object_Sculpture_NoView(0x05470f8a964b057d)
+(schedule_element): bound method GameObject.schedule_element of object_Sculpture_NoView(0x05470f8a964b057d)
+(schedule_reset_asap): bound method BaseObject.schedule_reset_asap of object_Sculpture_NoView(0x05470f8a964b057d)
+(scratched): False
+(self_or_part_in_use): False
+(sell): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF47F879050
+(set_build_buy_lockout_state): bound method GameObject.set_build_buy_lockout_state of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF47C8FD290
+(set_definition): bound method ClientObjectMixin.set_definition of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_dynamic_timed_state): bound method StateComponent.set_dynamic_timed_state of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_household_owner_id): bound method GameObject.set_household_owner_id of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_ico_as_carry_target): True
+(set_location): bound method ClientObjectMixin.set_location of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_location_without_distribution): bound method ClientObjectMixin.set_location_without_distribution of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_object_def_state_index): bound method GameObject.set_object_def_state_index of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_parent): bound method ClientObjectMixin.set_parent of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_post_bb_fixup_needed): bound method ClientObjectMixin.set_post_bb_fixup_needed of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF47C8FD050
+(set_stack_count): function InventoryItemComponent.lambda at 0x00007FF47C533E60
+(set_stack_id): function InventoryItemComponent.lambda at 0x00007FF47C53D8C0
+(set_stat_value): bound method StatisticComponent.set_stat_value of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_state): bound method StateComponent.set_state of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_state_dynamically): bound method StateComponent.set_state_dynamically of object_Sculpture_NoView(0x05470f8a964b057d)
+(set_statistics_callback_alarm_calculation_supression): bound method HasStatisticComponent.set_statistics_callback_alarm_calculation_supression of object_Sculpture_NoView(0x05470f8a964b057d)
+(should_mark_as_new): True
+(show): bound method GameObject.show of object_Sculpture_NoView(0x05470f8a964b057d)
+(skill_bar_suppression): bound method StatisticComponent.skill_bar_suppression of object_Sculpture_NoView(0x05470f8a964b057d)
+(slot): 00000000a5b515df1bba09c0.d3044521
+(slot_component): SlotComponent(object_Sculpture_NoView:0x05470f8a964b057d)
 (slot_cost_modifiers): _sims4_collections.frozendict()
-(slot_object): function SlotComponent.lambda at 0x00007FF47D6BB830
+(slot_hash): 0
+(slot_object): bound method SlotComponent.slot_object of object_Sculpture_NoView(0x05470f8a964b057d)
+(slot_type_set): class sims4.tuning.instances.objectSet_CloningMachineObject
+(slot_types): frozenset(class sims4.tuning.instances.slot_CloningMachineSource, class sims4.tuning.instances.slot_CloningMachineClone)
+(slots_resource): sims4.ObjectSlots
 (social_clustering): None
-(split_path_on_portal): bound method PortalComponent.split_path_on_portal of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(stack_count): function InventoryItemComponent.lambda at 0x00007FF47D509D40
-(state_value_active): function StateComponent.lambda at 0x00007FF47FF80200
-(static_commodity_tracker): statistics.base_statistic_tracker.BaseStatisticTracker object at 0x00007FF4B23C46B0
-(statistic_tracker): statistics.statistic_tracker.StatisticTracker object at 0x00007FF446101950
-(stop_running_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47D846B90
-(super_affordances): functools.partial(function ScriptObject.super_affordances at 0x00007FF47DABD8C0, class sims4.tuning.instances.TerrainPoint(object_terrain), TerrainPoint(object_terrain)((53.037, 157.528, 239.847)))
-(supports_affordance): bound method ScriptObject.supports_affordance of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(supports_posture_type): bound method ScriptObject.supports_posture_type of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(suspend_statistic_modifier): bound method StatisticComponent.suspend_statistic_modifier of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(trait_statistic_tracker): statistics.trait_statistic_tracker.TraitStatisticTracker object at 0x00007FF4B7800C88
-(transform): Transform(Vector3(53.037346, 157.528015, 239.846725), Quaternion(0.000000, 0.000000, 0.000000, 1.000000))
-(try_split_object_from_stack): function InventoryItemComponent.lambda at 0x00007FF47D513B00
-(tuned_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: None, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: TunablePortalComponentWrapper.PortalComponent, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: None, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(stack_count): function InventoryItemComponent.lambda at 0x00007FF47C533D40
+(standin_model): None
+(state_component): StateComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(state_index): 0
+(state_value_active): bound method StateComponent.state_value_active of object_Sculpture_NoView(0x05470f8a964b057d)
+(static_commodity_tracker): statistics.base_statistic_tracker.BaseStatisticTracker object at 0x00007FF4B06957C0
+(statistic_component): StatisticComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(statistic_tracker): statistics.statistic_tracker.StatisticTracker object at 0x00007FF4B45C3950
+(stop_running_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF47C8FCB90
+(super_affordances): functools.partial(function ScriptObject.super_affordances at 0x00007FF47CB5C8C0, class sims4.tuning.instances.object_Sculpture_NoView, object_Sculpture_NoView(0x05470f8a964b057d))
+(supported_posture_types): ()
+(supports_affordance): bound method ScriptObject.supports_affordance of object_Sculpture_NoView(0x05470f8a964b057d)
+(supports_posture_type): bound method ScriptObject.supports_posture_type of object_Sculpture_NoView(0x05470f8a964b057d)
+(suspend_statistic_modifier): bound method StatisticComponent.suspend_statistic_modifier of object_Sculpture_NoView(0x05470f8a964b057d)
+(swapping_from_parent): None
+(swapping_to_parent): None
+(tests_to_bypass_utility_requirement): _sims4_collections.frozendict()
+(tint): None
+(tooltip_component): TooltipComponent(object_Sculpture_NoView:0x05470f8a964b057d)
+(trait_statistic_tracker): statistics.trait_statistic_tracker.TraitStatisticTracker object at 0x00007FF402B8E610
+(transform): Transform(Vector3(17.511421, 157.453506, 246.294296), Quaternion(0.000000, 1.000000, 0.000000, 0.000000))
+(transient): False
+(try_mark_as_new_object): bound method GameObject.try_mark_as_new_object of object_Sculpture_NoView(0x05470f8a964b057d)
+(try_post_bb_fixup): bound method ClientObjectMixin.try_post_bb_fixup of object_Sculpture_NoView(0x05470f8a964b057d)
+(try_split_object_from_stack): function InventoryItemComponent.lambda at 0x00007FF47C53DB00
+(tuned_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: None, privacy: None, procedural_animation: None, proximity_component: None, retail_component: class sims4.tuning.instances.retailComponent_Default, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: TunableStateComponentWrapper.StateComponent, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: TunableTooltipComponentWrapper.TooltipComponent, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
 (tuning_manager): InstanceManager_object
-(unlock): function BaseLockingComponent.lambda at 0x00007FF47D532DD0
-(unlock_statistic): bound method StatisticComponent.unlock_statistic of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(unregister_on_location_changed): bound method Terrain.unregister_on_location_changed of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(unregister_transition_controller): bound method ScriptObject.unregister_transition_controller of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(update_all_commodities): bound method StatisticComponent.update_all_commodities of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(update_commodity_flags): bound method ScriptObject.update_commodity_flags of class sims4.tuning.instances.TerrainPoint(object_terrain)
-(update_component_commodity_flags): bound method ScriptObject.update_component_commodity_flags of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(update_object_tooltip): function TooltipComponent.lambda at 0x00007FF4802B2710
-(update_portal_cache): bound method PortalComponent.update_portal_cache of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(update_stack_count): function InventoryItemComponent.lambda at 0x00007FF47D509F80
-(update_tooltip_field): function TooltipComponent.lambda at 0x00007FF4802B2B90
+(ui_metadata): distributor.sparse.SparseMessage object at 0x00007FF44060DF50
+(ui_metadata_immediate): distributor.sparse.SparseMessage object at 0x00007FF44060DF50
+(unlock): function BaseLockingComponent.lambda at 0x00007FF47C55FDD0
+(unlock_statistic): bound method StatisticComponent.unlock_statistic of object_Sculpture_NoView(0x05470f8a964b057d)
+(unregister_for_on_children_changed_callback): bound method ClientObjectMixin.unregister_for_on_children_changed_callback of object_Sculpture_NoView(0x05470f8a964b057d)
+(unregister_on_hidden_or_shown): bound method GameObject.unregister_on_hidden_or_shown of object_Sculpture_NoView(0x05470f8a964b057d)
+(unregister_on_location_changed): bound method GameObject.unregister_on_location_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(unregister_on_use_list_changed): bound method ReservationMixin.unregister_on_use_list_changed of object_Sculpture_NoView(0x05470f8a964b057d)
+(unregister_reset_element): bound method GameObject.unregister_reset_element of object_Sculpture_NoView(0x05470f8a964b057d)
+(unregister_transition_controller): bound method ScriptObject.unregister_transition_controller of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_all_commodities): bound method StatisticComponent.update_all_commodities of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_commodity_flags): bound method ScriptObject.update_commodity_flags of class sims4.tuning.instances.object_Sculpture_NoView
+(update_component_commodity_flags): bound method ScriptObject.update_component_commodity_flags of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_current_value): bound method ClientObjectMixin.update_current_value of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_display_number): bound method ClientObjectMixin.update_display_number of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_object_tooltip): bound method TooltipComponent.update_object_tooltip of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_ownership): bound method GameObject.update_ownership of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_reference_arb): bound method ClientObjectMixin.update_reference_arb of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_stack_count): function InventoryItemComponent.lambda at 0x00007FF47C533F80
+(update_tooltip_field): bound method TooltipComponent.update_tooltip_field of object_Sculpture_NoView(0x05470f8a964b057d)
+(update_ui_metadata): bound method ClientObjectMixin.update_ui_metadata of object_Sculpture_NoView(0x05470f8a964b057d)
+(usable_by_transition_controller): bound method ReservationMixin.usable_by_transition_controller of object_Sculpture_NoView(0x05470f8a964b057d)
 (use_base_object_for_slot_constraints): False
 (valid_for_distribution): True
+(validate_definition): bound method GameObject.validate_definition of object_Sculpture_NoView(0x05470f8a964b057d)
+(video_playlist): None
+(visibility): None
+(visibility_flags): None
 (visible_to_client): True
+(voice_suffix_overrides): None
 (wall_object_padding): None
-(with_skill_bar_suppression): bound method StatisticComponent.with_skill_bar_suppression of TerrainPoint(object_terrain)((53.037, 157.528, 239.847))
-(zone_id): None
+(wall_or_fence_placement): False
+(wind_speed_level): None
+(with_skill_bar_suppression): bound method StatisticComponent.with_skill_bar_suppression of object_Sculpture_NoView(0x05470f8a964b057d)
+(zone_id): 378036983766593327

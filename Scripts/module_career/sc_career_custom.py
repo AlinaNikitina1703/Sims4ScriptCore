@@ -194,8 +194,7 @@ class sc_CareerCustom(sc_CareerMedical):
     def load_sims(self):
         sc_CareerCustom.routine_sims = []
         zone_id = services.current_zone_id()
-        now = services.time_service().sim_now
-        random.seed(int(now.day()) + int(zone_id))
+        random.seed(int(zone_id))
         random.shuffle(sc_CareerCustom.sim_infos)
 
         if sc_Vars.DEBUG:
@@ -216,12 +215,15 @@ class sc_CareerCustom(sc_CareerMedical):
             if max_sims(sim_info, sc_CareerCustom.sim_infos):
                 sim_info.routine = False
                 sc_CareerCustom.sim_infos.remove(sim_info)
+                if sim_info.is_instanced() and not sim_info.is_selectable:
+                    sim = init_sim(sim_info)
+                    remove_sim(sim)
                 continue
             if not get_work_hours(sim_info.routine_info.on_duty, sim_info.routine_info.off_duty):
                 sim_info.routine = False
+                sc_CareerCustom.sim_infos.remove(sim_info)
                 if sim_info.is_instanced() and not sim_info.is_selectable:
                     sim = init_sim(sim_info)
-                    sc_CareerCustom.sim_infos.remove(sim_info)
                     remove_sim(sim)
                 continue
             if not sim_info.is_instanced():
