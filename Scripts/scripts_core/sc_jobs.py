@@ -44,7 +44,8 @@ from tag import Tag
 from terrain import get_terrain_center, get_terrain_height
 from traits.trait_type import TraitType
 from travel_group.travel_group import TravelGroup
-from weather.weather_enums import Temperature
+from weather.weather_enums import Temperature, WeatherEffectType, WeatherElementTuple, PrecipitationType, CloudType
+from weather.weather_service import WeatherService
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_message_box import message_box
@@ -1880,7 +1881,6 @@ def _instanced_sims_gen(self, allow_hidden_flags=0):
 def _travel_instanced_sims_gen(self, allow_hidden_flags=0):
     return [sim_info.get_sim_instance(allow_hidden_flags=allow_hidden_flags) for sim_info in self._sim_infos
         if sim_info.is_instanced(allow_hidden_flags=allow_hidden_flags) is not None]
-
 
 
 Sim.push_super_affordance = _push_super_affordance
