@@ -23,7 +23,7 @@ class ObjectMenuNoFile(ImmediateSuperInteraction):
         self.MENU_MORE = -1
         self.MENU_BACK = -2
 
-    def show(self, obj_list, index: int, target: GameObject, delete=False, max=1, focus=False):
+    def show(self, obj_list, index: int, target: GameObject, delete=False, max=1, focus=False, callback=None):
         try:
             client = services.client_manager().get_first_client()
 
@@ -46,6 +46,8 @@ class ObjectMenuNoFile(ImmediateSuperInteraction):
                             return
                         elif focus:
                             camera.focus_on_object(tags)
+                        elif callback:
+                            callback(tags)
                         elif delete:
                             deleted = deleted + 1
                             indexes.append(tags)

@@ -5,6 +5,7 @@ import date_and_time
 import enum
 import services
 import sims4
+from autonomy.autonomy_modes import AutonomyMode
 from interactions.base.super_interaction import SuperInteraction
 from interactions.interaction_finisher import FinishingType
 from interactions.interaction_queue import BucketBase
@@ -14,6 +15,8 @@ from sims.sim_info import SimInfo
 from sims.sim_log import log_interaction
 from sims4.resources import Types
 from sims4.resources import Types, get_resource_key
+from sims4.tuning.geometric import TunableWeightedUtilityCurve
+from sims4.tuning.tunable import TunableInterval, TunableSimMinute
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_queue_of, clear_sim_instance, \
@@ -21,7 +24,6 @@ from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_queue
     get_filters, assign_routine, get_object_info, distance_to_by_room, get_venue
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap, clean_string
-
 
 class AutonomyState(enum.Int):
     UNDEFINED = -1
@@ -46,11 +48,13 @@ setattr(SimInfo, "autonomy", AutonomyState.FULL)
 setattr(SimInfo, "choice", 0)
 setattr(Sim, "autonomy", AutonomyState.FULL)
 
+
 class sc_AutonomyQueue:
     def __init__(self, sim, autonomy, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
         self.autonomy = autonomy
         self.sim = sim
+
 
 class sc_Autonomy:
     behavior_queue = []
@@ -116,15 +120,17 @@ class sc_Autonomy:
         si = sc_Autonomy.get_si(self, guid64)
         if si is not None:
             # And set the allow_autonomous tuning entry
-            if hasattr(si, 'shortname'):
-                debugger('Setting allow_autonomous for {} to {}'.format(si.shortname(), enable))
-            else:
-                debugger('Setting allow_autonomous for {} to {}'.format(si.__name__, enable))
+            if sc_Vars.DEBUG:
+                if hasattr(si, 'shortname'):
+                    debugger('Setting allow_autonomous for {} to {}'.format(si.shortname(), enable))
+                else:
+                    debugger('Setting allow_autonomous for {} to {}'.format(si.__name__, enable))
             si.allow_autonomous = enable
             return True
         else:
             # SI no longer exists
-            debugger('Invalid or removed SI: {}'.format(guid64))
+            if sc_Vars.DEBUG:
+                debugger('Invalid or removed SI: {}'.format(guid64))
             return False
 
     def get_sim_count_in_social_group(self, target):
@@ -153,9 +159,12 @@ class sc_Autonomy:
             if not sc_Autonomy.run_routine_filter(self, interaction):
                 return result
 
-        if sc_Vars.DEBUG_AUTONOMY:
-            action = interaction.__class__.__name__.lower()
-            debugger("Sim: {} {} - Append: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action), 0, True)
+        if sc_Vars.tag_sim_for_debugging:
+            name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
+            if name in sc_Vars.tag_sim_for_debugging:
+                action = interaction.__class__.__name__.lower()
+                debugger("Sim: {} {} - Append: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name,
+                                                               interaction.guid64, action), 0, True)
 
         log_interaction('Enqueue', interaction)
         result = self._append(interaction)
@@ -171,9 +180,13 @@ class sc_Autonomy:
             if not sc_Autonomy.run_routine_filter(self, interaction):
                 return result
 
-        if sc_Vars.DEBUG_AUTONOMY:
-            action = interaction.__class__.__name__.lower()
-            debugger("Sim: {} {} - Insert Next: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action), 0, True)
+        if sc_Vars.tag_sim_for_debugging:
+            name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
+            if name in sc_Vars.tag_sim_for_debugging:
+                action = interaction.__class__.__name__.lower()
+                debugger(
+                    "Sim: {} {} - Insert Next: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name,
+                                                               interaction.guid64, action), 0, True)
 
         log_interaction('Enqueue_Next', interaction)
         result = (self._insert_next)(interaction, **kwargs)
@@ -221,14 +234,26 @@ class sc_Autonomy:
 
         if "mixer_social" in action:
             if now - interaction.interaction_timeout > date_and_time.create_time_span(minutes=1):
-                debugger("Sim: {} {} - Timeout: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action))
+                if sc_Vars.tag_sim_for_debugging:
+                    name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
+                    if name in sc_Vars.tag_sim_for_debugging:
+                        debugger("Sim: {} {} - Timeout: ({}) {}".format(interaction.sim.first_name,
+                                                                        interaction.sim.last_name, interaction.guid64,
+                                                                        action))
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
                 return False
 
         if autonomy == AutonomyState.DISABLED and "chat" in action and not interaction.is_user_directed or \
                 autonomy == AutonomyState.DISABLED and "social" in action and not interaction.is_user_directed:
             if distance_to_by_room(interaction.sim, interaction.target) > 5:
-                debugger("Sim: {} {} - Long Distance: ({}) {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action, interaction.allow_autonomous), 2, True)
+                if sc_Vars.tag_sim_for_debugging:
+                    name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
+                    if name in sc_Vars.tag_sim_for_debugging:
+                        debugger("Sim: {} {} - Long Distance: ({}) {} Autonomy: {}".format(interaction.sim.first_name,
+                                                                                           interaction.sim.last_name,
+                                                                                           interaction.guid64, action,
+                                                                                           interaction.allow_autonomous),
+                                 2, True)
                 for social_group in interaction.sim.get_groups_for_sim_gen():
                     social_group.remove(interaction.target)
                     social_group._resend_members()
@@ -243,7 +268,9 @@ class sc_Autonomy:
                     if sc_Vars.tag_sim_for_debugging:
                         name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                         if name in sc_Vars.tag_sim_for_debugging:
-                            debugger("Sim: {} {} - Enable Filtered: ({}) {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action, interaction.target, interaction.allow_autonomous), 2, True)
+                            debugger("Sim: {} {} - Enable Filtered: ({}) {} Target: {} Autonomy: {}".format(
+                                interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action,
+                                interaction.target, interaction.allow_autonomous), 2, True)
                     interaction.cancel(FinishingType.KILLED, 'Filtered')
                     return False
                 else:
@@ -258,11 +285,13 @@ class sc_Autonomy:
                 indexes = [f for f in filters if f in action or f in str(interaction.guid64)]
                 if indexes:
                     for index in indexes:
-                        #update_interaction_tuning(interaction.guid64, "allow_autonomous", False)
+                        # update_interaction_tuning(interaction.guid64, "allow_autonomous", False)
                         if sc_Vars.tag_sim_for_debugging:
                             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                             if name in sc_Vars.tag_sim_for_debugging:
-                                debugger("Sim: {} {} - Index: {} Filtered: ({}) {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, index, interaction.guid64, action, interaction.target, interaction.allow_autonomous), 2, True)
+                                debugger("Sim: {} {} - Index: {} Filtered: ({}) {} Target: {} Autonomy: {}".format(
+                                    interaction.sim.first_name, interaction.sim.last_name, index, interaction.guid64,
+                                    action, interaction.target, interaction.allow_autonomous), 2, True)
                         interaction.cancel(FinishingType.KILLED, 'Filtered')
                         return False
 
@@ -273,7 +302,9 @@ class sc_Autonomy:
                         if sc_Vars.tag_sim_for_debugging:
                             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                             if name in sc_Vars.tag_sim_for_debugging:
-                                debugger("Sim: {} {} - Role Filtered: ({}) {} Target: {} Autonomy: {}".format(interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action, interaction.target, interaction.allow_autonomous), 2, True)
+                                debugger("Sim: {} {} - Role Filtered: ({}) {} Target: {} Autonomy: {}".format(
+                                    interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action,
+                                    interaction.target, interaction.allow_autonomous), 2, True)
                         interaction.cancel(FinishingType.USER_CANCEL, 'Filtered')
                         return False
         return True
@@ -352,7 +383,8 @@ class sc_Autonomy:
         if sc_Vars.tag_sim_for_debugging:
             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
             if name in sc_Vars.tag_sim_for_debugging:
-                debugger("Routine Sim: {} {} - Killed: {}".format(interaction.sim.first_name, interaction.sim.last_name, action))
+                debugger("Routine Sim: {} {} - Killed: {}".format(interaction.sim.first_name, interaction.sim.last_name,
+                                                                  action))
 
         interaction.cancel(FinishingType.KILLED, 'Filtered')
         return False
@@ -392,7 +424,8 @@ class sc_Autonomy:
 
     def kill_interaction(self: SuperInteraction):
         action = self.__class__.__name__
-        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+        if sc_Vars.DEBUG:
+            debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
         self.cancel(FinishingType.KILLED, 'Filtered')
 
     def prepare_gen(self: SuperInteraction):
@@ -403,11 +436,15 @@ class sc_Autonomy:
             if sc_Vars.tag_sim_for_debugging:
                 name = "{} {}".format(self.sim.first_name, self.sim.last_name)
                 if name in sc_Vars.tag_sim_for_debugging:
-                    debugger("Sim: {} {} - Interaction: {} Target: {} User Directed: {}".format(self.sim.first_name, self.sim.last_name, action,
-                        clean_string(str(self.target)), self.is_user_directed))
+                    debugger("Sim: {} {} - Interaction: {} Target: {} User Directed: {}".format(self.sim.first_name,
+                                                                                                self.sim.last_name,
+                                                                                                action,
+                                                                                                clean_string(
+                                                                                                    str(self.target)),
+                                                                                                self.is_user_directed))
 
             if [i for i in self.sim.get_all_running_and_queued_interactions()
-                    if "sleep" in str(i).lower() or "_nap" in str(i).lower()]:
+                if "sleep" in str(i).lower() or "_nap" in str(i).lower()]:
                 cur_stat = get_tunable_instance((Types.STATISTIC), 'motive_energy', exact_match=True)
                 tracker = self.sim.get_tracker(cur_stat)
                 cur_value = tracker.get_value(cur_stat) if tracker is not None else 0
@@ -424,8 +461,10 @@ class sc_Autonomy:
         except BaseException as e:
             error_trap(e)
 
+
 def set_autonomy(sim_info, routine=4):
     sim_info.autonomy = AutonomyState(routine)
+
 
 def send_sim_home(sim):
     try:
@@ -439,6 +478,7 @@ def send_sim_home(sim):
 
     except BaseException as e:
         error_trap(e)
+
 
 BucketBase.append = sc_Autonomy.append
 BucketBase.insert_next = sc_Autonomy.insert_next

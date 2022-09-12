@@ -1,4 +1,3 @@
-import configparser
 import os
 import random
 from os.path import isfile, join
@@ -11,15 +10,22 @@ import date_and_time
 import objects
 import services
 import sims4
-from date_and_time import create_time_span
 from ensemble.ensemble_service import EnsembleService
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from interactions.interaction_finisher import FinishingType
 from objects.components.types import LIGHTING_COMPONENT
 from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
+from server_commands.argument_helpers import get_tunable_instance
+from sims.sim_info_types import Species, Age
+from sims4.localization import LocalizationHelperTuning
+from sims4.math import Location, Transform, Vector3
+from sims4.resources import Types
 from ui.ui_dialog_generic import UiDialogTextInputOkCancel
+from ui.ui_dialog_notification import UiDialogNotification
+from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 from vfx import PlayEffect
+from weather.lightning import LightningStrike
 
 from scripts_core.sc_autonomy import send_sim_home
 from scripts_core.sc_bulletin import sc_Bulletin
@@ -27,30 +33,20 @@ from scripts_core.sc_debugger import debugger
 from scripts_core.sc_input import inputbox, TEXT_INPUT_NAME, input_text
 from scripts_core.sc_jobs import get_tag_name, get_sim_info, advance_game_time_and_timeline, \
     advance_game_time, sc_Vars, make_sim_selectable, make_sim_unselectable, remove_sim, remove_all_careers, \
-    add_career_to_sim, get_career_name_from_string, get_current_temperature, push_sim_function, distance_to_by_room, \
-    assign_role, add_to_inventory, add_to_inventory_by_id, go_here_routine, make_sim_at_work, end_career_session, \
-    clear_sim_instance, assign_role_title, assign_title, remove_sim_from_rabbithole, activate_sim_icon, \
-    get_career_name, get_career_level, get_object_info, get_trait_name_from_string, add_trait_by_name, \
-    get_sim_travel_group, get_venue, clear_jobs
+    add_career_to_sim, get_career_name_from_string, push_sim_function, distance_to_by_room, \
+    assign_role, add_to_inventory, go_here_routine, make_sim_at_work, clear_sim_instance, assign_role_title, \
+    assign_title, activate_sim_icon, \
+    get_object_info, get_trait_name_from_string, add_trait_by_name, \
+    get_sim_travel_group, clear_jobs, check_actions
+from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_object_menu import ObjectMenuNoFile
-from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_routine import ScriptCoreRoutine
-from scripts_core.sc_script_vars import sc_Weather
 from scripts_core.sc_sim_tracker import load_sim_tracking, save_sim_tracking
 from scripts_core.sc_spawn import sc_Spawn
 from scripts_core.sc_util import error_trap, ld_notice, ld_file_loader, clean_string, init_sim
-from server_commands.argument_helpers import get_tunable_instance
-from sims.sim_info_types import Species, Age
-from sims4.localization import LocalizationHelperTuning
-from sims4.math import Location, Transform, Vector3
-from sims4.resources import Types
-from ui.ui_dialog_notification import UiDialogNotification
-from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
-from weather.lightning import LightningStrike
-from weather.weather_enums import WeatherEffectType, WeatherElementTuple, PrecipitationType, CloudType, GroundCoverType, \
-    Temperature
+
 
 class CloneWorldModule:
     DIALOG = UiDialogTextInputOkCancel.TunableFactory(text_inputs=(TEXT_INPUT_NAME,))
@@ -77,20 +73,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "<font color='#000099'>Sims On Lot</font>",
                                 "<font color='#000099'>Routine Sims</font>",
                                 "<font color='#000000'>Fixes Menu</font>",
-                                "<font color='#000000'>Weather Menu</font>",
                                 "<font color='#000000'>Effects Menu</font>",
                                 "<font color='#000000'>Sims Menu</font>",
                                 "<font color='#000000'>Time Menu</font>",
                                 "<font color='#000000'>Control Menu</font>")
-
-        self.sc_weather_choices = ()
-        self.sc_modify_weather_choices = ("Set To Sunny",
-                                          "Set To Cloudy",
-                                          "Set To Partly Cloudy",
-                                          "Set To Foggy",
-                                          "Set To No Moisture",
-                                          "Set To Rain",
-                                          "Set To Snow")
 
         self.sc_fixes_choices = ("Grab Drink",
                                 "Light Fire",
@@ -115,6 +101,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
         self.sc_sims_choices = ("Max Motives",
                                 "Remove Sims",
+                                "Reset Sims",
                             "Send Sims Home",
                             "Select Sims",
                             "Select Everyone",
@@ -142,7 +129,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Tag Sim For Debugging",
                                 "Load Sim Tracking",
                                 "Rename World",
-                                "Debug Error")
+                                "Debug Error",
+                                "Get In Use By",
+                                "Reset In Use",
+                                "Find Go Here")
+
 
         self.sc_grab_drink_choices = ("Grab Vodka Soda",
                                     "Grab Beer",
@@ -164,21 +155,17 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_menu = MainMenu(*args, **kwargs)
         self.sc_fixes_menu = MainMenu(*args, **kwargs)
         self.sc_grab_drink_menu = MainMenu(*args, **kwargs)
-        self.sc_weather_menu = MainMenu(*args, **kwargs)
-        self.sc_modify_weather_menu = MainMenu(*args, **kwargs)
         self.sc_effects_menu = MainMenu(*args, **kwargs)
         self.sc_time_menu = MainMenu(*args, **kwargs)
         self.sc_sims_menu = MainMenu(*args, **kwargs)
         self.sc_control_menu = MainMenu(*args, **kwargs)
         self.sc_teleport_menu = MainMenu(*args, **kwargs)
         self.sc_delete_menu = MainMenu(*args, **kwargs)
-        self.sc_weather = []
         self.script_choice = MainMenu(*args, **kwargs)
         self.sc_bulletin = sc_Bulletin()
         self.sc_main = ScriptCoreMain()
         self.sc_spawn = sc_Spawn()
         self.object_picker = ObjectMenuNoFile(*args, **kwargs)
-        self.weather_ini()
 
     def _run_interaction_gen(self, timeline):
         self.sc_menu.MAX_MENU_ITEMS_TO_LIST = 10
@@ -193,20 +180,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_menu.commands.append("<font color='#990000'>[Menu]</font>")
         self.sc_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_menu.show(timeline, self, 0, self.sc_menu_choices, "Scripts Core Menu", "Make a selection.")
-
-    def weather_menu(self, timeline):
-        self.sc_weather_menu.MAX_MENU_ITEMS_TO_LIST = 10
-        self.sc_weather_menu.commands = []
-        self.sc_weather_menu.commands.append("<font color='#990000'>[Menu]</font>")
-        self.sc_weather_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
-        self.sc_weather_menu.show(timeline, self, 0, self.sc_weather_choices, "Weather Menu", "Make a selection.")
-
-    def modify_weather(self, timeline):
-        self.sc_modify_weather_menu.MAX_MENU_ITEMS_TO_LIST = 10
-        self.sc_modify_weather_menu.commands = []
-        self.sc_modify_weather_menu.commands.append("<font color='#990000'>[Menu]</font>")
-        self.sc_modify_weather_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
-        self.sc_modify_weather_menu.show(timeline, self, 0, self.sc_modify_weather_choices, "Weather Menu", "Make a selection.")
 
     def fixes_menu(self, timeline):
         self.sc_fixes_menu.MAX_MENU_ITEMS_TO_LIST = 10
@@ -261,6 +234,29 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         for sim in services.sim_info_manager().instanced_sims_gen():
             save_sim_tracking(sim.sim_info)
             load_sim_tracking(sim.sim_info)
+
+    def find_go_here(self, timeline):
+        client = services.client_manager().get_first_client()
+        gohere = [action for action in client.active_sim.get_all_running_and_queued_interactions() if "gohere" in action.__class__.__name__.lower()]
+        if gohere:
+            for action in gohere:
+                if hasattr(action.target, "position"):
+                    camera.focus_on_position(action.target.position, client)
+
+    def get_in_use_by(self, timeline):
+        if not self.target.is_sim:
+            use_sim_list = [sim_info for sim_info in services.sim_info_manager().get_all() if self.target.in_use_by(sim_info.get_sim_instance(allow_hidden_flags=objects.ALL_HIDDEN_REASONS))]
+            if use_sim_list:
+                for sim_info in use_sim_list:
+                    message_box(sim_info, self.target, "Object Use", "This sim is using this object!")
+            else:
+                message_box(self.target, None, "Object Use", "No one is using this object!")
+
+    def reset_in_use(self, timeline):
+        if not self.target.is_sim:
+            if not [sim for sim in services.sim_info_manager().instanced_sims_gen() if self.target.in_use_by(sim)]:
+                #reset_in_use_by(self.target)
+                objects.system.reset_object(self.target.id, expected=True, cause='Command')
 
     def rename_world(self, timeline):
         try:
@@ -513,7 +509,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     if not dialog.accepted:
                         return
                     for sim in dialog.get_result_tags():
-                        debugger("Sim: {} - Go to sim: {}".format(sim.first_name, target_sim.first_name))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - Go to sim: {}".format(sim.first_name, target_sim.first_name))
                         go_here_routine(sim, target_sim.position, target_sim.level)
 
                 for sim in dialog.get_result_tags():
@@ -528,7 +525,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             clear_sim_instance(sim.sim_info)
 
                         result = push_sim_function(sim, self.target, int(dc_interaction), autonomous)
-                        debugger("Sim: {} - Push Sim Result: {}".format(sim.first_name, clean_string(str(result))))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - Push Sim Result: {}".format(sim.first_name, clean_string(str(result))))
 
 
             self.picker("Push Sim", "Pick up to 50 Sims", 50, get_push_sim_callback)
@@ -1020,6 +1018,28 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         except BaseException as e:
             error_trap(e)
 
+    def reset_sims(self, timeline):
+        client = services.client_manager().get_first_client()
+        try:
+            def get_simpicker_results_callback(dialog):
+                if not dialog.accepted:
+                    return
+                try:
+                    for sim in dialog.get_result_tags():
+                        sim.reset(ResetReason.NONE, None, 'Command')
+
+                except BaseException as e:
+                    error_trap(e)
+
+            if not self.target.is_sim:
+                self.picker("Remove Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
+
+            elif self.target.is_sim:
+                self.target.reset(ResetReason.NONE, None, 'Command')
+
+        except BaseException as e:
+            error_trap(e)
+
     def remove_sims(self, timeline):
         client = services.client_manager().get_first_client()
         try:
@@ -1168,191 +1188,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         else:
             sims4.commands.client_cheat("fps off", client.id)
 
-    def weather_ini(self):
-        self.sc_weather_choices = ()
-        self.sc_weather_choices = self.sc_weather_choices + ("Reset Weather",)
-        self.sc_weather_choices = self.sc_weather_choices + ("Modify Weather",)
-        self.sc_weather = []
-        datapath = os.path.abspath(os.path.dirname(__file__))
-        filename = datapath + r"\Data\weather.ini"
-        if not os.path.exists(filename):
-            return
-        config = configparser.ConfigParser()
-        config.read(filename)
-
-        for each_section in config.sections():
-            duration = config.getfloat(each_section, "duration")
-            wind_speed = config.getfloat(each_section, "wind_speed")
-            window_frost = config.getfloat(each_section, "window_frost")
-            water_frozen = config.getfloat(each_section, "water_frozen")
-            thunder = config.getfloat(each_section, "thunder")
-            lightning = config.getfloat(each_section, "lightning")
-            temperature = config.getint(each_section, "temperature")
-            snow_amount = config.getfloat(each_section, "snow_amount")
-            snow_depth = config.getfloat(each_section, "snow_depth")
-            rain_amount = config.getfloat(each_section, "rain_amount")
-            rain_depth = config.getfloat(each_section, "rain_depth")
-            light_clouds = config.getfloat(each_section, "light_clouds")
-            dark_clouds = config.getfloat(each_section, "dark_clouds")
-            light_clouds2 = config.getfloat(each_section, "light_clouds2")
-            dark_clouds2 = config.getfloat(each_section, "dark_clouds2")
-            cloudy = config.getfloat(each_section, "cloudy")
-            heatwave = config.getfloat(each_section, "heatwave")
-            partly_cloudy = config.getfloat(each_section, "partly_cloudy")
-            clear = config.getfloat(each_section, "clear")
-
-            self.sc_weather_choices = self.sc_weather_choices + (each_section,)
-            self.sc_weather.append(sc_Weather(each_section,
-                                            duration,
-                                            wind_speed,
-                                            window_frost,
-                                            water_frozen,
-                                            thunder,
-                                            lightning,
-                                            temperature,
-                                            snow_amount,
-                                            snow_depth,
-                                            rain_amount,
-                                            rain_depth,
-                                            light_clouds,
-                                            dark_clouds,
-                                            light_clouds2,
-                                            dark_clouds2,
-                                            cloudy,
-                                            heatwave,
-                                            partly_cloudy,
-                                            clear))
-
-    def reset_weather(self, timeline):
-        services.weather_service().reset_forecasts()
-
-    def set_to_sunny(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(1.0, 0, 1.0, 0)
-        weather_service._send_weather_event_op()
-
-    def set_to_cloudy(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(1.0, 0, 1.0, 0)
-        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._send_weather_event_op()
-
-    def set_to_partly_cloudy(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(1.0, 0, 1.0, 0)
-        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._send_weather_event_op()
-
-    def set_to_foggy(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(1.01, 0, 1.01, 0)
-        weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(0.1, 0, 0.1, 0)
-        weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._send_weather_event_op()
-
-    def set_to_no_moisture(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._send_weather_event_op()
-
-    def set_to_rain(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(1.0, 0, 1.0, 0)
-        weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._send_weather_event_op()
-
-    def set_to_snow(self, timeline):
-        weather_service = services.weather_service()
-        current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
-        weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-        weather_service.start_weather_event(weather_event_manager.get(186636), 1.0)
-        weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-        weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(0.0, 0, 0.0, 0)
-        weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(1.0, 0, 1.0, 0)
-        weather_service._send_weather_event_op()
-
     def custom_function(self, option):
-        if "weather" in option:
-            weather_service = services.weather_service()
-            season_service = services.season_service()
-            street_service = services.street_service()
-            now = services.time_service().sim_now
-            selected_weather_list = [weather for weather in self.sc_weather if weather.title == option]
-            if selected_weather_list:
-                for weather in selected_weather_list:
-                    # message_box(None, None, "{}".format(weather.title), "", "GREEN")
-                    current_temp = Temperature(weather.temperature)
-                    weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
-                    weather_service.start_weather_event(weather_event_manager.get(186636), weather.duration)
-                    weather_service._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(current_temp, 0, current_temp, 0)
-                    weather_service._trans_info[int(WeatherEffectType.WIND)] = WeatherElementTuple(weather.wind_speed, 0, weather.wind_speed, 0)
-                    weather_service._trans_info[int(WeatherEffectType.WATER_FROZEN)] = WeatherElementTuple(weather.water_frozen, 0, weather.water_frozen, 0)
-                    weather_service._trans_info[int(WeatherEffectType.WINDOW_FROST)] = WeatherElementTuple(weather.window_frost, 0, weather.window_frost, 0)
-                    weather_service._trans_info[int(WeatherEffectType.THUNDER)] = WeatherElementTuple(weather.thunder, 0, weather.thunder, 0)
-                    weather_service._trans_info[int(WeatherEffectType.LIGHTNING)] = WeatherElementTuple(weather.lightning, 0, weather.lightning, 0)
-                    weather_service._trans_info[int(PrecipitationType.SNOW)] = WeatherElementTuple(weather.snow_amount, 0, weather.snow_amount, 0)
-                    weather_service._trans_info[int(PrecipitationType.RAIN)] = WeatherElementTuple(weather.rain_amount, 0, weather.rain_amount, 0)
-                    weather_service._trans_info[int(CloudType.LIGHT_SNOWCLOUDS)] = WeatherElementTuple(weather.light_clouds, 0, weather.light_clouds, 0)
-                    weather_service._trans_info[int(CloudType.DARK_SNOWCLOUDS)] = WeatherElementTuple(weather.dark_clouds, 0, weather.dark_clouds, 0)
-                    weather_service._trans_info[int(CloudType.LIGHT_RAINCLOUDS)] = WeatherElementTuple(weather.light_clouds2, 0, weather.light_clouds2, 0)
-                    weather_service._trans_info[int(CloudType.DARK_RAINCLOUDS)] = WeatherElementTuple(weather.dark_clouds2, 0, weather.dark_clouds2, 0)
-                    weather_service._trans_info[int(CloudType.CLOUDY)] = WeatherElementTuple(weather.cloudy, 0, weather.cloudy, 0)
-                    weather_service._trans_info[int(CloudType.HEATWAVE)] = WeatherElementTuple(weather.heatwave, 0, weather.heatwave, 0)
-                    weather_service._trans_info[int(CloudType.PARTLY_CLOUDY)] = WeatherElementTuple(weather.partly_cloudy, 0, weather.partly_cloudy, 0)
-                    weather_service._trans_info[int(CloudType.CLEAR)] = WeatherElementTuple(weather.clear, 0, weather.clear, 0)
-                    weather_service._trans_info[int(GroundCoverType.SNOW_ACCUMULATION)] = WeatherElementTuple(weather.snow_depth, 0, weather.snow_depth, 0)
-                    weather_service._trans_info[int(GroundCoverType.RAIN_ACCUMULATION)] = WeatherElementTuple(weather.rain_depth, 0, weather.rain_depth, 0)
-                    weather_service._send_weather_event_op()
-        elif "Time" in option:
+        if "Time" in option:
             inputbox("Game Speed",
                      "Default is 1. 10 would be 10 times faster. Recommend not using anything above 1000.",
                      self._game_time_speed_callback)

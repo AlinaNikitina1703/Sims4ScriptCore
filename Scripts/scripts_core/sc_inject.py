@@ -10,6 +10,7 @@ from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
 from objects.object_enums import ResetReason
 from postures.posture_graph import PostureGraphService
+from sims.sim_info_manager import SimInfoManager
 from singletons import DEFAULT
 from zone import Zone
 
@@ -20,6 +21,7 @@ from scripts_core.sc_jobs import pause_routine
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
+from scripts_core.sc_zone import sc_zone_update, sc_zone_on_build_buy_enter_handler, sc_zone_on_build_buy_exit_handler
 
 
 def safe_inject(target_object, target_function_name, safe=False):
@@ -129,27 +131,35 @@ def sc_prepare_gen_inject(original, self, *args, **kwargs):
 @safe_inject(Zone, 'update')
 def sc_run_zone_update_module(original, self, *args, **kwargs):
     result = original(self, *args, **kwargs)
+    sc_zone_update(self)
+    return result
+
+@safe_inject(Zone, 'on_build_buy_enter')
+def sc_run_zone_on_build_buy_enter(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
+    sc_zone_on_build_buy_enter_handler(self)
+    return result
+
+@safe_inject(Zone, 'on_build_buy_exit')
+def sc_run_zone_on_build_buy_exit(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
+    sc_zone_on_build_buy_exit_handler(self)
+    return result
+
+@safe_inject(Zone, 'on_loading_screen_animation_finished')
+def sc_run_zone_load_module(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
     try:
-        if self.is_zone_running:
-            is_paused = services.game_clock_service().clock_speed == ClockSpeedMode.PAUSED
-            if not is_paused:
-                if not pause_routine(sc_Vars.update_speed):
-                    ScriptCoreMain.init(self)
-                    ScriptCoreMain.init_routine(self)
-        elif self.is_in_build_buy:
-            ScriptCoreMain.on_build_buy_enter_handler(self)
-        else:
-            sc_Vars._running = False
-            sc_Vars._config_loaded = False
+        ScriptCoreMain.load(self)
     except BaseException as e:
         error_trap(e)
         pass
 
     return result
 
-@safe_inject(Zone, 'on_loading_screen_animation_finished')
-def sc_run_zone_load_module(original, self, *args, **kwargs):
-    result = original(self, *args, **kwargs)
+@safe_inject(SimInfoManager, 'on_all_households_and_sim_infos_loaded')
+def sc_on_all_households_and_sim_infos_loaded(original, self, client, *args, **kwargs):
+    result = original(self, client, *args, **kwargs)
     try:
         ScriptCoreMain.load(self)
     except BaseException as e:

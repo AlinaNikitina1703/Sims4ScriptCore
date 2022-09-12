@@ -42,11 +42,13 @@ class sc_SpawnHandler(SimSpawnerService):
 
             if current_zone.is_zone_running:
                 if request._spawn_reason != SimSpawnReason.TRAVELING and request._spawn_reason != SimSpawnReason.DEFAULT:
-                    debugger("Sim: {} - Spawn".format(sim_info.first_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Spawn".format(sim_info.first_name))
                     if not sc_SpawnHandler.time_last_spawned:
                         sc_SpawnHandler.time_last_spawned = now
                     elif now - sc_SpawnHandler.time_last_spawned < sc_Vars.spawn_cooldown:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                         return
                     else:
                         sc_Vars.spawn_cooldown = now
@@ -54,27 +56,33 @@ class sc_SpawnHandler(SimSpawnerService):
                 venue = get_venue()
                 sims_on_lot = get_number_of_sims()
                 if sc_Vars.DISABLE_SPAWNS:
-                    debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
                 if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start \
                         and sc_Vars.spawn_time_start > 0 or not sc_Vars.DISABLE_CULLING and \
                         services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
-                    debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
                 if sims_on_lot >= sc_Vars.MAX_SIMS:
-                    debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
                 if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and sc_Vars.DISABLE_WALKBYS:
-                    debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
                 if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and "venue_doctor" in venue:
-                    debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                     return
                 filters = get_filters("spawn")
                 if filters is not None:
                     name = request._sim_info.first_name.lower() + " " + request._sim_info.last_name.lower()
                     if [f for f in filters if f in name]:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
                         return
 
             success = sims.sim_spawner.SimSpawner.spawn_sim((request._sim_info), sim_position=(place_strategy.position),

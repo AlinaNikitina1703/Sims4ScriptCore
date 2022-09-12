@@ -11,7 +11,8 @@ from sims4.resources import Types, get_resource_key
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import add_sim_buff, clear_sim_instance, push_sim_function, get_filters, \
-    find_all_objects_by_title, distance_to_by_room
+    find_all_objects_by_title, distance_to_by_room, check_actions
+from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim
 
 
@@ -54,11 +55,13 @@ def update_sim_tracking_info(sim_info):
             if buff_id:
                 buff = buff_manager.get(buff_id)
                 if not buff:
-                    debugger("Sim Buff {}: {} {}: Error!".format(buff_id, sim_info.first_name, sim_info.last_name))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim Buff {}: {} {}: Error!".format(buff_id, sim_info.first_name, sim_info.last_name))
                     continue
                 add_sim_buff(buff_id, sim_info)
 
 def save_sim_tracking(sim_info):
+    filter_out_actions = [14244, 14310, 13983]
     sim = init_sim(sim_info)
     zone_id = services.current_zone_id()
     position = sim.position
@@ -70,6 +73,8 @@ def save_sim_tracking(sim_info):
     for action in sim.get_all_running_and_queued_interactions():
         if hasattr(action, "guid64") and hasattr(action.target, "id"):
             target = action.target
+            if [f for f in filter_out_actions if action.guid64 == f]:
+                continue
             if action.guid64 == 18240980946975959663:
                 client = services.client_manager().get_first_client()
                 objs = find_all_objects_by_title(client.active_sim, "stereo")
@@ -154,15 +159,14 @@ def load_sim_tracking(sim_info):
                 sim.location = Location(Transform(position, orientation), routing_surface)
 
             if config.has_option(sim_name, "actions"):
-                filters = [14244, 14310]
                 action_list = ast.literal_eval(config.get(sim_name, "actions"))
                 target_list = ast.literal_eval(config.get(sim_name, "targets"))
+                clear_sim_instance(sim_info)
                 for i, action in enumerate(action_list):
                     if i < len(target_list):
                         obj = services.get_zone(zone_id).find_object(target_list[i])
                         if obj:
-                            if not [f for f in filters if f == action]:
-                                push_sim_function(sim, obj, action, False)
+                            push_sim_function(sim, obj, action, False)
 
 
 setattr(SimInfo, "tracker", sc_SimTracker())

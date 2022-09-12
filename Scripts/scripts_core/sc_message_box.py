@@ -3,7 +3,7 @@ from sims4.localization import LocalizationHelperTuning
 from ui.ui_dialog_notification import UiDialogNotification
 
 
-def message_box(icon_top, icon_bottom, title, text, color="DEFAULT"):
+def message_box(icon_top, icon_bottom, title="", text="", color="DEFAULT"):
     if icon_top:
         icon = lambda _: IconInfoData(obj_instance=icon_top)
     else:

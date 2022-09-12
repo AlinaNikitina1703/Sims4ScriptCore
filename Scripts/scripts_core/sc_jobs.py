@@ -747,11 +747,15 @@ def clear_all_buffs(sim_info):
         error_trap(e)
 
 def get_room(obj):
-    try:
+    if hasattr(obj, "zone_id") and hasattr(obj, "position") and hasattr(obj, "level"):
         return build_buy.get_room_id(obj.zone_id, obj.position, obj.level)
-    except:
+    else:
         return -1
-        pass
+
+def compare_room(obj1, obj2):
+    if get_room(obj1) == get_room(obj2):
+        return True
+    return False
 
 def go_here_routine(sim, location, level=0, offset=1.5, remove=False):
     count = 25
@@ -1076,6 +1080,18 @@ def get_object_rotate(obj):
     orientation = obj.location.transform.orientation
     return orientation
 
+def reset_in_use_by(obj):
+    translation = obj.location.transform.translation
+    level = obj.location.level
+    orientation = obj.location.transform.orientation
+    zone_id = services.current_zone_id()
+    routing_surface = routing.SurfaceIdentifier(zone_id, level, routing.SurfaceType.SURFACETYPE_WORLD)
+    clone = objects.system.create_object(obj.definition.id)
+    clone.location = sims4.math.Location(sims4.math.Transform(translation, orientation),
+                                         routing_surface)
+
+    obj.destroy()
+
 def get_sim_info(sim=None):
     try:
         client = services.client_manager().get_first_client()
@@ -1092,6 +1108,7 @@ def get_sim_info(sim=None):
             sim_id = client.id
 
         roleStateName = "None"
+        buffStateName = "None"
         intQueue = ""
         activeCareer = ""
         career_manager = services.get_instance_manager(sims4.resources.Types.CAREER)
@@ -1103,13 +1120,20 @@ def get_sim_info(sim=None):
             else:
                 activeCareer = "None"
         activeRoles = sim.autonomy_component.active_roles()
+        activeBuffs = sim.sim_info.Buffs
         getInteractions = sim.get_all_running_and_queued_interactions()
 
         for i, roleState in enumerate(activeRoles):
             if i == 0:
-                roleStateName = roleState.__class__.__name__
+                roleStateName = "({}) {}\n".format(roleState.guid64, roleState.__class__.__name__)
             else:
-                roleStateName = roleStateName + ', ' + roleState.__class__.__name__
+                roleStateName = roleStateName + "({}) {}\n".format(roleState.guid64, roleState.__class__.__name__)
+
+        for i, BuffList in enumerate(activeBuffs):
+            if i == 0:
+                buffStateName = "({}) {}\n".format(BuffList.guid64, BuffList.__class__.__name__)
+            else:
+                buffStateName = buffStateName + "({}) {}\n".format(BuffList.guid64, BuffList.__class__.__name__)
 
         trait_list = ""
         for i, trait in enumerate(sim_info.trait_tracker):
@@ -1148,8 +1172,9 @@ def get_sim_info(sim=None):
                      "[Role({}):] {}\n" \
                      "[Interactions:]\n{}\n" \
                      "[Mood:] {}\n[Age:] {} Days\n[Room:] {}\n[Level:] {}\n[Zone ID:] {}\n" \
-                     "[Pos:] {}\n[Orient:] {}".\
-            format(sim_info.first_name, sim_info.last_name, sim_info.sim_id,
+                     "[Pos:] {}\n[Orient:] {}" \
+                     "[Buffs:]\n{}\n" \
+            .format(sim_info.first_name, sim_info.last_name, sim_info.sim_id,
             client._household_id,
             client._selectable_sims._selectable_sim_infos[0].first_name,
             activeCareer,
@@ -1157,7 +1182,7 @@ def get_sim_info(sim=None):
             roleStateName,
             intQueue,
             mood.__name__, time_alive, room, sim.level, zone.id,
-            get_object_pos(sim), get_object_rotate(sim))
+            get_object_pos(sim), get_object_rotate(sim), buffStateName)
 
         return returnText
     except BaseException as e:
@@ -1511,6 +1536,7 @@ def get_object_info(target, long_version=False):
                   "[Object ID:] {}\n" \
                   "[Object Definition ID:] {} ({})\n" \
                   "[Object Outside:] {}\n" \
+                  "[Object In Use:] {}\n" \
                   "[Object Scale:] {}\n" \
                   "[Object Locked:] {}\n" \
                   "[Object Dirty:] {}\n" \
@@ -1529,6 +1555,7 @@ def get_object_info(target, long_version=False):
                 target.definition.id,
                 hex(target.definition.id),
                 target.is_outside,
+                target.in_use,
                 scale,
                 locked,
                 object_is_dirty(target),

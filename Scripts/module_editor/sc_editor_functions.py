@@ -97,9 +97,34 @@ def delete_selected_objects():
     except BaseException as e:
         error_trap(e)
 
+def move_selected_objects(x=0.0, z=0.0):
+    try:
+        zone_id = services.current_zone_id()
+        all_objects = TMToolData.GroupObjects
+        for obj in list(all_objects):
+            position = obj.position
+            position = Vector3(position.x + x,
+                               position.y,
+                               position.z + z)
+            level = obj.level
+            orientation = obj.orientation
+            routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+            obj.location = Location(Transform(position, orientation), routing_surface)
+
+    except BaseException as e:
+        error_trap(e)
 
 def get_angle(v1, v2):
     return atan2(v1.x - v2.x, v1.z - v2.z)
+
+def select_object(target, clear=True):
+    TMToolData.SelectedObject = target
+    if clear:
+        TMToolData.GroupObjects.clear()
+    TMToolData.GroupObjects.append(TMToolData.SelectedObject)
+    target.fade_opacity(0.5, 0.1)
+    tint = sims4.color.from_rgba(0, 255, 0)
+    target.tint = tint
 
 def clone_selected_object(target):
     zone_id = services.current_zone_id()

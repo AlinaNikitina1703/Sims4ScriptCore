@@ -172,8 +172,9 @@ class sc_CareerCustom(sc_CareerMedical):
         config = configparser.ConfigParser()
         config.read(filename)
         if config.has_section(str(zone_id)):
-            routines = ast.literal_eval(config.get(str(zone_id), "routines"))
-            return routines
+            if config.has_option(str(zone_id), "routines"):
+                routines = ast.literal_eval(config.get(str(zone_id), "routines"))
+                return routines
         return None
 
     def get_filter_sims_by_zone(self, routine: str):

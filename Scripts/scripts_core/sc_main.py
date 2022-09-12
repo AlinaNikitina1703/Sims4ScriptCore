@@ -17,7 +17,7 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
     add_career_to_sim, remove_sim, set_proper_sim_outfit, remove_all_careers, \
     remove_annoying_buffs, has_role, \
     assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, keep_sims_outside, \
-    keep_sim_outside, make_sim_leave, give_sim_access
+    keep_sim_outside, make_sim_leave, give_sim_access, remove_sim_buff, add_sim_buff, clear_sim_instance
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars
@@ -221,6 +221,16 @@ class ScriptCoreMain:
             sim_info.routine = False
             if not sc_Vars.disable_tracking:
                 load_sim_tracking(sim_info)
+            if sim_info.is_instanced():
+                sim = init_sim(sim_info)
+                if has_allowed_role(sim):
+                    if sc_Vars.keep_sims_outside:
+                        keep_sim_outside(sim)
+                    set_autonomy(sim_info, AutonomyState.FULL)
+                    continue
+                if sc_Vars.DEBUG:
+                    debugger("Sim: {} - Filtered".format(sim.first_name))
+                make_sim_leave(sim)
 
     def spawn_load(self):
         try:
@@ -274,7 +284,7 @@ class ScriptCoreMain:
                 if options_proto.autonomy_level == options_proto.OFF or options_proto.autonomy_level == options_proto.LIMITED:
                     autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
                 else:
-                    autonomy_setting = AutonomyState.FULL
+                    autonomy_setting = sim.sim_info.routine_info.autonomy
 
                 if sc_Vars.DEBUG:
                     debugger("Routine Sim: {} - index: {} autonomy_setting: {}".format(sim.first_name, sc_Vars.routine_sim_index, sim.sim_info.autonomy))
@@ -297,16 +307,6 @@ class ScriptCoreMain:
                         if not has_role(sim):
                             remove_sim(sim)
                             return
-                    if now.hour() >= sim.sim_info.routine_info.off_duty and not sim == services.get_active_sim() \
-                            and not sim.sim_info.routine_info.off_duty == 0 and not sim.sim_info.is_selectable or \
-                            now.hour() < sim.sim_info.routine_info.on_duty and not sim == services.get_active_sim() \
-                            and not sim.sim_info.routine_info.on_duty == 0 and not sim.sim_info.is_selectable:
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - off_duty: {}/{}".format(sim.first_name,
-                                sim.sim_info.routine_info.off_duty, now.hour()))
-                        send_sim_home(sim)
-                        return
-
                     if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0 or \
                             now.hour() < sim.sim_info.routine_info.on_duty and not sim.sim_info.routine_info.on_duty == 0:
                         if sc_Vars.DEBUG:
@@ -315,6 +315,9 @@ class ScriptCoreMain:
                         clear_jobs(sim.sim_info)
                         assign_title(sim.sim_info, "")
                         sim.sim_info.routine = False
+                        if not sim.sim_info.is_selectable:
+                            send_sim_home(sim)
+                        return
 
                     if sim == services.get_active_sim():
                         if not selected_sim_autonomy_enabled:
@@ -445,12 +448,23 @@ class ScriptCoreMain:
         update_lights(True, 0.0)
 
 def has_allowed_role(sim):
+    zone = services.current_zone()
     disallowed_roles = ["leave", "patient", "gym", "barista", "bartender", "walkby_wait_for",
                         "infected", "frontdesk", "caterer", "doctor_npc", "gaming", "maid", "celebrity",
                         "chef", "computeruser", "landlord", "vendor", "military"]
 
 
     if sim.sim_info.routine:
+        return True
+    if sim == services.get_active_sim():
+        return True
+    elif sim.sim_info.is_selectable:
+        return True
+    elif is_sim_in_group(sim):
+        return True
+    elif sim.sim_info in services.active_household():
+        return True
+    elif sim.sim_info.household.home_zone_id == zone.id:
         return True
     if sc_Vars.DISABLE_SPAWNS:
         return False
@@ -540,6 +554,14 @@ def set_random_trait_role(sim):
                     assign_routine(sim.sim_info, "invited", False)
                     if sc_Vars.DEBUG:
                         debugger("Visitor: {}".format(sim.first_name))
+                    return True
+
+            if "park" in role.title:
+                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                    assign_routine(sim.sim_info, "park", False)
+                    if sc_Vars.DEBUG:
+                        debugger("Park: {}".format(sim.first_name))
                     return True
 
     return False
