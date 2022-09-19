@@ -5,22 +5,20 @@ import random
 
 import services
 import sims4
-from sims.daycare import DaycareTuning
 from sims.sim_info_types import Age
 from sims.sim_spawner_service import SimSpawnerService
 
-from scripts_core.sc_autonomy import AutonomyState, set_autonomy, send_sim_home
 from scripts_core.sc_clubs import C_ZoneClubs
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims, \
     update_lights, \
-    add_career_to_sim, remove_sim, set_proper_sim_outfit, remove_all_careers, \
+    add_career_to_sim, set_proper_sim_outfit, remove_all_careers, \
     remove_annoying_buffs, has_role, \
     assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, keep_sims_outside, \
-    keep_sim_outside, make_sim_leave, give_sim_access, remove_sim_buff, add_sim_buff, clear_sim_instance
+    keep_sim_outside, make_sim_leave, set_autonomy, send_sim_home
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine import ScriptCoreRoutine
-from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_script_vars import sc_Vars, AutonomyState
 from scripts_core.sc_sim_tracker import track_sim, load_sim_tracking, save_sim_tracking, update_sim_tracking_info
 from scripts_core.sc_spawn_handler import sc_SpawnHandler
 from scripts_core.sc_util import error_trap_console, init_sim
@@ -34,7 +32,7 @@ class ScriptCoreMain:
         (super().__init__)(*args, **kwargs)
 
     def check_sims_ini(self):
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\sims.ini"
         if not os.path.exists(filename):
             return
@@ -60,7 +58,7 @@ class ScriptCoreMain:
                         ScriptCoreMain.update_sims_ini(self, section, sim_name)
 
     def sims_ini(self):
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\sims.ini"
         trait_manager = services.get_instance_manager(sims4.resources.Types.TRAIT)
         if not os.path.exists(filename):
@@ -101,7 +99,7 @@ class ScriptCoreMain:
                     debugger("{}".format(trait_list))
 
     def update_sims_ini(self, career: str, sim_name: str):
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\sims.ini"
         if not os.path.exists(filename):
             return
@@ -131,7 +129,7 @@ class ScriptCoreMain:
         except:
             message_box(None, None, "Simulation", "Cannot load simulation mode!", "GREEN")
             pass
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\config.ini"
         if not os.path.exists(filename):
             return
@@ -150,9 +148,9 @@ class ScriptCoreMain:
         sc_Vars.DISABLE_CAREER_TITLES = config.getboolean("control", "disable_career_titles")
         sc_Vars.keep_sims_outside = config.getboolean("control", "keep_sims_outside")
         sc_Vars.select_when_teleport = config.getboolean("control", "select_when_teleport")
-        #sc_Vars.wants_and_fears = config.getboolean("control", "wants_and_fears")
         sc_Vars.dont_sleep_on_lot = config.getboolean("control", "dont_sleep_on_lot")
         sc_Vars.disable_tracking = config.getboolean("control", "disable_tracking")
+        sc_Vars.disable_forecasts = config.getboolean("control", "disable_forecasts")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
@@ -177,7 +175,7 @@ class ScriptCoreMain:
         font_text3 = "<font color='#{}'>".format(font_color3)
         end_font_text = "</font>"
         config_text = ""
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\config.ini"
         if not os.path.exists(filename):
             return
@@ -216,7 +214,15 @@ class ScriptCoreMain:
 
     def load(self):
         ScriptCoreMain.config_ini(self)
+        account_data_msg = services.get_persistence_service().get_account_proto_buff()
+        options_proto = account_data_msg.gameplay_account_data.gameplay_options
+
         for sim_info in services.sim_info_manager().get_all():
+            if sim_info.is_selectable and options_proto.autonomy_level == options_proto.LIMITED:
+                autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
+            else:
+                autonomy_setting = AutonomyState.FULL
+
             sim_info.use_object_index = 0
             sim_info.routine = False
             if not sc_Vars.disable_tracking:
@@ -224,13 +230,14 @@ class ScriptCoreMain:
             if sim_info.is_instanced():
                 sim = init_sim(sim_info)
                 if has_allowed_role(sim):
-                    if sc_Vars.keep_sims_outside:
-                        keep_sim_outside(sim)
-                    set_autonomy(sim_info, AutonomyState.FULL)
+                    set_autonomy(sim_info, autonomy_setting)
                     continue
                 if sc_Vars.DEBUG:
                     debugger("Sim: {} - Filtered".format(sim.first_name))
                 make_sim_leave(sim)
+
+        if sc_Vars.keep_sims_outside:
+            keep_sims_outside()
 
     def spawn_load(self):
         try:
@@ -281,7 +288,9 @@ class ScriptCoreMain:
                 #options_proto.show_wants = sc_Vars.wants_and_fears
 
                 selected_sim_autonomy_enabled = autonomy_service._selected_sim_autonomy_enabled
-                if options_proto.autonomy_level == options_proto.OFF or options_proto.autonomy_level == options_proto.LIMITED:
+                if sim == services.get_active_sim() and options_proto.autonomy_level == options_proto.OFF:
+                    autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
+                elif sim.sim_info.is_selectable and sim != services.get_active_sim() and options_proto.autonomy_level == options_proto.LIMITED:
                     autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
                 else:
                     autonomy_setting = sim.sim_info.routine_info.autonomy
@@ -295,7 +304,6 @@ class ScriptCoreMain:
                 #    action_unclogger(sim, filters)
                 update_lights(False, 0.0)
                 update_sim_tracking_info(sim.sim_info)
-                give_sim_access(sim)
 
                 if sim.sim_info.routine and [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
                     sc_Vars.routine_sim_index = 0
@@ -305,7 +313,7 @@ class ScriptCoreMain:
                 elif sim.sim_info.routine:
                     if not sim.sim_info.routine_info.title:
                         if not has_role(sim):
-                            remove_sim(sim)
+                            send_sim_home(sim)
                             return
                     if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0 or \
                             now.hour() < sim.sim_info.routine_info.on_duty and not sim.sim_info.routine_info.on_duty == 0:
@@ -333,7 +341,7 @@ class ScriptCoreMain:
                     return
                 if sc_Vars.DEBUG:
                     debugger("Sim: {} - Filtered".format(sim.first_name))
-                make_sim_leave(sim)
+                send_sim_home(sim)
 
         except BaseException as e:
             error_trap_console(e)
@@ -381,8 +389,6 @@ class ScriptCoreMain:
                     pass
 
                 remove_annoying_buffs(sim.sim_info)
-                if sc_Vars.keep_sims_outside:
-                    keep_sims_outside()
 
                 autonomy_service = services.autonomy_service()
                 account_data_msg = services.get_persistence_service().get_account_proto_buff()
@@ -393,7 +399,9 @@ class ScriptCoreMain:
                 #options_proto.show_wants = sc_Vars.wants_and_fears
 
                 selected_sim_autonomy_enabled = autonomy_service._selected_sim_autonomy_enabled
-                if options_proto.autonomy_level == options_proto.OFF or options_proto.autonomy_level == options_proto.LIMITED:
+                if sim == services.get_active_sim() and options_proto.autonomy_level == options_proto.OFF:
+                    autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
+                elif sim.sim_info.is_selectable and sim != services.get_active_sim() and options_proto.autonomy_level == options_proto.LIMITED:
                     autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
                 else:
                     autonomy_setting = AutonomyState.FULL
@@ -410,36 +418,32 @@ class ScriptCoreMain:
                 update_sim_tracking_info(sim.sim_info)
 
                 if sim == services.get_active_sim():
-                    give_sim_access(sim)
                     if not selected_sim_autonomy_enabled:
                         set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
                     else:
                         set_autonomy(sim.sim_info, AutonomyState.FULL)
                     return
                 elif sim.sim_info.is_selectable:
-                    give_sim_access(sim)
                     set_autonomy(sim.sim_info, autonomy_setting)
                     return
                 elif is_sim_in_group(sim):
-                    give_sim_access(sim)
                     set_autonomy(sim.sim_info, autonomy_setting)
                     return
                 elif sim.sim_info in services.active_household():
-                    give_sim_access(sim)
                     set_autonomy(sim.sim_info, autonomy_setting)
                     return
                 elif sim.sim_info.household.home_zone_id == zone.id:
-                    give_sim_access(sim)
                     set_autonomy(sim.sim_info, AutonomyState.FULL)
                     return
                 elif has_allowed_role(sim):
+                    set_autonomy(sim.sim_info, AutonomyState.FULL)
                     if sc_Vars.keep_sims_outside:
                         keep_sim_outside(sim)
-                    set_autonomy(sim.sim_info, AutonomyState.FULL)
                     return
                 if sc_Vars.DEBUG:
                     debugger("Sim: {} - Filtered".format(sim.first_name))
                 make_sim_leave(sim)
+
 
         except BaseException as e:
             error_trap_console(e)
@@ -449,6 +453,7 @@ class ScriptCoreMain:
 
 def has_allowed_role(sim):
     zone = services.current_zone()
+    venue = get_venue()
     disallowed_roles = ["leave", "patient", "gym", "barista", "bartender", "walkby_wait_for",
                         "infected", "frontdesk", "caterer", "doctor_npc", "gaming", "maid", "celebrity",
                         "chef", "computeruser", "landlord", "vendor", "military"]
@@ -473,20 +478,17 @@ def has_allowed_role(sim):
         return False
     if set_random_trait_role(sim):
         return True
-    if [role for role in disallowed_roles if has_role(sim, role)] and not sc_Vars.DISABLE_ROUTINE:
+    if [role for role in disallowed_roles if has_role(sim, role)] and not sc_Vars.DISABLE_ROUTINE and not "venue_stripclub" in venue:
+        return False
+
+
+    sims_on_lot = get_number_of_sims()
+    if sims_on_lot > sc_Vars.MAX_SIMS and not len(sim.autonomy_component.active_roles()):
         return False
 
     # if disable culling is true that means no sims will be removed, always return true role sims or not.
-    if sc_Vars.DISABLE_CULLING:
-        sims_on_lot = get_number_of_sims()
-        if not sc_Vars.DISABLE_ROLE_TITLES:
-            assign_role_title(sim)
-        if sims_on_lot > sc_Vars.MAX_SIMS and not len(sim.autonomy_component.active_roles()):
-            return False
-        else:
-            return True
     # no role sims get auto removed.
-    if not len(sim.autonomy_component.active_roles()):
+    if not sc_Vars.DISABLE_CULLING and not len(sim.autonomy_component.active_roles()):
         return False
 
     if not sc_Vars.DISABLE_ROLE_TITLES:
@@ -541,12 +543,10 @@ def set_random_trait_role(sim):
                     return True
 
             if "visitor" in role.title:
-                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                    assign_routine(sim.sim_info, "visitor", False)
-                    if sc_Vars.DEBUG:
-                        debugger("Visitor: {}".format(sim.first_name))
-                    return True
+                assign_routine(sim.sim_info, "visitor", False)
+                if sc_Vars.DEBUG:
+                    debugger("Visitor: {}".format(sim.first_name))
+                return True
 
             if "invited" in role.title:
                 if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \

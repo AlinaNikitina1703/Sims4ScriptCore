@@ -3,19 +3,20 @@ from os.path import isfile, join
 
 import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
+from sims4.localization import LocalizationHelperTuning
+from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
+
 from module_career.sc_career_custom import sc_CareerCustom
 from module_career.sc_career_functions import get_routine_objects_by_title
 from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_input import inputbox
-from scripts_core.sc_jobs import assign_title, clear_sim_instance, push_sim_function, distance_to, assign_situation
+from scripts_core.sc_jobs import clear_sim_instance, push_sim_function, distance_to, assign_situation
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_info import sc_RoutineInfo
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap, ld_file_loader
-from sims4.localization import LocalizationHelperTuning
-from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
 
 class ModuleCareerMenu(ImmediateSuperInteraction):

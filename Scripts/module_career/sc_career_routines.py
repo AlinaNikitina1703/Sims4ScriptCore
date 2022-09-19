@@ -4,17 +4,20 @@ import time
 import alarms
 import build_buy
 import services
-from careers.career_base import CareerBase
-from careers.career_event import CareerEvent
-from careers.career_event_manager import CareerEventManager
-from careers.career_event_zone_requirement import RequiredCareerEventZoneCustomerLot, RequiredCareerEventZoneRandom, \
-    RequiredCareerEventZoneLotDescription
 from careers.career_ops import CareerTimeOffReason
 from event_testing import test_events
+from objects import ALL_HIDDEN_REASONS
+from server_commands.argument_helpers import get_tunable_instance
+from sims.sim_spawner import SimSpawner
+from sims4.math import Vector3
+from sims4.random import weighted_random_item
+from sims4.resources import Types
+from terrain import get_terrain_center, get_terrain_height, get_terrain_size
+from world import get_lot_id_from_instance_id
+from world.travel_service import travel_sim_to_zone
+
 from module_career.sc_career_functions import get_routine_objects_by_title, find_empty_random_bed, find_empty_computer, \
     find_empty_register, find_empty_desk_by_id, find_empty_desk
-from objects import ALL_HIDDEN_REASONS
-
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance, go_here_routine, push_sim_function, \
     set_all_motives_by_sim, clear_jobs, get_awake_hours, make_clean, \
@@ -24,15 +27,6 @@ from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance,
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim, error_trap, clean_string
-from server_commands.argument_helpers import get_tunable_instance
-from sims.sim_spawner import SimSpawner
-from sims4.math import Vector3
-from sims4.random import weighted_random_item
-from sims4.resources import Types
-from terrain import get_terrain_center, get_terrain_height, get_terrain_size
-from world import get_lot_id_from_instance_id
-from world.travel_service import travel_sim_to_zone
-from world.travel_tuning import TravelSimLiability
 
 
 class sc_CareerRoutine:
@@ -226,6 +220,11 @@ class sc_CareerRoutine:
               career=self)
         except BaseException as e:
             error_trap(e)
+
+    def default_routine(self, sim_info):
+        sim = init_sim(sim_info)
+        if sim:
+            return
 
     def custom_routine(self, sim_info):
         sim = init_sim(sim_info)

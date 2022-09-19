@@ -1,5 +1,4 @@
 import math
-import os
 import random
 import sys
 import time
@@ -7,6 +6,7 @@ from math import fabs, sqrt
 
 import alarms
 import build_buy
+import caches
 import camera
 import date_and_time
 import interactions
@@ -44,12 +44,11 @@ from tag import Tag
 from terrain import get_terrain_center, get_terrain_height
 from traits.trait_type import TraitType
 from travel_group.travel_group import TravelGroup
-from weather.weather_enums import Temperature, WeatherEffectType, WeatherElementTuple, PrecipitationType, CloudType
-from weather.weather_service import WeatherService
+from weather.weather_enums import Temperature
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_message_box import message_box
-from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_script_vars import sc_Vars, AutonomyState
 from scripts_core.sc_util import error_trap, init_sim, clean_string, error_trap_console
 
 try:
@@ -321,7 +320,7 @@ def update_interaction_tuning(id: int, entry: str, value):
 
 def get_filters(filename):
     filters = []
-    datapath = os.path.abspath(os.path.dirname(__file__))
+    datapath = sc_Vars.config_data_location
     filename = datapath + r"\Data\{}.dat".format(filename)
     with open(filename, 'r') as file:
         data = file.read().replace("\n", "|").strip()
@@ -707,7 +706,10 @@ def remove_sim(sim):
     assign_title(sim_info, "")
     sim_info_home_zone_id = sim_info.household.home_zone_id
     sim_info.inject_into_inactive_zone(sim_info_home_zone_id, skip_instanced_check=True)
-    sim_info.save_sim()
+    try:
+        sim_info.save_sim()
+    except:
+        pass
     sim.schedule_destroy_asap(post_delete_func=(client.send_selectable_sims_update),
                               source=remove_sim,
                               cause='Destroying sim in travel liability')
@@ -874,6 +876,23 @@ def get_career_level(sim_info):
     except BaseException as e:
         error_trap(e)
 
+def set_autonomy(sim_info, routine=4):
+    sim_info.autonomy = AutonomyState(routine)
+
+
+def send_sim_home(sim):
+    try:
+        ensemble_service = services.ensemble_service()
+        ensemble = ensemble_service.get_visible_ensemble_for_sim(sim)
+        if ensemble is not None:
+            ensemble.end_ensemble()
+        set_autonomy(sim.sim_info, AutonomyState.FULL)
+        assign_routine(sim.sim_info, "leave")
+        make_sim_leave(sim)
+
+    except BaseException as e:
+        error_trap(e)
+
 def keep_sims_outside():
     venue = get_venue()
     if "residential" in venue or "rentable" in venue or "clinic" in venue:
@@ -888,15 +907,9 @@ def keep_sim_outside(sim):
     if "residential" in venue or "rentable" in venue or "clinic" in venue:
         is_outside = not sim.is_hidden() and sim.is_outside
         if not [role for role in allowed_roles if has_role(sim, role)]:
+            set_autonomy(sim.sim_info, AutonomyState.LIMITED_ONLY)
             if not is_outside:
                 make_sim_leave(sim)
-            else:
-                doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT) and obj.is_on_active_lot()]
-                for door in doors:
-                    if hasattr(door, 'add_lock_data'):
-                        lock_data = IndividualSimDoorLockData(lock_sim=sim.sim_info, lock_priority=(LockPriority.PLAYER_LOCK),
-                                                              lock_sides=(LockSide.LOCK_BOTH), should_persist=True)
-                        door.add_lock_data(lock_data, replace_same_lock_type=True, clear_existing_locks=(ClearLock.CLEAR_OTHER_LOCK_TYPES))
 
 def give_sim_access(sim):
     doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
@@ -908,7 +921,7 @@ def give_sim_access(sim):
 
 
 def assign_role_title(sim):
-    title_filter = ["lt:", "autonomy", "petworld", " walker", " walk", "rolestates", "rolestate", "basictrait", "island",
+    title_filter = ["lt:", "turbodriver:", "wickedwhims", "autonomy", "petworld", " walker", " walk", "rolestates", "rolestate", "basictrait", "island",
                     "situations", "state", "hospital", "generic", "background", "open streets", "openstreets", "openstreet",
                     "master", "fanstan",
                     "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",
@@ -944,6 +957,7 @@ def assign_routine(sim_info, title, clear_state=True):
             clear_all_buffs(sim_info)
         for buff in list(sim_info.routine_info.buffs):
             add_sim_buff(int(buff), sim_info)
+        add_sim_buff(182697, sim_info)
         assign_title(sim_info, sim_info.routine_info.title.title())
         assign_role(sim_info.routine_info.role, sim_info)
 
@@ -997,8 +1011,11 @@ def get_sim_travel_group(sim_info, is_target):
         return travel_group
     return None
 
-def get_number_of_sims():
-    sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not has_role(sim, "leave")]
+def get_number_of_sims(all_sims=False):
+    if not all_sims:
+        sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not has_role(sim, "leave")]
+    else:
+        sims = [sim for sim in services.sim_info_manager().instanced_sims_gen()]
     return len(sims)
 
 def get_venue():
@@ -1061,6 +1078,18 @@ def advance_game_time(hours: int = 0, minutes: int = 0, seconds: int = 0, _conne
 def advance_game_time_and_timeline(hours: int = 0, minutes: int = 0, seconds: int = 0):
     services.game_clock_service().advance_game_time(hours, minutes, seconds)
     services.time_service().sim_timeline = scheduling.Timeline(services.game_clock_service().now())
+    services.game_clock_service()._sync_clock_and_broadcast_gameclock(True)
+    set_all_motives()
+    reset_all_sims()
+
+def advance_game_time_complete(hours: int = 0, minutes: int = 0, seconds: int = 0):
+    persistence_service = services.get_persistence_service()
+    services.game_clock_service().advance_game_time(hours, minutes, seconds)
+    services.time_service().sim_timeline = scheduling.Timeline((services.game_clock_service().now()))
+    services.time_service().wall_clock_timeline = scheduling.Timeline((services.server_clock_service().now()))
+    services.time_service().sim_timeline.on_time_advanced.append(caches.clear_all_caches)
+    persistence_service._destroy_save_timeline(persistence_service.save_timeline)
+    persistence_service.save_timeline = scheduling.Timeline(services.time_service().sim_now)
     services.game_clock_service()._sync_clock_and_broadcast_gameclock(True)
     set_all_motives()
     reset_all_sims()
@@ -1173,7 +1202,7 @@ def get_sim_info(sim=None):
                      "[Role({}):] {}\n" \
                      "[Interactions:]\n{}\n" \
                      "[Mood:] {}\n[Age:] {} Days\n[Room:] {}\n[Level:] {}\n[Zone ID:] {}\n" \
-                     "[Pos:] {}\n[Orient:] {}" \
+                     "[Pos:] {}, {}, {}\n[Orient:] {}\n" \
                      "[Buffs:]\n{}\n" \
             .format(sim_info.first_name, sim_info.last_name, sim_info.sim_id,
             client._household_id,
@@ -1183,7 +1212,7 @@ def get_sim_info(sim=None):
             roleStateName,
             intQueue,
             mood.__name__, time_alive, room, sim.level, zone.id,
-            get_object_pos(sim), get_object_rotate(sim), buffStateName)
+            sim.position.x, sim.position.y, sim.position.z, get_object_rotate(sim), buffStateName)
 
         return returnText
     except BaseException as e:
@@ -1533,6 +1562,11 @@ def get_object_info(target, long_version=False):
         target_object_tags = None
         pass
 
+    if hasattr(target, "in_use"):
+        in_use = target.in_use
+    else:
+        in_use = False
+
     info_string = "[Zone Info:] {}\n" \
                   "[Object ID:] {}\n" \
                   "[Object Definition ID:] {} ({})\n" \
@@ -1547,7 +1581,7 @@ def get_object_info(target, long_version=False):
                   "[Object Tags:] {}\n" \
                   "[Object Location (Title):] {} [ID:] {}\n" \
                   "[Object Slot Hash:] {}\n" \
-                  "[Object POS:] X:{} Y:{} Z:{}\n" \
+                  "[Object POS:] {}, {}, {}\n" \
                   "[Object ROT:] X:{} Y:{} Z:{} W:{}\n" \
                   "[Type:] {}\n" \
                   "[Commodities:]\n{}\n" \
@@ -1556,7 +1590,7 @@ def get_object_info(target, long_version=False):
                 target.definition.id,
                 hex(target.definition.id),
                 target.is_outside,
-                target.in_use,
+                in_use,
                 scale,
                 locked,
                 object_is_dirty(target),

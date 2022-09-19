@@ -4,11 +4,10 @@ import date_and_time
 import services
 from module_career.sc_career_functions import get_routine_sims
 from module_career.sc_career_routines import sc_CareerRoutine
-from scripts_core.sc_autonomy import set_autonomy
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import check_actions, clear_sim_instance, action_timeout, get_action_timestamp, \
     find_all_objects_by_title, push_sim_function, get_career_level, get_skill_level, remove_sim_buff, \
-    distance_to_by_room, assign_title, assign_routine, set_exam_info
+    distance_to_by_room, assign_title, assign_routine, set_exam_info, set_autonomy
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim
 from sims.sim_info import SimInfo

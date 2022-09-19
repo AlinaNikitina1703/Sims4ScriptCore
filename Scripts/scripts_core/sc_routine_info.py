@@ -1,4 +1,3 @@
-from scripts_core.sc_autonomy import AutonomyState
 from sims.sim_info import SimInfo
 
 

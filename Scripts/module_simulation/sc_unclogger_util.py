@@ -6,6 +6,7 @@ from reset import ResettableElement
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import clear_sim_instance
+from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import clean_string, error_trap, error_trap_console
 
 
@@ -24,7 +25,8 @@ def simulation_timeout(timeline, handle):
             format(name, action, clean_string(str(timeline)), element_str)
         client = services.client_manager().get_first_client()
         sims4.commands.cheat_output(debug_text, client.id)
-        debugger(debug_text, 1, False, True)
+        if sc_Vars.DEBUG:
+            debugger(debug_text, 1, False, True)
 
         if timeline is services.time_service().sim_timeline:
             timeline.hard_stop(handle)
@@ -42,7 +44,8 @@ def simulation_handler(timeline):
                 if handle.element is not None:
                     if isinstance(handle.element, ResettableElement):
                         element_str = clean_string(str(handle.element))
-                        debugger(element_str, 1, False, True)
+                        if sc_Vars.DEBUG:
+                            debugger(element_str, 1, False, True)
 
     except BaseException as e:
         error_trap_console(e)

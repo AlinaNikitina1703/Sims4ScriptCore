@@ -1,14 +1,11 @@
 import inspect
 from functools import wraps
 
-import services
-from clock import ClockSpeedMode
 from clubs.club_enums import ClubGatheringStartSource
 from clubs.club_gathering_situation import ClubGatheringSituation
 from clubs.club_service import ClubService
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
-from objects.object_enums import ResetReason
 from postures.posture_graph import PostureGraphService
 from sims.sim_info_manager import SimInfoManager
 from singletons import DEFAULT
@@ -17,9 +14,7 @@ from zone import Zone
 from scripts_core.sc_autonomy import sc_Autonomy
 from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
     sc_club_on_zone_load_handler
-from scripts_core.sc_jobs import pause_routine
 from scripts_core.sc_main import ScriptCoreMain
-from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
 from scripts_core.sc_zone import sc_zone_update, sc_zone_on_build_buy_enter_handler, sc_zone_on_build_buy_exit_handler
 

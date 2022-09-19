@@ -4,14 +4,13 @@ import os
 
 import routing
 import services
-from objects.object_enums import ResetReason
 from sims.sim_info import SimInfo
 from sims4.math import Location, Transform, Quaternion, Vector3
 from sims4.resources import Types, get_resource_key
 
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import add_sim_buff, clear_sim_instance, push_sim_function, get_filters, \
-    find_all_objects_by_title, distance_to_by_room, check_actions
+from scripts_core.sc_jobs import add_sim_buff, clear_sim_instance, push_sim_function, find_all_objects_by_title, \
+    distance_to_by_room
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim
 
@@ -88,7 +87,7 @@ def save_sim_tracking(sim_info):
             target_list.append(target.id)
 
     sim_name = "{}_{}".format(sim_info.first_name, sim_info.last_name)
-    datapath = os.path.abspath(os.path.dirname(__file__))
+    datapath = sc_Vars.config_data_location
     filename = datapath + r"\Data\tracker.ini"
     if not os.path.exists(filename):
         return
@@ -113,7 +112,7 @@ def load_sim_tracking(sim_info):
     sim_id = sim.id
     zone_id = services.current_zone_id()
     sim_name = "{}_{}".format(sim_info.first_name, sim_info.last_name)
-    datapath = os.path.abspath(os.path.dirname(__file__))
+    datapath = sc_Vars.config_data_location
     filename = datapath + r"\Data\tracker.ini"
     if not os.path.exists(filename):
         return

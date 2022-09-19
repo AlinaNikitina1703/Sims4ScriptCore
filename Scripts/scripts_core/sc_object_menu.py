@@ -1,18 +1,17 @@
-import math
-
 import camera
 import services
 import sims4
-from routing import SurfaceIdentifier, SurfaceType
-from scripts_core.sc_menu_class import ICON_NONE, ICON_MORE, ICON_BACK
-from scripts_core.sc_message_box import message_box
-from scripts_core.sc_util import error_trap, get_icon_info_data
 from distributor.shared_messages import IconInfoData
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from objects.game_object import GameObject
+from routing import SurfaceIdentifier, SurfaceType
 from sims4.localization import LocalizationHelperTuning
 from sims4.resources import get_resource_key, Types
 from ui.ui_dialog_picker import UiObjectPicker, ObjectPickerType, ObjectPickerRow
+
+from scripts_core.sc_menu_class import ICON_NONE, ICON_MORE, ICON_BACK
+from scripts_core.sc_message_box import message_box
+from scripts_core.sc_util import error_trap, get_icon_info_data
 
 
 class ObjectMenuNoFile(ImmediateSuperInteraction):

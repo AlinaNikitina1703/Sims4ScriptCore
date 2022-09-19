@@ -1,14 +1,15 @@
 import string
 
-import sims4.commands
 import services
-from scripts_core.sc_util import ld_notice
+import sims4.commands
 from sims4.collections import AttributeDict
 from sims4.localization import LocalizationHelperTuning
 from sims4.tuning.tunable import HasTunableSingletonFactory, AutoFactoryInit
-from ui.ui_dialog import UiDialog, UiDialogOk, UiDialogOkCancel
+from ui.ui_dialog import UiDialog, UiDialogOkCancel
 from ui.ui_dialog_generic import UiDialogTextInputOkCancel
 from ui.ui_text_input import UiTextInput
+
+from scripts_core.sc_util import ld_notice
 
 
 class JargonKeys(object):

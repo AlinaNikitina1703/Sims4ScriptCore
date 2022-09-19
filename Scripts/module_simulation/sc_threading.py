@@ -21,7 +21,6 @@ class sc_Watcher(Thread):
         while not self.stopped.wait(self.wait):
             if self.once:
                 self.once = False
-                debugger("Thread loaded!")
             else:
                 time.sleep(sc_Vars.update_speed)
                 current_zone = services.current_zone()
@@ -35,5 +34,4 @@ class sc_Watcher(Thread):
 
                     if current_zone.is_zone_shutting_down:
                         self.stopped.set()
-                        debugger("Thread stopped!")
                         break

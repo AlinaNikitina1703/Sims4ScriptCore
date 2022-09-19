@@ -7,6 +7,7 @@ import services
 import sims4
 
 from scripts_core.sc_message_box import message_box
+from scripts_core.sc_script_vars import sc_Vars
 
 
 def debugger(debug_text, frame=1, full_frame=False, write=True, to_console=True, popup=False, file=""):
@@ -71,7 +72,7 @@ def debugger(debug_text, frame=1, full_frame=False, write=True, to_console=True,
         clean = re.compile('<.*?>')
         debug_text = re.sub(clean, '', debug_text)
     if write:
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\{}.log".format("debugger")
         if os.path.exists(filename):
             append_write = 'a'  # append if already exists

@@ -1,18 +1,20 @@
-import os
-import copy, random, services
-import time
+import copy
+import random
 from math import atan2
 
-import sims4
 import objects
+import services
+import sims4
 from objects.game_object import GameObject
 from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
 from sims4.localization import LocalizationHelperTuning
+from sims4.math import Location, Transform, Vector3
 from tag import Tag
 from terrain import get_terrain_height
-from sims4.math import Location, Transform, Quaternion, Vector3
+
 from scripts_core.sc_message_box import message_box
+from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap, clean_string, get_icon_info_data
 
 try:
@@ -25,6 +27,10 @@ except:
     pass
 from ui.ui_dialog_picker import ObjectPickerRow, UiObjectPicker, ObjectPickerType
 
+
+
+def get_selected_object():
+    return TMToolData.SelectedObject
 
 def reset_all_objects():
     all_objects = services.object_manager().get_all()
@@ -97,15 +103,35 @@ def delete_selected_objects():
     except BaseException as e:
         error_trap(e)
 
-def move_selected_objects(x=0.0, z=0.0):
+def move_selected_objects(x=0.0, z=0.0, height=None):
     try:
         zone_id = services.current_zone_id()
         all_objects = TMToolData.GroupObjects
         for obj in list(all_objects):
             position = obj.position
-            position = Vector3(position.x + x,
-                               position.y,
-                               position.z + z)
+            if height is None:
+                position = Vector3(position.x + x,
+                                   position.y,
+                                   position.z + z)
+            else:
+                position = Vector3(position.x + x,
+                                   position.y + height,
+                                   position.z + z)
+
+            level = obj.level
+            orientation = obj.orientation
+            routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+            obj.location = Location(Transform(position, orientation), routing_surface)
+
+    except BaseException as e:
+        error_trap(e)
+
+def place_selected_objects(x=0.0, y = 0.0, z=0.0):
+    try:
+        zone_id = services.current_zone_id()
+        all_objects = TMToolData.GroupObjects
+        for obj in list(all_objects):
+            position = Vector3(x, y, z)
             level = obj.level
             orientation = obj.orientation
             routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
@@ -418,7 +444,7 @@ def list_objects_from_file(filename: str, target: GameObject, delete=False):
                                                          min_selectable=1,
                                                          picker_type=ObjectPickerType.OBJECT)
 
-        open_file = os.path.abspath(os.path.dirname(__file__)) + r"\{}.txt".format(filename)
+        open_file = sc_Vars.config_data_location + r"\{}.txt".format(filename)
         file = open(open_file, "r")
         # EMPTY_ICON_INFO_DATA
         all_lines = file.readlines()

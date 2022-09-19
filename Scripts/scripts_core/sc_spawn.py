@@ -6,15 +6,16 @@ import objects
 import routing
 import services
 from objects.object_enums import ResetReason
-from scripts_core.sc_jobs import distance_to_pos, make_sim_at_work, activate_sim_icon
-from scripts_core.sc_message_box import message_box
-from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_util import init_sim, error_trap, clean_string
 from server_commands.visualization_commands import _create_layer, _spawn_point_visualizers
 from sims.sim_spawner import SimSpawner
 from sims4.math import Location, Transform, Quaternion, Vector3
 from visualization.spawn_point_visualizer import SpawnPointVisualizer
 from world.spawn_point import SpawnPointOption
+
+from scripts_core.sc_jobs import distance_to_pos, make_sim_at_work, activate_sim_icon
+from scripts_core.sc_message_box import message_box
+from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_util import init_sim, error_trap, clean_string
 
 
 class sc_Spawn:
@@ -22,9 +23,6 @@ class sc_Spawn:
 
     def __init__(self):
         super().__init__()
-
-    def do_error(self):
-        error
 
     def spawn_sim(self, sim_info, spawn_point=None, level=0, use_radius=False):
         try:
@@ -125,7 +123,7 @@ class sc_Spawn:
                 points.append(point_string)
             except:
                 pass
-        self.spawn_menu.show(timeline, self, 0, points, "Spawn Points", "Focus on a spawn point.", "focus_on_point", True)
+        #self.spawn_menu.show(timeline, self, 0, points, "Spawn Points", "Focus on a spawn point.", "focus_on_point", True)
 
     def focus_on_point(self, point):
         pos = Vector3(float(point.split(',')[0]), float(point.split(',')[1]), float(point.split(',')[2]))

@@ -6,12 +6,11 @@ import random
 import services
 from module_career.sc_career_medical import sc_CareerMedical
 from module_career.sc_career_routines import sc_CareerRoutine
-from scripts_core.sc_autonomy import send_sim_home
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import get_career_name, get_venue, clear_all_buffs, add_sim_buff, assign_title, clear_jobs, \
     get_work_hours, check_actions, function_options, assign_role, remove_sim, get_career_level, \
     clear_queue_of_duplicates, set_all_motives_by_sim, max_sims, clear_sim_instance, set_proper_sim_outfit, \
-    get_awake_hours
+    get_awake_hours, send_sim_home
 from scripts_core.sc_routine_info import sc_RoutineInfo
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn import sc_Spawn
@@ -41,7 +40,7 @@ class sc_CareerCustom(sc_CareerMedical):
             sc_Vars._running = True
 
     def load_roles(self):
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\roles.ini"
         if not os.path.exists(filename):
             return
@@ -165,7 +164,7 @@ class sc_CareerCustom(sc_CareerMedical):
     def get_filter_routines_by_zone(self):
         zone = services.current_zone()
         zone_id = zone.id
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\zones.ini"
         if not os.path.exists(filename):
             return
@@ -180,7 +179,7 @@ class sc_CareerCustom(sc_CareerMedical):
     def get_filter_sims_by_zone(self, routine: str):
         zone = services.current_zone()
         zone_id = zone.id
-        datapath = os.path.abspath(os.path.dirname(__file__))
+        datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\zones.ini"
         if not os.path.exists(filename):
             return None
@@ -251,6 +250,7 @@ class sc_CareerCustom(sc_CareerMedical):
         if sim_info.routine_info.title != "none":
             for buff in list(sim_info.routine_info.buffs):
                 add_sim_buff(int(buff), sim_info)
+            add_sim_buff(182697, sim_info)
             assign_title(sim_info, sim_info.routine_info.title.title())
             assign_role(sim_info.routine_info.role, sim_info)
         else:

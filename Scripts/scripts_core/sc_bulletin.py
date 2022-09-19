@@ -1,12 +1,10 @@
-import itertools
-import time
-
 import services
 
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_menu import sc_RoutineMenu
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
+
 
 class sc_Bulletin(sc_RoutineMenu):
 

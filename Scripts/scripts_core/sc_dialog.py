@@ -1,12 +1,13 @@
-import services
 import traceback
-from scripts_core.sc_io import inject_to
-from ui.ui_dialog_notification import UiDialogNotification
-from sims.sim_info_types import Age
+
+import services
+import ui.ui_dialog_service
 from sims4.localization import LocalizationHelperTuning
 from ui.ui_dialog import ButtonType, UiDialog, UiDialogResponse
-import ui.ui_dialog_service
-from ui.ui_dialog_picker import SimPickerRow, UiSimPicker
+from ui.ui_dialog_notification import UiDialogNotification
+
+from scripts_core.sc_io import inject_to
+
 
 class UiDialogChoicesInput(UiDialog):
 	__qualname__ = 'UiDialogChoicesInput'

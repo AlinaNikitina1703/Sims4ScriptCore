@@ -54,7 +54,7 @@ class sc_SpawnHandler(SimSpawnerService):
                         sc_Vars.spawn_cooldown = now
 
                 venue = get_venue()
-                sims_on_lot = get_number_of_sims()
+                sims_on_lot = get_number_of_sims(True)
                 if sc_Vars.DISABLE_SPAWNS:
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
