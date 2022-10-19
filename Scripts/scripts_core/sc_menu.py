@@ -22,6 +22,7 @@ from sims.sim_info_types import Species, Age
 from sims4.localization import LocalizationHelperTuning
 from sims4.math import Location, Transform, Vector3
 from sims4.resources import Types
+from terrain import get_terrain_height
 from ui.ui_dialog_generic import UiDialogTextInputOkCancel
 from ui.ui_dialog_notification import UiDialogNotification
 from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
@@ -30,6 +31,7 @@ from weather.lightning import LightningStrike
 
 from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
+from scripts_core.sc_goto_camera import update_camera, camera_info
 from scripts_core.sc_input import inputbox, TEXT_INPUT_NAME, input_text
 from scripts_core.sc_jobs import get_tag_name, get_sim_info, advance_game_time_and_timeline, \
     advance_game_time, sc_Vars, make_sim_selectable, make_sim_unselectable, remove_sim, remove_all_careers, \
@@ -37,14 +39,15 @@ from scripts_core.sc_jobs import get_tag_name, get_sim_info, advance_game_time_a
     assign_role, add_to_inventory, go_here_routine, make_sim_at_work, clear_sim_instance, assign_role_title, \
     assign_title, activate_sim_icon, \
     get_object_info, get_trait_name_from_string, add_trait_by_name, \
-    get_sim_travel_group, clear_jobs, get_filters, send_sim_home
+    get_sim_travel_group, clear_jobs, get_filters, send_sim_home, distance_to_pos, remove_annoying_buffs
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_object_menu import ObjectMenuNoFile
 from scripts_core.sc_routine import ScriptCoreRoutine
+from scripts_core.sc_routing import routing_fix
 from scripts_core.sc_script_vars import sc_DisabledAutonomy, AutonomyState
-from scripts_core.sc_sim_tracker import load_sim_tracking, save_sim_tracking
+from scripts_core.sc_sim_tracker import load_sim_tracking, save_sim_tracking, track_sim, update_sim_tracking_info
 from scripts_core.sc_spawn import sc_Spawn
 from scripts_core.sc_util import error_trap, ld_notice, ld_file_loader, clean_string, init_sim
 
@@ -116,9 +119,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             "Add Object To Inventory",
                             "Select And Fix Sim Icons",
                             "Remove Jobs From Sims",
-                            "Reset All Sims")
+                            "Reset All Sims",
+                            "Indexed Sims")
 
-        self.sc_control_choices = ("<font color='#990000'>Go Here</font>",
+        self.sc_control_choices = ("<font color='#990000'>Toggle Directional Controls</font>",
+                                "Get Camera Info",
                                 "Push Sim",
                                 "Load Config",
                                 "Load Routine",
@@ -139,7 +144,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Find Go Here",
                                 "Reset Lot",
                                 "Enable Autonomy",
-                                "Disable Autonomy")
+                                "Disable Autonomy",
+                                "Set Autonomy")
 
 
         self.sc_grab_drink_choices = ("Grab Vodka Soda",
@@ -168,7 +174,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_control_menu = MainMenu(*args, **kwargs)
         self.sc_teleport_menu = MainMenu(*args, **kwargs)
         self.sc_delete_menu = MainMenu(*args, **kwargs)
-        self.sc_enable_autonomy_menu = MainMenu(*args, **kwargs)
+        self.sc_autonomy_menu = MainMenu(*args, **kwargs)
+        self.sc_autonomy_state_menu = MainMenu(*args, **kwargs)
         self.script_choice = MainMenu(*args, **kwargs)
         self.sc_bulletin = sc_Bulletin()
         self.sc_main = ScriptCoreMain()
@@ -215,7 +222,14 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_sims_menu.commands = []
         self.sc_sims_menu.commands.append("<font color='#990000'>[Menu]</font>")
         self.sc_sims_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
-        self.sc_sims_menu.show(timeline, self, 0, self.sc_sims_choices, "Sims Menu", "Make a selection.")
+
+        menu_choices = []
+        for item in self.sc_sims_choices:
+            if "Delete Menu" in item and self.target.is_sim:
+                item = item.replace("Delete Menu", "Delete Sim")
+            menu_choices.append(item)
+
+        self.sc_sims_menu.show(timeline, self, 0, menu_choices, "Sims Menu", "Make a selection.")
 
     def control_menu(self, timeline):
         self.sc_control_menu.MAX_MENU_ITEMS_TO_LIST = 12
@@ -238,8 +252,25 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_delete_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_delete_menu.show(timeline, self, 0, self.sc_delete_choices, "Delete Sim Menu", "Make a selection.")
 
+    def toggle_directional_controls(self, timeline):
+        sc_Vars.directional_controls = not sc_Vars.directional_controls
+        directional_info = "Directional controls for sim are set to {}".format(sc_Vars.directional_controls)
+        message_box(self.sim, None, "Directional Controls", directional_info)
+        if sc_Vars.directional_controls:
+            update_camera(self.sim, 2.0, True)
+
+    def get_camera_info(self, timeline):
+        camera_info(self.sim)
+
     def go_here(self, timeline):
         go_here_routine(self.sim, self.target.position)
+
+    def go_to_camera(self, timeline):
+        camera_target = Vector3(camera._target_position.x,
+                                get_terrain_height(camera._target_position.x, camera._target_position.z),
+                                camera._target_position.z)
+
+        go_here_routine(self.sim, camera_target)
 
     def enable_autonomy(self, timeline):
         client = services.client_manager().get_first_client()
@@ -251,27 +282,73 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             message_box(target, None, "No Autonomy For Sim")
             return
 
-        enable_autonomy_choices = ()
+        help_text = "{} {} autonomy is currently {}\n\n" \
+                    "Enable actions in this list by selecting them. If the action has Enable in front of it, " \
+                    "the action will be ADDED to enabled.dat, allowing sims with disabled autonomy to perform " \
+                    "that action. If the action has Disable in front of it, the action will be REMOVED from disable.dat, " \
+                    "allowing sims with full autonomy to perform that action.".format(target.first_name, target.last_name, target.sim_info.autonomy)
+
+        autonomy_menu_choices = ()
         interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
         autonomy_choices = []
-        [autonomy_choices.append(x) for x in sc_Vars.disabled_autonomy_list if x not in autonomy_choices and x.sim_info.id == target.id]
+        [autonomy_choices.append(x) for x in sc_Vars.disabled_autonomy_list if x not in autonomy_choices and x.sim_info.id == target.id and x.sim_info.autonomy == target.sim_info.autonomy]
         if not len(autonomy_choices):
             message_box(target, None, "No Autonomy For Sim")
             return
         for choice in autonomy_choices:
             interaction = interaction_manager.get(int(choice.interaction))
             if choice.sim_info.autonomy == AutonomyState.DISABLED:
-                each_section = "Enabled: ({}) {}".format(interaction.guid64, interaction.__name__)
-            elif choice.sim_info.autonomy == AutonomyState.FULL:
-                each_section = "Disabled: ({}) {}".format(interaction.guid64, interaction.__name__)
+                each_section = "Enable: ({}) {}".format(interaction.guid64, interaction.__name__)
+            elif choice.sim_info.autonomy == AutonomyState.FULL or choice.sim_info.autonomy == AutonomyState.LIMITED_ONLY or choice.sim_info.autonomy == AutonomyState.NO_CLEANING:
+                each_section = "Disable: ({}) {}".format(interaction.guid64, interaction.__name__)
             else:
                 each_section = "Routine: ({}) {}".format(interaction.guid64, interaction.__name__)
-            enable_autonomy_choices = enable_autonomy_choices + (each_section,)
-        self.sc_enable_autonomy_menu.MAX_MENU_ITEMS_TO_LIST = 12
-        self.sc_enable_autonomy_menu.commands = []
-        self.sc_enable_autonomy_menu.commands.append("<font color='#990000'>[Menu]</font>")
-        self.sc_enable_autonomy_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
-        self.sc_enable_autonomy_menu.show(timeline, self, 0, enable_autonomy_choices, "Enable Autonomy For {} {}".format(target.first_name, target.last_name), "Make a selection.")
+            autonomy_menu_choices = autonomy_menu_choices + (each_section,)
+        self.sc_autonomy_menu.MAX_MENU_ITEMS_TO_LIST = 12
+        self.sc_autonomy_menu.callback = "enable_autonomy_callback"
+        self.sc_autonomy_menu.commands = []
+        self.sc_autonomy_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_autonomy_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
+        self.sc_autonomy_menu.show(timeline, self, 0, autonomy_menu_choices, "Enable Autonomy For {} {}".format(target.first_name, target.last_name), help_text)
+
+    def enable_autonomy_callback(self, option):
+        try:
+            outer = re.compile("\((.+)\)")
+            action_id = outer.search(option)
+            if action_id:
+                action = re.sub(r'[()]', '', action_id.group(0))
+                client = services.client_manager().get_first_client()
+                interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
+                interaction = interaction_manager.get(int(action))
+
+                datapath = sc_Vars.config_data_location
+                if "Disable:" in option:
+                    filename = datapath + r"\Data\{}.dat".format("disabled")
+                    actions = get_filters("disabled")
+                    new_list = []
+                    for i, action in enumerate(actions):
+                        if action not in str(interaction.__name__).lower() and action not in str(interaction.guid64):
+                            new_list.append(action)
+
+                    with open(filename, "w") as file:
+                        for i, m in enumerate(new_list, 1):
+                            file.write(m + ['|', '\n'][i % 10 == 0])
+
+                if "Enable:" in option:
+                    filename = datapath + r"\Data\{}.dat".format("enabled")
+                    actions = get_filters("enabled")
+                    new_list = []
+                    for i, action in enumerate(actions):
+                        if action not in str(interaction.__name__).lower() or action not in str(interaction.guid64):
+                            new_list.append(action)
+                    new_list.append(str(interaction.__name__).lower())
+
+                    with open(filename, "w") as file:
+                        for i, m in enumerate(new_list, 1):
+                            file.write(m + ['|', '\n'][i % 10 == 0])
+
+        except BaseException as e:
+            error_trap(e)
 
     def disable_autonomy(self, timeline):
         client = services.client_manager().get_first_client()
@@ -283,29 +360,104 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             message_box(target, None, "No Autonomy For Sim")
             return
 
-        enable_autonomy_choices = ()
+        help_text = "{} {} autonomy is currently {}\n\n" \
+                    "Disable actions in this list by selecting them. If the action has Enable in front of it, " \
+                    "the action will be REMOVED from enabled.dat, disallowing sims with disabled autonomy to perform " \
+                    "that action. If the action has Disable in front of it, the action will be ADDED to disable.dat, " \
+                    "disallowing sims with full autonomy to perform that action.".format(target.first_name, target.last_name, target.sim_info.autonomy)
+
+        autonomy_menu_choices = ()
         interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
         autonomy_choices = []
         for action in target.get_all_running_and_queued_interactions():
             autonomy_choices.insert(0, sc_DisabledAutonomy(target.sim_info, action.guid64))
-        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices and x.sim_info.id == target.id]
+        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices and x.sim_info.id == target.id and x.sim_info.autonomy == target.sim_info.autonomy]
         if not len(autonomy_choices):
             message_box(target, None, "No Autonomy For Sim")
             return
         for choice in autonomy_choices:
             interaction = interaction_manager.get(int(choice.interaction))
-            if choice.sim_info.autonomy == AutonomyState.FULL:
-                each_section = "Auto: ({}) {}".format(interaction.guid64, interaction.__name__)
+            if choice.sim_info.autonomy == AutonomyState.FULL or choice.sim_info.autonomy == AutonomyState.LIMITED_ONLY or choice.sim_info.autonomy == AutonomyState.NO_CLEANING:
+                each_section = "Disable: ({}) {}".format(interaction.guid64, interaction.__name__)
             elif choice.sim_info.autonomy == AutonomyState.DISABLED:
-                each_section = "Enabled: ({}) {}".format(interaction.guid64, interaction.__name__)
+                each_section = "Enable: ({}) {}".format(interaction.guid64, interaction.__name__)
             else:
-                each_section = "Auto Routine: ({}) {}".format(interaction.guid64, interaction.__name__)
-            enable_autonomy_choices = enable_autonomy_choices + (each_section,)
-        self.sc_enable_autonomy_menu.MAX_MENU_ITEMS_TO_LIST = 12
-        self.sc_enable_autonomy_menu.commands = []
-        self.sc_enable_autonomy_menu.commands.append("<font color='#990000'>[Menu]</font>")
-        self.sc_enable_autonomy_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
-        self.sc_enable_autonomy_menu.show(timeline, self, 0, enable_autonomy_choices, "Disable Autonomy For {} {}".format(target.first_name, target.last_name), "Make a selection.")
+                each_section = "Routine: ({}) {}".format(interaction.guid64, interaction.__name__)
+            autonomy_menu_choices = autonomy_menu_choices + (each_section,)
+        self.sc_autonomy_menu.MAX_MENU_ITEMS_TO_LIST = 12
+        self.sc_autonomy_menu.callback = "disable_autonomy_callback"
+        self.sc_autonomy_menu.commands = []
+        self.sc_autonomy_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_autonomy_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
+        self.sc_autonomy_menu.show(timeline, self, 0, autonomy_menu_choices, "Disable Autonomy For {} {}".format(target.first_name, target.last_name), help_text)
+
+    def disable_autonomy_callback(self, option):
+        try:
+            outer = re.compile("\((.+)\)")
+            action_id = outer.search(option)
+            if action_id:
+                action = re.sub(r'[()]', '', action_id.group(0))
+                client = services.client_manager().get_first_client()
+                interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
+                interaction = interaction_manager.get(int(action))
+    
+                datapath = sc_Vars.config_data_location
+                if "Disable:" in option:
+                    filename = datapath + r"\Data\{}.dat".format("disabled")
+                    actions = get_filters("disabled")
+                    new_list = []
+                    for i, action in enumerate(actions):
+                        if action not in str(interaction.__name__).lower() and action not in str(interaction.guid64):
+                            new_list.append(action)
+                    new_list.append(str(interaction.__name__).lower())
+
+                    with open(filename, "w") as file:
+                        for i, m in enumerate(new_list, 1):
+                            file.write(m + ['|', '\n'][i % 10 == 0])
+
+                if "Enable:" in option:
+                    filename = datapath + r"\Data\{}.dat".format("enabled")
+                    actions = get_filters("enabled")
+                    new_list = []
+                    for i, action in enumerate(actions):
+                        if action in str(interaction.__name__).lower() or action in str(interaction.guid64):
+                            continue
+                        new_list.append(action)
+
+                    with open(filename, "w") as file:
+                        for i, m in enumerate(new_list, 1):
+                            file.write(m + ['|', '\n'][i % 10 == 0])
+
+        except BaseException as e:
+            error_trap(e)
+
+    def set_autonomy(self, timeline):
+        client = services.client_manager().get_first_client()
+        target = client.active_sim
+        if self.target.is_sim:
+            target = self.target
+        autonomy_types = [info for info in AutonomyState]
+        autonomy_choices = ()
+        for autonomy in autonomy_types:
+            autonomy_choices = autonomy_choices + (autonomy.name.lower(),)
+
+        self.sc_autonomy_state_menu.MAX_MENU_ITEMS_TO_LIST = 10
+        self.sc_autonomy_state_menu.callback = "set_autonomy_callback"
+        self.sc_autonomy_state_menu.commands = []
+        self.sc_autonomy_state_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_autonomy_state_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
+        self.sc_autonomy_state_menu.show(timeline, self, 0, autonomy_choices, "Set Sim Autonomy", "Set Autonomy for sim: {} {}".format(target.first_name, target.last_name))
+
+    def set_autonomy_callback(self, autonomy):
+        client = services.client_manager().get_first_client()
+        target = client.active_sim
+        if self.target.is_sim:
+            target = self.target
+        autonomy_states = [state for state in AutonomyState if state.name.lower() in autonomy]
+        if autonomy_states:
+            for state in autonomy_states:
+                target.sim_info.autonomy = state
+                message_box(target, None, "Autonomy State", "{} {} autonomy state is set to {}".format(target.first_name, target.last_name, target.sim_info.autonomy))
 
     def remove_jobs_from_sims(self, timeline):
         if self.target.is_sim:
@@ -334,7 +486,12 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def find_go_here(self, timeline):
         client = services.client_manager().get_first_client()
-        gohere = [action for action in client.active_sim.get_all_running_and_queued_interactions() if "gohere" in action.__class__.__name__.lower()]
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = client.active_sim
+
+        gohere = [action for action in target.get_all_running_and_queued_interactions() if "gohere" in action.__class__.__name__.lower()]
         if gohere:
             for action in gohere:
                 if hasattr(action.target, "position"):
@@ -351,9 +508,21 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def reset_in_use(self, timeline):
         if not self.target.is_sim:
-            objects.system.reset_object(self.target.id, expected=True, cause='Command')
-            if hasattr(self.target,"live_drag_component"):
-                self.target.live_drag_component._set_can_live_drag(True)
+            client = services.client_manager().get_first_client()
+            sim = None
+            for interaction in tuple(self.target.interaction_refs):
+                sim = interaction.sim
+            if sim:
+                if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and \
+                        client._selectable_sims._selectable_sim_infos[0] in services.active_household():
+                    travel_group = get_sim_travel_group(client.active_sim, False)
+                    sim.sim_info.remove_from_travel_group(travel_group)
+                remove_sim(sim)
+            routing_fix(self.target)
+            sc_Vars._running = False
+            sc_Vars._config_loaded = False
+            sc_Vars.DISABLE_ROUTINE = False
+            sc_Vars.DISABLE_MOD = False
 
     def rename_world(self, timeline):
         try:
@@ -382,7 +551,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.teleport_sims("all", True)
 
     def teleport_filtered(self, timeline):
-        inputbox("Teleport Filtered", "Enter last name of sim(s).", self.teleport_sims_filtered)
+        inputbox("Teleport Filtered", "Enter first name or last name of sim(s).", self.teleport_sims_filtered)
 
     def teleport_metal(self, timeline):
         self.teleport_sims("metal")
@@ -407,6 +576,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         if target is None:
             return
         target.destroy()
+
+    def delete_sim(self, timeline):
+        self.permanently_delete_sims("sim")
 
     def delete_all(self, timeline):
         self.permanently_delete_sims()
@@ -547,6 +719,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.routine]
             elif "instanced" in filter:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.is_instanced()]
+            elif "sim" in filter:
+                all_sims = [self.target.sim_info]
             else:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN]
 
@@ -950,6 +1124,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         try:
             is_precise = False
             precision = 2.0
+
             def teleport_callback(dialog):
                 if not dialog.accepted:
                     return
@@ -1000,8 +1175,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             elif "instanced" in filter:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.is_instanced()]
             else:
-                all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN
-                    and str(name) in str(sim_info.last_name).lower()]
+                all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if str(name).lower() in str(sim_info.first_name).lower() or str(name).lower() in str(sim_info.last_name).lower()]
 
             self.picker("Mass Teleport {} Sims".format(filter.title()), "Pick 50 Sim(s) to Teleport", 50, teleport_callback, all_sims)
         except BaseException as e:
@@ -1098,6 +1272,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                         return
                     for sim in result_tags:
                         ensemble.add_sim_to_ensemble(sim)
+                    push_sim_function(client.active_sim, client.active_sim, 25209, False)
                 except BaseException as e:
                     error_trap(e)
 
@@ -1107,11 +1282,33 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def remove_sims_from_group(self, timeline):
         try:
+            client = services.client_manager().get_first_client()
             ensemble_service = services.ensemble_service()
-            for sim in services.sim_info_manager().instanced_sims_gen():
-                ensemble = ensemble_service.get_visible_ensemble_for_sim(sim)
-                if ensemble is not None:
-                    ensemble.end_ensemble()
+            ensemble = ensemble_service.get_visible_ensemble_for_sim(client.active_sim)
+            if ensemble is None:
+                return
+
+            def get_simpicker_results_callback(dialog):
+                try:
+                    if not dialog.accepted:
+                        return
+                    result_tags = dialog.get_result_tags()
+                    instance_manager = services.get_instance_manager(Types.ENSEMBLE)
+                    ensemble = ensemble_service.get_visible_ensemble_for_sim(client.active_sim)
+                    if ensemble is None:
+                        return
+                    ensemble_type = instance_manager.get(ensemble.guid64)
+                    if ensemble_type is None:
+                        return
+                    for sim_info in result_tags:
+                        sim = init_sim(sim_info)
+                        ensemble.remove_sim_from_ensemble(sim)
+                    push_sim_function(client.active_sim, client.active_sim, 25209, False)
+                except BaseException as e:
+                    error_trap(e)
+
+            sims = [sim.sim_info for sim in ensemble]
+            self.picker("Remove Sims From Group", "Pick up to 50 Sims", 50, get_simpicker_results_callback, sims)
         except BaseException as e:
             error_trap(e)
 
@@ -1203,7 +1400,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
                     make_sim_unselectable(sim_info)
 
-            self.picker("Unselect Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
+            pick_sims = [sim_info for sim_info in client._selectable_sims._selectable_sim_infos]
+            self.picker("Unselect Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback, pick_sims)
         except BaseException as e:
             error_trap(e)
 
@@ -1286,83 +1484,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             sims4.commands.client_cheat("fps off", client.id)
 
     def custom_function(self, option):
-        if "Auto:" in option:
-            try:
-                outer = re.compile("\((.+)\)")
-                action_id = outer.search(option)
-                if action_id:
-                    action = re.sub(r'[()]', '', action_id.group(0))
-                    client = services.client_manager().get_first_client()
-                    interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
-                    interaction = interaction_manager.get(int(action))
-
-                    datapath = sc_Vars.config_data_location
-                    filename = datapath + r"\Data\{}.dat".format("disabled")
-                    actions = get_filters("disabled")
-                    new_list = []
-                    for i, action in enumerate(actions):
-                        if action not in str(interaction.__name__).lower() and action not in str(interaction.guid64):
-                            new_list.append(action)
-                    new_list.append(str(interaction.__name__).lower())
-
-                    with open(filename, "w") as file:
-                        for i, m in enumerate(new_list, 1):
-                            file.write(m + ['|', '\n'][i % 10 == 0])
-
-            except BaseException as e:
-                error_trap(e)
-
-        if "Disabled:" in option:
-            try:
-                outer = re.compile("\((.+)\)")
-                action_id = outer.search(option)
-                if action_id:
-                    action = re.sub(r'[()]', '', action_id.group(0))
-                    client = services.client_manager().get_first_client()
-                    interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
-                    interaction = interaction_manager.get(int(action))
-
-                    datapath = sc_Vars.config_data_location
-                    filename = datapath + r"\Data\{}.dat".format("disabled")
-                    actions = get_filters("disabled")
-                    new_list = []
-                    for i, action in enumerate(actions):
-                        if action not in str(interaction.__name__).lower() and action not in str(interaction.guid64):
-                            new_list.append(action)
-
-                    with open(filename, "w") as file:
-                        for i, m in enumerate(new_list, 1):
-                            file.write(m + ['|', '\n'][i % 10 == 0])
-
-            except BaseException as e:
-                error_trap(e)
-
-        if "Enabled:" in option:
-            try:
-                outer = re.compile("\((.+)\)")
-                action_id = outer.search(option)
-                if action_id:
-                    action = re.sub(r'[()]', '', action_id.group(0))
-                    client = services.client_manager().get_first_client()
-                    interaction_manager = services.get_instance_manager(sims4.resources.Types.INTERACTION)
-                    interaction = interaction_manager.get(int(action))
-
-                    datapath = sc_Vars.config_data_location
-                    filename = datapath + r"\Data\{}.dat".format("enabled")
-                    actions = get_filters("enabled")
-                    new_list = []
-                    for i, action in enumerate(actions):
-                        if action not in str(interaction.__name__).lower() and action not in str(interaction.guid64):
-                            new_list.append(action)
-                    new_list.append(str(interaction.__name__).lower())
-
-                    with open(filename, "w") as file:
-                        for i, m in enumerate(new_list, 1):
-                            file.write(m + ['|', '\n'][i % 10 == 0])
-
-            except BaseException as e:
-                error_trap(e)
-
         if "Time" in option:
             inputbox("Game Speed",
                      "Default is 1. 10 would be 10 times faster. Recommend not using anything above 1000.",
@@ -1380,6 +1501,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def routine_sims(self, timeline):
         self.sc_bulletin.show_routine_staff(camera.focus_on_object)
 
+    def indexed_sims(self, timeline):
+        self.sc_bulletin.show_indexed_sims(camera.focus_on_object)
+
     def get_info(self, timeline):
         try:
             output = ""
@@ -1393,10 +1517,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
             if self.target.is_sim:
                 info_string = get_sim_info(self.target)
-                message_text = info_string
+                message_text = info_string.replace("[", font_text).replace("]", end_font_text)
             else:
                 info_string = get_object_info(self.target)
-            message_text = info_string.replace("[", font_text).replace("]", end_font_text)
+                message_text = info_string.replace("[", font_text).replace("]", end_font_text)
 
             urgency = UiDialogNotification.UiDialogNotificationUrgency.DEFAULT
             information_level = UiDialogNotification.UiDialogNotificationLevel.PLAYER
@@ -1416,11 +1540,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
             datapath = sc_Vars.config_data_location
             filename = datapath + r"\{}.log".format("object_info")
-            if os.path.exists(filename):
-                append_write = 'w'  # append if already exists
-            else:
-                append_write = 'w'  # make a new file if not
-            file = open(filename, append_write)
+            file = open(filename, 'w')
             file.write("{}\n{}\n\nINFO:\n{}".format(self.target.__class__.__name__, info_string, output))
             file.close()
 

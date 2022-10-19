@@ -1,6 +1,7 @@
 import services
 from clock import ClockSpeedMode
 
+from scripts_core.sc_goto_camera import update_camera
 from scripts_core.sc_jobs import pause_routine
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
@@ -15,6 +16,8 @@ def sc_zone_update(zone):
                 if not pause_routine(sc_Vars.update_speed):
                     ScriptCoreMain.init(zone)
                     ScriptCoreMain.init_routine(zone)
+                if sc_Vars.directional_controls:
+                    update_camera(services.get_active_sim())
         else:
             sc_Vars._running = False
             sc_Vars._config_loaded = False

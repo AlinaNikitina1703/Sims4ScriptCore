@@ -1,4 +1,5 @@
 from sims.sim_info import SimInfo
+from sims.sim_info_name_data import SimInfoNameData
 
 
 class sc_RoutineInfo:

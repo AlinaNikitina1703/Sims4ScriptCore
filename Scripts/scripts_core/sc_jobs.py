@@ -29,6 +29,7 @@ from objects.object_enums import ResetReason
 from server.pick_info import PickType
 from server_commands.argument_helpers import get_tunable_instance
 from server_commands.sim_commands import _build_terrain_interaction_target_and_context, CommandTuning
+from sims.aging.aging_tuning import AgingTuning
 from sims.outfits.outfit_enums import OutfitCategory
 from sims.sim import Sim
 from sims.sim_info_lod import SimInfoLODLevel
@@ -57,7 +58,6 @@ except:
     pass
 
 
-
 def get_skill_level(skill_id, sim) -> int:
     try:
         skill = services.statistic_manager().get(skill_id)
@@ -71,6 +71,7 @@ def get_skill_level(skill_id, sim) -> int:
     except BaseException as e:
         error_trap(e)
 
+
 def remove_annoying_buffs(sim_info):
     sim = init_sim(sim_info)
     remove_sim_buff(212330, sim_info)
@@ -82,16 +83,21 @@ def remove_annoying_buffs(sim_info):
     remove_sim_buff(28380, sim_info)
     remove_sim_buff(156116, sim_info)
     remove_sim_buff(237919, sim_info)
+    remove_sim_buff(180207, sim_info)
+    remove_sim_buff(185937, sim_info)
     unassign_role(24315, sim_info)
     if is_sim_in_group(sim):
         assign_role(122318, sim_info)
+
 
 def get_current_temperature():
     from weather.weather_enums import WeatherEffectType, Temperature
     weather_service = services.weather_service()
     if weather_service is not None:
-        return Temperature(weather_service.get_weather_element_value(WeatherEffectType.TEMPERATURE, default=Temperature.WARM))
+        return Temperature(
+            weather_service.get_weather_element_value(WeatherEffectType.TEMPERATURE, default=Temperature.WARM))
     return Temperature.WARM
+
 
 def assign_situation(potential_key: int, sim_info):
     sim = init_sim(sim_info)
@@ -102,10 +108,12 @@ def assign_situation(potential_key: int, sim_info):
         instance_manager = services.get_instance_manager(Types.SERVICE_NPC)
         situation_manager = services.get_zone_situation_manager()
         if instance_manager is None:
-            message_box(sim_info, None, "Assign Job", "instance_manager tuning error for {}!".format(sim_info.first_name), "ORANGE")
+            message_box(sim_info, None, "Assign Job",
+                        "instance_manager tuning error for {}!".format(sim_info.first_name), "ORANGE")
             return
         if situation_manager is None:
-            message_box(sim_info, None, "Assign Job", "situation_manager tuning error for {}!".format(sim_info.first_name), "ORANGE")
+            message_box(sim_info, None, "Assign Job",
+                        "situation_manager tuning error for {}!".format(sim_info.first_name), "ORANGE")
             return
         key = resources.get_resource_key(potential_key, Types.SITUATION_JOB)
         if key is None:
@@ -113,21 +121,25 @@ def assign_situation(potential_key: int, sim_info):
             return
         job_type = situation_manager.get(key)
         if job_type is None:
-            message_box(sim_info, None, "Assign Job", "job_type tuning error for {}!".format(sim_info.first_name), "ORANGE")
+            message_box(sim_info, None, "Assign Job", "job_type tuning error for {}!".format(sim_info.first_name),
+                        "ORANGE")
             return
         job_list = SituationGuestList(invite_only=True)
         if job_list is None:
-            message_box(sim_info, None, "Assign Job", "job_list tuning error for {}!".format(sim_info.first_name), "ORANGE")
+            message_box(sim_info, None, "Assign Job", "job_list tuning error for {}!".format(sim_info.first_name),
+                        "ORANGE")
             return
         sit_info = SituationGuestInfo(sim.id, job_type.default_job(), RequestSpawningOption.DONT_CARE,
                                       BouncerRequestPriority.EVENT_VIP, reservation=True)
         if sit_info is None:
-            message_box(sim_info, None, "Assign Job", "sit_info tuning error for {}!".format(sim_info.first_name), "ORANGE")
+            message_box(sim_info, None, "Assign Job", "sit_info tuning error for {}!".format(sim_info.first_name),
+                        "ORANGE")
             return
         job_list.add_guest_info(sit_info)
         situation_manager.create_situation(job_type, job_list, user_facing=False)
     except BaseException as e:
         error_trap(e)
+
 
 def set_proper_sim_outfit(sim, is_player=False, use_career=False):
     t = None
@@ -137,7 +149,8 @@ def set_proper_sim_outfit(sim, is_player=False, use_career=False):
     if check_actions(sim, "wicked") or check_actions(sim, "toilet") or check_actions(sim, "basketball") or \
             check_actions(sim, "workout"):
         return
-    if sim.sim_info._current_outfit[0] == OutfitCategory.BATHING or sim.sim_info._current_outfit[0] == OutfitCategory.SWIMWEAR:
+    if sim.sim_info._current_outfit[0] == OutfitCategory.BATHING or sim.sim_info._current_outfit[
+        0] == OutfitCategory.SWIMWEAR:
         return
 
     if not is_player:
@@ -169,6 +182,7 @@ def set_proper_sim_outfit(sim, is_player=False, use_career=False):
     if sim.sim_info.has_outfit(picked_outfit) and sim.sim_info._current_outfit != picked_outfit:
         sim.sim_info._current_outfit = picked_outfit
 
+
 def max_sims(sim_info, sim_info_list):
     if sim_info.routine_info.max_staff == -1:
         return False
@@ -177,10 +191,12 @@ def max_sims(sim_info, sim_info_list):
         return True
     return False
 
+
 def get_max_sims(sim_info):
     number_of_sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if
                       sim.sim_info.routine_info.title == sim_info.routine_info.title and sim.sim_info.routine]
     return len(number_of_sims)
+
 
 def remove_career_from_sim(career_name: str, sim_info):
     try:
@@ -196,6 +212,7 @@ def remove_career_from_sim(career_name: str, sim_info):
     except BaseException as e:
         error_trap(e)
 
+
 def remove_all_careers(sim_info, filter=None):
     try:
         career_manager = services.get_instance_manager(sims4.resources.Types.CAREER)
@@ -208,6 +225,7 @@ def remove_all_careers(sim_info, filter=None):
                 remove_career_from_sim(type.__name__, sim_info)
     except BaseException as e:
         error_trap(e)
+
 
 def get_career_name_from_string(name: str, not_name=None):
     try:
@@ -222,6 +240,7 @@ def get_career_name_from_string(name: str, not_name=None):
     except BaseException as e:
         error_trap(e)
 
+
 def get_trait_name_from_string(name: str, not_name=None):
     try:
         trait_manager = services.get_instance_manager(sims4.resources.Types.TRAIT)
@@ -235,6 +254,7 @@ def get_trait_name_from_string(name: str, not_name=None):
     except BaseException as e:
         error_trap(e)
 
+
 def add_trait(potential_key: int, sim_info):
     try:
         instance_manager = services.get_instance_manager(Types.TRAIT)
@@ -244,16 +264,19 @@ def add_trait(potential_key: int, sim_info):
     except BaseException as e:
         error_trap(e)
 
+
 def add_trait_by_name(name: str, sim_info):
     try:
         trait_manager = services.get_instance_manager(sims4.resources.Types.TRAIT)
-        traits = [trait for trait in trait_manager.types.values() if not sim_info.has_trait(trait) and name in str(trait)]
+        traits = [trait for trait in trait_manager.types.values() if
+                  not sim_info.has_trait(trait) and name in str(trait)]
         if not traits:
             return
         for trait in traits:
             sim_info.add_trait(trait)
     except BaseException as e:
         error_trap(e)
+
 
 def remove_trait(potential_key: int, sim_info):
     try:
@@ -263,6 +286,7 @@ def remove_trait(potential_key: int, sim_info):
             sim_info.remove_trait(key)
     except BaseException as e:
         error_trap(e)
+
 
 def add_career_to_sim(career_name: str, sim_info):
     try:
@@ -280,10 +304,11 @@ def add_career_to_sim(career_name: str, sim_info):
     except BaseException as e:
         error_trap(e)
 
+
 def update_lights(all_on=False, height_shift=2.0):
     try:
         lights = [obj for obj in services.object_manager().valid_objects() if obj.has_component(LIGHTING_COMPONENT) and
-            hasattr(obj, "zone_id") and hasattr(obj, "position")]
+                  hasattr(obj, "zone_id") and hasattr(obj, "position")]
         for obj in lights:
             if obj:
                 if obj.ceiling_placement:
@@ -300,12 +325,14 @@ def update_lights(all_on=False, height_shift=2.0):
     except:
         pass
 
+
 def use_uniform(sim, slot=0):
     robot_traits = sim.trait_tracker.get_traits_of_type(TraitType.ROBOT)
     if not robot_traits:
         picked_outfit = (OutfitCategory.CAREER, slot)
         if sim.sim_info.has_outfit(picked_outfit):
             sim.sim_info._current_outfit = picked_outfit
+
 
 def update_interaction_tuning(id: int, entry: str, value):
     tuning_manager = services.get_instance_manager(Types.INTERACTION)
@@ -317,6 +344,7 @@ def update_interaction_tuning(id: int, entry: str, value):
         return True
     else:
         return False
+
 
 def get_filters(filename):
     filters = []
@@ -338,6 +366,7 @@ def get_filters(filename):
         return None
     return filters
 
+
 def action_unclogger(sim, filters=None):
     if not filters:
         return
@@ -355,7 +384,7 @@ def action_unclogger(sim, filters=None):
         elif filters:
             if [f for f in filters if f in action or f in str(action_id)] and \
                     now - interaction.interaction_timeout > date_and_time.create_time_span(
-                    minutes=sc_Vars.interaction_minutes_run):
+                minutes=sc_Vars.interaction_minutes_run):
                 if sc_Vars.DEBUG:
                     debugger("Sim: {} - Timeout: {}".format(sim.first_name, action), 2, True)
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
@@ -364,6 +393,7 @@ def action_unclogger(sim, filters=None):
             if sc_Vars.DEBUG:
                 debugger("Sim: {} - Timeout: {}".format(sim.first_name, action))
             interaction.cancel(FinishingType.KILLED, 'Filtered')
+
 
 def get_action_timestamp(sim, action_id):
     try:
@@ -381,6 +411,7 @@ def get_action_timestamp(sim, action_id):
         return None
     except BaseException as e:
         error_trap(e)
+
 
 def action_timeout(sim, action_id, mins=3):
     try:
@@ -406,6 +437,7 @@ def action_timeout(sim, action_id, mins=3):
     except BaseException as e:
         error_trap(e)
 
+
 def remove_object_from_list(target, object_list):
     try:
         make_clean(target)
@@ -416,6 +448,7 @@ def remove_object_from_list(target, object_list):
         return new_list
     except BaseException as e:
         error_trap(e)
+
 
 def add_to_inventory(sim, obj):
     try:
@@ -438,6 +471,7 @@ def add_to_inventory(sim, obj):
                 message_box(sim, add_obj, "Sim Inventory", "Item added to household inventory!", "GREEN")
     except BaseException as e:
         error_trap(e)
+
 
 def add_to_inventory_by_id(sim, obj_id, place_object=False):
     try:
@@ -466,6 +500,7 @@ def add_to_inventory_by_id(sim, obj_id, place_object=False):
     except BaseException as e:
         error_trap(e)
 
+
 def is_in_sim_inventory(sim, id):
     obj = None
     count = 0
@@ -478,6 +513,7 @@ def is_in_sim_inventory(sim, id):
             return True
     return False
 
+
 def get_dust_action_and_vacuum(sim):
     if is_in_sim_inventory(sim, "vacuumcleaner"):
         return 257556
@@ -489,6 +525,7 @@ def get_dust_action_and_vacuum(sim):
                     add_to_inventory(sim, vacuum)
                 return 257556
     return 13176
+
 
 def create_dust():
     dust = objects.system.create_object(262732)
@@ -507,7 +544,7 @@ def create_dust():
                               lot.position.z + z)
         orientation = Quaternion.ZERO()
         orientation = Quaternion(orientation.x, orientation.y + random.uniform(-1.0, 1.0),
-                                            orientation.z, orientation.w)
+                                 orientation.z, orientation.w)
 
         routing_surface = routing.SurfaceIdentifier(zone_id, level, routing.SurfaceType.SURFACETYPE_WORLD)
         dust.location = Location(Transform(translation, orientation), routing_surface)
@@ -524,9 +561,11 @@ def create_dust():
         return dust
     return None
 
+
 def make_dirty(obj):
     if "sink" not in obj.__class__.__name__.lower():
-        if [test for test in services.object_manager().get_all() if distance_to(test, obj) <= 0.15 and "sink" in test.__class__.__name__.lower()]:
+        if [test for test in services.object_manager().get_all() if
+            distance_to(test, obj) <= 0.15 and "sink" in test.__class__.__name__.lower()]:
             return
     if "hospitalexambed" in obj.__class__.__name__.lower():
         for commodity in obj.commodity_tracker:
@@ -537,12 +576,14 @@ def make_dirty(obj):
             if "commodity_dirtiness" in str(commodity).lower():
                 commodity.set_value(-100)
 
+
 def make_clean(obj):
     for commodity in obj.commodity_tracker:
         if "exambed_dirtiness" in str(commodity).lower():
             commodity.set_value(0)
         if "commodity_dirtiness" in str(commodity).lower():
             commodity.set_value(100)
+
 
 def object_is_dirty(obj):
     try:
@@ -576,18 +617,23 @@ def object_is_dirty(obj):
     except BaseException as e:
         error_trap(e)
 
+
 def find_all_objects_by_id(target,
-                         id,
-                         level=sc_Vars.MIN_LEVEL,
-                         dist_limit=sc_Vars.MAX_DISTANCE,
-                         dirty=False):
+                           id,
+                           level=sc_Vars.MIN_LEVEL,
+                           dist_limit=sc_Vars.MAX_DISTANCE,
+                           dirty=False):
     try:
         if hasattr(id, "isnumeric)"):
             if not id.isnumeric():
                 return None
         object_list = [obj for obj in services.object_manager().get_all()
-            if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(obj)
-            or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and obj.definition.id == int(id)]
+                       if not obj.is_outside and distance_to(target,
+                                                             obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(
+                obj)
+                       or not obj.is_outside and distance_to(target,
+                                                             obj) < dist_limit and obj.level >= level and obj.definition.id == int(
+                id)]
 
         if len(object_list):
             object_list.sort(key=lambda obj: distance_to_by_level(obj, target))
@@ -596,34 +642,56 @@ def find_all_objects_by_id(target,
     except BaseException as e:
         error_trap(e)
 
+
 def find_all_objects_by_title(target,
-                         title,
-                         level=sc_Vars.MIN_LEVEL,
-                         dist_limit=sc_Vars.MAX_DISTANCE,
-                         dirty=False,
-                         outside=False):
+                              title,
+                              level=sc_Vars.MIN_LEVEL,
+                              dist_limit=sc_Vars.MAX_DISTANCE,
+                              dirty=False,
+                              outside=False):
     try:
         value = []
         if title != "":
             value = title.split("|")
         if len(value) == 0 and not outside:
             object_list = [obj for obj in services.object_manager().get_all()
-                if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(obj)
-                or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
-                or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj.definition.id)]
+                           if not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(
+                    obj)
+                           or not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and title in str(
+                    obj).lower()
+                           or not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and title in str(
+                    obj.definition.id)]
         elif len(value) == 0 and outside:
             object_list = [obj for obj in services.object_manager().get_all()
-                if distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(obj)
-                or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
-                or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj.definition.id)]
+                           if
+                           distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(
+                               obj)
+                           or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
+                           or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(
+                               obj.definition.id)]
         elif outside:
             object_list = [obj for obj in services.object_manager().get_all()
-                if distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(obj)
-                or distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
+                           if
+                           distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(
+                               obj)
+                           or distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if
+                                                                                                v in str(obj).lower()]]
         else:
             object_list = [obj for obj in services.object_manager().get_all()
-                if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(obj)
-                or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
+                           if not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and dirty and object_is_dirty(
+                    obj)
+                           or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v
+                                                                                                                       for
+                                                                                                                       v
+                                                                                                                       in
+                                                                                                                       value
+                                                                                                                       if
+                                                                                                                       v in str(
+                                                                                                                           obj).lower()]]
 
         if len(object_list):
             object_list.sort(key=lambda obj: distance_to_by_level(obj, target))
@@ -631,6 +699,7 @@ def find_all_objects_by_title(target,
         return None
     except BaseException as e:
         error_trap(e)
+
 
 def get_awake_hours(sim):
     try:
@@ -645,6 +714,7 @@ def get_awake_hours(sim):
         error_trap(e)
         return True
 
+
 def set_all_motives_by_sim(sim, value=100, motive_name=None):
     all_motives = [
         'motive_fun', 'motive_social', 'motive_hygiene', 'motive_hunger', 'motive_energy', 'motive_bladder']
@@ -658,6 +728,7 @@ def set_all_motives_by_sim(sim, value=100, motive_name=None):
         cur_stat = get_tunable_instance((sims4.resources.Types.STATISTIC), motive, exact_match=True)
         tracker = sim.get_tracker(cur_stat)
         tracker.set_value(cur_stat, value)
+
 
 def assign_role_old(potential_key: int, sim_info):
     sim = init_sim(sim_info)
@@ -674,6 +745,7 @@ def assign_role_old(potential_key: int, sim_info):
         clear_jobs(sim_info)
         pass
 
+
 def assign_role(potential_key: int, sim_info):
     sim = init_sim(sim_info)
     if sim:
@@ -682,10 +754,11 @@ def assign_role(potential_key: int, sim_info):
         if new_role:
             sim.add_role(new_role)
 
+
 def function_options(option, class_name, function_name, suffix="_routine", custom_name="custom"):
+    function = function_name.replace(" ", "_").replace("-", "_")
+    function = function.lower() + suffix
     try:
-        function = function_name.replace(" ", "_").replace("-", "_")
-        function = function.lower() + suffix
         if not class_name:
             class_name = sys.modules[__name__]
         if not hasattr(class_name, function):
@@ -694,8 +767,10 @@ def function_options(option, class_name, function_name, suffix="_routine", custo
         result = method(option)
         return result
     except BaseException as e:
+        debugger(str(function))
         error_trap(e)
-        
+
+
 def remove_sim(sim):
     client = services.client_manager().get_first_client()
     clear_sim_instance(sim.sim_info)
@@ -714,6 +789,7 @@ def remove_sim(sim):
                               source=remove_sim,
                               cause='Destroying sim in travel liability')
 
+
 def get_work_hours(start, finish):
     try:
         if sc_Vars.DISABLE_ROUTINE:
@@ -727,7 +803,8 @@ def get_work_hours(start, finish):
     except BaseException as e:
         error_trap(e)
         return True
-        
+
+
 def add_sim_buff(buff_id: int, sim_info):
     try:
         buff_manager = services.get_instance_manager(Types.BUFF)
@@ -740,7 +817,8 @@ def add_sim_buff(buff_id: int, sim_info):
             sim_info.debug_add_buff_by_type(type)
     except BaseException as e:
         error_trap(e)
-        
+
+
 def clear_all_buffs(sim_info):
     try:
         buff_manager = services.get_instance_manager(Types.BUFF)
@@ -749,42 +827,54 @@ def clear_all_buffs(sim_info):
     except BaseException as e:
         error_trap(e)
 
+
 def get_room(obj):
     if hasattr(obj, "zone_id") and hasattr(obj, "position") and hasattr(obj, "level"):
         return build_buy.get_room_id(obj.zone_id, obj.position, obj.level)
     else:
         return -1
 
+
 def compare_room(obj1, obj2):
     if get_room(obj1) == get_room(obj2):
         return True
     return False
 
+
 def go_here_routine(sim, location, level=0, offset=1.5, remove=False):
     count = 25
     success = None
     pos = location
-    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level, routing.SurfaceType.SURFACETYPE_WORLD)
+    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level,
+                                                routing.SurfaceType.SURFACETYPE_WORLD)
     try:
-        target, context = _build_terrain_interaction_target_and_context(sim, pos, routing_surface, PickType.PICK_TERRAIN, objects.terrain.TerrainPoint)
+        target, context = _build_terrain_interaction_target_and_context(sim, pos, routing_surface,
+                                                                        PickType.PICK_TERRAIN,
+                                                                        objects.terrain.TerrainPoint)
     except:
         if sc_Vars.DEBUG:
             debugger("Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
         return False
     random.seed(int(time.process_time()) + int(sim.sim_id))
     while not success and count > 0:
-        pos = Vector3(location.x + random.uniform(-offset, offset), location.y, location.z + random.uniform(-offset, offset))
-        routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level, routing.SurfaceType.SURFACETYPE_WORLD)
+        pos = Vector3(location.x + random.uniform(-offset, offset), location.y,
+                      location.z + random.uniform(-offset, offset))
+        routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level,
+                                                    routing.SurfaceType.SURFACETYPE_WORLD)
         try:
-            target, context = _build_terrain_interaction_target_and_context(sim, pos, routing_surface, PickType.PICK_TERRAIN, objects.terrain.TerrainPoint)
+            target, context = _build_terrain_interaction_target_and_context(sim, pos, routing_surface,
+                                                                            PickType.PICK_TERRAIN,
+                                                                            objects.terrain.TerrainPoint)
         except:
             if sc_Vars.DEBUG:
-                debugger("Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
+                debugger(
+                    "Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
             return False
 
         success = sim.push_super_affordance(CommandTuning.TERRAIN_GOHERE_AFFORDANCE, target, context)
         if sc_Vars.DEBUG and not success:
-            debugger("Sim: {} - Go Here Failed! Count: {} Pos: [{} {} {}]".format(sim.first_name, count, pos.x, pos.y, pos.z))
+            debugger("Sim: {} - Go Here Failed! Count: {} Pos: [{} {} {}]".format(sim.first_name, count, pos.x, pos.y,
+                                                                                  pos.z))
         count = count - 1
         if count < 1:
             if remove:
@@ -796,6 +886,33 @@ def go_here_routine(sim, location, level=0, offset=1.5, remove=False):
         debugger("Sim: {} - Go Here Succeeded! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
     return True
 
+
+def go_here(sim, location, level=0):
+    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level,
+                                                routing.SurfaceType.SURFACETYPE_WORLD)
+    try:
+        target, context = _build_terrain_interaction_target_and_context(sim, location, routing_surface,
+                                                                        PickType.PICK_TERRAIN,
+                                                                        objects.terrain.TerrainPoint)
+    except:
+        if sc_Vars.DEBUG:
+            debugger(
+                "Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, location.x, location.y,
+                                                                             location.z))
+        return False
+
+    success = sim.push_super_affordance(CommandTuning.TERRAIN_GOHERE_AFFORDANCE, target, context)
+    if not success:
+        if sc_Vars.DEBUG:
+            debugger(
+                "Sim: {} - Go Here Failed! Pos: [{} {} {}]".format(sim.first_name, location.x, location.y, location.z))
+        return False
+    if sc_Vars.DEBUG:
+        debugger(
+            "Sim: {} - Go Here Succeeded! Pos: [{} {} {}]".format(sim.first_name, location.x, location.y, location.z))
+    return True
+
+
 def push_sim_out(sim, dist=10):
     room_sim_is_in = get_room(sim)
     object_list = [obj for obj in services.object_manager().get_all() if get_room(obj) != room_sim_is_in and
@@ -804,12 +921,14 @@ def push_sim_out(sim, dist=10):
     obj = object_list[0]
     go_here_routine(sim, obj.position)
 
+
 def get_spawn_point_by_distance(point, dist):
     zone = services.current_zone()
     for spawn_point in zone.spawn_points_gen():
         if distance_to_pos(point, spawn_point._center) < dist:
             return spawn_point
-            
+
+
 def make_sim_leave(sim):
     try:
         center_pos = services.current_zone().lot.position
@@ -838,10 +957,12 @@ def make_sim_leave(sim):
 
     except BaseException as e:
         error_trap(e)
-            
+
+
 def assign_title(sim_info, title):
     sim_info.sim_headline = LocalizationHelperTuning.get_raw_text(title)
-    
+
+
 def remove_sim_buff(buff_id: int, sim_info):
     try:
         buff_manager = services.get_instance_manager(Types.BUFF)
@@ -849,7 +970,8 @@ def remove_sim_buff(buff_id: int, sim_info):
             sim_info.remove_buff_by_type(buff_manager.get(buff_id))
     except BaseException as e:
         error_trap(e)
-        
+
+
 def clear_jobs(sim_info):
     sim = init_sim(sim_info)
     if sim:
@@ -860,10 +982,12 @@ def clear_jobs(sim_info):
             role_tracker.reset()
             for situation in situation_manager.get_situations_sim_is_in(sim):
                 job_title = "{}".format(situation.__class__.__name__)
-                if (job_title.find('holiday') == -1) and (job_title.find('club') == -1) and (job_title.find('butler') == -1):
+                if (job_title.find('holiday') == -1) and (job_title.find('club') == -1) and (
+                        job_title.find('butler') == -1):
                     situation_manager.destroy_situation_by_id(situation.id)
         except BaseException as e:
             error_trap(e)
+
 
 def get_career_level(sim_info):
     try:
@@ -875,6 +999,7 @@ def get_career_level(sim_info):
         return level
     except BaseException as e:
         error_trap(e)
+
 
 def set_autonomy(sim_info, routine=4):
     sim_info.autonomy = AutonomyState(routine)
@@ -893,6 +1018,7 @@ def send_sim_home(sim):
     except BaseException as e:
         error_trap(e)
 
+
 def keep_sims_outside():
     venue = get_venue()
     if "residential" in venue or "rentable" in venue or "clinic" in venue:
@@ -900,6 +1026,7 @@ def keep_sims_outside():
                 services.active_household() and not sim.sim_info.routine and not sim.sim_info.is_selectable]
         for sim in sims:
             keep_sim_outside(sim)
+
 
 def keep_sim_outside(sim):
     venue = get_venue()
@@ -911,6 +1038,7 @@ def keep_sim_outside(sim):
             if not is_outside:
                 make_sim_leave(sim)
 
+
 def give_sim_access(sim):
     doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
     for door in doors:
@@ -921,8 +1049,10 @@ def give_sim_access(sim):
 
 
 def assign_role_title(sim):
-    title_filter = ["lt:", "turbodriver:", "wickedwhims", "autonomy", "petworld", " walker", " walk", "rolestates", "rolestate", "basictrait", "island",
-                    "situations", "state", "hospital", "generic", "background", "open streets", "openstreets", "openstreet",
+    title_filter = ["lt:", "turbodriver:", "wickedwhims", "autonomy", "petworld", " walker", " walk", "rolestates",
+                    "rolestate", "basictrait", "island",
+                    "situations", "state", "hospital", "generic", "background", "open streets", "openstreets",
+                    "openstreet",
                     "master", "fanstan",
                     "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",
                     "npc", "situation", "dj", "packb"]
@@ -937,7 +1067,7 @@ def assign_role_title(sim):
             return
         role_name = role_name.replace("_", " ").lower()
         role_name = role_name.replace('"', "")
-        #role_name = " ".join(dict.fromkeys(role_name.split()))
+        # role_name = " ".join(dict.fromkeys(role_name.split()))
         for title in title_filter:
             role_name = role_name.replace(title, "")
             role_name = role_name.replace("  ", " ").lower()
@@ -945,6 +1075,7 @@ def assign_role_title(sim):
         assign_title(sim.sim_info, role_name.strip().title())
     else:
         assign_title(sim.sim_info, "")
+
 
 def assign_routine(sim_info, title, clear_state=True):
     roles = [role for role in sc_Vars.roles if title in role.title]
@@ -961,6 +1092,7 @@ def assign_routine(sim_info, title, clear_state=True):
         assign_title(sim_info, sim_info.routine_info.title.title())
         assign_role(sim_info.routine_info.role, sim_info)
 
+
 def unassign_role_old(potential_key: int, sim_info):
     sim = init_sim(sim_info)
     if services.current_zone().is_zone_shutting_down:
@@ -975,12 +1107,14 @@ def unassign_role_old(potential_key: int, sim_info):
     except:
         pass
 
+
 def unassign_role(potential_key: int, sim_info):
     sim = init_sim(sim_info)
     if sim:
         new_role = services.role_state_manager().get(potential_key)
         if new_role:
             sim.remove_role(new_role)
+
 
 def clear_leaving(sim):
     active_roles = sim.autonomy_component.active_roles()
@@ -989,9 +1123,14 @@ def clear_leaving(sim):
             role_name = role_id.__class__.__name__
             if "leave" in role_name:
                 clear_jobs(sim.sim_info)
-        clear_sim_instance(sim.sim_info, "leave")
+                clear_sim_instance(sim.sim_info, "leave|gohere")
+                return
+        if check_actions(sim, "leave"):
+            clear_sim_instance(sim.sim_info, "leave|gohere")
+
     except BaseException as e:
         error_trap(e)
+
 
 def pause_routine(timeout):
     now = time.time()
@@ -1002,6 +1141,7 @@ def pause_routine(timeout):
     sc_Vars.timestamp = now
     return False
 
+
 def get_sim_travel_group(sim_info, is_target):
     travel_group = sim_info.travel_group
     if travel_group is None:
@@ -1011,6 +1151,7 @@ def get_sim_travel_group(sim_info, is_target):
         return travel_group
     return None
 
+
 def get_number_of_sims(all_sims=False):
     if not all_sims:
         sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not has_role(sim, "leave")]
@@ -1018,10 +1159,28 @@ def get_number_of_sims(all_sims=False):
         sims = [sim for sim in services.sim_info_manager().instanced_sims_gen()]
     return len(sims)
 
+
+def get_number_of_role_sims():
+    sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if
+            not has_role(sim, "leave") and has_role(sim)]
+    return len(sims)
+
+
+def get_number_of_routine_sims():
+    sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
+    return len(sims)
+
+
+def get_number_of_non_routine_sims():
+    sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not sim.sim_info.routine]
+    return len(sims)
+
+
 def get_venue():
     active_venue = services.venue_service().active_venue
     venue_name = clean_string(str(active_venue).lower())
     return venue_name
+
 
 def check_actions(sim, action):
     for interaction in sim.get_all_running_and_queued_interactions():
@@ -1033,13 +1192,16 @@ def check_actions(sim, action):
                 return True
     return False
 
+
 def check_action_list(sim, action_list):
-    if [action for action in action_list if [interaction for interaction in sim.get_all_running_and_queued_interactions()
-            if action in str(interaction.guid64) or action in str(interaction).lower()]]:
+    if [action for action in action_list if
+        [interaction for interaction in sim.get_all_running_and_queued_interactions()
+         if action in str(interaction.guid64) or action in str(interaction).lower()]]:
         return True
     return False
 
-def set_all_motives(value = 100, motive_name=None):
+
+def set_all_motives(value=100, motive_name=None):
     all_motives = [
         'motive_fun', 'motive_social', 'motive_hygiene', 'motive_hunger', 'motive_energy', 'motive_bladder']
     all_sims = services.sim_info_manager().instanced_sims_gen()
@@ -1052,10 +1214,12 @@ def set_all_motives(value = 100, motive_name=None):
             else:
                 tracker.set_value(cur_stat, 100)
 
+
 def clear_all_actions():
     all_sims = services.sim_info_manager().instanced_sims_gen()
     for sim in all_sims:
         clear_sim_instance(sim.sim_info, "skate|sit|tv|computer|frontdesk|stereo|dance|sleep|nap", True)
+
 
 def reset_all_sims():
     for sim in services.sim_info_manager().instanced_sims_gen(allow_hidden_flags=(objects.ALL_HIDDEN_REASONS)):
@@ -1069,11 +1233,13 @@ def reset_all_sims():
         situation_manager.create_visit_situation(sim)
         sim.reset(ResetReason.NONE, None, 'Command')
 
+
 def advance_game_time(hours: int = 0, minutes: int = 0, seconds: int = 0, _connection=None):
     services.game_clock_service().advance_game_time(hours, minutes, seconds)
     services.game_clock_service()._sync_clock_and_broadcast_gameclock(True)
     set_all_motives()
     clear_all_actions()
+
 
 def advance_game_time_and_timeline(hours: int = 0, minutes: int = 0, seconds: int = 0):
     services.game_clock_service().advance_game_time(hours, minutes, seconds)
@@ -1081,6 +1247,7 @@ def advance_game_time_and_timeline(hours: int = 0, minutes: int = 0, seconds: in
     services.game_clock_service()._sync_clock_and_broadcast_gameclock(True)
     set_all_motives()
     reset_all_sims()
+
 
 def advance_game_time_complete(hours: int = 0, minutes: int = 0, seconds: int = 0):
     persistence_service = services.get_persistence_service()
@@ -1094,9 +1261,11 @@ def advance_game_time_complete(hours: int = 0, minutes: int = 0, seconds: int = 
     set_all_motives()
     reset_all_sims()
 
+
 def get_number_of_objects():
     objects = services.object_manager().get_all()
     return len(objects)
+
 
 def get_object_pos(obj):
     if obj is None:
@@ -1104,11 +1273,13 @@ def get_object_pos(obj):
     translation = obj.location.transform.translation
     return translation
 
+
 def get_object_rotate(obj):
     if obj is None:
         return
     orientation = obj.location.transform.orientation
     return orientation
+
 
 def reset_in_use_by(obj):
     translation = obj.location.transform.translation
@@ -1121,6 +1292,15 @@ def reset_in_use_by(obj):
                                          routing_surface)
 
     obj.destroy()
+
+
+def get_guid64(tunable):
+    try:
+        return getattr(tunable, 'guid64', 0)
+    except:
+        return 0
+        pass
+
 
 def get_sim_info(sim=None):
     try:
@@ -1160,6 +1340,8 @@ def get_sim_info(sim=None):
                 roleStateName = roleStateName + "({}) {}\n".format(roleState.guid64, roleState.__class__.__name__)
 
         for i, BuffList in enumerate(activeBuffs):
+            if not hasattr(BuffList, "guid64"):
+                setattr(BuffList, "guid64", 0)
             if i == 0:
                 buffStateName = "({}) {}\n".format(BuffList.guid64, BuffList.__class__.__name__)
             else:
@@ -1173,7 +1355,8 @@ def get_sim_info(sim=None):
                 trait_list = trait_list + '\n' + str(trait.__name__)
 
         for i, interaction in enumerate(getInteractions):
-            intQueue = intQueue + "({}/{}) {}\n".format(interaction.guid64, interaction.id, interaction.__class__.__name__)
+            intQueue = intQueue + "({}/{}) {}\n".format(get_guid64(interaction), interaction.id,
+                                                        interaction.__class__.__name__)
 
         sim_info.update_time_alive()
         time_alive = sim_info._time_alive.in_days()
@@ -1194,40 +1377,52 @@ def get_sim_info(sim=None):
             room = 0
             pass
 
+        selected_sims = [str(sim_info) for sim_info in client._selectable_sims._selectable_sim_infos]
+
         returnText = "[Name:] {} {}\n" \
                      "[ID:] {}\n" \
+                     "[Age:] {}\n" \
                      "[Active Household:] {}\n" \
-                     "[Client:] {}\n" \
+                     "[Active:] {}\n" \
                      "[Career:] {}\n" \
                      "[Role({}):] {}\n" \
                      "[Interactions:]\n{}\n" \
                      "[Mood:] {}\n[Age:] {} Days\n[Room:] {}\n[Level:] {}\n[Zone ID:] {}\n" \
                      "[Pos:] {}, {}, {}\n[Orient:] {}\n" \
+                     "[Selected Sims:] {}\n" \
+                     "[Tracker:] {}\n" \
                      "[Buffs:]\n{}\n" \
             .format(sim_info.first_name, sim_info.last_name, sim_info.sim_id,
-            client._household_id,
-            client._selectable_sims._selectable_sim_infos[0].first_name,
-            activeCareer,
-            len(sim.autonomy_component.active_roles()),
-            roleStateName,
-            intQueue,
-            mood.__name__, time_alive, room, sim.level, zone.id,
-            sim.position.x, sim.position.y, sim.position.z, get_object_rotate(sim), buffStateName)
+                    get_sim_age(sim_info),
+                    sim_info.household.home_zone_id,
+                    sim.is_simulating,
+                    activeCareer,
+                    len(sim.autonomy_component.active_roles()),
+                    roleStateName,
+                    intQueue,
+                    mood.__name__, time_alive, room, sim.level, zone.id,
+                    sim.position.x, sim.position.y, sim.position.z, get_object_rotate(sim),
+                    selected_sims,
+                    str(sim_info.tracker),
+                    buffStateName)
 
         return returnText
     except BaseException as e:
         error_trap(e)
+
 
 def get_tag_name(tag):
     if not isinstance(tag, Tag):
         tag = Tag(tag)
     return tag.name
 
+
 def set_exam_info(sim_info):
     if sim_info.is_instanced():
         exams = [exam for exam in sc_Vars.exam_list if exam.patient == sim_info.get_sim_instance()]
         if exams:
             sim_info.exam_info = exams[0]
+
 
 def get_career(sim_info):
     try:
@@ -1242,6 +1437,7 @@ def get_career(sim_info):
     except BaseException as e:
         error_trap(e)
 
+
 def get_career_id(career_name: str):
     try:
         career_manager = services.get_instance_manager(sims4.resources.Types.CAREER)
@@ -1252,6 +1448,7 @@ def get_career_id(career_name: str):
         return False
     except BaseException as e:
         error_trap(e)
+
 
 def get_career_name(sim_info, return_bool=True):
     try:
@@ -1271,6 +1468,7 @@ def get_career_name(sim_info, return_bool=True):
     except BaseException as e:
         error_trap(e)
 
+
 def has_role(sim, name=""):
     if not hasattr(sim, "autonomy_component"):
         return False
@@ -1283,6 +1481,7 @@ def has_role(sim, name=""):
     if [role for role in sim.autonomy_component.active_roles() if name in str(role).lower()]:
         return True
     return False
+
 
 def get_sim_role(sim) -> str:
     try:
@@ -1299,6 +1498,7 @@ def get_sim_role(sim) -> str:
         return "None"
     except BaseException as e:
         error_trap(e)
+
 
 def is_sim_in_group(sim):
     sim_info = None
@@ -1317,6 +1517,7 @@ def is_sim_in_group(sim):
     if has_role(sim, "club_gathering"):
         return True
     return False
+
 
 def clear_sim_instance(sim_info, filter=None, all_but_filter=False):
     try:
@@ -1367,6 +1568,7 @@ def clear_sim_instance(sim_info, filter=None, all_but_filter=False):
                 interaction.cancel(FinishingType.RESET, 'Stop')
     except BaseException as e:
         error_trap(e)
+
 
 def clear_sim_instance_old(sim_info, filter=None, all_but_filter=False):
     try:
@@ -1421,6 +1623,7 @@ def clear_sim_instance_old(sim_info, filter=None, all_but_filter=False):
     except BaseException as e:
         error_trap(e)
 
+
 def clear_queue_of_duplicates(sim):
     try:
         dupes = [action for action in sim.get_all_running_and_queued_interactions() if
@@ -1433,6 +1636,7 @@ def clear_queue_of_duplicates(sim):
     except BaseException as e:
         error_trap(e)
 
+
 def clear_sim_queue_of(sim_info, interaction_name):
     try:
         sim = init_sim(sim_info)
@@ -1444,19 +1648,23 @@ def clear_sim_queue_of(sim_info, interaction_name):
                     interaction.cancel(FinishingType.KILLED, 'Stop')
     except BaseException as e:
         error_trap(e)
-        
+
+
 def distance_to_pos(target, dest):
     return (target - dest).magnitude_2d()
 
+
 def distance_to_math(target, dest):
     return fabs(sqrt((target.x - dest.x) * (target.x - dest.x) +
-                    (target.y - dest.y) * (target.y - dest.y) +
-                    (target.z - dest.z) * (target.z - dest.z)))
+                     (target.y - dest.y) * (target.y - dest.y) +
+                     (target.z - dest.z) * (target.z - dest.z)))
+
 
 def distance_to(target, dest):
     if target is None or dest is None:
         return -1
     return (target.position - dest.position).magnitude()
+
 
 def distance_to_by_room(target, dest):
     if target is None or dest is None:
@@ -1471,6 +1679,7 @@ def distance_to_by_room(target, dest):
         return 1024
     return d
 
+
 def distance_from_spawn(target, spawn):
     if target is None or spawn is None:
         return -1
@@ -1480,6 +1689,7 @@ def distance_from_spawn(target, spawn):
             d = d + 1024
     return d
 
+
 def distance_to_by_level(target, dest):
     if target is None or dest is None:
         return -1
@@ -1488,7 +1698,9 @@ def distance_to_by_level(target, dest):
         d = d + 1024
     return d
 
+
 def clamp(n, smallest, largest): return max(smallest, min(n, largest))
+
 
 def get_object_info(target, long_version=False):
     zone_id = services.current_zone_id()
@@ -1515,11 +1727,14 @@ def get_object_info(target, long_version=False):
                     dirty = commodity.get_value()
     else:
         dirty = 100
-
-    if hasattr(target, "slot_hash"):
-        slot_hash = target.slot_hash
+    if hasattr(target, "footprint_polygon"):
+        object_width = target.footprint_polygon.radius()
     else:
-        slot_hash = None
+        object_width = 1.0
+    if hasattr(target, "slots_resource"):
+        slots_resource = None
+    else:
+        slots_resource = None
     if hasattr(target, "_opacity"):
         opacity = target._opacity
     else:
@@ -1536,19 +1751,20 @@ def get_object_info(target, long_version=False):
         filename = target.__file__
     else:
         filename = None
-    if hasattr(target, "_location"):
-        location_information = clean_string(str(target._location.parent))
+    if hasattr(target, "parent"):
+        location_information = str(target.parent)
+
+        if "[" in location_information:
+            value = location_information[location_information.find(":0x") + 3:location_information.rfind("[")]
+        else:
+            value = location_information[location_information.find(":0x") + 3:len(location_information)]
         try:
-            value = location_information.split("0x")
-            parent_title = value[0]
-            parent_id = int(value[1], 16)
+            parent_id = int(value, 16)
         except:
-            parent_title = None
-            parent_id = None
+            parent_id = 0
             pass
     else:
-        parent_title = None
-        parent_id = None
+        parent_id = 0
 
     try:
         target_object_tags = set(build_buy.get_object_all_tags(target.definition.id))
@@ -1570,6 +1786,7 @@ def get_object_info(target, long_version=False):
     info_string = "[Zone Info:] {}\n" \
                   "[Object ID:] {}\n" \
                   "[Object Definition ID:] {} ({})\n" \
+                  "[Object Footprint:] {}\n" \
                   "[Object Outside:] {}\n" \
                   "[Object In Use:] {}\n" \
                   "[Object Scale:] {}\n" \
@@ -1578,17 +1795,18 @@ def get_object_info(target, long_version=False):
                   "[Object Room ID:] {}\n" \
                   "[Object Level:] {}\n" \
                   "[Object Opacity:] {}\n" \
-                  "[Object Tags:] {}\n" \
-                  "[Object Location (Title):] {} [ID:] {}\n" \
-                  "[Object Slot Hash:] {}\n" \
+                  "[Object Location ID:] {}\n" \
                   "[Object POS:] {}, {}, {}\n" \
-                  "[Object ROT:] X:{} Y:{} Z:{} W:{}\n" \
+                  "[Object ROT:] {}, {}, {}, {}\n" \
                   "[Type:] {}\n" \
+                  "[Object Slots:] {}\n" \
+                  "[Object Tags:] {}\n" \
                   "[Commodities:]\n{}\n" \
         .format(zone_id,
                 target.id,
                 target.definition.id,
                 hex(target.definition.id),
+                object_width,
                 target.is_outside,
                 in_use,
                 scale,
@@ -1597,17 +1815,17 @@ def get_object_info(target, long_version=False):
                 obj_room_id,
                 target.level,
                 opacity,
-                clean_string(str(target_object_tags)),
-                parent_title, parent_id,
-                slot_hash,
-                target.location.transform.translation.x,
-                target.location.transform.translation.y,
-                target.location.transform.translation.z,
+                parent_id,
+                target.position.x,
+                target.position.y,
+                target.position.z,
                 target.location.transform.orientation.x,
                 target.location.transform.orientation.y,
                 target.location.transform.orientation.z,
                 target.location.transform.orientation.w,
                 object_class,
+                slots_resource,
+                clean_string(str(target_object_tags)),
                 commodity_list)
 
     if filename is not None:
@@ -1629,6 +1847,7 @@ def get_object_info(target, long_version=False):
                 info_string = info_string + "\n(" + str(att) + "): " + clean_string(str(getattr(result, att)))
 
     return info_string
+
 
 def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
     try:
@@ -1652,36 +1871,45 @@ def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
         return result
     except BaseException as e:
         error_trap(e)
+        if sim:
+            sim.reset(ResetReason.RESET_ON_ERROR, None, 'Interaction killed on error.')
 
 def push_super_affordance(sim, affordance, target=None,
                           interaction_context=InteractionContext.SOURCE_SCRIPT,
                           priority=Priority.High, run_priority=Priority.High,
                           insert_strategy=QueueInsertStrategy.FIRST, must_run_next=False):
+    try:
+        affordance_instance = affordance
+        if affordance_instance is None:
+            return False
+        else:
+            context = InteractionContext(sim, interaction_context, priority, run_priority=run_priority,
+                                         insert_strategy=insert_strategy, must_run_next=must_run_next)
+            if not context:
+                return False
 
-    affordance_instance = affordance
-    if affordance_instance is None:
-        return False
-    else:
-        context = InteractionContext(sim, interaction_context, priority, run_priority=run_priority,
-                                     insert_strategy=insert_strategy, must_run_next=must_run_next)
-
-        result = sim.push_super_affordance(affordance_instance, target, context, picked_object=target)
-        return result
+            result = sim.push_super_affordance(affordance_instance, target, context, picked_object=target)
+            return result
+    except BaseException as e:
+        error_trap(e)
 
 def _push_super_affordance(self, super_affordance, target, context, **kwargs):
-    if isinstance(super_affordance, str):
-        super_affordance = services.get_instance_manager(sims4.resources.Types.INTERACTION).get(super_affordance)
-        if not super_affordance:
+    try:
+        if isinstance(super_affordance, str):
+            super_affordance = services.get_instance_manager(sims4.resources.Types.INTERACTION).get(super_affordance)
+            if not super_affordance:
+                return False
+        aop = (interactions.aop.AffordanceObjectPair)(super_affordance, target, super_affordance, None, **kwargs)
+        if not aop:
             return False
-    aop = (interactions.aop.AffordanceObjectPair)(super_affordance, target, super_affordance, None, **kwargs)
-    res = aop.test_and_execute(context)
-    return res
-
+        res = aop.test_and_execute(context)
+        return res
+    except BaseException as e:
+        error_trap(e)
 
 def push_social_affordance(sim, social_super_affordance, mixer_affordance, target, interaction_context,
                            priority=Priority.High, run_priority=Priority.High,
                            insert_strategy=QueueInsertStrategy.FIRST, must_run_next=False):
-
     affordance_manager = services.affordance_manager()
     super_affordance_instance = affordance_manager.get(social_super_affordance)
     mixer_affordance_instance = affordance_manager.get(mixer_affordance)
@@ -1725,7 +1953,6 @@ def push_mixer_affordance(sim, affordance, target=None,
                           interaction_context=InteractionContext.SOURCE_SCRIPT,
                           priority=Priority.High, run_priority=Priority.High,
                           insert_strategy=QueueInsertStrategy.FIRST, must_run_next=False):
-
     affordance_manager = services.affordance_manager()
     affordance_instance = affordance_manager.get(affordance)
     if affordance_instance is None:
@@ -1747,6 +1974,7 @@ def push_mixer_affordance(sim, affordance, target=None,
             constraint_intersection = interaction_constraint.intersect(posture_constraint)
             if constraint_intersection.valid:
                 return aop.execute(context)
+
 
 def make_sim_selectable(sim_info):
     try:
@@ -1783,6 +2011,7 @@ def make_sim_unselectable(sim_info):
         client.remove_selectable_sim_by_id(sim_info.id)
         pass
 
+
 def get_all_careers(sim_info):
     try:
         careers = []
@@ -1793,6 +2022,7 @@ def get_all_careers(sim_info):
         return careers
     except BaseException as e:
         error_trap(e)
+
 
 def make_sim_at_work(sim_info):
     careers = get_all_careers(sim_info)
@@ -1815,6 +2045,7 @@ def make_sim_at_work(sim_info):
         except:
             pass
             return
+
 
 def start_career(sim_info):
     try:
@@ -1841,12 +2072,13 @@ def start_career(sim_info):
             career.resend_career_data()
             career.resend_at_work_info()
             services.get_event_manager().process_event((test_events.TestEvent.WorkdayStart), sim_info=(sim_info),
-              career=career)
+                                                       career=career)
 
     except BaseException as e:
         error_trap_console(e)
         pass
         return
+
 
 def end_career_session(sim_info):
     careers = get_all_careers(sim_info)
@@ -1870,6 +2102,7 @@ def end_career_session(sim_info):
             career.resend_career_data()
             career.resend_at_work_info()
 
+
 def remove_sim_from_rabbithole(sim_info, select=True):
     make_sim_unselectable(sim_info)
     rabbit_hole = services.get_rabbit_hole_service()
@@ -1878,6 +2111,7 @@ def remove_sim_from_rabbithole(sim_info, select=True):
         rabbit_hole.remove_sim_from_rabbit_hole(sim_info.sim_id, rid)
     if select:
         make_sim_selectable(sim_info)
+
 
 def activate_sim_icon(sim_info, select=True):
     rabbit_hole = services.get_rabbit_hole_service()
@@ -1896,6 +2130,7 @@ def activate_sim_icon(sim_info, select=True):
     if select:
         make_sim_selectable(sim_info)
 
+
 def end_career(sim_info, select=True):
     careers = get_all_careers(sim_info)
     for c in careers:
@@ -1908,15 +2143,24 @@ def end_career(sim_info, select=True):
     if select:
         make_sim_selectable(sim_info)
 
+
 def _instanced_sims_gen(self, allow_hidden_flags=0):
     return [sim_info.get_sim_instance(allow_hidden_flags=allow_hidden_flags) for sim_info in self._objects.values()
             if sim_info.get_sim_instance(allow_hidden_flags=allow_hidden_flags) is not None]
 
+
 def _travel_instanced_sims_gen(self, allow_hidden_flags=0):
     return [sim_info.get_sim_instance(allow_hidden_flags=allow_hidden_flags) for sim_info in self._sim_infos
-        if sim_info.is_instanced(allow_hidden_flags=allow_hidden_flags) is not None]
+            if sim_info.is_instanced(allow_hidden_flags=allow_hidden_flags) is not None]
+
+
+def get_sim_age(sim_info):
+    if sim_info.age_progress:
+        return sim_info.age_progress
+    return sim_info._time_alive
 
 
 Sim.push_super_affordance = _push_super_affordance
 SimInfoManager.instanced_sims_gen = _instanced_sims_gen
 TravelGroup.instanced_sims_gen = _instanced_sims_gen
+1

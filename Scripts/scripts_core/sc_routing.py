@@ -1,18 +1,19 @@
-import camera
-import objects
-import sims4
-
 import element_utils
+import objects
 import services
+import sims4
 from animation.animation_utils import flush_all_animations
 from autonomy.autonomy_modes_tuning import AutonomyModesTuning
 from balloon.tunable_balloon import TunableBalloon
 from interactions.interaction_finisher import FinishingType
 from interactions.utils import route_fail
-from interactions.utils.route_fail import RouteFailureTunables, ROUTE_FAILURE_OVERRIDE_MAP
+from interactions.utils.route_fail import RouteFailureTunables
 from interactions.utils.routing_constants import TransitionFailureReasons
+from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
+from sims4.math import Location, Transform
 
+from scripts_core.sc_jobs import distance_to_by_room
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
@@ -26,6 +27,7 @@ class NonRoutableObject:
         self.reason = reason
 
 non_routable_obj_list = []
+ROUTE_FAILURE_OVERRIDE_MAP = None
 
 def _route_failure(sim, interaction, failure_reason, failure_object_id):
     global ROUTE_FAILURE_OVERRIDE_MAP
@@ -70,54 +72,57 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
     non_routable_obj_list.append(NonRoutableObject(interaction.target, failure_reason))
     route_obj_list = []
     try:
-        action = interaction.__class__.__name__.lower()
-        for route in non_routable_obj_list:
-            route_obj_list.append(str(route.object))
-        route_obj_list = "\n".join(route_obj_list)
-        if failure_reason == TransitionFailureReasons.PATH_PLAN_FAILED or failure_reason == TransitionFailureReasons.RESERVATION:
-            interaction.sim.sim_info.use_object_index += 1
-        if sc_Vars.DEBUG:
-            now = services.time_service().sim_now
-            if hasattr(interaction.target, "definition"):
-                obj_id = interaction.target.definition.id
-            elif hasattr(interaction.target, "id"):
-                obj_id = interaction.target.id
-            else:
-                obj_id = interaction.target.guid64
+        if interaction:
+            action = interaction.__class__.__name__.lower()
+            for route in non_routable_obj_list:
+                route_obj_list.append(str(route.object))
+            route_obj_list = "\n".join(route_obj_list)
+            if failure_reason == TransitionFailureReasons.PATH_PLAN_FAILED or failure_reason == TransitionFailureReasons.RESERVATION:
+                interaction.sim.sim_info.use_object_index += 1
+            if sc_Vars.DEBUG:
+                now = services.time_service().sim_now
+                if hasattr(interaction.target, "definition"):
+                    obj_id = interaction.target.definition.id
+                elif hasattr(interaction.target, "id"):
+                    obj_id = interaction.target.id
+                else:
+                    obj_id = interaction.target.guid64
 
-            failure = "\n{} {}\nRoute Fail at {}\nBlocking Object: {}\nAction: {}\nReason: {}\nRoute Fail Objects:\n{}".\
-                format(interaction.sim.first_name, interaction.sim.last_name, now, obj_id, str(interaction), failure_reason, route_obj_list)
-            client = services.client_manager().get_first_client()
-            sims4.commands.cheat_output(failure, client.id)
-            message_box(interaction.sim, interaction.target, "Route Fail", failure, "GREEN")
-            #if hasattr(interaction.target, "position"):
-            #    camera.focus_on_position(interaction.target.position, client)
+                failure = "\n{} {}\nRoute Fail at {}\nBlocking Object: {}\nAction: {}\nReason: {}\nRoute Fail Objects:\n{}".\
+                    format(interaction.sim.first_name, interaction.sim.last_name, now, obj_id, str(interaction), failure_reason, route_obj_list)
+                client = services.client_manager().get_first_client()
+                sims4.commands.cheat_output(failure, client.id)
+                message_box(interaction.sim, interaction.target, "Route Fail", failure, "GREEN")
+                #if hasattr(interaction.target, "position"):
+                #    camera.focus_on_position(interaction.target.position, client)
 
-        if "puddle" in str(interaction.target).lower() or "dust" in str(interaction.target).lower():
-            interaction.target.destroy()
-            return
-        if "clean" in str(interaction).lower():
-            for commodity in interaction.target.commodity_tracker:
-                if "exambed_dirtiness" in str(commodity).lower():
-                    commodity.set_value(100)
-                if "commodity_dirtiness" in str(commodity).lower():
-                    commodity.set_value(100)
+            if "puddle" in str(interaction.target).lower() or "dust" in str(interaction.target).lower():
+                interaction.target.destroy()
+                return
+            if "clean" in str(interaction).lower():
+                for commodity in interaction.target.commodity_tracker:
+                    if "exambed_dirtiness" in str(commodity).lower():
+                        commodity.set_value(100)
+                    if "commodity_dirtiness" in str(commodity).lower():
+                        commodity.set_value(100)
 
-        if "xray" in action and "calibrate" not in action or \
-                "beachtowel" in str(interaction.target).lower() or "object_door" in str(interaction.target).lower() or \
-                "cafeteriastation" in str(interaction.target).lower():
-            obj = interaction.target
-            translation = obj.location.transform.translation
-            level = obj.location.level
-            orientation = obj.location.transform.orientation
-            zone_id = services.current_zone_id()
-            routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
-            interaction.cancel(FinishingType.KILLED, 'Filtered')
-            clone = objects.system.create_object(obj.definition.id)
-            clone.location = sims4.math.Location(sims4.math.Transform(translation, orientation),
-                                                                routing_surface)
+            if "xray" in action and "calibrate" not in action or \
+                    "beachtowel" in str(interaction.target).lower() or "object_door" in str(interaction.target).lower() or \
+                    "cafeteriastation" in str(interaction.target).lower():
+                try:
+                    obj = interaction.target
+                    translation = obj.location.transform.translation
+                    level = obj.location.level
+                    orientation = obj.location.transform.orientation
+                    zone_id = services.current_zone_id()
+                    routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+                    interaction.cancel(FinishingType.KILLED, 'Filtered')
+                    clone = objects.system.create_object(obj.definition.id)
+                    clone.location = Location(Transform(translation, orientation), routing_surface)
 
-            interaction.target.destroy()
+                    interaction.target.destroy()
+                except:
+                    pass
 
     except BaseException as e:
         error_trap(e)
@@ -127,8 +132,50 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
     supported_postures = route_fail_anim.get_supported_postures()
     if supported_postures:
         return element_utils.build_element((route_fail_anim, flush_all_animations))
-    balloon_requests = TunableBalloon.get_balloon_requests(interaction, route_fail_anim.overrides)
-    return balloon_requests
+    if interaction:
+        balloon_requests = TunableBalloon.get_balloon_requests(interaction, route_fail_anim.overrides)
+        return balloon_requests
+    return None
+
+def routing_fix(target):
+    try:
+        if not target:
+            return
+        if target.definition.id == 816 or not target.id or target.is_sim:
+            return
+        zone_id = services.current_zone_id()
+        object_list = [target]
+        close_objects = [obj for obj in services.object_manager().get_all() if distance_to_by_room(obj, target) < 5 and obj.id != target.id]
+        for obj in close_objects:
+            parent_id = 0
+            if hasattr(obj, "parent"):
+                information = str(obj.parent)
+                if "[" in information:
+                    value = information[information.find(":0x") + 3:information.rfind("[")]
+                else:
+                    value = information[information.find(":0x") + 3:len(information)]
+                try:
+                    parent_id = int(value, 16)
+                except:
+                    parent_id = 0
+                    pass
+
+            if target.id == parent_id:
+                if hasattr(obj, "position"):
+                    object_list.append(obj)
+
+        for obj in list(object_list):
+            obj.reset(ResetReason.NONE, None, 'Command')
+            routing_surface = SurfaceIdentifier(zone_id, obj.level, SurfaceType.SURFACETYPE_WORLD)
+            clone = objects.system.create_object(obj.definition.id)
+            clone.location = Location(Transform(obj.position, obj.orientation), routing_surface)
+            clone.scale = obj.scale
+            obj.destroy()
+
+    except BaseException as e:
+        error_trap(e)
+        pass
 
 
 route_fail.route_failure = _route_failure
+route_fail.ROUTE_FAILURE_OVERRIDE_MAP = ROUTE_FAILURE_OVERRIDE_MAP

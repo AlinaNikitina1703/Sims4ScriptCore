@@ -16,15 +16,22 @@ from scripts_core.sc_util import init_sim
 
 
 class sc_SimTracker:
-    __slots__ = ("position", "level", "actions", "mood", "buffs")
+    __slots__ = ("position", "level", "actions", "mood", "buffs", "effect", "vfx", "vfx_joint", "title")
 
-    def __init__(self, position=None, level=0, actions=None, mood=None, buffs=None):
+    def __init__(self, position=None, level=0, actions=None, mood=None, buffs=None, effect=None, vfx=None, vfx_joint="b__Head__", title=None):
         super().__init__()
         self.position = position
         self.level = level
         self.actions = actions
         self.mood = mood
         self.buffs = buffs
+        self.effect = effect
+        self.vfx = vfx
+        self.vfx_joint = vfx_joint
+        self.title = title
+
+    def __str__(self):
+        return "Buffs: {} Effect: {}".format(str(self.buffs), self.effect)
 
 def track_sim(sim_info, mood=None):
     sim = init_sim(sim_info)

@@ -10,7 +10,7 @@ from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 
 
-def debugger(debug_text, frame=1, full_frame=False, write=True, to_console=True, popup=False, file=""):
+def debugger(debug_text: str, frame=1, full_frame=False, write=True, to_console=True, popup=False, file=""):
     # 0 is root function info, 1 is function info from where its running and 2 is parent calling function
     font_color1 = "ffff00"
     font_color2 = "000000"

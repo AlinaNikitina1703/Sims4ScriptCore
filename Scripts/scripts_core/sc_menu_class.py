@@ -44,6 +44,7 @@ class MainMenu(ImmediateSuperInteraction):
         (super().__init__)(*args, **kwargs)
         self.MAX_MENU_ITEMS_TO_LIST = 10
         self.commands = []
+        self.callback = None
         self.main_index = 0
 
     def files(self, timeline, className, funcName, filename: str):
@@ -58,16 +59,24 @@ class MainMenu(ImmediateSuperInteraction):
 
     def options(self, timeline, className, choice):
         try:
-            result = choice.replace(" ", "_")
-            clean = re.compile('<.*?>')
-            result = re.sub(clean, '', result)
-            result = result.replace("[", "_")
-            result = result.replace("]", "")
-            result = result.replace("*", "_")
-            result = result.lower()
-            result = re.sub(r'\W+', '', result)
+            if self.callback:
+                result = self.callback
+            else:
+                result = choice.replace(" ", "_")
+                clean = re.compile('<.*?>')
+                result = re.sub(clean, '', result)
+                result = result.replace("[", "_")
+                result = result.replace("]", "")
+                result = result.replace("*", "_")
+                result = result.lower()
+                result = re.sub(r'\W+', '', result)
+
             if not hasattr(className, result):
                 result = "custom_function"
+                method = getattr(className, result)
+                if method is not None:
+                    method(choice)
+            elif self.callback:
                 method = getattr(className, result)
                 if method is not None:
                     method(choice)

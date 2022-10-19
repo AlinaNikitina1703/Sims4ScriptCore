@@ -6,7 +6,6 @@ from interactions.base.super_interaction import SuperInteraction
 from sims.sim import Sim
 from sims.sim_info import SimInfo
 
-setattr(MixerInteraction, "EXIT_SOCIALS_ENABLED", True)
 setattr(SuperInteraction, "FILTER_QUEUE_ENABLED", False)
 setattr(MixerInteraction, "DEBUG", False)
 setattr(SuperInteraction, "DEBUG", False)
@@ -133,6 +132,7 @@ class sc_Vars:
     DISABLE_SIMULATION = False
     DISABLE_ROLE_TITLES = False
     DISABLE_CAREER_TITLES = False
+    disable_social_autonomy = False
     MAX_SIMS = 20
     MAX_ZONE_SITUATION_SIMS = 3
     chance_switch_action = 10.0
@@ -178,6 +178,7 @@ class sc_Vars:
     weather_values = []
     config_data_location = os.path.abspath(os.path.dirname(__file__))
     disable_forecasts = False
+    directional_controls = False
 
     def __init__(self):
         super().__init__()

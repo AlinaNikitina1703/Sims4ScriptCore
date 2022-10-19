@@ -12,9 +12,10 @@ from sims4.math import Location, Transform, Quaternion, Vector3
 from visualization.spawn_point_visualizer import SpawnPointVisualizer
 from world.spawn_point import SpawnPointOption
 
-from scripts_core.sc_jobs import distance_to_pos, make_sim_at_work, activate_sim_icon
+from scripts_core.sc_jobs import distance_to_pos, make_sim_at_work, activate_sim_icon, remove_annoying_buffs
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_sim_tracker import track_sim, update_sim_tracking_info
 from scripts_core.sc_util import init_sim, error_trap, clean_string
 
 
@@ -77,9 +78,6 @@ class sc_Spawn:
                     sim.location = sim_location
                 else:
                     sim.location = sim_location
-                if sim_info.is_selectable and sc_Vars.select_when_teleport:
-                    make_sim_at_work(sim_info)
-                    activate_sim_icon(sim_info)
 
         except BaseException as e:
             error_trap(e)

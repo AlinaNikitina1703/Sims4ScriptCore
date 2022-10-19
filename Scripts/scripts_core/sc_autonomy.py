@@ -13,7 +13,7 @@ from sims4.resources import Types, get_resource_key
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_queue_of, clear_sim_instance, \
     update_interaction_tuning, \
-    get_filters, distance_to_by_room, get_venue
+    get_filters, distance_to_by_room, get_venue, get_guid64
 from scripts_core.sc_script_vars import sc_Vars, sc_DisabledAutonomy, AutonomyState
 from scripts_core.sc_util import error_trap, clean_string
 
@@ -126,11 +126,9 @@ class sc_Autonomy:
             if name in sc_Vars.tag_sim_for_debugging:
                 action = interaction.__class__.__name__.lower()
                 debugger("Sim: {} {} - Append: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name,
-                                                               interaction.guid64, action), 2, True)
+                                                               get_guid64(interaction), action), 2, True)
 
-        if not hasattr(interaction, "guid64"):
-            setattr(interaction, "guid64", 0)
-        sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, interaction.guid64))
+        sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
         autonomy_choices = []
         [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if
          x not in autonomy_choices]
@@ -143,6 +141,8 @@ class sc_Autonomy:
         return result
 
     def insert_next(self, interaction, **kwargs):
+        if not hasattr(interaction, "guid64"):
+            return None
         result = None
 
         if not sc_Vars.DISABLE_MOD:
@@ -158,11 +158,9 @@ class sc_Autonomy:
                 action = interaction.__class__.__name__.lower()
                 debugger(
                     "Sim: {} {} - Insert Next: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name,
-                                                               interaction.guid64, action), 2, True)
+                                                               get_guid64(interaction), action), 2, True)
 
-        if not hasattr(interaction, "guid64"):
-            setattr(interaction, "guid64", 0)
-        sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, interaction.guid64))
+        sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
         autonomy_choices = []
         [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if
          x not in autonomy_choices]
@@ -175,6 +173,8 @@ class sc_Autonomy:
         return result
 
     def run_interaction_filter(self, interaction):
+        if not hasattr(interaction, "guid64"):
+            return False
         zone = services.current_zone_id()
         current_venue = build_buy.get_current_venue(zone)
         venue_manager = services.get_instance_manager(sims4.resources.Types.VENUE)
@@ -185,12 +185,12 @@ class sc_Autonomy:
         autonomy = interaction.sim.sim_info.autonomy
         now = services.time_service().sim_now
         if not hasattr(interaction, "interaction_timeout"):
-            update_interaction_tuning(interaction.guid64, "interaction_timeout", now)
+            update_interaction_tuning(get_guid64(interaction), "interaction_timeout", now)
         elif not interaction.interaction_timeout:
             interaction.interaction_timeout = now
 
         if not hasattr(interaction, "is_user_directed"):
-            update_interaction_tuning(interaction.guid64, "is_user_directed", False)
+            update_interaction_tuning(get_guid64(interaction), "is_user_directed", False)
 
         venue = get_venue()
 
@@ -208,12 +208,9 @@ class sc_Autonomy:
                     name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                     if name in sc_Vars.tag_sim_for_debugging:
                         debugger("Sim: {} {} - Timeout: ({}) {}".format(interaction.sim.first_name,
-                                                                        interaction.sim.last_name, interaction.guid64,
+                                                                        interaction.sim.last_name, get_guid64(interaction),
                                                                         action), 2, True)
-                if not hasattr(interaction, "guid64"):
-                    setattr(interaction, "guid64", 0)
-                sc_Vars.disabled_autonomy_list.insert(0,
-                                                      sc_DisabledAutonomy(interaction.sim.sim_info, interaction.guid64))
+                sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
                 if len(sc_Vars.disabled_autonomy_list) > 24:
                     sc_Vars.disabled_autonomy_list.pop()
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
@@ -227,16 +224,14 @@ class sc_Autonomy:
                     if name in sc_Vars.tag_sim_for_debugging:
                         debugger("Sim: {} {} - Long Distance: ({}) {} Autonomy: {}".format(interaction.sim.first_name,
                                                                                            interaction.sim.last_name,
-                                                                                           interaction.guid64, action,
+                                                                                           get_guid64(interaction), action,
                                                                                            interaction.allow_autonomous), 2, True)
                 for social_group in interaction.sim.get_groups_for_sim_gen():
                     social_group.remove(interaction.target)
                     social_group._resend_members()
 
-                if not hasattr(interaction, "guid64"):
-                    setattr(interaction, "guid64", 0)
-                sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, interaction.guid64))
-                if len(sc_Vars.disabled_autonomy_list) > 25:
+                sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
+                if len(sc_Vars.disabled_autonomy_list) > 999:
                     sc_Vars.disabled_autonomy_list.pop()
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
                 return False
@@ -244,20 +239,18 @@ class sc_Autonomy:
         if autonomy == AutonomyState.DISABLED and not interaction.is_user_directed:
             filters = get_filters("enabled")
             if filters is not None:
-                indexes = [f for f in filters if f in action or f in str(interaction.guid64)]
+                indexes = [f for f in filters if f in action or f in str(get_guid64(interaction))]
                 if not indexes:
                     if sc_Vars.tag_sim_for_debugging:
                         name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                         if name in sc_Vars.tag_sim_for_debugging:
                             debugger("Sim: {} {} - Enable Filtered: ({}) {} Target: {} Autonomy: {}".format(
-                                interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action,
+                                interaction.sim.first_name, interaction.sim.last_name, get_guid64(interaction), action,
                                 interaction.target, interaction.allow_autonomous), 2, True)
 
-                    if not hasattr(interaction, "guid64"):
-                        setattr(interaction, "guid64", 0)
                     sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info,
-                                                                                 interaction.guid64))
-                    if len(sc_Vars.disabled_autonomy_list) > 25:
+                                                                                 get_guid64(interaction)))
+                    if len(sc_Vars.disabled_autonomy_list) > 999:
                         sc_Vars.disabled_autonomy_list.pop()
                     interaction.cancel(FinishingType.KILLED, 'Filtered')
                     return False
@@ -268,35 +261,29 @@ class sc_Autonomy:
                             debugger("Sim: {} - Indexes: {}".format(name, indexes), 2, True)
 
         if autonomy == AutonomyState.LIMITED_ONLY and not interaction.is_user_directed:
-            if not hasattr(interaction, "guid64"):
-                setattr(interaction, "guid64", 0)
             if hasattr(interaction.target, "is_outside"):
                 if not interaction.target.is_outside:
                     interaction.cancel(FinishingType.KILLED, 'Filtered')
                     return False
 
         if autonomy == AutonomyState.FULL and not interaction.is_user_directed or \
-                autonomy == AutonomyState.LIMITED_ONLY and not interaction.is_user_directed:
-            if not hasattr(interaction, "guid64"):
-                setattr(interaction, "guid64", 0)
+                autonomy == AutonomyState.LIMITED_ONLY and not interaction.is_user_directed or \
+                autonomy == AutonomyState.NO_CLEANING and not interaction.is_user_directed:
             filters = get_filters("disabled")
             if filters is not None:
-                indexes = [f for f in filters if f in action or f in str(interaction.guid64)]
+                indexes = [f for f in filters if f in action or f in str(get_guid64(interaction))]
                 if indexes:
                     for index in indexes:
-                        # update_interaction_tuning(interaction.guid64, "allow_autonomous", False)
                         if sc_Vars.tag_sim_for_debugging:
                             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                             if name in sc_Vars.tag_sim_for_debugging:
                                 debugger("Sim: {} {} - Index: {} Filtered: ({}) {} Target: {} Autonomy: {}".format(
-                                    interaction.sim.first_name, interaction.sim.last_name, index, interaction.guid64,
+                                    interaction.sim.first_name, interaction.sim.last_name, index, get_guid64(interaction),
                                     action, interaction.target, interaction.allow_autonomous), 2, True)
 
-                        if not hasattr(interaction, "guid64"):
-                            setattr(interaction, "guid64", 0)
                         sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info,
-                                                                                     interaction.guid64))
-                        if len(sc_Vars.disabled_autonomy_list) > 25:
+                                                                                     get_guid64(interaction)))
+                        if len(sc_Vars.disabled_autonomy_list) > 999:
                             sc_Vars.disabled_autonomy_list.pop()
                         interaction.cancel(FinishingType.KILLED, 'Filtered')
                         return False
@@ -305,25 +292,25 @@ class sc_Autonomy:
             if not interaction.is_user_directed:
                 filters = interaction.sim.sim_info.routine_info.filtered_actions
                 if filters is not None:
-                    if [f for f in filters if f in action or f in str(interaction.guid64)]:
+                    if [f for f in filters if f in action or f in str(get_guid64(interaction))]:
                         if sc_Vars.tag_sim_for_debugging:
                             name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
                             if name in sc_Vars.tag_sim_for_debugging:
                                 debugger("Sim: {} {} - Role Filtered: ({}) {} Target: {} Autonomy: {}".format(
-                                    interaction.sim.first_name, interaction.sim.last_name, interaction.guid64, action,
+                                    interaction.sim.first_name, interaction.sim.last_name, get_guid64(interaction), action,
                                     interaction.target, interaction.allow_autonomous), 2, True)
 
-                        if not hasattr(interaction, "guid64"):
-                            setattr(interaction, "guid64", 0)
                         sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info,
-                                                                                     interaction.guid64))
-                        if len(sc_Vars.disabled_autonomy_list) > 25:
+                                                                                     get_guid64(interaction)))
+                        if len(sc_Vars.disabled_autonomy_list) > 999:
                             sc_Vars.disabled_autonomy_list.pop()
                         interaction.cancel(FinishingType.USER_CANCEL, 'Filtered')
                         return False
         return True
 
     def run_routine_filter(self, interaction):
+        if not hasattr(interaction, "guid64"):
+            return False
         action = interaction.__class__.__name__.lower()
         autonomy = interaction.sim.sim_info.autonomy
         zone = services.current_zone_id()
@@ -400,10 +387,8 @@ class sc_Autonomy:
                 debugger("Routine Sim: {} {} - Killed: {}".format(interaction.sim.first_name, interaction.sim.last_name,
                                                                   action), 2, True)
 
-        if not hasattr(interaction, "guid64"):
-            setattr(interaction, "guid64", 0)
-        sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, interaction.guid64))
-        if len(sc_Vars.disabled_autonomy_list) > 25:
+        sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
+        if len(sc_Vars.disabled_autonomy_list) > 999:
             sc_Vars.disabled_autonomy_list.pop()
         interaction.cancel(FinishingType.KILLED, 'Filtered')
         return False
@@ -476,6 +461,14 @@ class sc_Autonomy:
 
             if not sc_Autonomy.run_interaction_filter(self, self):
                 return
+
+            sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(self.sim.sim_info, get_guid64(self)))
+            autonomy_choices = []
+            [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if
+             x not in autonomy_choices]
+            sc_Vars.non_filtered_autonomy_list = autonomy_choices
+            if len(sc_Vars.non_filtered_autonomy_list) > 24:
+                sc_Vars.non_filtered_autonomy_list.pop()
 
         except BaseException as e:
             error_trap(e)

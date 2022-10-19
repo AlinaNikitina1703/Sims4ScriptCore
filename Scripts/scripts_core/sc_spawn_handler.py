@@ -1,7 +1,13 @@
+import heapq
+
 import date_and_time
 import gsi_handlers
 import services
 import sims
+import sims4
+import situations
+from situations.bouncer.bouncer import Bouncer, SimRequestScore, BouncerSimData
+from situations.bouncer.bouncer_types import BouncerRequestStatus
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import get_number_of_sims, get_venue, get_filters

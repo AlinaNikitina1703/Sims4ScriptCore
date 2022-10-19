@@ -7,10 +7,12 @@ from clubs.club_service import ClubService
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
 from postures.posture_graph import PostureGraphService
+from sims.sim_info_base_wrapper import SimInfoBaseWrapper
 from sims.sim_info_manager import SimInfoManager
 from singletons import DEFAULT
 from zone import Zone
 
+from module_outfit.sc_outfit_functions import generate_outfit
 from scripts_core.sc_autonomy import sc_Autonomy
 from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
     sc_club_on_zone_load_handler
@@ -190,6 +192,18 @@ def sc_get_segmented_paths(original, self,
                           valid_destination_test,
                           valid_edge_test, preferences,
                           final_constraint, included_sis, *args, **kwargs)
+    except BaseException as e:
+        error_trap(e)
+        pass
+
+    return result
+
+@safe_inject(SimInfoBaseWrapper, 'generate_outfit')
+def sc_generate_outfit(original, self, outfit_category, outfit_index=0, tag_list=(), filter_flag=DEFAULT, body_type_flags=DEFAULT, **kwargs):
+    result = original(self, outfit_category, outfit_index, tag_list, filter_flag, body_type_flags, **kwargs)
+
+    try:
+        generate_outfit(self, outfit_category, outfit_index)
     except BaseException as e:
         error_trap(e)
         pass

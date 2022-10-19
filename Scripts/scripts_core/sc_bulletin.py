@@ -11,6 +11,24 @@ class sc_Bulletin(sc_RoutineMenu):
     def __init__(self):
         super().__init__()
 
+    def show_indexed_sims(self, callback=None):
+        try:
+            self.MAX_MENU_ITEMS_TO_LIST = 20
+            non_routine_sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not sim.sim_info.routine]
+            routine_sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
+            sim_list = []
+            if sc_Vars.sim_index < len(non_routine_sims):
+                sim_list.append(non_routine_sims[sc_Vars.sim_index])
+            if sc_Vars.routine_sim_index < len(routine_sims):
+                sim_list.append(routine_sims[sc_Vars.routine_sim_index])
+
+            if len(sim_list):
+                self.show("Non Routine & Routine Sims", sim_list, 0, services.get_active_sim(), 1, callback)
+            else:
+                message_box(None, None, "Non Routine and Routine Sims", "No one is currently indexed. Reload the routine.", "GREEN")
+        except BaseException as e:
+            error_trap(e)
+
     def show_routine_staff(self, callback=None):
         try:
             self.MAX_MENU_ITEMS_TO_LIST = 20
@@ -42,7 +60,9 @@ class sc_Bulletin(sc_RoutineMenu):
         try:
             self.MAX_MENU_ITEMS_TO_LIST = 20
             sims = services.sim_info_manager().instanced_sims_gen()
-            sim_list = [sim for sim in sims if sim.is_human]
+            non_routine_sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not sim.sim_info.routine]
+            routine_sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
+            sim_list = non_routine_sims + routine_sims
 
             if len(sim_list):
                 self.show("Sims On Lot", sim_list, 0, services.get_active_sim(), 1, callback)
