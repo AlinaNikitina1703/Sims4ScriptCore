@@ -4,6 +4,8 @@ import os
 import random
 
 import services
+from weather.weather_service import get_street_or_region_id_with_weather_tuning
+
 from module_career.sc_career_medical import sc_CareerMedical
 from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_debugger import debugger
@@ -14,7 +16,7 @@ from scripts_core.sc_jobs import get_career_name, get_venue, clear_all_buffs, ad
 from scripts_core.sc_routine_info import sc_RoutineInfo
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn import sc_Spawn
-from scripts_core.sc_util import init_sim
+from scripts_core.sc_util import init_sim, error_trap
 
 
 class sc_CareerCustom(sc_CareerMedical):
@@ -247,6 +249,7 @@ class sc_CareerCustom(sc_CareerMedical):
         sim_info.routine = True
         clear_jobs(sim_info)
         clear_all_buffs(sim_info)
+        clear_sim_instance(sim_info)
         if sim_info.routine_info.title != "none":
             for buff in list(sim_info.routine_info.buffs):
                 add_sim_buff(int(buff), sim_info)
@@ -258,52 +261,59 @@ class sc_CareerCustom(sc_CareerMedical):
             assign_title(sim_info, "")
 
     def routine_handler(self, sim_info):
-        if not sim_info.is_instanced() and get_work_hours(sim_info.routine_info.on_duty, sim_info.routine_info.off_duty):
-            self.sc_career_spawn.spawn_sim(sim_info)
-            self.assign_sim(sim_info)
+        try:
+            if not sim_info.is_instanced() and get_work_hours(sim_info.routine_info.on_duty, sim_info.routine_info.off_duty):
+                self.sc_career_spawn.spawn_sim(sim_info)
+                self.assign_sim(sim_info)
 
-        sim = init_sim(sim_info)
-        if sim:
-            clear_queue_of_duplicates(sim)
-            set_all_motives_by_sim(sim)
-            assign_title(sim_info, sim_info.routine_info.title.title())
-            assign_role(sim_info.routine_info.role, sim_info)
-            if not sim_info.routine_info.routine:
-                sim_info.routine_info.routine.append(sim_info.routine_info.title + "_routine")
+            sim = init_sim(sim_info)
+            if sim:
+                clear_queue_of_duplicates(sim)
+                set_all_motives_by_sim(sim)
+                assign_title(sim_info, sim_info.routine_info.title.title())
+                assign_role(sim_info.routine_info.role, sim_info)
+                if not sim_info.routine_info.routine:
+                    sim_info.routine_info.routine.append(sim_info.routine_info.title + "_routine")
 
-            if [buff for buff in sim_info.routine_info.buffs if buff == 145074]:
-                set_proper_sim_outfit(sim, False, True)
+                if [buff for buff in sim_info.routine_info.buffs if buff == 145074]:
+                    set_proper_sim_outfit(sim, False, True)
 
-            if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and not sc_Vars.dont_sleep_on_lot:
-                self.sleep_routine(sim_info)
-            if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and sc_Vars.dont_sleep_on_lot and not get_awake_hours(sim):
-                send_sim_home(sim)
-            if [buff for buff in sim_info.routine_info.buffs if buff == 115830]:
-                self.room_check_routine(sim_info)
+                if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and not sc_Vars.dont_sleep_on_lot:
+                    self.sleep_routine(sim_info)
+                if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and sc_Vars.dont_sleep_on_lot and not get_awake_hours(sim):
+                    send_sim_home(sim)
+                if [buff for buff in sim_info.routine_info.buffs if buff == 115830]:
+                    self.room_check_routine(sim_info)
 
-            if not check_actions(sim, "sleep") and not check_actions(sim, "nap") and check_actions(sim, "gohere"):
-                clear_sim_instance(sim_info, "gohere", True)
-                return
+                if not check_actions(sim, "sleep") and not check_actions(sim, "nap") and check_actions(sim, "gohere"):
+                    clear_sim_instance(sim_info, "gohere", True)
+                    return
 
-            if not check_actions(sim, "sleep") and not check_actions(sim, "nap") and len(list(sim_info.routine_info.routine)):
-                now = services.time_service().sim_now
-                seed = int(sim.sim_id * 0.00000000000001) * int(now.second())
-                random.seed(seed)
-                chance = random.uniform(0, 100)
-                choice = sim_info.choice
-
-                if chance < sc_Vars.chance_switch_action:
-                    choice = random.randint(0, len(list(sim_info.routine_info.routine)) - 1)
-                    if choice >= len(list(sim_info.routine_info.routine)):
-                        choice = 0
-
-                if not function_options(sim_info, self, list(sim_info.routine_info.routine)[choice]):
+                if not check_actions(sim, "sleep") and not check_actions(sim, "nap") and len(list(sim_info.routine_info.routine)):
+                    now = services.time_service().sim_now
+                    seed = int(sim.sim_id * 0.00000000000001) * int(now.second())
+                    random.seed(seed)
+                    chance = random.uniform(0, 100)
                     choice = sim_info.choice
-                    if not function_options(sim_info, self, list(sim_info.routine_info.routine)[choice]):
-                        choice = 0
-                        function_options(sim_info, self, list(sim_info.routine_info.routine)[choice])
 
-                sim_info.choice = choice
-                if sc_Vars.DEBUG:
-                    debugger("Sim: {} - chance: {} seed: {} choice: {}. {}".format(sim_info.first_name, chance, seed,
-                        sim_info.choice, list(sim_info.routine_info.routine)[sim_info.choice]))
+                    if chance < sc_Vars.chance_switch_action:
+                        choice = random.randint(0, len(list(sim_info.routine_info.routine)) - 1)
+                        if choice >= len(list(sim_info.routine_info.routine)):
+                            choice = 0
+
+
+                    routine_choice = list(sim_info.routine_info.routine)[choice] if len(list(sim_info.routine_info.routine)) > choice else list(sim_info.routine_info.routine)[0]
+                    if not function_options(sim_info, self, routine_choice):
+                        choice = sim_info.choice
+                        routine_choice = list(sim_info.routine_info.routine)[choice] if len(list(sim_info.routine_info.routine)) > choice else list(sim_info.routine_info.routine)[0]
+                        if not function_options(sim_info, self, routine_choice):
+                            choice = 0
+                            routine_choice = list(sim_info.routine_info.routine)[choice]
+                            function_options(sim_info, self, routine_choice)
+
+                    sim_info.choice = choice
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - chance: {} seed: {} choice: {}. {}".format(sim_info.first_name, chance, seed,
+                            sim_info.choice, list(sim_info.routine_info.routine)[sim_info.choice]))
+        except BaseException as e:
+            error_trap(e)

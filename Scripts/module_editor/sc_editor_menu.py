@@ -9,9 +9,11 @@ import sims4
 from date_and_time import create_time_span
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from objects.components.types import LIGHTING_COMPONENT
+from routing import SurfaceIdentifier, SurfaceType
 from seasons.seasons_enums import SeasonParameters
 from sims4.localization import LocalizationHelperTuning
 from sims4.resources import Types
+from terrain import get_terrain_height
 from ui.ui_dialog_notification import UiDialogNotification
 from weather.weather_enums import WeatherEffectType, WeatherElementTuple, PrecipitationType, CloudType, GroundCoverType, \
     Temperature
@@ -20,7 +22,7 @@ from weather.weather_service import get_street_or_region_id_with_weather_tuning
 from module_editor.sc_editor_functions import point_object_at, random_orientation, get_similar_objects, \
     rotate_selected_objects, random_scale, scale_selected_objects, reset_scale_selected, reset_scale, \
     paint_selected_object, replace_selected_object, select_object, move_selected_objects, place_selected_objects, \
-    get_selected_object
+    get_selected_object, select_all, zone_object_override, zone_object_override_save_state, ground_selected_objects
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_input import inputbox
@@ -68,11 +70,15 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                                       "Paint Selected Object Input")
 
         self.sc_replace_menu_choices = ("Replace Similar Objects",
-                                        "Replace Selected Object")
+                                        "Replace Selected Object",
+                                        "Zone Object Override",
+                                        "Save Zone Objects")
 
         self.sc_select_menu_choices = ("Select Similar Objects",
                                        "Move Selected Objects",
-                                       "Place Objects At")
+                                       "Place Objects At",
+                                       "Ground Objects",
+                                       "Select All")
 
         self.sc_lights_menu_choices = ("Dim Lights In Room",
                                        "Brighten Lights In Room")
@@ -87,6 +93,8 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                                           "Set To Rain",
                                           "Set To Snow")
 
+        self.sc_reset_weather_choices = ()
+
         self.sc_editor_menu = MainMenu(*args, **kwargs)
         self.object_picker = ObjectMenu(*args, **kwargs)
         self.error_object_picker = ObjectMenuNoFile(*args, **kwargs)
@@ -99,6 +107,7 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_editor_lights_menu = MainMenu(*args, **kwargs)
         self.sc_weather_menu = MainMenu(*args, **kwargs)
         self.sc_modify_weather_menu = MainMenu(*args, **kwargs)
+        self.sc_reset_weather_menu = MainMenu(*args, **kwargs)
         self.sc_weather = []
         self.script_choice = MainMenu(*args, **kwargs)
         self.weather_ini()
@@ -180,6 +189,14 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_modify_weather_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_modify_weather_menu.show(timeline, self, 0, self.sc_modify_weather_choices, "Weather Menu", "Make a selection.")
 
+    def zone_object_override(self, timeline):
+        zone = services.current_zone()
+        zone_object_override(zone)
+
+    def save_zone_objects(self, timeline):
+        zone = services.current_zone()
+        zone_object_override_save_state(zone)
+
     def dim_lights_in_room(self, timeline):
         client = services.client_manager().get_first_client()
         target = client.active_sim
@@ -221,8 +238,15 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                          self.place_objects_at_callback)
 
     def place_objects_at_callback(self, location: str):
+        location = location.replace(":",",")
         pos = location.split(",")
         place_selected_objects(float(pos[0]), float(pos[1]), float(pos[2]))
+
+    def ground_objects(self, timeline):
+        if self.target and not self.target.is_sim and self.target.definition.id != 816:
+            ground_selected_objects(self.target)
+            return
+        ground_selected_objects()
 
     def get_info(self, timeline):
         try:
@@ -293,8 +317,8 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             error_trap(e)
 
     def paint_selected_object(self, info=None):
-        amount = 5
-        area = 2.5
+        amount = 10
+        area = 5.0
         height = 0.25
         if isinstance(info, str):
             values = info.split(",")
@@ -331,6 +355,9 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                 else:
                     select_object(obj, False)
 
+    def select_all(self, timeline):
+        select_all()
+
     def reset_scale(self, timeline):
         if self.target.definition.id == 816:
             reset_scale_selected()
@@ -343,8 +370,9 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
     def scale_similar_objects(self, timeline):
         if hasattr(self.target, "definition"):
             similar_objects = get_similar_objects(self.target.definition.id)
+            scale = self.target.scale
             for obj in similar_objects:
-                random_scale(obj)
+                random_scale(obj, scale)
 
     def less_scale_similar_objects(self, timeline):
         if hasattr(self.target, "definition"):
@@ -443,6 +471,7 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
 
     def _find_objects_callback(self, search: str):
         try:
+            zone_id = services.current_zone_id()
             object_list = []
             count = 0
             datapath = sc_Vars.config_data_location
@@ -580,14 +609,8 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             error_trap(e)
 
     def custom_function(self, option, duration=1.0, instant=False):
-        self.build_weather(option, duration)
-        self.weather_ini()
-        if "weather" in option:
-            selected_weather_list = [weather for weather in self.sc_weather if weather.title == option]
-            if selected_weather_list:
-                for weather in selected_weather_list:
-                    self.set_weather(weather, instant)
-
+        if sc_Vars.weather_function:
+            sc_Vars.weather_function.weather_function(option, duration, instant)
 
     def set_weather(self, weather, instant=False):
         weather_service = services.weather_service()
@@ -809,6 +832,7 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             self.sc_weather_choices = self.sc_weather_choices + ("Save Weather",)
             self.sc_weather_choices = self.sc_weather_choices + ("Get Forecast",)
             self.sc_weather_choices = self.sc_weather_choices + ("Get Weather",)
+            self.sc_weather_choices = self.sc_weather_choices + ("Load Zone Weather",)
             self.sc_weather = []
             datapath = sc_Vars.config_data_location
             filename = datapath + r"\Data\weather.ini"
@@ -869,20 +893,23 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             error_trap(e)
 
     def get_forecast(self, timeline):
-        street_or_region_id = get_street_or_region_id_with_weather_tuning()
-        forecasts = services.weather_service()._weather_info[street_or_region_id]._forecasts
-        forecast_name = "weather_" + str(forecasts[0]).lower().replace("<class 'sims4.tuning.instances.forecast_", "").replace("'>", "")
-        debugger("Region: {} Forecast: {}".format(street_or_region_id, forecast_name))
-        self.weather_ini()
-        self.custom_function(forecast_name)
+        if sc_Vars.weather_function:
+            street_or_region_id = get_street_or_region_id_with_weather_tuning()
+            forecast = services.weather_service()._weather_info[street_or_region_id]._forecasts[0]
+            forecast_name = "weather_" + str(forecast.__name__).lower().replace("forecast_","")
+            sc_Vars.weather_function.weather_function(forecast_name, 120.0)
 
     def get_weather(self, timeline):
         if sc_Vars.weather_function:
             sc_Vars.weather_function.get_weather()
 
     def reset_weather(self, timeline):
-        services.weather_service().reset_forecasts()
+        services.weather_service().reset_forecasts(False)
         self.get_forecast(timeline)
+
+    def load_zone_weather(self, timeline):
+        if sc_Vars.weather_function:
+            sc_Vars.weather_function.load_weather()
 
     def save_weather(self, timeline):
         inputbox("Save Weather", "Saves current state of weather to weather.ini. Type in weather name to save.",
@@ -897,10 +924,12 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                  self.set_variable_callback, ModuleEditorMenu.initial_value)
 
     def set_variable_callback(self, variable):
+        if not sc_Vars.weather_function:
+            return
         ModuleEditorMenu.initial_value = variable
-        if "weather" not in variable:
-            value = variable.split(",")
-            duration = 240
+        if "weather" not in variable.lower():
+            value = variable.lower().split(",")
+            duration = 120
             now = services.time_service().sim_now
             if len(value) > 2:
                 duration = float(value[2])
@@ -927,12 +956,10 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             weather_service._send_weather_event_op()
         else:
             if "," in variable:
-                value = variable.split(",")
-                self.weather_ini()
-                self.custom_function(value[0], float(value[1]), True)
+                value = variable.lower().split(",")
+                sc_Vars.weather_function.weather_function(value[0], float(value[1]), True)
             else:
-                self.weather_ini()
-                self.custom_function(variable, 1.0, True)
+                sc_Vars.weather_function.weather_function(variable, 120.0, True)
 
     def set_to_sunny(self, timeline):
         now = services.time_service().sim_now

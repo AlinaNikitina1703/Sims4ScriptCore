@@ -227,82 +227,85 @@ class sc_CareerRoutine:
             return
 
     def custom_routine(self, sim_info):
-        sim = init_sim(sim_info)
-        if sim:
-            lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
-            if objs:
-                objs.sort(key=lambda obj: distance_to(obj, lot))
-                if sim_info.use_object_index >= len(objs):
-                    sim_info.use_object_index = 0
-                obj = objs[sim_info.use_object_index]
-                if obj:
-                    if sim_info.routine_info.actions:
-                        if check_actions(sim, "chat") and distance_to(sim, obj) < 5:
-                            clear_sim_instance(sim_info, "|".join(sim_info.routine_info.actions))
-                            if sim_info.routine_info.object_action1 and not check_actions(sim, sim_info.routine_info.object_action1):
-                                push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
-                            if sc_Vars.DEBUG:
-                                debugger("Sim: {} - Obj: {} Action: chat".format(sim_info.first_name, str(obj)))
-                            return True
-                        if check_action_list(sim, sim_info.routine_info.actions):
-                            if sim_info.routine_info.object_action1:
-                                clear_sim_instance(sim_info, sim_info.routine_info.object_action1)
-                            if sc_Vars.DEBUG:
-                                debugger("Sim: {} - Obj: {} Action: actions".format(sim_info.first_name, str(obj)))
-                            return True
+        try:
+            sim = init_sim(sim_info)
+            if sim:
+                lot = services.current_zone().lot
+                objs = get_routine_objects_by_title(sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+                if objs:
+                    objs.sort(key=lambda obj: distance_to(obj, lot))
+                    if sim_info.use_object_index >= len(objs):
+                        sim_info.use_object_index = 0
+                    obj = objs[sim_info.use_object_index] if len(objs) > sim_info.use_object_index else objs[0]
+                    if obj:
+                        if sim_info.routine_info.actions:
+                            if check_actions(sim, "chat") and distance_to(sim, obj) < 5:
+                                clear_sim_instance(sim_info, "|".join(sim_info.routine_info.actions))
+                                if sim_info.routine_info.object_action1 and not check_actions(sim, sim_info.routine_info.object_action1):
+                                    push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
+                                if sc_Vars.DEBUG:
+                                    debugger("Sim: {} - Obj: {} Action: chat".format(sim_info.first_name, str(obj)))
+                                return True
+                            if check_action_list(sim, sim_info.routine_info.actions):
+                                if sim_info.routine_info.object_action1:
+                                    clear_sim_instance(sim_info, sim_info.routine_info.object_action1)
+                                if sc_Vars.DEBUG:
+                                    debugger("Sim: {} - Obj: {} Action: actions".format(sim_info.first_name, str(obj)))
+                                return True
 
-                    if not check_actions(sim, "gohere") and distance_to(sim, obj) > 5:
-                        clear_sim_instance(sim_info)
-                        go_here_routine(sim, obj.position, obj.level, 2.0)
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Obj: {} Action: gohere".format(sim_info.first_name, str(obj)))
-                        return True
-
-                    now = time.time()
-                    random.seed(now)
-                    chance = random.uniform(0.0, 100.0)
-                    if sim_info.routine_info.object_action1 and sim_info.routine_info.object_action2 and \
-                            chance < sc_Vars.chance_switch_action:
-                        action_choice = random.randint(0, 1)
-                    else:
-                        action_choice = 0
-
-                    if "object_sim" in sim_info.routine_info.use_object2:
-                        objs2 = [sim, ]
-                    else:
-                        objs2 = [o for o in services.object_manager().get_all() if sim_info.routine_info.use_object2 in str(o).lower() and object_is_dirty(o)]
-
-                    if sc_Vars.DEBUG:
-                        debugger("Routine {} {} - Chance: {:.2f}% - Choice: {}".format(sim.first_name, sim.last_name, chance, action_choice))
-                    if action_choice == 0:
-                        if obj.in_use and not obj.in_use_by(sim):
-                            sim_info.use_object_index += 1
+                        if not check_actions(sim, "gohere") and distance_to(sim, obj) > 5:
+                            clear_sim_instance(sim_info)
+                            go_here_routine(sim, obj.position, obj.level, 2.0)
                             if sc_Vars.DEBUG:
-                                debugger("Sim: {} - Obj Index: {}".format(sim_info.first_name, sim_info.use_object_index))
-                            return True
-                        if not check_actions(sim, sim_info.routine_info.object_action1) and not check_actions(sim, sim_info.routine_info.object_action2) and distance_to(sim, obj) < 5:
-                            clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
-                            push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
-                            if sc_Vars.DEBUG:
-                                debugger("Sim: {} - Obj: {} Action1: {}".format(sim_info.first_name, str(obj), sim_info.routine_info.object_action1))
+                                debugger("Sim: {} - Obj: {} Action: gohere".format(sim_info.first_name, str(obj)))
                             return True
 
-                    if action_choice == 1 and objs2:
-                        obj2 = objs2[0]
-                        if not check_actions(sim, sim_info.routine_info.object_action2) and object_is_dirty(obj2):
-                            clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action2), True)
-                            push_sim_function(sim, obj2, sim_info.routine_info.object_action2, False)
-                            if sim_info.routine_info.object_action3 and not check_actions(sim, sim_info.routine_info.object_action2):
-                                push_sim_function(sim, obj2, sim_info.routine_info.object_action3, False)
-                            if sc_Vars.DEBUG:
-                                debugger("Sim: {} - Obj: {} Action2: {}".format(sim_info.first_name, str(obj2), sim_info.routine_info.object_action2))
-                            return True
+                        now = time.time()
+                        random.seed(now)
+                        chance = random.uniform(0.0, 100.0)
+                        if sim_info.routine_info.object_action1 and sim_info.routine_info.object_action2 and \
+                                chance < sc_Vars.chance_switch_action:
+                            action_choice = random.randint(0, 1)
                         else:
-                            clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
-                            push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
+                            action_choice = 0
 
-        return True
+                        if "object_sim" in sim_info.routine_info.use_object2:
+                            objs2 = [sim, ]
+                        else:
+                            objs2 = [o for o in services.object_manager().get_all() if sim_info.routine_info.use_object2 in str(o).lower() and object_is_dirty(o)]
+
+                        if sc_Vars.DEBUG:
+                            debugger("Routine {} {} - Chance: {:.2f}% - Choice: {}".format(sim.first_name, sim.last_name, chance, action_choice))
+                        if action_choice == 0:
+                            if obj.in_use and not obj.in_use_by(sim):
+                                sim_info.use_object_index += 1
+                                if sc_Vars.DEBUG:
+                                    debugger("Sim: {} - Obj Index: {}".format(sim_info.first_name, sim_info.use_object_index))
+                                return True
+                            if not check_actions(sim, sim_info.routine_info.object_action1) and not check_actions(sim, sim_info.routine_info.object_action2) and distance_to(sim, obj) < 5:
+                                clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
+                                push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
+                                if sc_Vars.DEBUG:
+                                    debugger("Sim: {} - Obj: {} Action1: {}".format(sim_info.first_name, str(obj), sim_info.routine_info.object_action1))
+                                return True
+
+                        if action_choice == 1 and objs2:
+                            obj2 = objs2[0]
+                            if not check_actions(sim, sim_info.routine_info.object_action2) and object_is_dirty(obj2):
+                                clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action2), True)
+                                push_sim_function(sim, obj2, sim_info.routine_info.object_action2, False)
+                                if sim_info.routine_info.object_action3 and not check_actions(sim, sim_info.routine_info.object_action2):
+                                    push_sim_function(sim, obj2, sim_info.routine_info.object_action3, False)
+                                if sc_Vars.DEBUG:
+                                    debugger("Sim: {} - Obj: {} Action2: {}".format(sim_info.first_name, str(obj2), sim_info.routine_info.object_action2))
+                                return True
+                            else:
+                                clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
+                                push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
+
+            return True
+        except BaseException as e:
+            error_trap(e)
 
     def metalhead_routine(self, sim_info):
         sim = init_sim(sim_info)
@@ -621,6 +624,26 @@ class sc_CareerRoutine:
             else:
                 terrain_size = get_terrain_size(zone_id)
                 lot_size = (terrain_size.x + terrain_size.z) * 0.15
+            check_point = Vector3(center_pos.x + random.uniform(-lot_size, lot_size),
+                                  center_pos.y,
+                                  center_pos.z + random.uniform(-lot_size, lot_size))
+            if not check_actions(sim, "gohere") and not check_actions(sim, "chat"):
+                clear_sim_instance(sim_info)
+                go_here_routine(sim, check_point)
+        return True
+
+    def check_lot_routine(self, sim_info):
+        venue = get_venue()
+        zone = services.current_zone()
+        zone_id = zone.id
+        sim = init_sim(sim_info)
+        if sim:
+            now = services.time_service().sim_now
+            random.seed(int(now.second()))
+            lot = services.current_zone().lot
+            center_pos = lot.position
+            terrain_size = get_terrain_size(zone_id)
+            lot_size = (terrain_size.x + terrain_size.z) * 0.4
             check_point = Vector3(center_pos.x + random.uniform(-lot_size, lot_size),
                                   center_pos.y,
                                   center_pos.z + random.uniform(-lot_size, lot_size))

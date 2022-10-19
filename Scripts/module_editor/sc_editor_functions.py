@@ -1,18 +1,22 @@
+import configparser
 import copy
+import os
 import random
 from math import atan2
 
 import objects
 import services
 import sims4
+from objects.components.types import LIGHTING_COMPONENT
 from objects.game_object import GameObject
 from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
 from sims4.localization import LocalizationHelperTuning
-from sims4.math import Location, Transform, Vector3
+from sims4.math import Location, Transform, Vector3, Quaternion
 from tag import Tag
 from terrain import get_terrain_height
 
+from scripts_core.sc_debugger import debugger
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap, clean_string, get_icon_info_data
@@ -140,12 +144,37 @@ def place_selected_objects(x=0.0, y = 0.0, z=0.0):
     except BaseException as e:
         error_trap(e)
 
+def ground_selected_objects(target=None):
+    try:
+        zone_id = services.current_zone_id()
+        if not target:
+            all_objects = TMToolData.GroupObjects
+        elif hasattr(target, "definition"):
+            all_objects = get_similar_objects(target.definition.id)
+        else:
+            return
+        for obj in list(all_objects):
+            if hasattr(obj, "position"):
+                level = obj.level
+                world_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+                y = get_terrain_height(obj.position.x, obj.position.z, routing_surface=world_surface) - 0.25
+                position = Vector3(obj.position.x, y, obj.position.z)
+                orientation = obj.orientation
+                routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+                obj.location = Location(Transform(position, orientation), routing_surface)
+
+    except BaseException as e:
+        error_trap(e)
+
 def get_angle(v1, v2):
     return atan2(v1.x - v2.x, v1.z - v2.z)
 
 def select_object(target, clear=True):
     TMToolData.SelectedObject = target
     if clear:
+        for obj in TMToolData.GroupObjects:
+            obj.fade_opacity(1, 0.1)
+            obj.tint = None
         TMToolData.GroupObjects.clear()
     TMToolData.GroupObjects.append(TMToolData.SelectedObject)
     target.fade_opacity(0.5, 0.1)
@@ -157,35 +186,45 @@ def clone_selected_object(target):
     if TMToolData.SelectedObject is not None and not TMToolData.SelectedObject.is_sim:
         clone = create_game_object(TMToolData.SelectedObject.definition.id)
         level = clone.level
+        scale = TMToolData.SelectedObject.scale
         orientation = clone.orientation
         routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
         position = Vector3(target.position.x,
                            target.position.y,
                            target.position.z)
         clone.location = sims4.math.Location(sims4.math.Transform(position, orientation), routing_surface)
+        clone.scale = scale
         return clone
     return None
 
-def random_position(obj, range=2.5, height=0.25):
+def get_radius(obj):
+    if hasattr(obj, "footprint_polygon"):
+        return obj.footprint_polygon.radius()
+    return 1.0
+
+def random_position(obj, range=5.0, height=0.25):
     zone_id = services.current_zone_id()
     ground_obj = services.terrain_service.terrain_object()
     level = obj.level
+    scale = obj.scale
+    radius = get_radius(obj)
     orientation = obj.orientation
     routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
-    position = Vector3(obj.position.x + random.uniform(-range, range),
+    position = Vector3(obj.position.x + random.uniform(-range * radius * scale, range * radius * scale),
                            obj.position.y,
-                           obj.position.z + random.uniform(-range, range))
+                           obj.position.z + random.uniform(-range * radius * scale, range * radius * scale))
     obj.location = sims4.math.Location(sims4.math.Transform(Vector3(position.x,
                                                                     ground_obj.get_height_at(position.x, position.z) - height,
-                                                                    position.z),orientation), routing_surface)
+                                                                    position.z), orientation), routing_surface)
 
-def paint_selected_object(target, amount=10, area=2.5, height=0.25):
+def paint_selected_object(target, amount=10, area=5.0, height=0.25):
     for i in range(amount):
         obj = clone_selected_object(target)
         if obj:
+            scale = obj.scale
             random_position(obj, area, height)
             random_orientation(obj)
-            random_scale(obj, 1.0, 0.25)
+            random_scale(obj, scale, 0.0)
 
 def replace_selected_object(obj):
     level = obj.location.level
@@ -222,7 +261,7 @@ def random_orientation(obj):
     obj.location = sims4.math.Location(sims4.math.Transform(orig, orientation), routing_surface)
 
 def random_scale(obj, scale=1.0, degree=0.0):
-    obj.scale = scale * random.uniform((0.5 + degree), (1.5 - degree))
+    obj.scale = scale * random.uniform((0.75 + degree), (1.25 - degree))
 
 def reset_scale(obj):
     obj.scale = 1.0
@@ -299,6 +338,8 @@ def get_object_rotate(obj: GameObject):
 
 def write_objects_to_file(filename: str, radius=0.0, save_lot=False, save_selected=False):
     try:
+        if not filename:
+            return
         file = open(filename, "w")
         if not save_selected:
             all_objects = services.object_manager().get_all()
@@ -321,15 +362,16 @@ def write_objects_to_file(filename: str, radius=0.0, save_lot=False, save_select
                 if not obj.is_sim:
                     level = obj.location.level
                     scale = obj.scale
-                    orientation = obj.location.transform.orientation
-                    translation = obj.location.transform.translation
-                    slot_hash, parent_id = get_stack_info(obj)
-                    title = obj.__class__.__name__
-                    world_id = obj.id
-                    if parent_id > 0:
-                        is_parent = 0
+                    if hasattr(obj, "orientation"):
+                        orientation = obj.orientation
                     else:
-                        is_parent = 1
+                        orientation = obj.location.transform.orientation
+                    if hasattr(obj, "position"):
+                        translation = obj.position
+                    else:
+                        translation = obj.location.transform.translation
+
+                    title = obj.__class__.__name__
                     if translation.x > radius > 1.0 and translation.z > radius or radius < 1.0:
                         file.write("{}:{}:{:.4f}:{:.4f}:{:.4f}:{:.4f}:{:.4f}:{:.4f}:{:.4f}:{:.4f}:[{}]\n".
                                    format(get_id,
@@ -339,7 +381,6 @@ def write_objects_to_file(filename: str, radius=0.0, save_lot=False, save_select
         file.close()
     except BaseException as e:
         error_trap(e)
-        file.close()
 
 
 def create_game_object(object_definition, init=None, post_add=None, location=None, household_id=-1, opacity=None):
@@ -406,6 +447,25 @@ def remove_object_from_file_by_index(path: str, filename: str, index: list):
 def remove_object_from_file(filename, tags):
     pass
 
+def select_all():
+    try:
+        object_manager = services.object_manager()
+        for obj in TMToolData.GroupObjects:
+            obj.fade_opacity(1, 0.1)
+            obj.tint = None
+
+        TMToolData.GroupObjects.clear()
+        for obj in object_manager.get_all():
+            if obj.is_on_active_lot() or obj.is_sim:
+                continue
+            TMToolData.SelectedObject = obj
+            TMToolData.GroupObjects.append(TMToolData.SelectedObject)
+            obj.fade_opacity(0.5, 0.1)
+            tint = sims4.color.from_rgba(0, 255, 0)
+            obj.tint = tint
+
+    except BaseException as e:
+        error_trap(e)
 
 def list_objects_from_file(filename: str, target: GameObject, delete=False):
     try:
@@ -727,3 +787,98 @@ def copy_lot():
                 save_data.zones.append(new_zone)
     except BaseException as e:
         error_trap(e)
+
+def zone_object_override(zone):
+    datapath = sc_Vars.config_data_location
+    filename = datapath + r"\Data\objects.ini"
+    if not os.path.exists(filename):
+        return
+    config = configparser.ConfigParser()
+    config.read(filename)
+    sections = [section for section in config.sections() if str(section) == str(zone.id)]
+    if sections:
+        for section in sections:
+            if config.has_option(section, "update"):
+                update = config.getboolean(section, "update")
+                if update:
+                    object_manager = services.object_manager()
+                    for obj in list(object_manager.get_all()):
+                        if obj.is_on_active_lot() or obj.is_sim:
+                            continue
+                        obj.destroy()
+                    if config.has_option(section, "file"):
+                        file = config.get(section, "file")
+                        world_file = datapath + r"\Data\Zones\{}".format(file)
+                        with open(world_file, "r") as f:
+                            for line in f.readlines():
+                                read_file_line(line)
+
+def zone_object_override_save_state(zone):
+    world_file = None
+    datapath = sc_Vars.config_data_location
+    filename = datapath + r"\Data\objects.ini"
+    if not os.path.exists(filename):
+        return
+    config = configparser.ConfigParser()
+    config.read(filename)
+    sections = [section for section in config.sections() if str(section) == str(zone.id)]
+    if sections:
+        for section in sections:
+            if config.has_option(section, "file"):
+                file = config.get(section, "file")
+                world_file = datapath + r"\Data\Zones\{}".format(file)
+                write_objects_to_file(world_file)
+
+def read_file_line(line, elevate: float = 0, x: float = 0, z: float = 0, selected=False, move_shift=True):
+    try:
+        orientation = Quaternion(0, 0, 0, 0)
+        translation = Vector3(0, 0, 0)
+        count = 0
+        diff_x = 0.0
+        diff_z = 0.0
+        values = line.split(":")
+        if len(values) < 10:
+            return 0
+        if count is 0:
+            diff_x = (x - float(values[7]))
+            diff_z = (z - float(values[9]))
+        obj_id = int(values[0])
+        level = int(values[1])
+        scale = float(values[2])
+        orientation.w = float(values[3])
+        orientation.x = float(values[4])
+        orientation.y = float(values[5])
+        orientation.z = float(values[6])
+        if x is not 0 and move_shift is True:
+            translation.x = float(values[7]) + diff_x
+        else:
+            translation.x = float(values[7])
+        if elevate == 0:
+            translation.y = float(values[8])
+        else:
+            translation.y = float(elevate)
+        if z is not 0 and move_shift is True:
+            translation.z = float(values[9]) + diff_z
+        else:
+            translation.z = float(values[9])
+
+        obj = create_game_object(obj_id)
+        if obj is not None:
+            count = count + 1
+            pos = Vector3(translation.x, translation.y, translation.z)
+            zone_id = services.current_zone_id()
+            routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+            obj.location = sims4.math.Location(Transform(pos, orientation), routing_surface)
+            obj.scale = scale
+
+            if selected:
+                obj.fade_opacity(0.5, 0.1)
+                tint = sims4.color.from_rgba(0, 255, 0)
+                obj.tint = tint
+                TMToolData.GroupObjects.append(obj)
+                TMToolData.SelectedObject = obj
+
+        return count
+    except:
+        return 0
+        pass
