@@ -2,11 +2,9 @@
 by Keyofrassilon
 
 ## Requirements
-You will need to have ControlAnySim installed
-https://github.com/TitanNano/TS4ControlAnySim
+You will need to have <a href="https://github.com/TitanNano/TS4ControlAnySim">ControlAnySim</a> installed
 
-It is recommended you are using more buyable venues from LittleMsSam
-https://littlemssam.tumblr.com/post/175385330458/more-buyable-venues-and-new-venue-types-this
+It is recommended you are using <a href="https://littlemssam.tumblr.com/post/175385330458/more-buyable-venues-and-new-venue-types-this">more buyable venues from LittleMsSam</a>
 
 Not entirely sure but the base game might be the only requirement as far as Sims 4 is concerned.
 ## About the Mod
