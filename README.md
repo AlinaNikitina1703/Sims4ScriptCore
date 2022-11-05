@@ -1,6 +1,14 @@
 # Sims4ScriptCore Mod
 by Keyofrassilon
 
+## Requirements
+You will need to have ControlAnySim installed
+https://github.com/TitanNano/TS4ControlAnySim
+
+It is recommended you are using more buyable venues from LittleMsSam
+https://littlemssam.tumblr.com/post/175385330458/more-buyable-venues-and-new-venue-types-this
+
+Not entirely sure but the base game might be the only requirement as far as Sims 4 is concerned.
 ## About the Mod
 The Sims4ScriptCore mod is written in python and tuning files. In game, this mod accessed through a menu system
 by clicking on any sim, floor, or object will allow the user to call cheats or commands with a few clicks of the
