@@ -2,9 +2,12 @@ import random
 
 import services
 
-from scripts_core.sc_jobs import find_all_objects_by_title, find_all_objects_by_id
+from scripts_core.sc_debugger import debugger
+from scripts_core.sc_jobs import find_all_objects_by_title, find_all_objects_by_id, distance_to, push_sim_function, \
+    is_object_in_use
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_util import error_trap
 
 
 def get_routine_sims():
@@ -41,9 +44,30 @@ def find_empty_desk(sim):
             if not chairs:
                 return desk, None
             for chair in chairs:
-                if not chair.in_use and not chair.in_use_by(sim) or chair.in_use_by(sim):
+                if not is_object_in_use(chair) and not chair.in_use_by(sim) or chair.in_use_by(sim):
                     return desk, chair
     return None, None
+
+def find_empty_chair(sim):
+    chairs = find_all_objects_by_title(sim, "sitliving|sitdining|sitsofa|sitlove|chair|stool|hospitalexambed", sim.level)
+    if not chairs:
+        return None
+    for chair in chairs:
+        if not is_object_in_use(chair) and not chair.in_use_by(sim) or chair.in_use_by(sim):
+            return chair
+    return None
+
+def find_empty_objects(sim, title, in_use=True):
+    objs = find_all_objects_by_title(sim, title, sim.level)
+    if not objs:
+        return None
+    for obj in objs:
+        if in_use:
+            if not is_object_in_use(obj) and not obj.in_use_by(sim) or obj.in_use_by(sim):
+                return obj
+        else:
+            return obj
+    return None
 
 def find_empty_desk_by_id(sim, id):
     desks = find_all_objects_by_id(sim, id)
@@ -53,7 +77,7 @@ def find_empty_desk_by_id(sim, id):
             if not chairs:
                 return desk, None
             for chair in chairs:
-                if not chair.in_use and not chair.in_use_by(sim) or chair.in_use_by(sim):
+                if not is_object_in_use(chair) and not chair.in_use_by(sim) or chair.in_use_by(sim):
                     return desk, chair
     return None, None
 
@@ -61,17 +85,18 @@ def find_empty_computer(sim):
     computers = find_all_objects_by_title(sim, "computer")
     if computers:
         for computer in computers:
-            chairs = find_all_objects_by_title(computer, "sitliving|sitdining|sitsofa|chair|stool", computer.level, 1.5)
-            desks = find_all_objects_by_title(computer, "frontdesk", computer.level, 1.5)
-            if desks:
-                continue
-            if not chairs:
-                continue
-            for chair in chairs:
-                if not chair.in_use and not chair.in_use_by(sim) or chair.in_use_by(sim):
-                    if sc_Vars.DEBUG and sim == services.get_active_sim():
-                        message_box(sim, computer, "Found Computer", "", "GREEN")
-                    return computer, chair
+            if not is_object_in_use(computer) and not computer.in_use_by(sim) or computer.in_use_by(sim):
+                chairs = find_all_objects_by_title(computer, "sitliving|sitdining|sitsofa|chair|stool", computer.level, 1.5)
+                desks = find_all_objects_by_title(computer, "frontdesk", computer.level, 1.5)
+                if desks:
+                    continue
+                if not chairs:
+                    continue
+                for chair in chairs:
+                    if not is_object_in_use(chair) and not chair.in_use_by(sim) or chair.in_use_by(sim):
+                        if sc_Vars.DEBUG and sim == services.get_active_sim():
+                            message_box(sim, computer, "Found Computer", "", "GREEN")
+                        return computer, chair
     return None, None
 
 def find_empty_bed(sim):
@@ -89,6 +114,19 @@ def find_empty_register(sim):
         if not chairs:
             return register, None
         for chair in chairs:
-            if not chair.in_use and not chair.in_use_by(sim) or chair.in_use_by(sim):
+            if not is_object_in_use(chair) and not chair.in_use_by(sim) or chair.in_use_by(sim):
                 return register, chair
     return None, None
+
+def choose_role_interaction(sim):
+    try:
+        if sim.sim_info.routine_info.autonomy_requests:
+            index = random.randint(0, len(sim.sim_info.routine_info.autonomy_requests))
+            choice = sim.sim_info.routine_info.autonomy_requests[index] if len(sim.sim_info.routine_info.autonomy_requests) > index else sim.sim_info.routine_info.autonomy_requests[0]
+            object_choice = sim.sim_info.routine_info.autonomy_objects[index] if len(sim.sim_info.routine_info.autonomy_objects) > index else sim.sim_info.routine_info.autonomy_objects[0]
+            obj = find_empty_objects(sim, object_choice)
+            if obj:
+                push_sim_function(sim, obj, choice, False)
+                return
+    except BaseException as e:
+        error_trap(e)

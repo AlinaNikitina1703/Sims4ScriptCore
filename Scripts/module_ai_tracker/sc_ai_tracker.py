@@ -26,7 +26,8 @@ def update_sim_ai_info(sim_info):
             if mood_type.lower() not in str(buff.__name__).lower():
                 if visible_buffs:
                     for b in visible_buffs:
-                        sim_info.remove_buff_by_type(buff_manager.get(get_resource_key(b.guid64, Types.BUFF)))
+                        if hasattr(b, "guid64"):
+                            sim_info.remove_buff_by_type(buff_manager.get(get_resource_key(b.guid64, Types.BUFF)))
         if buff:
             add_sim_buff(sim_info.tracker.mood, sim_info)
 

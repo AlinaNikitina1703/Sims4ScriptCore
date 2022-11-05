@@ -1,0 +1,9 @@
+Script failed: {} 
+type object 'PostureIdle_Stand' has no attribute 'replace'
+
+Traceback (most recent call last):
+  File "C:\Users\keyof\OneDrive\Documents\Electronic Arts\The Sims 4\Mods\zz_ScriptsCore\Scripts\module_ai\ai_menu_class.py", line 41, in options
+    method(timeline)
+  File "C:\Users\keyof\OneDrive\Documents\Electronic Arts\The Sims 4\Mods\zz_ScriptsCore\Scripts\module_ai\ai_menu.py", line 193, in dump_animations
+    clip = clip.replace("<class 'sims4.tuning.instances.", "").replace("'>", "")
+AttributeError: type object 'PostureIdle_Stand' has no attribute 'replace'

@@ -9,11 +9,8 @@ import sims4
 from date_and_time import create_time_span
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from objects.components.types import LIGHTING_COMPONENT
-from routing import SurfaceIdentifier, SurfaceType
-from seasons.seasons_enums import SeasonParameters
 from sims4.localization import LocalizationHelperTuning
 from sims4.resources import Types
-from terrain import get_terrain_height
 from ui.ui_dialog_notification import UiDialogNotification
 from weather.weather_enums import WeatherEffectType, WeatherElementTuple, PrecipitationType, CloudType, GroundCoverType, \
     Temperature
@@ -22,11 +19,12 @@ from weather.weather_service import get_street_or_region_id_with_weather_tuning
 from module_editor.sc_editor_functions import point_object_at, random_orientation, get_similar_objects, \
     rotate_selected_objects, random_scale, scale_selected_objects, reset_scale_selected, reset_scale, \
     paint_selected_object, replace_selected_object, select_object, move_selected_objects, place_selected_objects, \
-    get_selected_object, select_all, zone_object_override, zone_object_override_save_state, ground_selected_objects
-
-from scripts_core.sc_debugger import debugger
+    get_selected_object, select_all, zone_object_override, zone_object_override_save_state, ground_selected_objects, \
+    transmog_from_selected_object, select_objects_by_room, write_objects_to_file, read_file_line, \
+    delete_selected_objects
 from scripts_core.sc_input import inputbox
-from scripts_core.sc_jobs import compare_room
+from scripts_core.sc_jobs import compare_room, find_all_objects_by_title, make_clean, make_dirty, object_is_dirty, \
+    distance_to_by_room, create_dust, is_object_in_use
 from scripts_core.sc_jobs import get_tag_name, get_sim_info, get_object_info
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_menu_class import ObjectMenu
@@ -35,11 +33,14 @@ from scripts_core.sc_object_menu import ObjectMenuNoFile
 from scripts_core.sc_script_vars import sc_Weather, sc_Vars
 from scripts_core.sc_util import error_trap, ld_file_loader, clean_string
 
+
 class ModuleEditorMenu(ImmediateSuperInteraction):
     filename = None
     datapath = os.path.join(os.environ['USERPROFILE'], "Data")
     directory = None
     initial_value = ""
+    light_intensity = None
+    light_color = None
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
@@ -76,12 +77,29 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
 
         self.sc_select_menu_choices = ("Select Similar Objects",
                                        "Move Selected Objects",
+                                       "Place Objects",
                                        "Place Objects At",
                                        "Ground Objects",
-                                       "Select All")
+                                       "Transmog From Selected Object",
+                                       "Find Chairs",
+                                       "Find TVs",
+                                       "Find Routine Objects",
+                                       "Find Dirty Objects",
+                                       "Make Clean",
+                                       "Make Dirty",
+                                       "Is Dirty",
+                                       "Create Dust",
+                                       "Select All",
+                                       "Save Selected Objects",
+                                       "Load Objects",
+                                       "Delete Selected Objects",
+                                       "Select Objects By Room")
 
         self.sc_lights_menu_choices = ("Dim Lights In Room",
-                                       "Brighten Lights In Room")
+                                       "Brighten Lights In Room",
+                                       "Copy Light Color",
+                                       "Paste Light Color",
+                                       "Paste Light Color By Room")
 
         self.sc_weather_choices = ()
         self.sc_modify_weather_choices = ("Set Variable",
@@ -98,6 +116,7 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_editor_menu = MainMenu(*args, **kwargs)
         self.object_picker = ObjectMenu(*args, **kwargs)
         self.error_object_picker = ObjectMenuNoFile(*args, **kwargs)
+        self.explorer = MainMenu(*args, **kwargs)
         self.sc_editor_select_menu = MainMenu(*args, **kwargs)
         self.sc_editor_delete_menu = MainMenu(*args, **kwargs)
         self.sc_editor_rotate_menu = MainMenu(*args, **kwargs)
@@ -189,6 +208,51 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         self.sc_modify_weather_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_modify_weather_menu.show(timeline, self, 0, self.sc_modify_weather_choices, "Weather Menu", "Make a selection.")
 
+    def find_chairs(self, timeline):
+        if self.target.is_sim:
+            sim = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            sim = client.active_sim
+        chairs = find_all_objects_by_title(sim, "sitliving|sitdining|sitsofa|sitlove|chair|stool|hospitalexambed", sim.level)
+        self.error_object_picker.show([chair for chair in chairs if not is_object_in_use(chair) and not chair.in_use_by(sim) or chair.in_use_by(sim)], 0, self.target, False, 1, True)
+
+    def find_tvs(self, timeline):
+        if self.target.is_sim:
+            sim = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            sim = client.active_sim
+        tvs = find_all_objects_by_title(sim, "television|object_tvsurface", sim.level)
+        self.error_object_picker.show([tv for tv in tvs if not is_object_in_use(tv) and not tv.in_use_by(sim) or tv.in_use_by(sim)], 0, self.target, False, 1, True)
+
+    def find_routine_objects(self, timeline):
+        self.error_object_picker.show(sc_Vars.routine_objects, 0, self.target, False, 1, True)
+
+    def find_dirty_objects(self, timeline):
+        if self.target.is_sim:
+            sim = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            sim = client.active_sim
+        sc_Vars.dirty_objects.sort(key=lambda obj: distance_to_by_room(obj, sim))
+        self.error_object_picker.show(sc_Vars.dirty_objects, 0, self.target, False, 1, True, None, object_is_dirty)
+
+    def make_clean(self, timeline):
+        make_clean(self.target)
+
+    def make_dirty(self, timeline):
+        make_dirty(self.target)
+
+    def is_dirty(self, timeline):
+        if object_is_dirty(self.target):
+            message_box(self.target, None, "Object Is Dirty")
+            return
+        message_box(self.target, None, "Object Is Not Dirty")
+
+    def create_dust(self, timeline):
+        create_dust(self.target)
+
     def zone_object_override(self, timeline):
         zone = services.current_zone()
         zone_object_override(zone)
@@ -233,6 +297,41 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                 light.set_user_intensity_override(float(intensity))
                 light.set_light_color(color)
 
+    def copy_light_color(self, timeline):
+        if hasattr(self.target, "set_light_color"):
+            ModuleEditorMenu.light_color = self.target.get_light_color()
+            ModuleEditorMenu.light_intensity = self.target.get_user_intensity_overrides()
+        else:
+            message_box(None, None, "Copy Light Color", "Object is not a light!", "ORANGE")
+
+    def paste_light_color(self, timeline):
+        if hasattr(self.target, "set_light_color") and ModuleEditorMenu.light_color:
+            self.target.set_user_intensity_override(ModuleEditorMenu.light_intensity)
+            self.target.set_light_color(ModuleEditorMenu.light_color)
+        else:
+            message_box(None, None, "Paste Light Color", "Object is not a light!", "ORANGE")
+
+    def paste_light_color_by_room(self, timeline):
+        try:
+            room = build_buy.get_room_id(self.target.zone_id, self.target.position, self.target.level)
+        except:
+            room = -1
+            pass
+        for obj in services.object_manager().get_all_objects_with_component_gen(LIGHTING_COMPONENT):
+            try:
+                obj_room = build_buy.get_room_id(obj.zone_id, obj.position, obj.level)
+            except:
+                obj_room = -1
+                pass
+            if obj_room == room and room != -1 and obj_room != -1:
+                if hasattr(obj, "set_light_color") and ModuleEditorMenu.light_color:
+                    obj.set_user_intensity_override(ModuleEditorMenu.light_intensity)
+                    obj.set_light_color(ModuleEditorMenu.light_color)
+
+    def place_objects(self, timeline):
+        position = self.target.position
+        place_selected_objects(position.x, position.y, position.z)
+
     def place_objects_at(self, timeline):
         inputbox("Place Object At Location", "Use format [x],[y],[z]",
                          self.place_objects_at_callback)
@@ -247,6 +346,9 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
             ground_selected_objects(self.target)
             return
         ground_selected_objects()
+
+    def transmog_from_selected_object(self, timeline):
+        transmog_from_selected_object(self.target)
 
     def get_info(self, timeline):
         try:
@@ -355,8 +457,44 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                 else:
                     select_object(obj, False)
 
+
     def select_all(self, timeline):
         select_all()
+
+    def select_objects_by_room(self, timeline):
+        if self.target.definition.id != 816:
+            target = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            target = client.active_sim
+        select_objects_by_room(target)
+
+    def save_selected_objects(self, timeline):
+        inputbox("Save Selected Objects", "Enter a filename", self.save_selected_objects_callback)
+
+    def save_selected_objects_callback(self, filename):
+        datapath = sc_Vars.config_data_location
+        file = "{}.dat".format(filename)
+        world_file = datapath + r"\Data\Rooms\{}".format(file)
+        message_box(None, None, "File Saved", "{}".format(world_file.replace('\\', '/')))
+        write_objects_to_file(world_file, 0.0, True, True)
+
+    def load_objects(self, timeline):
+        datapath = sc_Vars.config_data_location + r"\Data\Rooms"
+        files = [f for f in os.listdir(datapath) if isfile(join(datapath, f))]
+        if files:
+            self.explorer.show(timeline, self, 0, files, "Load Objects", "Make a selection.", "load_objects_callback", True)
+
+    def load_objects_callback(self, filename):
+        datapath = sc_Vars.config_data_location
+        file = "{}.dat".format(filename)
+        world_file = datapath + r"\Data\Rooms\{}".format(file)
+        with open(world_file, "r") as f:
+            for line in f.readlines():
+                read_file_line(line)
+
+    def delete_selected_objects(self, timeline):
+        delete_selected_objects()
 
     def reset_scale(self, timeline):
         if self.target.definition.id == 816:
@@ -467,28 +605,34 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                                                       "Full or partial search term. Separate multiple search "
                                                       "terms with a comma. Will search in "
                                                       "tuning files and tags.",
-                         self._find_objects_callback)
+                         self._find_objects_callback, ModuleEditorMenu.initial_value)
 
     def _find_objects_callback(self, search: str):
         try:
+            ModuleEditorMenu.initial_value = search
+            client = services.client_manager().get_first_client()
             zone_id = services.current_zone_id()
             object_list = []
+            target_object_tags = None
             count = 0
             datapath = sc_Vars.config_data_location
             filename = datapath + r"\{}.log".format("search_dump")
             append_write = 'w'  # make a new file if not
             file = open(filename, append_write)
-            if search.isnumeric():
-                obj = objects.system.find_object(int(search), include_props=True)
-                if obj:
-                    target_object_tags = None
-                    object_tuning = services.definition_manager().get(obj.definition.id)
-
-                    if object_tuning is not None:
-                        object_class = clean_string(str(object_tuning._cls))
-                    else:
-                        object_class = ""
-                    try:
+            if not hasattr(self.target, "definition"):
+                message_box(self.target, None, "Find Object", "Target object has no definition", "GREEN")
+                return
+            if self.target.definition.id != 816:
+                if "similar" in search:
+                    class_name = str(self.target.__class__.__name__).lower()
+                    objs = [obj for obj in services.object_manager().get_all() if class_name in str(obj).lower() or self.target.definition.id == obj.definition.id]
+                else:
+                    objs = [obj for obj in services.object_manager().get_all() if self.target.definition.id == obj.definition.id]
+                if objs:
+                    objs.sort(key=lambda obj: distance_to_by_room(obj, self.target))
+                    for obj in objs:
+                        count = count + 1
+                        object_list.append(obj)
                         target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
                         target_object_tags = clean_string(str(target_object_tags))
                         value = target_object_tags.split(",")
@@ -496,10 +640,70 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                         for v in value:
                             tag = get_tag_name(int(v))
                             target_object_tags.append(tag)
-                    except:
-                        pass
-                    object_list.append(obj)
-                #file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, object_class))
+
+                        file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, obj.__class__.__name__))
+
+            elif "zero" in search:
+                objs = [obj for obj in services.object_manager().get_all() if obj.position.y == 0]
+                if objs:
+                    objs.sort(key=lambda obj: distance_to_by_room(obj, self.target))
+                    for obj in objs:
+                        count = count + 1
+                        object_list.append(obj)
+                        target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
+                        target_object_tags = clean_string(str(target_object_tags))
+                        value = target_object_tags.split(",")
+                        target_object_tags = []
+                        for v in value:
+                            tag = get_tag_name(int(v))
+                            target_object_tags.append(tag)
+
+                        file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, obj.__class__.__name__))
+            elif search.isnumeric():
+                objs = [obj for obj in services.object_manager().get_all() if str(search) in str(obj.definition.id)]
+                if objs:
+                    objs.sort(key=lambda obj: distance_to_by_room(obj, self.target))
+                    for obj in objs:
+                        count = count + 1
+                        object_list.append(obj)
+                        target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
+                        target_object_tags = clean_string(str(target_object_tags))
+                        value = target_object_tags.split(",")
+                        target_object_tags = []
+                        for v in value:
+                            tag = get_tag_name(int(v))
+                            target_object_tags.append(tag)
+
+                        file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, obj.__class__.__name__))
+                else:
+                    obj = objects.system.find_object(int(search), include_props=True)
+                    if obj:
+                        object_tuning = services.definition_manager().get(obj.definition.id)
+
+                        if object_tuning is not None:
+                            object_class = clean_string(str(object_tuning._cls))
+                        else:
+                            object_class = ""
+                        try:
+                            target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
+                            target_object_tags = clean_string(str(target_object_tags))
+                            value = target_object_tags.split(",")
+                            target_object_tags = []
+                            for v in value:
+                                tag = get_tag_name(int(v))
+                                target_object_tags.append(tag)
+                        except:
+                            pass
+                        object_list.append(obj)
+                        target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
+                        target_object_tags = clean_string(str(target_object_tags))
+                        value = target_object_tags.split(",")
+                        target_object_tags = []
+                        for v in value:
+                            tag = get_tag_name(int(v))
+                            target_object_tags.append(tag)
+
+                        file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, obj.__class__.__name__))
             else:
                 for obj in services.object_manager().get_all():
                     found = False
@@ -554,11 +758,18 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
         try:
             object_list = []
             count = 0
+
+            if not hasattr(self.target, "definition"):
+                message_box(self.target, None, "Search Objects", "Target object has no definition", "GREEN")
+                return
+            if self.target.definition.id != 816:
+                search = str(self.target.__class__.__name__).lower()
+
             datapath = sc_Vars.config_data_location
             filename = datapath + r"\{}.log".format("search_dump")
             append_write = 'w'  # make a new file if not
             file = open(filename, append_write)
-            for key in sorted(sims4.resources.list(type=(sims4.resources.Types.OBJECTDEFINITION))):
+            for key in sorted(sims4.resources.list(type=(sims4.resources.Types.OBJECTDEFINITION)), reverse=True):
                 if count < 512:
                     found = False
                     target_object_tags = None
@@ -577,7 +788,7 @@ class ModuleEditorMenu(ImmediateSuperInteraction):
                             target_object_tags.append(tag)
                     except:
                         pass
-                    search_value = search.lower().split(",")
+                    search_value = search.lower().split(",") if "," in search else [search.lower()]
                     if target_object_tags is not None:
                         target_object_tags = clean_string(str(target_object_tags))
                         if all((x in target_object_tags.lower() for x in search_value)):

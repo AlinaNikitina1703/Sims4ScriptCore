@@ -483,19 +483,21 @@ def get_weather_names_from_weather(set_weather=True, instant=False):
     current_temp = Temperature(weather_service.get_weather_element_value((WeatherEffectType.TEMPERATURE), default=(Temperature.WARM)))
     if "freezing" not in str(words) and current_temp == Temperature.FREEZING:
         words.append("freezing")
-    if "cold" not in str(words) and current_temp == Temperature.COLD:
+    elif "cold" not in str(words) and current_temp == Temperature.COLD:
         words.append("cold")
-    if "cool" not in str(words) and current_temp == Temperature.COOL:
+    elif "cool" not in str(words) and current_temp == Temperature.COOL:
         words.append("cool")
-    if "warm" not in str(words) and current_temp == Temperature.WARM:
+    elif "warm" not in str(words) and current_temp == Temperature.WARM:
         words.append("warm")
-    if "hot" not in str(words) and current_temp == Temperature.HOT:
+    elif "hot" not in str(words) and current_temp == Temperature.HOT:
         words.append("hot")
-    if "heatwave" not in str(words) and current_temp == Temperature.BURNING:
+    elif "heatwave" not in str(words) and current_temp == Temperature.BURNING:
         words.append("heatwave")
 
     weather, forecast = get_weather_names()
     weathers = [weather for weather in weather_list if filter_by_words(weather, words)]
+    if not weathers:
+        weathers = [weather for weather in weather_list if filter_by_words(weather, words, 1)]
     if weathers:
         for weather in weathers:
             if set_weather:
@@ -506,12 +508,12 @@ def get_weather_names_from_weather(set_weather=True, instant=False):
         weather_function(weather, 120, instant)
     return weather, forecast, words, False
 
-def filter_by_words(label, words):
+def filter_by_words(label, words, precision=0):
     label = label.replace("weather_", "")
     label = label.replace("forecast_", "")
     label_words = label.split("_")
     check = [word for word in words if word in str(label_words)]
-    if len(check) and len(check) == len(words) or len(check) and len(check) == len(words)-1:
+    if len(check) and len(check) == len(words)-precision:
         return True
     return False
 
@@ -583,7 +585,7 @@ def weather_ini(weather_choices=()):
 def load_weather(zone):
     ScriptCoreMain.config_ini(zone)
     weather_ini()
-    set_weather_by_zone(zone)
+    set_weather_by_zone(zone, True)
 
 def set_weather_by_zone(zone, instant=False):
     zone_id = zone.id
@@ -600,6 +602,20 @@ def set_weather_by_zone(zone, instant=False):
             return
         if config.has_option(str(zone_id), "use_forecast"):
             use_forecast = config.getboolean(str(zone_id), "use_forecast")
+            if use_forecast:
+                services.weather_service().reset_forecasts(False)
+                weather, forecast = get_weather_names()
+                if weather:
+                    weather_function(weather, 120.0, True)
+                return
+
+    if config.has_section("global"):
+        if config.has_option("global", "weather"):
+            weather = config.get("global", "weather")
+            weather_function(weather, 120.0, True)
+            return
+        if config.has_option("global", "use_forecast"):
+            use_forecast = config.getboolean("global", "use_forecast")
             if use_forecast:
                 services.weather_service().reset_forecasts(False)
                 weather, forecast = get_weather_names()

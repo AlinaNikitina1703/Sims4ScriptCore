@@ -1,6 +1,7 @@
 import os
 from os.path import isfile, join
 
+import camera
 import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from sims4.localization import LocalizationHelperTuning
@@ -8,10 +9,13 @@ from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
 from module_career.sc_career_custom import sc_CareerCustom
 from module_career.sc_career_functions import get_routine_objects_by_title
+from module_career.sc_career_medical import sc_CareerMedicalExams
 from module_career.sc_career_routines import sc_CareerRoutine
+from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_input import inputbox
-from scripts_core.sc_jobs import clear_sim_instance, push_sim_function, distance_to, assign_situation
+from scripts_core.sc_jobs import clear_sim_instance, push_sim_function, distance_to, assign_situation, assign_title, \
+    set_exam_info, assign_routine, is_object_in_use
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_info import sc_RoutineInfo
@@ -23,10 +27,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
     filename = None
     datapath = os.path.join(os.environ['USERPROFILE'], "Data")
     directory = None
+    last_initial_value = None
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
         self.sc_career_menu_choices = ("Set Menu",
+                                       "Show Exams",
+                                       "Set Exam To Patient",
                                        "Add Routine To Sim",
                                        "Add Situation To Sim",
                                        "Routine Info")
@@ -44,6 +51,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
 
         self.sc_career_menu = MainMenu(*args, **kwargs)
         self.sc_vendor_menu = MainMenu(*args, **kwargs)
+        self.sc_bulletin = sc_Bulletin()
         self.script_choice = MainMenu(*args, **kwargs)
 
     def _run_interaction_gen(self, timeline):
@@ -66,6 +74,59 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         self.sc_vendor_menu.commands.append("<font color='#990000'>[Menu]</font>")
         self.sc_vendor_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_vendor_menu.show(timeline, self, 0, self.sc_vendor_choices, "Vendor Menu", "Make a selection.")
+
+    def show_exams(self, timeline):
+        self.sc_bulletin.show_exams(camera.focus_on_object)
+        if len(sc_Vars.exam_list):
+            for exam in sc_Vars.exam_list:
+                currently = "Waiting on Exam: ({}) - Doctor: {}\n".format(exam.exam, exam.doctor.first_name)
+                for interaction in exam.patient.get_all_running_and_queued_interactions():
+                    currently = currently + "({}) {}\n".format(interaction.guid64, interaction.__class__.__name__)
+                message_box(exam.patient, exam.doctor, "Exam {}".format(exam.exam), "{}".format(currently), "GREEN")
+
+    def set_exam_to_patient(self, timeline):
+        inputbox("Add Exam To Patient", "Enter the exam ID.", self._add_exam_to_patient_callback, ModuleCareerMenu.last_initial_value)
+
+    def _add_exam_to_patient_callback(self, exam_id: str):
+        try:
+            patient = None
+            ModuleCareerMenu.last_initial_value = exam_id
+            if exam_id == "" or exam_id is None:
+                return
+
+            def get_simpicker_results_callback(dialog):
+                if not dialog.accepted:
+                    return
+
+                def get_doctorpicker_results_callback(dialog):
+                    if not dialog.accepted:
+                        return
+
+                    for sim in dialog.get_result_tags():
+                        for exam in sc_Vars.exam_list:
+                            if exam.patient == patient:
+                                exam.doctor = sim
+                                assign_routine(patient.sim_info, "patient")
+                                set_exam_info(patient.sim_info)
+                                message_box(patient, sim, "{}".format(exam_id), "Exam assigned to patient!", "GREEN")
+
+                doctors = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and "doctor" in sim.sim_info.routine_info.title or sim.sim_info.routine and "radiologist" in sim.sim_info.routine_info.title]
+                if not doctors:
+                    message_box(None, None, "Doctors", "No doctors on lot!", "GREEN")
+                    return
+
+                for sim in dialog.get_result_tags():
+                    for exam in sc_Vars.exam_list:
+                        if exam.patient == sim:
+                            patient = sim
+                            exam.exam = exam_id
+                            self.picker("Add Doctor to Exam {}".format(exam_id), "Pick up to 1 Sim", 1, get_doctorpicker_results_callback, doctors)
+
+            sims = services.sim_info_manager().instanced_sims_gen()
+            sim_list = [sim for sim in sims if [r for r in sim.autonomy_component.active_roles() if "patient" in str(r).lower()]]
+            self.picker("Add Exam {} To Sim".format(exam_id), "Pick up to 1 Sim", 1, get_simpicker_results_callback, sim_list)
+        except BaseException as e:
+            error_trap(e)
 
     def add_situation_to_sim(self, timeline):
         inputbox("Add Situation To Sim", "Enter the situation ID.", self._add_situation_to_sim_callback)
@@ -100,7 +161,10 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             if not dialog.accepted:
                 return
             if not role_title:
-                message_box(None, None, "{}".format(role_title.title()), "Routine empty!", "GREEN")
+                message_box(None, None, "{}".format(role_title.title()), "Routine unassigned!", "GREEN")
+                for sim in dialog.get_result_tags():
+                    sim.sim_info.routine = False
+                    assign_title(sim.sim_info, "")
                 return
             roles = [role for role in sc_Vars.roles if role_title in role.title]
             if not roles:
@@ -111,6 +175,11 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                 if full_duty:
                     sim.sim_info.routine_info.on_duty = 0
                     sim.sim_info.routine_info.off_duty = 0
+                routine_objects = [obj for obj in services.object_manager().get_all() if roles[0].use_object1
+                                            in str(obj).lower() and roles[0].use_object1 != "None" or
+                                            roles[0].use_object1 in str(obj.definition.id)]
+                if len(routine_objects):
+                    sc_Vars.routine_objects = set(list(sc_Vars.routine_objects) + list(routine_objects))
                 sc_CareerCustom.assign_sim(self, sim.sim_info)
                 message_box(sim, None, "{}".format(roles[0].title.title()), "Routine assigned to sim! On Duty: {}"
                     " Off Duty: {}".format(sim.sim_info.routine_info.on_duty, sim.sim_info.routine_info.off_duty), "GREEN")
@@ -161,13 +230,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -180,13 +249,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -199,13 +268,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -218,13 +287,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -237,13 +306,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -256,13 +325,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -275,13 +344,13 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
             clear_sim_instance(self.target.sim_info)
             self.target.sim_info.routine_info.object_action1 = 217884
             lot = services.current_zone().lot
-            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+            objs = get_routine_objects_by_title(self.target.sim_info.routine_info.use_object1, sc_Vars.routine_objects)
             if objs:
                 objs.sort(key=lambda obj: distance_to(obj, lot))
                 if self.target.sim_info.use_object_index >= len(objs):
                     self.target.sim_info.use_object_index = 0
                 obj = objs[self.target.sim_info.use_object_index]
-                if obj.in_use and not obj.in_use_by(self.target):
+                if is_object_in_use(obj) and not obj.in_use_by(self.target):
                     self.target.sim_info.use_object_index += 1
                     if sc_Vars.DEBUG:
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
@@ -309,7 +378,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         routine_info = routine_info + "[Max_staff:] {}\n".format(self.target.sim_info.routine_info.max_staff)
         routine_info = routine_info + "[Buffs:] {}\n".format(self.target.sim_info.routine_info.buffs)
         routine_info = routine_info + "[Off_lot:] {}\n".format(self.target.sim_info.routine_info.off_lot)
-        routine_info = routine_info + "[World:] {}\n".format(self.target.sim_info.routine_info.world)
+        routine_info = routine_info + "[Zone:] {}\n".format(self.target.sim_info.routine_info.zone)
         routine_info = routine_info + "[Venue:] {}\n".format(self.target.sim_info.routine_info.venue)
         routine_info = routine_info + "[On_duty:] {}\n".format(self.target.sim_info.routine_info.on_duty)
         routine_info = routine_info + "[Off_duty:] {}\n".format(self.target.sim_info.routine_info.off_duty)

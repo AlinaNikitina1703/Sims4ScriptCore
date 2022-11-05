@@ -172,22 +172,28 @@ class AI_Autonomy:
 
                 if "social" in action and not self.is_user_directed or "archetype" in action and not self.is_user_directed:
                     if sim_count > 2 and "romance" in action or sim_count > 2 and "kiss" in action:
-                        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
                         self.cancel(FinishingType.KILLED, 'Filtered')
                     elif "mischief" in action and can_be_mean and mischief_value < random.uniform(8, 100):
-                        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
                         self.cancel(FinishingType.KILLED, 'Filtered')
                     elif "mean" not in action and "mischief" not in action and can_be_mean:
-                        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
                         self.cancel(FinishingType.KILLED, 'Filtered')
                     elif "mean" in action and not can_be_mean or "mischief" in action and not can_be_mean:
-                        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+                        if sc_Vars.DEBUG:
+                            debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
                         self.cancel(FinishingType.KILLED, 'Filtered')
                 elif "argument" in action and not self.is_user_directed:
-                    debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
                     self.cancel(FinishingType.KILLED, 'Filtered')
                 elif "idle_chat" in action and not self.is_user_directed and can_be_mean:
-                    debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
                     self.cancel(FinishingType.KILLED, 'Filtered')
         except BaseException as e:
             error_trap(e)

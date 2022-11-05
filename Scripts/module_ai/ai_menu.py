@@ -4,6 +4,9 @@ from os.path import isfile, join
 
 import services
 import sims4
+from interactions.context import InteractionContext, QueueInsertStrategy
+from interactions.priority import Priority
+
 from module_ai.ASM import ASM_PoseSuperInteraction
 from module_ai.ai_alarm import AIAlarm
 from module_ai.ai_autonomy import AI_Autonomy
@@ -20,6 +23,8 @@ from sims4.localization import LocalizationHelperTuning
 from socials.group import SocialGroup
 from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
+from scripts_core.sc_jobs import do_change_outfit_spinup
+
 
 class AIMenu(ImmediateSuperInteraction):
     directory = None
@@ -31,7 +36,7 @@ class AIMenu(ImmediateSuperInteraction):
         self.ai_option_choices = ("Settings", "Emotes", "Friendly", "Mean", "Mischief", "Romance", "Funny", "Chat", "Teach", "*Reload Script")
         self.ai_mean_choices = ("Pick On Sim", "Stop Picking On Sim")
         self.ai_friendly_choices = ("Befriend",)
-        self.ai_emotes_choices = ("Cheer", "Shout", "Dance", "Guitar", "Shock", "Cry", "Cackle", "Loathe", "Solve", "Kneel", "Sit On Floor", "Sit In Car", "Bah")
+        self.ai_emotes_choices = ("Cheer", "Shout", "Dance", "Guitar", "Shock", "Cry", "Cackle", "Loathe", "Solve", "Kneel", "Sit On Floor", "Sit In Car", "Bah", "Spin", "Custom")
         self.ai_settings_choices = ("*Enable Debugging",
                                     "*Enable Tracking",
                                     "*Disable Debugging",
@@ -172,23 +177,42 @@ class AIMenu(ImmediateSuperInteraction):
         clear_sim_instance(target.sim_info)
         push_sim_function(target, target, 15779027876505748956, False)
 
+    def spin(self, timeline):
+        ASM_PoseSuperInteraction.pose_name = "a_clothesChange_x"
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = self.sim
+        clear_sim_instance(target.sim_info)
+        push_sim_function(target, target, 15779027876505748956, False)
+        #do_change_outfit_spinup(target, target.sim_info._current_outfit[0], timeline)
+
+    def custom(self, timeline):
+        inputbox("Custom Emote", "Text names or partial names in lowercase of the animation you want", self.custom_callback, AIMenu.last_initial_value)
+
+    def custom_callback(self, pose):
+        AIMenu.last_initial_value = pose
+        ASM_PoseSuperInteraction.pose_name = pose
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = self.sim
+        clear_sim_instance(target.sim_info)
+        push_sim_function(target, target, 15779027876505748956, False)
+
     def dump_animations(self, timeline):
         clip_text = ""
-        clip_ids = [clip.instance for clip in sims4.resources.list(type=(sims4.resources.Types.ANIMATION))]
-        clips = [services.definition_manager().get(clip) for clip in clip_ids]
-        clip_text = "\n".join(['%s' % clip for clip in clips])
 
-        output = ""
-        result = clips[0]
-        for att in dir(result):
-            if hasattr(result, att):
-                output = output + "\n(" + str(att) + "): " + clean_string(str(getattr(result, att)))
+        for key in sorted(sims4.resources.list()):
+            clip = services.get_instance_manager(sims4.resources.Types.ANIMATION).get(key.instance)
+            if clip:
+                clip = str(clip).replace("<class 'sims4.tuning.instances.", "").replace("'>", "")
+                clip_text = clip_text + "{}\n".format(clip)
 
-        client = services.client_manager().get_first_client()
         datapath = os.path.abspath(os.path.dirname(__file__))
         filename = datapath + r"\{}.log".format("animations")
         file = open(filename, "w")
-        file.write(output + clip_text)
+        file.write(clip_text)
         file.close()
 
     def picker(self, title: str, text: str, max: int = 50, callback=None):

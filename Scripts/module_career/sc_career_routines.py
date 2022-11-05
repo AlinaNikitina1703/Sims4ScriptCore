@@ -17,13 +17,15 @@ from world import get_lot_id_from_instance_id
 from world.travel_service import travel_sim_to_zone
 
 from module_career.sc_career_functions import get_routine_objects_by_title, find_empty_random_bed, find_empty_computer, \
-    find_empty_register, find_empty_desk_by_id, find_empty_desk
+    find_empty_register, find_empty_desk_by_id, find_empty_desk, find_empty_chair, choose_role_interaction, \
+    find_empty_objects
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance, go_here_routine, push_sim_function, \
     set_all_motives_by_sim, clear_jobs, get_awake_hours, make_clean, \
     object_is_dirty, make_dirty, create_dust, get_dust_action_and_vacuum, remove_object_from_list, check_action_list, \
     find_all_objects_by_title, distance_to_by_level, push_sim_out, remove_sim, make_sim_leave, \
-    get_spawn_point_by_distance, distance_to_pos, distance_to_by_room, assign_routine, get_venue
+    get_spawn_point_by_distance, distance_to_pos, distance_to_by_room, assign_routine, get_venue, doing_nothing, \
+    is_object_in_use, is_object_in_use_by
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim, error_trap, clean_string
@@ -224,19 +226,31 @@ class sc_CareerRoutine:
     def default_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
-            return
+            random.seed(int(sim.sim_id))
+            if doing_nothing(sim):
+                if not check_actions(sim, "sit"):
+                    chair = find_empty_chair(sim)
+                    if "stool" in str(chair).lower():
+                        push_sim_function(sim, chair, 157667, False)
+                    elif "hospitalexambed" in str(chair).lower():
+                        push_sim_function(sim, chair, 107801, False)
+                    else:
+                        push_sim_function(sim, chair, 31564, False)
+                    return True
+                choose_role_interaction(sim)
+                return True
+        return True
 
     def custom_routine(self, sim_info):
         try:
             sim = init_sim(sim_info)
             if sim:
                 lot = services.current_zone().lot
-                objs = get_routine_objects_by_title(sim_info.routine_info.use_object1, sc_CareerRoutine.objects)
+                objs = get_routine_objects_by_title(sim_info.routine_info.use_object1, sc_Vars.routine_objects)
+                objs = [obj for obj in objs if not is_object_in_use(obj) or is_object_in_use(obj) and is_object_in_use_by(obj, sim)] if objs else None
                 if objs:
                     objs.sort(key=lambda obj: distance_to(obj, lot))
-                    if sim_info.use_object_index >= len(objs):
-                        sim_info.use_object_index = 0
-                    obj = objs[sim_info.use_object_index] if len(objs) > sim_info.use_object_index else objs[0]
+                    obj = objs[0]
                     if obj:
                         if sim_info.routine_info.actions:
                             if check_actions(sim, "chat") and distance_to(sim, obj) < 5:
@@ -277,11 +291,6 @@ class sc_CareerRoutine:
                         if sc_Vars.DEBUG:
                             debugger("Routine {} {} - Chance: {:.2f}% - Choice: {}".format(sim.first_name, sim.last_name, chance, action_choice))
                         if action_choice == 0:
-                            if obj.in_use and not obj.in_use_by(sim):
-                                sim_info.use_object_index += 1
-                                if sc_Vars.DEBUG:
-                                    debugger("Sim: {} - Obj Index: {}".format(sim_info.first_name, sim_info.use_object_index))
-                                return True
                             if not check_actions(sim, sim_info.routine_info.object_action1) and not check_actions(sim, sim_info.routine_info.object_action2) and distance_to(sim, obj) < 5:
                                 clear_sim_instance(sim_info, "stand|wicked|social|chat|{}".format(sim_info.routine_info.object_action1), True)
                                 push_sim_function(sim, obj, sim_info.routine_info.object_action1, False)
@@ -306,6 +315,30 @@ class sc_CareerRoutine:
             return True
         except BaseException as e:
             error_trap(e)
+
+    def watch_tv_routine(self, sim_info):
+        sim = init_sim(sim_info)
+        if sim:
+            random.seed(int(sim.sim_id))
+            if doing_nothing(sim):
+                obj = find_empty_objects(sim, "television|object_tvsurface", False)
+                if obj:
+                    if distance_to_by_room(sim, obj) > 2:
+                        clear_sim_instance(sim_info)
+                        go_here_routine(sim, obj.position, obj.level, 2.0)
+                    elif not is_object_in_use(obj):
+                        push_sim_function(sim, obj, 133558, False)
+                    elif is_object_in_use(obj) and not obj.in_use_by(sim):
+                        push_sim_function(sim, obj, 133558, False)
+            elif check_actions(sim, "watch") and not check_actions(sim, "sit"):
+                chair = find_empty_chair(sim)
+                if "stool" in str(chair).lower():
+                    push_sim_function(sim, chair, 157667, False)
+                elif "hospitalexambed" in str(chair).lower():
+                    push_sim_function(sim, chair, 107801, False)
+                else:
+                    push_sim_function(sim, chair, 31564, False)
+        return True
 
     def metalhead_routine(self, sim_info):
         sim = init_sim(sim_info)
@@ -503,16 +536,10 @@ class sc_CareerRoutine:
     
             if xray:
                 dist = distance_to_by_level(sim, xray)
-                if sim_info.routine_info.title == "radiologist" or sim_info.routine_info.title == "radiologist":
-                    if dist > 15 and room_sim_is_in != room_xray_is_in:
-                        chairs = find_all_objects_by_title(xray, "sitliving|sitdining|sitsofa|chair|stool",xray.level)
-                        if chairs:
-                            chair = next(iter(chairs))
-                            clear_sim_instance(sim.sim_info)
-                            if "stool" in str(chair).lower():
-                                push_sim_function(sim, chair, 157667)
-                            else:
-                                push_sim_function(sim, chair, 31564)
+                if sim_info.routine_info.title == "radiologist" and not check_actions(sim, "frontdesk"):
+                    if dist > 15 and room_sim_is_in != room_xray_is_in and not check_actions(sim, "gohere"):
+                        clear_sim_instance(sim.sim_info, "gohere", True)
+                        go_here_routine(sim, xray.position, xray.level)                        
         return True
 
     def sleep_routine(self, sim_info):
@@ -560,13 +587,14 @@ class sc_CareerRoutine:
             if not check_actions(sim, "browse_web") and not check_actions(sim, "sit"):
                 object1, object2 = find_empty_computer(sim)
                 if object1 and object2:
-                    clear_sim_instance(sim_info, "chat|browse|sit", True)
-                    if sc_Vars.DEBUG and sim == services.get_active_sim():
-                        message_box(sim, object2, "Found Seat", "", "GREEN")
-                    if "stool" in str(object2).lower():
-                        push_sim_function(sim, object2, 157667, False)
-                    else:
-                        push_sim_function(sim, object2, 31564, False)
+                    if not is_object_in_use(object1) and not object2.in_use:
+                        clear_sim_instance(sim_info, "chat|browse|sit", True)
+                        if sc_Vars.DEBUG and sim == services.get_active_sim():
+                            message_box(sim, object2, "Found Seat", "", "GREEN")
+                        if "stool" in str(object2).lower():
+                            push_sim_function(sim, object2, 157667, False)
+                        else:
+                            push_sim_function(sim, object2, 31564, False)
             elif check_actions(sim, "sit") and not check_actions(sim, "browse_web"):
                 object1, object2 = find_empty_computer(sim)
                 if distance_to(sim, object1) > 2:
@@ -708,7 +736,7 @@ class sc_CareerRoutine:
                        "dish" in str(action).lower() or
                        "clean" in str(action).lower()]:
                     self.faster_cleanup(sim)
-                else:
+                elif doing_nothing(sim):
                     self.cleaning_job(sim)
 
             except BaseException as e:
@@ -718,15 +746,21 @@ class sc_CareerRoutine:
         try:
             if not target:
                 # TODO Write a function that stores all dirty objects on zone load instead
-                if sc_CareerRoutine.dirty_objects:
-                    if random.uniform(0, 100) < 75:
-                        obj = sc_CareerRoutine.dirty_objects[random.randint(0, len(sc_CareerRoutine.dirty_objects) - 1)]
+                if sc_Vars.dirty_objects:
+                    dirty_objects = [dirty_obj for dirty_obj in sc_Vars.dirty_objects if object_is_dirty(dirty_obj)]
+                    if dirty_objects:
+                        dirty_objects.sort(key=lambda obj: distance_to_by_room(obj, sim))
+                        obj = dirty_objects[0]
+                    elif random.uniform(0, 100) < 75:
+                        index = random.randint(0, len(sc_Vars.dirty_objects))
+                        obj = sc_Vars.dirty_objects[index] if len(sc_Vars.dirty_objects) > index else sc_Vars.dirty_objects[0]
+                        if not is_object_in_use(obj) and not obj.in_use_by(sim) or obj.in_use_by(sim):
+                            if not object_is_dirty(obj):
+                                make_dirty(obj)
+                        else:
+                            obj = create_dust()
                     else:
                         obj = create_dust()
-                    if obj is None:
-                        obj = create_dust()
-                    if not object_is_dirty(obj):
-                        make_dirty(obj)
                 else:
                     obj = create_dust()
             else:
@@ -739,15 +773,15 @@ class sc_CareerRoutine:
                     else:
                         result = push_sim_function(sim, obj, self.cleaning_job_list["action"][i], False)
                         if "executeresult: false" in str(result).lower():
-                            sc_CareerRoutine.dirty_objects = remove_object_from_list(obj, sc_CareerRoutine.dirty_objects)
+                            make_clean(obj)
                             if sim == services.get_active_sim():
                                 message_box(sim, obj, "cleaning_job", "Result: {}".format(clean_string(str(result))), "GREEN")
-                    if sim == services.get_active_sim():
-                        message_box(sim, obj, "Job Found", "Object: {}".format(str(obj)), "PURPLE")
-                        return
-            if sim == services.get_active_sim():
-                obj = create_dust()
-                push_sim_function(sim, obj, get_dust_action_and_vacuum(sim), False)
+                            return
+
+            if sim == services.get_active_sim() and obj:
+                message_box(sim, obj, "Job Found", "Object: {}".format(str(obj)), "PURPLE")
+                return
+
         except BaseException as e:
             error_trap(e)
 

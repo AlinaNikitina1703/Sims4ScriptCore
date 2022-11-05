@@ -7,7 +7,10 @@ from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import check_actions, clear_sim_instance, action_timeout, get_action_timestamp, \
     find_all_objects_by_title, push_sim_function, get_career_level, get_skill_level, remove_sim_buff, \
-    distance_to_by_room, assign_title, assign_routine, set_exam_info, set_autonomy
+    distance_to_by_room, assign_title, assign_routine, set_exam_info, set_autonomy, get_posture_target, make_broken, \
+    make_fixed, get_sim_posture_target, set_sim_posture_target, set_object_state, go_here_routine, is_object_in_use, \
+    is_object_in_use_by
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim
 from sims.sim_info import SimInfo
@@ -65,11 +68,13 @@ class sc_CareerMedical(sc_CareerRoutine):
             if exam.patient == patient:
                 return exam.time
 
-    def get_patient_exam(self, patient):
+    def get_patient_exam(self, patient) -> int:
         for exam in sc_Vars.exam_list:
             if exam.patient == patient:
                 set_exam_info(patient.sim_info)
-                return exam.exam
+                if exam.exam:
+                    return int(exam.exam)
+        return 0
 
     def set_patient_exam(self, patient, exam_id):
         doctor = None
@@ -262,7 +267,66 @@ class sc_CareerMedical(sc_CareerRoutine):
 
         return ((float(logic_skill) * 10.0) * 0.5) + (
                 float(sim_level) * 2.0) + mood_multiplier
-    
+
+    def radiologist_routine(self, sim_info):
+        sim = init_sim(sim_info)
+        if sim:
+            if sim_info.routine_info.title == "on break":
+                return
+            if check_actions(sim, "gohere"):  # staff_room
+                clear_sim_instance(sim.sim_info, "gohere|xray", True)
+                return
+            if check_actions(sim, "research"):
+                return
+            patient = self.get_patient(sim)
+            exam = 105942
+            if patient:
+                set_autonomy(sim, 4)
+                if check_actions(sim, "calibrate"):
+                    return
+                elif check_actions(sim, "xray") and not check_actions(patient, "xray"):
+                    xray = get_sim_posture_target(sim)
+                    xrays = find_all_objects_by_title(sim, "xray")
+                    xrays = [obj for obj in xrays if hasattr(obj, "id")]
+                    if xray:
+                        xrays = [obj for obj in xrays if xray.id != obj.id and not is_object_in_use(obj)]
+                        for obj in xrays:
+                            set_object_state(obj, "brokenness", 25)
+                        clear_sim_instance(patient.sim_info, "gohere|xray", True)
+                        push_sim_function(patient, sim, 105966)
+                    return
+                elif check_actions(sim, "xray") and check_actions(patient, "xray"):
+                    now = services.time_service().sim_now
+                    if now - self.get_exam_time(patient) > date_and_time.create_time_span(minutes=10):
+                        clear_sim_instance(patient.sim_info)
+                        clear_sim_instance(sim.sim_info)
+                        self.transfer_patient(sim, 110842, "doctor")
+                        xrays = find_all_objects_by_title(sim, "xray")
+                        if xrays:
+                            xrays = [obj for obj in xrays if not is_object_in_use(obj)]
+                            for obj in xrays:
+                                make_fixed(obj)
+                    return
+
+                if self.get_patient_exam(patient):
+                    exam = self.get_patient_exam(patient)
+                if exam == 105942:
+                    xrays = find_all_objects_by_title(sim, "xray")
+                    if xrays:
+                        for obj in xrays:
+                            make_fixed(obj)
+                    clear_sim_instance(sim.sim_info)
+                    self.set_patient_exam(patient, 105942)
+                    push_sim_function(sim, patient, exam)
+                    return
+                elif exam == 105841:
+                    clear_sim_instance(sim.sim_info)
+                    self.transfer_patient(sim, 110842, "doctor")
+                    xray = [obj for obj in services.object_manager().get_all() if "xray" in str(obj).lower()]
+                    for x in xray:
+                        push_sim_function(sim, x, exam)
+                    return
+                    
     def doctor_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
@@ -302,7 +366,6 @@ class sc_CareerMedical(sc_CareerRoutine):
                     exam = self.doctor_exams[0]
                 elif self.get_patient_exam(patient):
                     exam = self.get_patient_exam(patient)
-                    self.set_patient_exam(patient, 0)
                 else:
                     if chance < skill:
                         exam = self.doctor_exams[len(self.doctor_exams) - 1]
@@ -339,17 +402,20 @@ class sc_CareerMedical(sc_CareerRoutine):
                         self.transfer_patient(sim, 105942, "radiologist")
                         return
                     if patient.age < Age.YOUNGADULT:
-                        exam = self.doctor_exams[0]
+                        self.transfer_patient(sim, 105942, "radiologist")
+                        return
                     push_sim_function(sim, patient, exam)
-                    if patient.age > Age.TEEN:
-                        clear_sim_instance(patient.sim_info)
-                        push_sim_function(patient, sim, 111624)
+                    clear_sim_instance(patient.sim_info)
+                    push_sim_function(patient, sim, 111624)
+                    self.set_patient_exam(patient, 0)
                 elif exam == 105942:
                     clear_sim_instance(sim.sim_info)
                     self.transfer_patient(sim, 105942, "radiologist")
                 else:
+                    exam = self.doctor_exams[0]
                     clear_sim_instance(sim.sim_info)
                     push_sim_function(sim, patient, exam)
+                    self.set_patient_exam(patient, 0)
 
             
     def medical_staff_routine(self, sim_info):
@@ -371,12 +437,11 @@ class sc_CareerMedical(sc_CareerRoutine):
                     self.doctor_routine(sim_info)
                     return True
                 if sim_info.routine_info.title == "radiologist":
-                    #self.radiologist_routine(sim_info)
-                    self.transfer_patient(sim, 110842, "doctor")
+                    self.radiologist_routine(sim_info)
                     return True
             else:
                 if sim_info.routine_info.title == "radiologist":
-                    self.staff_routine(sim_info)
+                    self.assigned_staff_routine(sim_info)
                     return True
                 elif sim_info.routine_info.title == "doctor":
                     self.set_patient(sim)
@@ -434,6 +499,7 @@ class sc_CareerMedical(sc_CareerRoutine):
                     if not check_actions(sim, "browse_web") and not check_actions(sim, "_sit") and \
                             not check_actions(sim, "sit_"):
                         use_objects = find_all_objects_by_title(sim, "computer")
+                        use_objects = [obj for obj in use_objects if not is_object_in_use(obj) or is_object_in_use(obj) and is_object_in_use_by(obj, sim)] if use_objects else None
                         if use_objects:
                             use_object1 = next(iter(use_objects))
                             use_objects = find_all_objects_by_title(use_object1,
@@ -451,6 +517,7 @@ class sc_CareerMedical(sc_CareerRoutine):
                     elif check_actions(sim, "_sit") and not check_actions(sim, "browse_web") or \
                             check_actions(sim, "sit_") and not check_actions(sim, "browse_web"):
                         use_objects = find_all_objects_by_title(sim, "computer")
+                        use_objects = [obj for obj in use_objects if not is_object_in_use(obj) or is_object_in_use(obj) and is_object_in_use_by(obj, sim)] if use_objects else None
                         if use_objects:
                             use_object1 = next(iter(use_objects))
                             clear_sim_instance(sim.sim_info, "chat|browse|_sit|sit_", True)
@@ -458,6 +525,7 @@ class sc_CareerMedical(sc_CareerRoutine):
                 elif choice == 2:
                     if not check_actions(sim, "analyzer"):
                         use_objects = find_all_objects_by_title(sim, "analyzer")
+                        use_objects = [obj for obj in use_objects if not is_object_in_use(obj) or is_object_in_use(obj) and is_object_in_use_by(obj, sim)] if use_objects else None
                         if use_objects:
                             use_object1 = next(iter(use_objects))
                             clear_sim_instance(sim.sim_info, "chat|analyzer", True)
@@ -465,6 +533,7 @@ class sc_CareerMedical(sc_CareerRoutine):
                 elif choice == 3:
                     if not check_actions(sim, "chemistry"):
                         use_objects = find_all_objects_by_title(sim, "chemistry")
+                        use_objects = [obj for obj in use_objects if not is_object_in_use(obj) or is_object_in_use(obj) and is_object_in_use_by(obj, sim)] if use_objects else None
                         if use_objects:
                             use_object1 = next(iter(use_objects))
                             clear_sim_instance(sim.sim_info, "chat|chemistry", True)

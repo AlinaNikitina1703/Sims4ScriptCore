@@ -17,6 +17,7 @@ from tag import Tag
 from terrain import get_terrain_height
 
 from scripts_core.sc_debugger import debugger
+from scripts_core.sc_jobs import transmogrify, objects_by_room
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap, clean_string, get_icon_info_data
@@ -169,6 +170,10 @@ def ground_selected_objects(target=None):
 def get_angle(v1, v2):
     return atan2(v1.x - v2.x, v1.z - v2.z)
 
+def transmog_from_selected_object(target):
+    if TMToolData.SelectedObject:
+        transmogrify(TMToolData.SelectedObject, target)
+
 def select_object(target, clear=True):
     TMToolData.SelectedObject = target
     if clear:
@@ -227,10 +232,10 @@ def paint_selected_object(target, amount=10, area=5.0, height=0.25):
             random_scale(obj, scale, 0.0)
 
 def replace_selected_object(obj):
-    level = obj.location.level
+    level = obj.level
     scale = obj.scale
-    translation = obj.location.transform.translation
-    orientation = obj.location.transform.orientation
+    translation = obj.position
+    orientation = obj.orientation
     obj.destroy()
     clone = create_game_object(TMToolData.SelectedObject.definition.id)
     zone_id = services.current_zone_id()
@@ -457,6 +462,27 @@ def select_all():
         TMToolData.GroupObjects.clear()
         for obj in object_manager.get_all():
             if obj.is_on_active_lot() or obj.is_sim:
+                continue
+            TMToolData.SelectedObject = obj
+            TMToolData.GroupObjects.append(TMToolData.SelectedObject)
+            obj.fade_opacity(0.5, 0.1)
+            tint = sims4.color.from_rgba(0, 255, 0)
+            obj.tint = tint
+
+    except BaseException as e:
+        error_trap(e)
+
+def select_objects_by_room(target):
+    try:
+        object_list = objects_by_room(target)
+        for obj in TMToolData.GroupObjects:
+            obj.fade_opacity(1, 0.1)
+            obj.tint = None
+
+        TMToolData.GroupObjects.clear()
+
+        for obj in object_list:
+            if obj.is_sim:
                 continue
             TMToolData.SelectedObject = obj
             TMToolData.GroupObjects.append(TMToolData.SelectedObject)

@@ -4,7 +4,6 @@ import os
 import random
 
 import services
-from weather.weather_service import get_street_or_region_id_with_weather_tuning
 
 from module_career.sc_career_medical import sc_CareerMedical
 from module_career.sc_career_routines import sc_CareerRoutine
@@ -12,7 +11,8 @@ from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import get_career_name, get_venue, clear_all_buffs, add_sim_buff, assign_title, clear_jobs, \
     get_work_hours, check_actions, function_options, assign_role, remove_sim, get_career_level, \
     clear_queue_of_duplicates, set_all_motives_by_sim, max_sims, clear_sim_instance, set_proper_sim_outfit, \
-    get_awake_hours, send_sim_home
+    get_awake_hours, send_sim_home, make_sim_leave
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_info import sc_RoutineInfo
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn import sc_Spawn
@@ -60,8 +60,10 @@ class sc_CareerCustom(sc_CareerMedical):
                                                      ast.literal_eval(config.get(title, "buffs")),
                                                      ast.literal_eval(config.get(title, "actions")),
                                                      ast.literal_eval(config.get(title, "filtered_actions")),
+                                                     ast.literal_eval(config.get(title, "autonomy_requests")),
+                                                     ast.literal_eval(config.get(title, "autonomy_objects")),
                                                      config.getboolean(title, "off_lot"),
-                                                     config.get(title, "world"),
+                                                     ast.literal_eval(config.get(title, "zone")),
                                                      ast.literal_eval(config.get(title, "venue")),
                                                      config.getint(title, "on_duty"),
                                                      config.getint(title, "off_duty"),
@@ -75,18 +77,21 @@ class sc_CareerCustom(sc_CareerMedical):
     def setup_sims(self):
         sc_Vars.exam_list = []
         sc_CareerCustom.sim_infos = []
-        sc_CareerCustom.objects = []
+        sc_Vars.routine_objects = []
         venue = get_venue()
+        zone = services.current_zone()
         now = services.time_service().sim_now
+        seed = self.get_random_seed_by_zone()
+        random.seed(seed)
         routines = self.get_filter_routines_by_zone()
-        sc_CareerCustom.objects = [obj for obj in services.object_manager().get_all() if [role.use_object1 for role in
+
+        sc_Vars.routine_objects = [obj for obj in services.object_manager().get_all() if [role.use_object1 for role in
                     sc_Vars.roles if role.use_object1 in str(obj).lower() and role.use_object1 != "None" or
                     role.use_object1 in str(obj.definition.id)]]
-        sc_CareerRoutine.objects = sc_CareerCustom.objects
 
         if sc_Vars.DEBUG:
             obj_list = ""
-            role_objects = [role.use_object1 for role in sc_Vars.roles if [obj for obj in sc_CareerCustom.objects if role.use_object1 in str(obj).lower()]]
+            role_objects = [role.use_object1 for role in sc_Vars.roles if [obj for obj in sc_Vars.routine_objects if role.use_object1 in str(obj).lower()]]
             role_object_list = []
             [role_object_list.append(obj) for obj in role_objects if obj not in role_object_list]
             for obj in role_object_list:
@@ -97,19 +102,19 @@ class sc_CareerCustom(sc_CareerMedical):
             str(obj._super_affordances).lower() and not obj.is_outside and [title for title in self.cleaning_job_list["object"] if title in
             str(obj).lower()]]
         random.shuffle(dirty_objects)
-        sc_CareerRoutine.dirty_objects = [obj for i, obj in enumerate(dirty_objects) if i < 100 and obj]
+        sc_Vars.dirty_objects = [obj for i, obj in enumerate(dirty_objects) if i < 100 and obj]
 
         base_roles = sc_Vars.roles
         if routines:
-            base_roles = [role for role in base_roles if
-                     [routine for routine in routines if role.title in routine]]
+            base_roles = [role for role in base_roles if [routine for routine in routines if role.title in routine]]
 
         base_roles = [role for role in base_roles if role.max_staff > 0]
 
-        base_roles = [role for role in base_roles if role.use_object1 == "None" or [obj for obj in sc_CareerCustom.objects if
+        base_roles = [role for role in base_roles if role.use_object1 == "None" or [obj for obj in sc_Vars.routine_objects if
             role.use_object1 in str(obj).lower() and role.use_object1 != "None" or role.use_object1 in str(obj.definition.id)]]
 
         base_roles = [role for role in base_roles if not role.venue or [v for v in role.venue if v in venue]]
+        base_roles = [role for role in base_roles if not role.zone or [z for z in role.zone if z in str(zone.id)]]
 
         if sc_Vars.DEBUG:
             allowed_roles = "Allowed Roles:\n"
@@ -122,6 +127,8 @@ class sc_CareerCustom(sc_CareerMedical):
                 [career for career in sim_info.career_tracker if [role for role in base_roles if role.career in str(career)]]
                 or [trait for trait in sim_info.trait_tracker if [role for role in base_roles if role.career in str(trait)]]]
 
+            random.shuffle(workforce_sims)
+            sc_Vars.routine_sims = workforce_sims
             for sim_info in workforce_sims:
                 if sim_info.is_instanced() and sim_info.routine:
                     sim_info.routine = True
@@ -144,7 +151,7 @@ class sc_CareerCustom(sc_CareerMedical):
                     sim_info.use_object_index = 0
                     sim_info.choice = 0
                     if sim_info.routine_info.use_object1 and sim_info.routine_info.max_staff > 0:
-                        objects = [obj for obj in sc_CareerCustom.objects if sim_info.routine_info.use_object1 in str(obj).lower()
+                        objects = [obj for obj in sc_Vars.routine_objects if sim_info.routine_info.use_object1 in str(obj).lower()
                             and sim_info.routine_info.use_object1 != "None" or sim_info.routine_info.use_object1 in
                             str(obj.definition.id)]
                         if len(objects):
@@ -152,13 +159,18 @@ class sc_CareerCustom(sc_CareerMedical):
                 sc_CareerCustom.sim_infos.append(sim_info)
 
             sc_Vars.routine_start_times = []
-            for sim_info in sc_CareerCustom.sim_infos:
-                if not sc_Vars.routine_start_times and sim_info.routine_info.on_duty != now.hour() and sim_info.routine_info.on_duty > 0:
-                    sc_Vars.routine_start_times.append(sim_info.routine_info.on_duty)
-                    continue
-                if not [start_time for start_time in sc_Vars.routine_start_times if sim_info.routine_info.on_duty == start_time] \
-                        and sim_info.routine_info.on_duty != now.hour() and sim_info.routine_info.on_duty > 0:
-                    sc_Vars.routine_start_times.append(sim_info.routine_info.on_duty)
+            if [sim_info for sim_info in sc_CareerCustom.sim_infos if "stripper" in sim_info.routine_info.title]:
+                sc_Vars.routine_start_times = [17, 18, 19, 20, 21, 22, 23, 1, 2, 3, 4, 5]
+                if [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
+                    sc_Vars.routine_start_times.remove(now.hour())
+            else:
+                for sim_info in sc_CareerCustom.sim_infos:
+                    if not sc_Vars.routine_start_times and sim_info.routine_info.on_duty != now.hour() and sim_info.routine_info.on_duty > 0:
+                        sc_Vars.routine_start_times.append(sim_info.routine_info.on_duty)
+                        continue
+                    if not [start_time for start_time in sc_Vars.routine_start_times if sim_info.routine_info.on_duty == start_time] \
+                            and sim_info.routine_info.on_duty != now.hour() and sim_info.routine_info.on_duty > 0:
+                        sc_Vars.routine_start_times.append(sim_info.routine_info.on_duty)
 
             if sc_Vars.DEBUG:
                 debugger("Start Times: {}".format(sc_Vars.routine_start_times))
@@ -178,6 +190,51 @@ class sc_CareerCustom(sc_CareerMedical):
                 return routines
         return None
 
+    def get_random_seed_by_zone(self):
+        zone = services.current_zone()
+        now = services.time_service().sim_now
+        datapath = sc_Vars.config_data_location
+        filename = datapath + r"\Data\zones.ini"
+        if not os.path.exists(filename):
+            return
+        config = configparser.ConfigParser()
+        config.read(filename)
+        random_seed = int(zone.id)
+        if config.has_section(str(zone.id)):
+            if config.has_option(str(zone.id), "seed"):
+                seeds = ast.literal_eval(config.get(str(zone.id), "seed"))
+                if [seed for seed in seeds if "zone" in seed]:
+                    random_seed = int(zone.id)
+                if [seed for seed in seeds if "second" in seed]:
+                    random_seed = random_seed + int(now.second())
+                if [seed for seed in seeds if "minute" in seed]:
+                    random_seed = random_seed + int(now.minute())
+                if [seed for seed in seeds if "hour" in seed]:
+                    random_seed = random_seed + int(now.hour())
+                if [seed for seed in seeds if "day" in seed]:
+                    random_seed = random_seed + int(now.hour())
+        return random_seed
+
+    def get_max_staff_by_zone(self):
+        zone = services.current_zone()
+        now = services.time_service().sim_now
+        datapath = sc_Vars.config_data_location
+        filename = datapath + r"\Data\zones.ini"
+        if not os.path.exists(filename):
+            return
+        config = configparser.ConfigParser()
+        config.read(filename)
+        max_staff_routine = None
+        max_staff = 0
+        if config.has_section(str(zone.id)):
+            if config.has_option(str(zone.id), "max_staff_routine"):
+                max_staff_routine = config.get(str(zone.id), "max_staff_routine")
+            if config.has_option(str(zone.id), "max_staff"):
+                max_staff = config.getint(str(zone.id), "max_staff")
+            if max_staff_routine and max_staff:
+                return max_staff_routine, max_staff
+        return None, 0
+
     def get_filter_sims_by_zone(self, routine: str):
         zone = services.current_zone()
         zone_id = zone.id
@@ -196,8 +253,6 @@ class sc_CareerCustom(sc_CareerMedical):
     def load_sims(self):
         sc_CareerCustom.routine_sims = []
         zone_id = services.current_zone_id()
-        random.seed(int(zone_id))
-        random.shuffle(sc_CareerCustom.sim_infos)
 
         if sc_Vars.DEBUG:
             sim_names = ""
@@ -219,14 +274,14 @@ class sc_CareerCustom(sc_CareerMedical):
                 sc_CareerCustom.sim_infos.remove(sim_info)
                 if sim_info.is_instanced() and not sim_info.is_selectable:
                     sim = init_sim(sim_info)
-                    remove_sim(sim)
+                    make_sim_leave(sim)
                 continue
             if not get_work_hours(sim_info.routine_info.on_duty, sim_info.routine_info.off_duty):
                 sim_info.routine = False
                 sc_CareerCustom.sim_infos.remove(sim_info)
                 if sim_info.is_instanced() and not sim_info.is_selectable:
                     sim = init_sim(sim_info)
-                    remove_sim(sim)
+                    make_sim_leave(sim)
                 continue
             if not sim_info.is_instanced():
                 self.sc_career_spawn.spawn_sim(sim_info)
