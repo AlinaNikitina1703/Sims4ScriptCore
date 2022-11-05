@@ -1,5 +1,6 @@
 import services
 
+from scripts_core.sc_jobs import doing_nothing
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_menu import sc_RoutineMenu
 from scripts_core.sc_script_vars import sc_Vars
@@ -26,6 +27,26 @@ class sc_Bulletin(sc_RoutineMenu):
                 self.show("Non Routine & Routine Sims", sim_list, 0, services.get_active_sim(), 1, callback)
             else:
                 message_box(None, None, "Non Routine and Routine Sims", "No one is currently indexed. Reload the routine.", "GREEN")
+        except BaseException as e:
+            error_trap(e)
+
+    def show_scheduled_sims(self, callback=None):
+        try:
+            self.MAX_MENU_ITEMS_TO_LIST = 20
+            if len(sc_Vars.routine_sims):
+                self.show("Scheduled Sims", sc_Vars.routine_sims, 0, services.get_active_sim(), 1, callback)
+            else:
+                message_box(None, None, "Scheduled Sims", "No one is currently scheduled for this lot.", "GREEN")
+        except BaseException as e:
+            error_trap(e)
+
+    def show_idle_sims(self, callback=None):
+        try:
+            sim_list = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and doing_nothing(sim)]
+            if len(sim_list):
+                self.show("Idle Sims", sim_list, 0, services.get_active_sim(), 1, callback)
+            else:
+                message_box(None, None, "Idle Sims", "No routine sims are currently idle.", "GREEN")
         except BaseException as e:
             error_trap(e)
 

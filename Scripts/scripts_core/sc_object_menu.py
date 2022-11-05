@@ -9,9 +9,10 @@ from sims4.localization import LocalizationHelperTuning
 from sims4.resources import get_resource_key, Types
 from ui.ui_dialog_picker import UiObjectPicker, ObjectPickerType, ObjectPickerRow
 
+from scripts_core.sc_debugger import debugger
 from scripts_core.sc_menu_class import ICON_NONE, ICON_MORE, ICON_BACK
 from scripts_core.sc_message_box import message_box
-from scripts_core.sc_util import error_trap, get_icon_info_data
+from scripts_core.sc_util import error_trap, get_icon_info_data, clean_string
 
 
 class ObjectMenuNoFile(ImmediateSuperInteraction):
@@ -22,7 +23,7 @@ class ObjectMenuNoFile(ImmediateSuperInteraction):
         self.MENU_MORE = -1
         self.MENU_BACK = -2
 
-    def show(self, obj_list, index: int, target: GameObject, delete=False, max=1, focus=False, callback=None):
+    def show(self, obj_list, index: int, target: GameObject, delete=False, max=1, focus=False, callback=None, selector=None):
         try:
             client = services.client_manager().get_first_client()
 
@@ -57,9 +58,9 @@ class ObjectMenuNoFile(ImmediateSuperInteraction):
                                 if obj != tags:
                                     obj.destroy()
                                 else:
-                                    level = target.location.level
-                                    translation = target.location.transform.translation
-                                    orientation = target.location.transform.orientation
+                                    level = target.level
+                                    translation = target.position
+                                    orientation = target.orientation
                                     pos = sims4.math.Vector3(translation.x, translation.y, translation.z)
                                     zone_id = services.current_zone_id()
                                     routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
@@ -96,7 +97,13 @@ class ObjectMenuNoFile(ImmediateSuperInteraction):
                 if count >= index:
                     if obj is not None:
                         obj_id = obj.definition.id
-                        obj_name = LocalizationHelperTuning.get_object_name(obj)
+                        if selector:
+                            if selector(obj):
+                                obj_name = LocalizationHelperTuning.get_raw_text("<font color='#990000'>{}</font>".format(obj.__class__.__name__))
+                            else:
+                                obj_name = LocalizationHelperTuning.get_object_name(obj)
+                        else:
+                            obj_name = LocalizationHelperTuning.get_object_name(obj)
                         obj_label = LocalizationHelperTuning.get_raw_text("Index: ({}) Object ID: ({})\n{}".format(file_index, obj.definition.id, obj.__class__.__name__))
                         obj_icon = get_icon_info_data(obj)
                     else:

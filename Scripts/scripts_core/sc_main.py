@@ -3,6 +3,7 @@ import configparser
 import os
 import random
 
+import objects
 import services
 import sims4
 from sims.sim_info_types import Age
@@ -16,7 +17,8 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
     remove_annoying_buffs, has_role, \
     assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, keep_sims_outside, \
     keep_sim_outside, make_sim_leave, set_autonomy, send_sim_home, get_number_of_role_sims, check_actions, \
-    unassign_role, clear_leaving
+    unassign_role, clear_leaving, distance_to_by_room, get_important_objects_on_lot, doing_nothing, get_config, \
+    push_sim_function
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars, AutonomyState
@@ -125,6 +127,11 @@ class ScriptCoreMain:
             config.write(configfile)
 
     def config_ini(self, live=False):
+        client = services.client_manager().get_first_client()
+        if client:
+            _connection = client.id
+            sims4.commands.client_cheat('bb.moveobjects on', _connection)
+
         try:
             from module_simulation.sc_simulation import reset_simulation_to_vanilla, set_simulation_to_custom
         except:
@@ -140,7 +147,10 @@ class ScriptCoreMain:
         sc_Vars.SELECTED_SIMS_AUTONOMY = config.getint("control", "selected_sims_autonomy")
         sc_Vars.MAX_SIMS = config.getint("control", "max_sims")
         sc_Vars.DEBUG = config.getboolean("control", "debug")
+        sc_Vars.DEBUG_FULL = config.getboolean("control", "full_debug")
+        sc_Vars.DEBUG_SPAWN = config.getboolean("control", "spawn_debug")
         sc_Vars.DEBUG_AUTONOMY = config.getboolean("control", "debug_autonomy")
+        sc_Vars.DEBUG_ROUTING = config.getboolean("control", "debug_routing")
         sc_Vars.DISABLE_MOD = config.getboolean("control", "disable_mod")
         sc_Vars.DISABLE_ROUTINE = config.getboolean("control", "disable_routine")
         sc_Vars.DISABLE_SPAWNS = config.getboolean("control", "disable_spawns")
@@ -268,6 +278,7 @@ class ScriptCoreMain:
         else:
             autonomy_setting = AutonomyState.FULL
 
+        set_proper_sim_outfit(sim, False, False, True)
         remove_annoying_buffs(sim.sim_info)
         track_sim(sim.sim_info)
         update_sim_tracking_info(sim.sim_info)
@@ -340,9 +351,13 @@ class ScriptCoreMain:
     def init_routine(self):
         try:
             if sc_Vars._running and not sc_Vars.DISABLE_MOD:
+                update_sim = None
                 sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
+                sims_doing_nothing = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and doing_nothing(sim) and sim.sim_info.routine_info.title != "patient"]
                 if not len(sims):
                     return
+                if len(sims_doing_nothing):
+                    update_sim = sims_doing_nothing[0]
 
                 if sc_Vars.routine_sim_index >= len(sims):
                     sc_Vars.routine_sim_index = 0
@@ -359,6 +374,9 @@ class ScriptCoreMain:
 
                 if sim.sim_info.is_instanced():
                     ScriptCoreMain.assign_sim(self, sim)
+                if update_sim:
+                    if update_sim.id != sim.id and update_sim.sim_info.is_instanced():
+                        ScriptCoreMain.assign_sim(self, update_sim)
 
         except BaseException as e:
             error_trap_console(e)
@@ -383,8 +401,19 @@ class ScriptCoreMain:
                 ScriptCoreMain.config_ini(self)
                 ScriptCoreMain.show_mod_status(self)
                 sims4.commands.client_cheat("fps off", client.id)
+
                 update_lights(True, 0.0)
+                object_list = get_config("zones.ini", "global", "objects")
+                actions = get_config("zones.ini", "global", "actions")
+                if object_list:
+                    for i, obj_id in enumerate(object_list):
+                        obj = objects.system.find_object(int(obj_id), include_props=True)
+                        if obj:
+                            action = actions[i] if len(actions) > i else actions[0]
+                            push_sim_function(client.active_sim, obj, action, False)
+
                 sc_club.club_setup_on_load(services.get_club_service())
+                get_important_objects_on_lot()
                 sc_Vars._config_loaded = True
 
             if sc_Vars._running:
@@ -403,7 +432,7 @@ class ScriptCoreMain:
                     return
                 if sc_Vars.sim_index >= len(sims):
                     sc_Vars.sim_index = 0
-                sim = sims[sc_Vars.sim_index] if len(sims) > sc_Vars.sim_index else sims[0]
+                sim = sims[sc_Vars.sim_index]
                 if sc_Vars.DEBUG:
                     debugger("Sim: {} - index: {} autonomy_setting: {}".format(sim.first_name, sc_Vars.sim_index, sim.sim_info.autonomy))
                 sc_Vars.sim_index += 1
@@ -424,9 +453,7 @@ class ScriptCoreMain:
 def has_allowed_role(sim):
     zone = services.current_zone()
     venue = get_venue()
-    disallowed_roles = ["leave", "patient", "gym", "barista", "bartender", "walkby_wait_for",
-                        "infected", "frontdesk", "caterer", "doctor_npc", "gaming", "maid", "celebrity",
-                        "chef", "computeruser", "landlord", "vendor", "military"]
+    disallowed_roles = get_config("spawn.ini", "spawn", "roles")
 
     if sim.sim_info.routine:
         return True
@@ -445,7 +472,7 @@ def has_allowed_role(sim):
     if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
             not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
         return False
-    if set_random_trait_role(sim):
+    if add_role_and_trait_sims_to_routine(sim):
         return True
     if [role for role in disallowed_roles if has_role(sim, role)] and not sc_Vars.DISABLE_ROUTINE and not "venue_stripclub" in venue:
         return False
@@ -472,83 +499,98 @@ def has_allowed_role(sim):
         assign_role_title(sim)
     return True
 
-def set_random_trait_role(sim):
+def add_role_and_trait_sims_to_routine(sim):
     venue = get_venue()
-    zone = services.current_zone()
-    now = services.time_service().sim_now
-    seed = int(sim.sim_id * 0.00000000000001) * int(now.second())
-    random.seed(seed)
+
+    if [r for r in sim.autonomy_component.active_roles() if "leave" in str(r).lower()]:
+        return
 
     roles = [role for role in sc_Vars.roles if [r for r in sim.autonomy_component.active_roles() if role.title in
-        str(r).lower()] or [trait for trait in sim.sim_info.trait_tracker if role.career in str(trait)]]
+        str(r).lower() or role.career.lower() in str(r).lower() and role.career != "None"] or [trait for trait in sim.sim_info.trait_tracker
+        if role.title in str(trait).lower() or role.career.lower() in str(trait).lower()] and role.career != "None"]
+    if not roles:
+        return
 
-    if roles:
-        for role in roles:
-            if "butler" in role.title:
-                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                    assign_routine(sim.sim_info, "butler", False)
-                    if sc_Vars.DEBUG:
-                        debugger("Butler: {}".format(sim.first_name))
-                    return True
+    for role in roles:
+        # Sims based on traits
+        if "metalhead" in role.title:
+            stereos = [stereo for stereo in sc_Vars.stereos_on_lot if "broadcaster_Stereo_Metal" in str(stereo._on_location_changed_callbacks)]
+            if stereos:
+                for stereo in stereos:
+                    if not role.venue and sim.sim_info.age > Age.CHILD and distance_to_by_room(sim, stereo) < 2 or \
+                            [v for v in role.venue if v in venue] and sim.sim_info.age > Age.CHILD and distance_to_by_room(sim, stereo) < 2:
+                        assign_routine(sim.sim_info, "metalhead", True, (not sc_Vars.DISABLE_ROLE_TITLES))
+                        if sc_Vars.DEBUG:
+                            debugger("Metalhead: {}".format(sim.first_name))
+                        return True
 
-            if "trait_Lifestyles_FrequentTraveler" in role.career:
-                hour = clamp(now.hour(), 0, 20)
-                chance = random.uniform(0, 100) * clamp(float(float(hour - 5) * 0.25), 0.0, 1.0)
-                if [v for v in role.venue if v in venue] and [obj for obj in services.object_manager().get_all()
-                        if role.use_object1 in str(obj).lower()] and chance >= (100 - sc_Vars.chance_role_trait):
-                    assign_routine(sim.sim_info, "traveler")
-                    if sc_Vars.DEBUG:
-                        debugger("Traveler: {} On Chance: {}".format(sim.first_name, chance))
-                    return True
-
-            if "Trait_SimPreference_Likes_Music_Metal" in role.career:
-                chance = random.uniform(0, 100) * clamp(float(float(now.hour() - 15) * 0.25), 0.0, 1.0)
-                if not role.venue and chance >= (100 - sc_Vars.chance_role_trait) and sim.sim_info.age > Age.CHILD or \
-                        [v for v in role.venue if v in venue] and chance >= (100 - sc_Vars.chance_role_trait) and \
-                        sim.sim_info.age > Age.CHILD:
-                    assign_routine(sim.sim_info, "metalhead")
-                    if sc_Vars.DEBUG:
-                        debugger("Metalhead: {} On Chance: {}".format(sim.first_name, chance))
-                    return True
-
-            if "patient" in role.title:
-                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                    assign_routine(sim.sim_info, "patient", False)
-                    if sc_Vars.DEBUG:
-                        debugger("Patient: {}".format(sim.first_name))
-                    return True
-
-            if "visitor" in role.title:
-                assign_routine(sim.sim_info, "visitor", False)
+        # Sims based on roles
+        if "butler" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                assign_routine(sim.sim_info, "butler", False)
                 if sc_Vars.DEBUG:
-                    debugger("Visitor: {}".format(sim.first_name))
+                    debugger("Butler: {}".format(sim.first_name))
                 return True
 
-            if "invited" in role.title:
-                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                    assign_routine(sim.sim_info, "invited", False)
-                    if sc_Vars.DEBUG:
-                        debugger("Visitor: {}".format(sim.first_name))
-                    return True
+        if "patient" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                assign_routine(sim.sim_info, "patient", False)
+                if sc_Vars.DEBUG:
+                    debugger("Patient: {}".format(sim.first_name))
+                return True
 
-            if "park" in role.title:
-                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                    assign_routine(sim.sim_info, "park", False)
-                    if sc_Vars.DEBUG:
-                        debugger("Park: {}".format(sim.first_name))
-                    return True
+        if "visitor" in role.title:
+            assign_routine(sim.sim_info, "visitor", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+            if sc_Vars.DEBUG:
+                debugger("Visitor: {}".format(sim.first_name))
+            return True
 
-            if "hiker" in role.title:
-                if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                        [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                    assign_routine(sim.sim_info, "hiker", False)
-                    if sc_Vars.DEBUG:
-                        debugger("Hiker: {}".format(sim.first_name))
-                    return True
+        if "invited" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                assign_routine(sim.sim_info, "invited", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+                if sc_Vars.DEBUG:
+                    debugger("Invited: {}".format(sim.first_name))
+                return True
 
+        if "park" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                assign_routine(sim.sim_info, "park", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+                if sc_Vars.DEBUG:
+                    debugger("Park: {}".format(sim.first_name))
+                return True
+
+        if "hiker" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                assign_routine(sim.sim_info, "hiker", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+                if sc_Vars.DEBUG:
+                    debugger("Hiker: {}".format(sim.first_name))
+                return True
+
+        if "traveler" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) and len(sc_Vars.beds_on_lot) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty) and len(sc_Vars.beds_on_lot):
+                assign_routine(sim.sim_info, "traveler", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+                if sc_Vars.DEBUG:
+                    debugger("Traveler: {}".format(sim.first_name))
+                return True
+
+        if "gamer" in role.title:
+            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
+                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
+                assign_routine(sim.sim_info, "gamer", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+                if sc_Vars.DEBUG:
+                    debugger("Gamer: {}".format(sim.first_name))
+                return True
+
+        if "leave" in role.title:
+            assign_routine(sim.sim_info, "leave", False, (not sc_Vars.DISABLE_ROLE_TITLES))
+            if sc_Vars.DEBUG:
+                debugger("Leave: {}".format(sim.first_name))
+            return True
     return False
 

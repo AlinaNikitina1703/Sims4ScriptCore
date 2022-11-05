@@ -13,7 +13,7 @@ from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
 from sims4.math import Location, Transform
 
-from scripts_core.sc_jobs import distance_to_by_room
+from scripts_core.sc_jobs import distance_to_by_room, make_clean
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
@@ -79,7 +79,7 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
             route_obj_list = "\n".join(route_obj_list)
             if failure_reason == TransitionFailureReasons.PATH_PLAN_FAILED or failure_reason == TransitionFailureReasons.RESERVATION:
                 interaction.sim.sim_info.use_object_index += 1
-            if sc_Vars.DEBUG:
+            if sc_Vars.DEBUG or sc_Vars.DEBUG_ROUTING:
                 now = services.time_service().sim_now
                 if hasattr(interaction.target, "definition"):
                     obj_id = interaction.target.definition.id
@@ -100,11 +100,7 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
                 interaction.target.destroy()
                 return
             if "clean" in str(interaction).lower():
-                for commodity in interaction.target.commodity_tracker:
-                    if "exambed_dirtiness" in str(commodity).lower():
-                        commodity.set_value(100)
-                    if "commodity_dirtiness" in str(commodity).lower():
-                        commodity.set_value(100)
+                make_clean(interaction.target)
 
             if "xray" in action and "calibrate" not in action or \
                     "beachtowel" in str(interaction.target).lower() or "object_door" in str(interaction.target).lower() or \

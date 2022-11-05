@@ -86,7 +86,7 @@ class sc_RoutineMenu:
 
                     if count == sc_Vars.sim_index and not sim.sim_info.routine:
                         sim_name = LocalizationHelperTuning.get_raw_text("<font color='#990000'>{}: {} {}</font>".format(count, sim.first_name, sim.last_name))
-                    elif count == sc_Vars.routine_sim_index and sim.sim_info.routine:
+                    elif count == sc_Vars.routine_sim_index and sim.sim_info.routine and len(option_list) == get_number_of_routine_sims():
                         sim_name = LocalizationHelperTuning.get_raw_text("<font color='#990000'>{}: {} {}</font>".format(count, sim.first_name, sim.last_name))
                     elif count - get_number_of_non_routine_sims() == sc_Vars.routine_sim_index and sim.sim_info.routine:
                         sim_name = LocalizationHelperTuning.get_raw_text("<font color='#990000'>{}: {} {}</font>".format(count - get_number_of_non_routine_sims(), sim.first_name, sim.last_name))
@@ -102,7 +102,7 @@ class sc_RoutineMenu:
                             sim.sim_info.routine_info.title.title(), autonomy, currently))
                     else:
                         sim.job = get_sim_role(sim)
-                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}\nAutonomy: {}\nCurrently:\n{}".format(
+                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}Autonomy: {}\nCurrently:\n{}".format(
                             sim.job.title(), autonomy, currently))
                     if hasattr(sim, "icon_info"):
                         sim_icon = get_icon_info_data(sim)

@@ -1,20 +1,14 @@
-import heapq
-
 import date_and_time
 import gsi_handlers
 import services
 import sims
-import sims4
-import situations
-from situations.bouncer.bouncer import Bouncer, SimRequestScore, BouncerSimData
-from situations.bouncer.bouncer_types import BouncerRequestStatus
-
-from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import get_number_of_sims, get_venue, get_filters
-from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_util import init_sim, error_trap
 from sims.sim_info_types import SimZoneSpinUpAction
 from sims.sim_spawner_service import SimSpawnerService, SimSpawnReason
+
+from scripts_core.sc_debugger import debugger
+from scripts_core.sc_jobs import get_number_of_sims, get_venue, get_config
+from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_util import error_trap
 
 
 class sc_SpawnHandler(SimSpawnerService):
@@ -27,11 +21,7 @@ class sc_SpawnHandler(SimSpawnerService):
 
     def _spawn_requested_sim(self, request):
         try:
-            current_zone = services.current_zone()
             now = services.time_service().sim_now
-            if not sc_Vars.spawn_cooldown:
-                sc_Vars.spawn_cooldown = date_and_time.create_time_span(minutes=1.0)
-
             for other_request in tuple(self._submitted_requests):
                 if request._is_request_for_same_sim(other_request):
                     self._submitted_requests.remove(other_request)
@@ -45,76 +35,39 @@ class sc_SpawnHandler(SimSpawnerService):
             place_strategy = request._place_strategy
             location = place_strategy.location
             sim_info = request._sim_info
+            name = sim_info.first_name.lower() + " " + sim_info.last_name.lower()
+            situation_name = str(request.customer_data.situation).lower() if hasattr(request.customer_data, "situation") else "None"
 
-            if current_zone.is_zone_running:
-                if request._spawn_reason != SimSpawnReason.TRAVELING and request._spawn_reason != SimSpawnReason.DEFAULT:
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Spawn".format(sim_info.first_name))
-                    if not sc_SpawnHandler.time_last_spawned:
-                        sc_SpawnHandler.time_last_spawned = now
-                    elif now - sc_SpawnHandler.time_last_spawned < sc_Vars.spawn_cooldown:
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                        return
-                    else:
-                        sc_Vars.spawn_cooldown = now
+            spawn_sim = sims.sim_spawner.SimSpawner.spawn_sim((request._sim_info),
+                sim_position=(place_strategy.position),
+                sim_location=location,
+                sim_spawner_tags=(place_strategy.spawner_tags),
+                spawn_point_option=(place_strategy.spawn_point_option),
+                saved_spawner_tags=(place_strategy.saved_spawner_tags),
+                spawn_action=(place_strategy.spawn_action),
+                from_load=(request._from_load),
+                spawn_point=(place_strategy.spawn_point),
+                spawn_at_lot=(place_strategy.spawn_at_lot),
+                use_random_sim_spawner_tag=(place_strategy.use_random_sim_spawner_tag))
 
-                venue = get_venue()
-                sims_on_lot = get_number_of_sims(True)
-                if sc_Vars.DISABLE_SPAWNS:
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                    return
-                if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start \
-                        and sc_Vars.spawn_time_start > 0 or not sc_Vars.DISABLE_CULLING and \
-                        services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                    return
-                if sims_on_lot >= sc_Vars.MAX_SIMS:
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                    return
-                if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and sc_Vars.DISABLE_WALKBYS:
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                    return
-                if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and "venue_doctor" in venue:
-                    if sc_Vars.DEBUG:
-                        debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                    return
-                filters = get_filters("spawn")
-                if filters is not None:
-                    name = request._sim_info.first_name.lower() + " " + request._sim_info.last_name.lower()
-                    if [f for f in filters if f in name]:
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Spawn Filtered".format(sim_info.first_name))
-                        return
-
-            success = sims.sim_spawner.SimSpawner.spawn_sim((request._sim_info), sim_position=(place_strategy.position),
-              sim_location=location,
-              sim_spawner_tags=(place_strategy.spawner_tags),
-              spawn_point_option=(place_strategy.spawn_point_option),
-              saved_spawner_tags=(place_strategy.saved_spawner_tags),
-              spawn_action=(place_strategy.spawn_action),
-              from_load=(request._from_load),
-              spawn_point=(place_strategy.spawn_point),
-              spawn_at_lot=(place_strategy.spawn_at_lot),
-              use_random_sim_spawner_tag=(place_strategy.use_random_sim_spawner_tag))
-            if success:
+            if spawn_sim:
                 sim_info = request._sim_info
-                sim = init_sim(sim_info)
                 sc_SpawnHandler.spawned_sims.append(sim_info)
 
                 if services.get_rabbit_hole_service().will_override_spin_up_action(sim_info.id):
                     services.sim_info_manager().schedule_sim_spin_up_action(sim_info, SimZoneSpinUpAction.NONE)
                 else:
                     services.sim_info_manager().schedule_sim_spin_up_action(sim_info, request._spin_up_action)
-                try:
-                    self._next_spawn_time = services.time_service().sim_now + sc_Vars.spawn_cooldown
-                except:
-                    pass
+
+                spawn_time = get_config("spawn.ini", "spawn", "time")
+                spawn_time = 5 if not spawn_time else spawn_time
+                sc_SpawnHandler.time_last_spawned = now
+                sc_Vars.spawn_cooldown = sc_SpawnHandler.time_last_spawned + date_and_time.create_time_span(minutes=spawn_time)
+                self._next_spawn_time = sc_Vars.spawn_cooldown
+
                 message = 'Spawn Start'
+                if sc_Vars.DEBUG_SPAWN:
+                    debugger("Spawn Success: {} Situation: {} Reason: {} Spin Up: {}".format(name, situation_name, request._spawn_reason, request._spin_up_action))
             else:
                 if request in self._spawning_requests:
                     self._spawning_requests.remove(request)
@@ -125,5 +78,56 @@ class sc_SpawnHandler(SimSpawnerService):
         except BaseException as e:
             error_trap(e)
 
+    def submit_request(self, request):
+        spawn_sim = True
+        sim_info = request._sim_info
+        situation_name = str(request.customer_data.situation).lower() if hasattr(request.customer_data, "situation") else "None"
+        name = sim_info.first_name.lower() + " " + sim_info.last_name.lower()
+        venue = get_venue()
+        sims_on_lot = get_number_of_sims(True)
+
+        if sc_Vars.DISABLE_SPAWNS:
+            spawn_sim = False
+
+        if sims_on_lot >= sc_Vars.MAX_SIMS:
+            spawn_sim = False
+
+        filters = get_config("spawn.ini", "spawn", "sims")
+        if filters is not None:
+            if [f for f in filters if f.lower() in name.lower()]:
+                spawn_sim = False
+
+        filters = get_config("spawn.ini", "spawn", "roles")
+        if filters is not None:
+            if not sc_Vars.DISABLE_ROUTINE and request._spawn_reason == SimSpawnReason.ZONE_SITUATION and \
+                    [f for f in filters if f.lower() in situation_name]:
+                spawn_sim = False
+
+        if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start \
+                and sc_Vars.spawn_time_start > 0 or not sc_Vars.DISABLE_CULLING and \
+                services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
+            spawn_sim = False
+
+        if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and sc_Vars.DISABLE_WALKBYS:
+            spawn_sim = False
+
+        if request._spawn_reason == SimSpawnReason.OPEN_STREETS_SITUATION and "venue_doctor" in venue:
+            spawn_sim = False
+
+        if spawn_sim:
+            if request in self._submitted_requests:
+                return
+            self._submitted_requests.append(request)
+            self._submitted_needs_sorting = True
+            if gsi_handlers.sim_spawner_service_log.sim_spawner_service_log_archiver.enabled:
+                request.log_to_gsi('Request Submitted')
+
+        if sc_Vars.DEBUG_SPAWN:
+            status = " Success"
+            if not spawn_sim:
+                status = " Failed"
+            debugger("Request{}: {} Situation: {} Reason: {} Spin Up: {}".format(status, name, situation_name, request._spawn_reason, request._spin_up_action))
+
 
 SimSpawnerService._spawn_requested_sim = sc_SpawnHandler._spawn_requested_sim
+SimSpawnerService.submit_request = sc_SpawnHandler.submit_request

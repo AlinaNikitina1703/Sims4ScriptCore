@@ -1,0 +1,965 @@
+object_door
+[Zone Info:] 378036983766593331
+[Object ID:] 294721790744463099
+[Object Name:] object_door
+[Object Definition ID:] 66452 (0x10394)
+[Object Tuning ID:] 14872
+[Object Footprint:] 1.0593368493909339
+[Object Outside:] False
+[Object In Use:] False
+[Object Scale:] 1
+[Object Locked:] None
+[Object Dirty:] False
+[Object Room ID:] 41
+[Object Level:] 0
+[Object Opacity:] None
+[Object Location ID:] 0
+[Object POS:] 148.2051239013672, 157.9499969482422, 262.4877624511719
+[Object ROT:] 0.0, -0.7077483534812927, 0.0, 0.7064646482467651
+[Type:] class sims4.tuning.instances.object_door
+[Object Slots:] None
+[Object Tags:] Build_DoorCurved, Color_Brown, Build_DoorSingle, Build_Door
+[Commodities:]
+Commodity(commodity_new_object@223.0242)
+
+
+
+INFO:
+
+(AffordanceTuning): None
+(AnimalHome): None
+(AnimalObject): None
+(AnimalPreference): None
+(Animation): None
+(AnimationOverlay): None
+(Audio): None
+(Autonomy): None
+(AutonomyMarker): None
+(Awareness): None
+(Buffs): None
+(Canvas): None
+(Carryable): None
+(Carrying): None
+(CensorGrid): None
+(CollectableComponent): None
+(ConsumableComponent): None
+(Crafting): None
+(CraftingStationComponent): None
+(Display): None
+(Effects): None
+(EnsembleComponent): None
+(EnvironmentScoreComponent): None
+(Example): None
+(FADE_DURATION): 1.2
+(FORWARD_OFFSET): 0.04
+(FishingLocation): None
+(FlowingPuddle): None
+(FocusComponent): None
+(Footprint): None
+(Game): None
+(Gameplay): None
+(Gardening): None
+(HOVERTIP_HANDLE): 0
+(INACTIVE_APARTMENT_DOOR_PORTAL_COST): 9999
+(INITIAL_DEPRECIATION): 0.2
+(INSTANCE_TUNABLES): is_door_portal: TunableBool
+(Idle): None
+(Inventory): None
+(InventoryItem): None
+(Lighting): None
+(LineOfSight): None
+(LinkedObject): None
+(LiveDrag): None
+(LiveDragTarget): None
+(Lock): None
+(LunarPhaseAware): None
+(MODULE_TUNABLES): INITIAL_DEPRECIATION: TunablePercent, FADE_DURATION: TunableSimMinute
+(Mannequin): None
+(ModularObject): None
+(Name): None
+(NarrativeAware): None
+(NewObject): None
+(ObjectAge): None
+(ObjectClaim): None
+(ObjectFashionMarketplace): None
+(ObjectMarketplace): None
+(ObjectRelationship): None
+(ObjectRouting): None
+(ObjectTeleportation): None
+(Ownable): None
+(OwningHousehold): None
+(ParentToSimHead): None
+(Portal): None
+(PortalAnimation): None
+(PortalLocking): None
+(Position): None
+(Privacy): None
+(ProceduralAnimation): None
+(Proximity): None
+(Render): None
+(Retail): None
+(Routing): None
+(ScholarshipLetter): None
+(SeasonAware): None
+(Sim): None
+(SituationScheduler): None
+(Slot): None
+(SpawnPoint): None
+(Spawner): None
+(StageMark): None
+(State): None
+(Statistic): None
+(Stereo): None
+(Stolen): None
+(StoredActorLocation): None
+(StoredAudio): None
+(StoredInfoComponent): None
+(StoredObjectInfo): None
+(StoredSimInfo): None
+(TimeOfDay): None
+(Tooltip): None
+(Topic): None
+(Utilities): None
+(VISIBLE_TO_AUTOMATION): True
+(Vehicle): None
+(Video): None
+(WaitingLine): None
+(WeatherAware): None
+(Whim): None
+(ZoneModifier): None
+(_NO_SLOTS): frozenset()
+(_UiObjectMetadata_sparse_value): distributor.sparse.SparseMessage object at 0x00007FF421B05990
+(__class__): class sims4.tuning.instances.object_door
+(__delattr__): method-wrapper __delattr__ of object_door object at 0x00007FF4245FF850
+(__dict__): _routing_context: ObjectID: 0, Radius: 1.0593, Key14221992433303976534,3548561239,0, FootprintID: 30321, ConectivityHandles: () FlagsIgnoreOwnFootprint, _raycast_context: None, _suppress_statistic_callback_alarm_calculation: False, _component_instances: live_drag_component: LiveDragComponent(object_door:0x04170fe83ce406fb), footprint_component: FootprintComponent(object_door:0x04170fe83ce406fb), slot_component: SlotComponent(object_door:0x04170fe83ce406fb), focus_component: FocusComponent(object_door:0x04170fe83ce406fb), portal_component: PortalComponent(object_door:0x04170fe83ce406fb), portal_locking_component: PortalLockingComponent(object_door:0x04170fe83ce406fb), portal_animation_component: PortalAnimationComponent(object_door:0x04170fe83ce406fb), state_component: StateComponent(object_door:0x04170fe83ce406fb), statistic_component: StatisticComponent(object_door:0x04170fe83ce406fb), newobject_component: NewObjectComponent(object_door:0x04170fe83ce406fb), id: 294721790744463099, manager: objects.object_manager.ObjectManager object at 0x00007FF41562B690, definition: Definition: 66452, _visible_to_client: True, _interaction_refs: None, _parts: part 0 on object_door:0x04170fe83ce406fb, part 1 on object_door:0x04170fe83ce406fb, content_source: 0, wall_or_fence_placement: True, live_drag_component: LiveDragComponent(object_door:0x04170fe83ce406fb), _component_definitions: (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent, class objects.components.new_object_component.NewObjectComponent, class routing.portals.portal_animation_component.PortalAnimationComponent, class routing.portals.portal_component.PortalComponent, class objects.components.locking_components.PortalLockingComponent, class objects.components.slot_component.SlotComponent), footprint_component: FootprintComponent(object_door:0x04170fe83ce406fb), slot_component: SlotComponent(object_door:0x04170fe83ce406fb), _dynamic_commodity_flags_map: component_commodities: frozenset(class sims4.tuning.instances.commodity_Pets_SniffNewObject), _dynamic_animation_overrides: None, _cached_commodity_flags: frozenset(class sims4.tuning.instances.staticCommodity_Rival_BringPizza, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.commodity_Pets_SniffNewObject, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_LoudNPC_answerDoor, class sims4.tuning.instances.StaticCommodity_RingDoorbell, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Angry, class sims4.tuning.instances.staticCommodity_CollegeOrganizations_SecretSociety_JoinVisit, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_CheckMail, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_Hangout_Uninvited_arrival, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_hangoutArrival_genericNotGreeted, class sims4.tuning.instances.staticCommodity_HolidayTradition_TrickorTreat_Arrival, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Polite), _cached_locations_for_posture: (), _cached_position_and_routing_surface_for_posture: (), _get_locations_for_posture_internal: bound method ScriptObject._rebind_and_get_locations_for_posture_internal of object_door(0x04170fe83ce406fb), get_locations_for_posture: bound method ScriptObject._cache_and_return_get_locations_for_posture of object_door(0x04170fe83ce406fb), get_position_and_routing_surface_for_posture: bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of object_door(0x04170fe83ce406fb), item_location: ItemLocation.ON_LOT  1, focus_component: FocusComponent(object_door:0x04170fe83ce406fb), portal_component: PortalComponent(object_door:0x04170fe83ce406fb), portal_locking_component: PortalLockingComponent(object_door:0x04170fe83ce406fb), portal_animation_component: PortalAnimationComponent(object_door:0x04170fe83ce406fb), state_component: StateComponent(object_door:0x04170fe83ce406fb), _persistence_group: PersistenceGroups.OBJECT  1, _registered_transition_controllers: None, _reservation_handlers: (), _on_reservation_handlers_changed: bound method LiveDragComponent._on_owner_in_use_list_changed of LiveDragComponent(object_door:0x04170fe83ce406fb), _reservation_clobberers: None, _model: 00000000c55eaac449607a56.01661233, _material_variant: 1002510387, _rig: 00000000c55eaac449607a56.8eaf13de, _slot: 00000000c55eaac449607a56.d3044521, _slots_resource: sims4.ObjectSlots, _state_index: 0, _ui_metadata_stack: None, _ui_metadata_handles: None, _ui_metadata_cache: None, primitives: DistributionSet(set()), _location: Location(Transform(Vector3(148.205124, 157.949997, 262.487762), Quaternion(0.000000, -0.707748, 0.000000, 0.706465)), 53F0EA2415E2F33,0,World, joint_name_or_hashNone, parentNone, slot_hash0), _children_objects: None, _scale: 1, _parent_type: 0, _parent_location: 0, _build_buy_lockout: False, _build_buy_lockout_alarm_handler: None, _tint: None, _opacity: None, _censor_state: None, _geometry_state: None, _geometry_state_overrides: None, _standin_model: None, _visibility: None, _visibility_flags: None, _material_state: None, _reference_arb: None, _audio_effects: None, _video_playlist: None, _painting_state: None, custom_name: None, custom_description: None, _multicolor: None, _display_number: None, _awareness_scores: None, _scratched: False, _voice_suffix_overrides: None, _base_value: 90, _needs_post_bb_fixup: False, _needs_depreciation: True, _swapping_to_parent: None, _swapping_from_parent: None, _on_children_changed: None, allow_opacity_change: True, _wind_speed_effect: None, _baby_skin_tone_and_cloth: None, _on_location_changed_callbacks: bound method Broadcaster._on_broadcasting_object_moved of sims4.tuning.instances.Basemental:Police_Raid_Broadcaster_Doors object at 0x00007FF3F15FC2D0, function GameObject._location_changed at 0x00007FF46E845200, _transient: None, _created_constraints: None, _created_constraints_dirty: True, _household_owner_id: 0, new_in_inventory: True, is_new_object: True, _provided_surface: None, _hidden_flags: 0, _local_tags: None, _persisted_tags: None, _is_surface: (False, False): False, _build_buy_use_flags: 0, _scheduled_elements: None, _work_locks: _weakrefset.WeakSet object at 0x00007FF4F5CDDAD0, _on_hidden_or_shown_callbacks: None, _provided_mobile_posture_operations: None, _back_spawn_point: None, _UiObjectMetadata_sparse_value: distributor.sparse.SparseMessage object at 0x00007FF421B05990, statistic_component: StatisticComponent(object_door:0x04170fe83ce406fb), newobject_component: NewObjectComponent(object_door:0x04170fe83ce406fb), _super_affordances: (class sims4.tuning.instances.LittleMsSam:SimPickerAssignRooms, class sims4.tuning.instances.LittleMsSam:MoreBuyableVenue_Close, class sims4.tuning.instances.LittleMsSam:door_Padlock_AssignRooms, class sims4.tuning.instances.LittleMsSam:MoreBuyableVenue_Open, class sims4.tuning.instances.LittleMsSam:SimPicker_ForceToLEave, class sims4.tuning.instances.LittleMsSam:ForceToLeave_All, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllElder, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllYoungAdult_Adult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllElder, class sims4.tuning.instances.LittleMsSam:OpenDoorSimPicker_Community, class sims4.tuning.instances.LittleMsSam:CloseDoorSimPicker, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllToddler, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllAdult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllTeen_YoungAdults, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllMale, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllToddler, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllYoungAdult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllTeen, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllChild, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllTeen, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Employees, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllToddler_Children, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_Community, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllTeen_Adult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllFemale, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllChild, class sims4.tuning.instances.LittleMsSam:OpenDoorSimPickerPets, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteractions_Unlock_All_community, class sims4.tuning.instances.LittleMsSam:OpenDoorSimPicker, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllAdult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllYoungAdult, class sims4.tuning.instances.sim-stand, class sims4.tuning.instances.door_RingDoorbell, class sims4.tuning.instances.door_PlayerRingDoorbell, class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.door_SetFrontDoor, class sims4.tuning.instances.door_SetFrontDoor_Debug, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Actor, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_All, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Actor, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Household, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Employees, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Household, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Employees, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Pet_Dog, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Pet_Cat, class sims4.tuning.instances.door_ApartmentAskToChatPicker, class sims4.tuning.instances.door_Apartment_InviteToHangout_simPicker, class sims4.tuning.instances.si_SimPicker_TravelWith_VisitApartment, class sims4.tuning.instances.door_Apartment_NPCRingDoorbell, class sims4.tuning.instances.door_Apartment_NPC_angryKnock_childComplaint, class sims4.tuning.instances.door_Apartment_WaitOutside, class sims4.tuning.instances.door_Apartment_AngryKnock, class sims4.tuning.instances.door_AngryKnock_ApartmentLandlord, class sims4.tuning.instances.door_Apartment_AngryKnock_Neighbor_Complain_Noise, class sims4.tuning.instances.door_Apartment_PoliteKnock, class sims4.tuning.instances.door_Apartment_RouteTo_AnswerComplaint_loudNeighborNPC, class sims4.tuning.instances.door_Apartment_RouteTo_thenCheckMail, class sims4.tuning.instances.door_Apartment_RouteTo_thenEmptyTrash, class sims4.tuning.instances.door_Apartment_RouteTo_insideHomeLot_endSituationLoudNoises, class sims4.tuning.instances.door_Apartment_RouteTo_goInside_ActiveLot, class sims4.tuning.instances.door_Apartment_InviteOver_createSituation, class sims4.tuning.instances.TrickorTreat_Arrive, class sims4.tuning.instances.collegeOrganization_SecretSociety_JoinVisit_UnlockDoor, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlocks_RoommateNPCs, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Locks_RoommateNPCs, class sims4.tuning.instances.door_PlayerRingDoorbell_UniversityHousing, class sims4.tuning.instances.door_Immediate_NoTrespassing_Friends, class sims4.tuning.instances.door_Immediate_NoTrespassing_Neighbors, class sims4.tuning.instances.Door_Immediate_NoTrespassing_Vampires, class sims4.tuning.instances.door_Immediate_NoTrespassing_Solicitors, class sims4.tuning.instances.door_PlayerRingDoorbell_ParanormalInvestigation, class sims4.tuning.instances.door_PlayerRingDoorbell_InteriorDecorator, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlocks_Chickens, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Locks_Chickens, class sims4.tuning.instances.door_Padlock_Lock_Everyone_Allow_HighSchoolFaculty, class sims4.tuning.instances.si_SimPicker_TravelWith_GoHome, class sims4.tuning.instances.door_Apartment_PoliteKnock_Neighbor_Intrigued_Noise, class sims4.tuning.instances.door_Apartment_PoliteKnock_Neighbor_Intrigued_Smell, class sims4.tuning.instances.door_Apartment_endSituationNeighborReactsToYou_LoudNoises, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorLock_Actor, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorLock_All, class sims4.tuning.instances.lockHouseholdSimsPickerInteraction_lock_door, class sims4.tuning.instances.lockHouseholdSimsPickerInteraction_unlock_door, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorUnlock_Actor, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorUnlock_All, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Butler, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Locks_Everyone_Allow_Butler, class sims4.tuning.instances.petInvestigate_Obsess_Watch_Doorbell_Cat, class sims4.tuning.instances.petInvestigate_LazyTrait_Obsess_Watch_Doorbell, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_AllPets, class sims4.tuning.instances.door_RingDoorbell_Debug, class sims4.tuning.instances.petInvestigate_Obsess_Watch_Doorbell_Dog, class sims4.tuning.instances.petInvestigate_Obsess_Watch_Doorbell_NoBark, class sims4.tuning.instances.clubPickerSuperInteraction_Padlock_Lock_Everyone_Allow_Club, class sims4.tuning.instances.clubPickerSuperInteraction_Padlock_Unlock_Club, class sims4.tuning.instances.Door_debug_setVFX_0_Off, class sims4.tuning.instances.Door_debug_setVFX_1_loudMusic, class sims4.tuning.instances.Door_debug_setVFX_2_loudWoohoo, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Adults, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Alien, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Child, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Elder, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Female, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Male, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Teen, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Ghosts, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Vampire, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_YoungAdult, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Adults, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Alien, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Child, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Elder, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Female, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Male, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Teen, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Ghosts, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Vampire, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_YoungAdult, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Celebs, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Fans, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Kleptos, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Papas, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Celebs, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Fans, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Kleptos, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Papas, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Mermaids, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Mermaids, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Human, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Human, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Spellcaster, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Spellcaster, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Werewolves, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Werewolves, class sims4.tuning.instances.Scumbumbo_MCCC_AutonomyScan, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.btn_ModuleEditorMenu, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.btn_ModuleEditorMenuDebug, class sims4.tuning.instances.btn_GotoCamera, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_General_Object_CheatDebug_Info, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Main_Settings, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_Nudity_DoorLock_OnlyNudityEnthusiasts, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Climax, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Next, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToPlaylist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToFavorites, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeSexLocation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_EnableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisplaySexAutonomyRoomInfo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_SexControl_SwitchSexAutonomyState, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_SexControl_AdjustSexAutonomyProbability, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_SexControl_AdjustCategorySexAutonomyProbability, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dance)
+(__dir__): built-in method __dir__ of object_door object at 0x00007FF4245FF850
+(__doc__): None
+(__eq__): method-wrapper __eq__ of object_door object at 0x00007FF4245FF850
+(__format__): built-in method __format__ of object_door object at 0x00007FF4245FF850
+(__ge__): method-wrapper __ge__ of object_door object at 0x00007FF4245FF850
+(__getattr__): bound method ComponentContainer.__getattr__ of object_door(0x04170fe83ce406fb)
+(__getattribute__): method-wrapper __getattribute__ of object_door object at 0x00007FF4245FF850
+(__gt__): method-wrapper __gt__ of object_door object at 0x00007FF4245FF850
+(__hash__): method-wrapper __hash__ of object_door object at 0x00007FF4245FF850
+(__init__): bound method Door.__init__ of object_door(0x04170fe83ce406fb)
+(__init_subclass__): built-in method __init_subclass__ of HashedTunedInstanceMetaclass object at 0x00007FF44963C640
+(__le__): method-wrapper __le__ of object_door object at 0x00007FF4245FF850
+(__lt__): method-wrapper __lt__ of object_door object at 0x00007FF4245FF850
+(__module__): sims4.tuning.instances
+(__ne__): method-wrapper __ne__ of object_door object at 0x00007FF4245FF850
+(__new__): built-in method __new__ of type object at 0x000000002081E9C0
+(__reduce__): built-in method __reduce__ of object_door object at 0x00007FF4245FF850
+(__reduce_ex__): built-in method __reduce_ex__ of object_door object at 0x00007FF4245FF850
+(__reload_context__): bound method restore_component_methods of object_door(0x04170fe83ce406fb)
+(__reload_update_class__): function ScriptObject.__reload_update_class__ at 0x00007FF46E10EB00
+(__repr__): bound method BaseObject.__repr__ of object_door(0x04170fe83ce406fb)
+(__setattr__): method-wrapper __setattr__ of object_door object at 0x00007FF4245FF850
+(__sizeof__): built-in method __sizeof__ of object_door object at 0x00007FF4245FF850
+(__str__): bound method BaseObject.__str__ of object_door(0x04170fe83ce406fb)
+(__subclasshook__): built-in method __subclasshook__ of HashedTunedInstanceMetaclass object at 0x00007FF44963C640
+(__weakref__): weakref at 0x00007FF3EE6A3788 to object_door at 0x00007FF4245FF850
+(_add_child): bound method ClientObjectMixin._add_child of object_door(0x04170fe83ce406fb)
+(_add_to_world): bound method GameObject._add_to_world of object_door(0x04170fe83ce406fb)
+(_anim_overrides): None
+(_anim_overrides_cls): None
+(_anim_overrides_for_children): None
+(_anim_overrides_internal): AnimationOverrides(params_sims4_collections.frozendict(isParented: False, heightAboveFloor: low, objectPosition: Vector3Immutable(148.205124, 157.949997, 262.487762), objectOrientation: QuaternionImmutable(0.000000, -0.707748, 0.000000, 0.706465), hasChildren: False, isBobbing: False))
+(_audio_effects): None
+(_awareness_scores): None
+(_baby_skin_tone_and_cloth): None
+(_back_spawn_point): None
+(_base_value): 90
+(_bind_get_locations_for_posture_internal): bound method ScriptObject._bind_get_locations_for_posture_internal of object_door(0x04170fe83ce406fb)
+(_build_buy_lockout): False
+(_build_buy_lockout_alarm_handler): None
+(_build_buy_use_flags): 0
+(_cache_and_return_get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of object_door(0x04170fe83ce406fb)
+(_cache_and_return_get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of object_door(0x04170fe83ce406fb)
+(_cached_commodity_flags): frozenset(class sims4.tuning.instances.staticCommodity_Rival_BringPizza, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.commodity_Pets_SniffNewObject, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_LoudNPC_answerDoor, class sims4.tuning.instances.StaticCommodity_RingDoorbell, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Angry, class sims4.tuning.instances.staticCommodity_CollegeOrganizations_SecretSociety_JoinVisit, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_CheckMail, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_Hangout_Uninvited_arrival, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_hangoutArrival_genericNotGreeted, class sims4.tuning.instances.staticCommodity_HolidayTradition_TrickorTreat_Arrival, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Polite)
+(_cached_get_locations_for_posture): bound method ScriptObject._cached_get_locations_for_posture of object_door(0x04170fe83ce406fb)
+(_cached_get_position_and_routing_surface_for_posture): bound method ScriptObject._cached_get_position_and_routing_surface_for_posture of object_door(0x04170fe83ce406fb)
+(_cached_locations_for_posture): ()
+(_cached_position_and_routing_surface_for_posture): ()
+(_can_show_affordance): function ScriptObject._can_show_affordance at 0x00007FF46F136DD0
+(_censor_state): None
+(_children_objects): None
+(_children_recursive_fast_gen): bound method ClientObjectMixin._children_recursive_fast_gen of object_door(0x04170fe83ce406fb)
+(_clamp_opacity): bound method ClientObjectMixin._clamp_opacity of object_door(0x04170fe83ce406fb)
+(_client_scale): 1
+(_combined_part_cache): None
+(_commodity_flags): (class sims4.tuning.instances.staticCommodity_Rival_BringPizza, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_LoudNPC_answerDoor, class sims4.tuning.instances.StaticCommodity_RingDoorbell, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Angry, class sims4.tuning.instances.staticCommodity_CollegeOrganizations_SecretSociety_JoinVisit, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_CheckMail, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_Hangout_Uninvited_arrival, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_hangoutArrival_genericNotGreeted, class sims4.tuning.instances.staticCommodity_HolidayTradition_TrickorTreat_Arrival, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Polite)
+(_component_definitions): (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent, class objects.components.new_object_component.NewObjectComponent, class routing.portals.portal_animation_component.PortalAnimationComponent, class routing.portals.portal_component.PortalComponent, class objects.components.locking_components.PortalLockingComponent, class objects.components.slot_component.SlotComponent)
+(_component_instances): live_drag_component: LiveDragComponent(object_door:0x04170fe83ce406fb), footprint_component: FootprintComponent(object_door:0x04170fe83ce406fb), slot_component: SlotComponent(object_door:0x04170fe83ce406fb), focus_component: FocusComponent(object_door:0x04170fe83ce406fb), portal_component: PortalComponent(object_door:0x04170fe83ce406fb), portal_locking_component: PortalLockingComponent(object_door:0x04170fe83ce406fb), portal_animation_component: PortalAnimationComponent(object_door:0x04170fe83ce406fb), state_component: StateComponent(object_door:0x04170fe83ce406fb), statistic_component: StatisticComponent(object_door:0x04170fe83ce406fb), newobject_component: NewObjectComponent(object_door:0x04170fe83ce406fb)
+(_component_reload_hooks): live_drag_component: class objects.components.live_drag_component.LiveDragComponent, footprint_component: class objects.components.footprint_component.FootprintComponent, slot_component: class objects.components.slot_component.SlotComponent, focus_component: class animation.focus.focus_component.FocusComponent, portal_component: class routing.portals.portal_component.PortalComponent, portal_locking_component: class objects.components.locking_components.PortalLockingComponent, portal_animation_component: class routing.portals.portal_animation_component.PortalAnimationComponent, state_component: class objects.components.state.StateComponent, statistic_component: class objects.components.statistic_component.StatisticComponent, newobject_component: class objects.components.new_object_component.NewObjectComponent
+(_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: TunablePortalComponentWrapper.PortalComponent, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: TunableStateComponentWrapper.StateComponent, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(_components_native): ImmutableSlots(Slot: None, Video: None)
+(_create_back_spawn_point): bound method Door._create_back_spawn_point of object_door(0x04170fe83ce406fb)
+(_create_raycast_context): bound method ScriptObject._create_raycast_context of object_door(0x04170fe83ce406fb)
+(_create_routing_context): bound method HasFootprintComponent._create_routing_context of object_door(0x04170fe83ce406fb)
+(_created_constraints): None
+(_created_constraints_dirty): True
+(_default_anim_params): _sims4_collections.frozendict()
+(_destroy_back_spawn_point): bound method Door._destroy_back_spawn_point of object_door(0x04170fe83ce406fb)
+(_destroy_if_not_in_use): bound method GameObject._destroy_if_not_in_use of object_door(0x04170fe83ce406fb)
+(_disable_child_footprint_and_shadow): False
+(_display_number): None
+(_dynamic_animation_overrides): None
+(_dynamic_commodity_flags_map): component_commodities: frozenset(class sims4.tuning.instances.commodity_Pets_SniffNewObject)
+(_fill_ignored_objects_and_test_halfwalls): bound method ScriptObject._fill_ignored_objects_and_test_halfwalls of object_door(0x04170fe83ce406fb)
+(_fixup_pool_surface): bound method GameObject._fixup_pool_surface of object_door(0x04170fe83ce406fb)
+(_generic_ui_metadata_setters): hover_tip: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B36EA320, recipe_description: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B36EA560, recipe_name: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B36EA680, stolen_from_text: function SparseField.generic_setter.locals.generic_setter at 0x00007FF4B8AFBF80
+(_geometry_state): None
+(_geometry_state_overrides): None
+(_get_geometry_state_for_value): bound method ClientObjectMixin._get_geometry_state_for_value of object_door(0x04170fe83ce406fb)
+(_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of object_door(0x04170fe83ce406fb)
+(_get_locations_for_posture_internal_forward_wall_padding): bound method ScriptObject._get_locations_for_posture_internal_forward_wall_padding of object_door(0x04170fe83ce406fb)
+(_get_locations_for_posture_internal_no_location): bound method ScriptObject._get_locations_for_posture_internal_no_location of object_door(0x04170fe83ce406fb)
+(_get_locations_for_posture_internal_world_transform): bound method ScriptObject._get_locations_for_posture_internal_world_transform of object_door(0x04170fe83ce406fb)
+(_get_next_ui_metadata_handle): uid.UniqueIdGenerator object at 0x00007FF49D2693F8
+(_get_or_add_statistic_component): bound method HasStatisticComponent._get_or_add_statistic_component of object_door(0x04170fe83ce406fb)
+(_get_tuning_suggestions): bound method ScriptObject._get_tuning_suggestions of class sims4.tuning.instances.object_door
+(_get_wall_object_positional_padding): bound method ScriptObject._get_wall_object_positional_padding of object_door(0x04170fe83ce406fb)
+(_has_placement_flag): bound method BaseObject._has_placement_flag of object_door(0x04170fe83ce406fb)
+(_has_reservation_tests): False
+(_hidden_flags): 0
+(_household_owner_id): 0
+(_icon_override_gen): bound method GameObject._icon_override_gen of object_door(0x04170fe83ce406fb)
+(_inside_status_change): bound method GameObject._inside_status_change of object_door(0x04170fe83ce406fb)
+(_interaction_refs): None
+(_is_surface): (False, False): False
+(_local_tags): None
+(_location): Location(Transform(Vector3(148.205124, 157.949997, 262.487762), Quaternion(0.000000, -0.707748, 0.000000, 0.706465)), 53F0EA2415E2F33,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
+(_location_changed): function GameObject._location_changed at 0x00007FF46E845200
+(_location_field_internal): object_door:0x04170fe83ce406fb
+(_material_state): None
+(_material_variant): 1002510387
+(_model): 00000000c55eaac449607a56.01661233
+(_multicolor): None
+(_natural_ground_status_change): bound method GameObject._natural_ground_status_change of object_door(0x04170fe83ce406fb)
+(_needs_depreciation): True
+(_needs_post_bb_fixup): False
+(_notify_buildbuy_of_location_change): bound method GameObject._notify_buildbuy_of_location_change of object_door(0x04170fe83ce406fb)
+(_object_state_remaps): ()
+(_on_children_changed): None
+(_on_hidden_or_shown_callbacks): None
+(_on_location_changed_callbacks): bound method Broadcaster._on_broadcasting_object_moved of sims4.tuning.instances.Basemental:Police_Raid_Broadcaster_Doors object at 0x00007FF3F15FC2D0, function GameObject._location_changed at 0x00007FF46E845200
+(_on_reservation_handlers_changed): bound method LiveDragComponent._on_owner_in_use_list_changed of LiveDragComponent(object_door:0x04170fe83ce406fb)
+(_on_try_depreciation): bound method ClientObjectMixin._on_try_depreciation of object_door(0x04170fe83ce406fb)
+(_on_visibility_changed): bound method ClientObjectMixin._on_visibility_changed of object_door(0x04170fe83ce406fb)
+(_opacity): None
+(_painting_state): None
+(_parent_location): 0
+(_parent_type): 0
+(_part_data): (ImmutableSlots(adjacent_parts: None, anim_overrides: TunableAnimationOverridesWrapper._factory, disable_child_aop_forwarding: False, disable_sim_aop_forwarding: False, disabling_model_suite_indices: (), disabling_states: (), forward_direction_for_picking: Vector2(0.000000, -1.000000), is_mirrored: None, is_old_part_data: True, name: None, overlapping_parts: (), part_definition: class sims4.tuning.instances.part_Door, restrict_autonomy_preference: False, subroot_index: 0), ImmutableSlots(adjacent_parts: None, anim_overrides: TunableAnimationOverridesWrapper._factory, disable_child_aop_forwarding: False, disable_sim_aop_forwarding: False, disabling_model_suite_indices: (), disabling_states: (), forward_direction_for_picking: Vector2(0.000000, -1.000000), is_mirrored: None, is_old_part_data: True, name: None, overlapping_parts: (), part_definition: class sims4.tuning.instances.part_Door, restrict_autonomy_preference: False, subroot_index: 1))
+(_part_data_map): _sims4_collections.frozendict()
+(_parts): part 0 on object_door:0x04170fe83ce406fb, part 1 on object_door:0x04170fe83ce406fb
+(_persisted_tags): None
+(_persistence): PersistenceType.FULL
+(_persistence_group): PersistenceGroups.OBJECT
+(_potential_behavior_affordances_gen): bound method ScriptObject._potential_behavior_affordances_gen of object_door(0x04170fe83ce406fb)
+(_preroll_commodity_flags): frozenset()
+(_preroll_super_affordances): ()
+(_provided_mobile_posture): None
+(_provided_mobile_posture_operations): None
+(_provided_mobile_posture_types): None
+(_provided_surface): None
+(_raycast_context): None
+(_rebind_and_get_locations_for_posture_internal): bound method ScriptObject._rebind_and_get_locations_for_posture_internal of object_door(0x04170fe83ce406fb)
+(_reference_arb): None
+(_registered_transition_controllers): None
+(_remap_child_parenting): False
+(_remove_child): bound method ClientObjectMixin._remove_child of object_door(0x04170fe83ce406fb)
+(_remove_from_world): bound method GameObject._remove_from_world of object_door(0x04170fe83ce406fb)
+(_resend_client_scale): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(_resend_current_value): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(_resend_household_owner_id): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(_resend_parent_type_info): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(_resend_video_playlist): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(_reservation_clobberers): None
+(_reservation_handlers): ()
+(_reset_reference_arb): bound method ClientObjectMixin._reset_reference_arb of object_door(0x04170fe83ce406fb)
+(_rig): 00000000c55eaac449607a56.8eaf13de
+(_routing_context): ObjectID: 0, Radius: 1.0593, Key14221992433303976534,3548561239,0, FootprintID: 30321, ConectivityHandles: () FlagsIgnoreOwnFootprint
+(_scale): 1
+(_scheduled_elements): None
+(_scratched): False
+(_search_forwarded_interactions): bound method ScriptObject._search_forwarded_interactions of object_door(0x04170fe83ce406fb)
+(_set_placed_inside): bound method StateComponent._set_placed_inside of object_door(0x04170fe83ce406fb)
+(_set_placed_off_natural_ground): bound method StateComponent._set_placed_off_natural_ground of object_door(0x04170fe83ce406fb)
+(_set_placed_on_natural_ground): bound method StateComponent._set_placed_on_natural_ground of object_door(0x04170fe83ce406fb)
+(_set_placed_outside): bound method StateComponent._set_placed_outside of object_door(0x04170fe83ce406fb)
+(_setup_used_utilities): bound method ScriptObject._setup_used_utilities of class sims4.tuning.instances.object_door
+(_should_invalidate_location): bound method GameObject._should_invalidate_location of object_door(0x04170fe83ce406fb)
+(_slot): 00000000c55eaac449607a56.d3044521
+(_slots_resource): sims4.ObjectSlots
+(_specific_supported_posture_types): _sims4_collections.frozendict(class sims4.tuning.instances.posture_Stand: class sims4.tuning.instances.sim-stand)
+(_standin_model): None
+(_state_index): 0
+(_super_affordances): (class sims4.tuning.instances.LittleMsSam:SimPickerAssignRooms, class sims4.tuning.instances.LittleMsSam:MoreBuyableVenue_Close, class sims4.tuning.instances.LittleMsSam:door_Padlock_AssignRooms, class sims4.tuning.instances.LittleMsSam:MoreBuyableVenue_Open, class sims4.tuning.instances.LittleMsSam:SimPicker_ForceToLEave, class sims4.tuning.instances.LittleMsSam:ForceToLeave_All, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllElder, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllYoungAdult_Adult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllElder, class sims4.tuning.instances.LittleMsSam:OpenDoorSimPicker_Community, class sims4.tuning.instances.LittleMsSam:CloseDoorSimPicker, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllToddler, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllAdult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllTeen_YoungAdults, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllMale, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllToddler, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllYoungAdult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllTeen, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllChild, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllTeen, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Employees, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllToddler_Children, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_Community, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllTeen_Adult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Lock_AllFemale, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllChild, class sims4.tuning.instances.LittleMsSam:OpenDoorSimPickerPets, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteractions_Unlock_All_community, class sims4.tuning.instances.LittleMsSam:OpenDoorSimPicker, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllAdult, class sims4.tuning.instances.LittleMsSam:door_Padlock_ImmediateInteraction_Unlock_AllYoungAdult, class sims4.tuning.instances.sim-stand, class sims4.tuning.instances.door_RingDoorbell, class sims4.tuning.instances.door_PlayerRingDoorbell, class sims4.tuning.instances.debug_Reset, class sims4.tuning.instances.debug_ObjectDestroy, class sims4.tuning.instances.cheat_set_as_head, class sims4.tuning.instances.door_SetFrontDoor, class sims4.tuning.instances.door_SetFrontDoor_Debug, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Actor, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_All, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Actor, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Household, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Employees, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Household, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Everyone_Allow_Employees, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Pet_Dog, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_Pet_Cat, class sims4.tuning.instances.door_ApartmentAskToChatPicker, class sims4.tuning.instances.door_Apartment_InviteToHangout_simPicker, class sims4.tuning.instances.si_SimPicker_TravelWith_VisitApartment, class sims4.tuning.instances.door_Apartment_NPCRingDoorbell, class sims4.tuning.instances.door_Apartment_NPC_angryKnock_childComplaint, class sims4.tuning.instances.door_Apartment_WaitOutside, class sims4.tuning.instances.door_Apartment_AngryKnock, class sims4.tuning.instances.door_AngryKnock_ApartmentLandlord, class sims4.tuning.instances.door_Apartment_AngryKnock_Neighbor_Complain_Noise, class sims4.tuning.instances.door_Apartment_PoliteKnock, class sims4.tuning.instances.door_Apartment_RouteTo_AnswerComplaint_loudNeighborNPC, class sims4.tuning.instances.door_Apartment_RouteTo_thenCheckMail, class sims4.tuning.instances.door_Apartment_RouteTo_thenEmptyTrash, class sims4.tuning.instances.door_Apartment_RouteTo_insideHomeLot_endSituationLoudNoises, class sims4.tuning.instances.door_Apartment_RouteTo_goInside_ActiveLot, class sims4.tuning.instances.door_Apartment_InviteOver_createSituation, class sims4.tuning.instances.TrickorTreat_Arrive, class sims4.tuning.instances.collegeOrganization_SecretSociety_JoinVisit_UnlockDoor, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlocks_RoommateNPCs, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Locks_RoommateNPCs, class sims4.tuning.instances.door_PlayerRingDoorbell_UniversityHousing, class sims4.tuning.instances.door_Immediate_NoTrespassing_Friends, class sims4.tuning.instances.door_Immediate_NoTrespassing_Neighbors, class sims4.tuning.instances.Door_Immediate_NoTrespassing_Vampires, class sims4.tuning.instances.door_Immediate_NoTrespassing_Solicitors, class sims4.tuning.instances.door_PlayerRingDoorbell_ParanormalInvestigation, class sims4.tuning.instances.door_PlayerRingDoorbell_InteriorDecorator, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlocks_Chickens, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Locks_Chickens, class sims4.tuning.instances.door_Padlock_Lock_Everyone_Allow_HighSchoolFaculty, class sims4.tuning.instances.si_SimPicker_TravelWith_GoHome, class sims4.tuning.instances.door_Apartment_PoliteKnock_Neighbor_Intrigued_Noise, class sims4.tuning.instances.door_Apartment_PoliteKnock_Neighbor_Intrigued_Smell, class sims4.tuning.instances.door_Apartment_endSituationNeighborReactsToYou_LoudNoises, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorLock_Actor, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorLock_All, class sims4.tuning.instances.lockHouseholdSimsPickerInteraction_lock_door, class sims4.tuning.instances.lockHouseholdSimsPickerInteraction_unlock_door, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorUnlock_Actor, class sims4.tuning.instances.vampire_SpiritPowers_AlwaysWelcome_DoorUnlock_All, class sims4.tuning.instances.door_Padlock_ImmediateInteractions_Unlock_Butler, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Locks_Everyone_Allow_Butler, class sims4.tuning.instances.petInvestigate_Obsess_Watch_Doorbell_Cat, class sims4.tuning.instances.petInvestigate_LazyTrait_Obsess_Watch_Doorbell, class sims4.tuning.instances.door_Padlock_ImmediateInteraction_Lock_AllPets, class sims4.tuning.instances.door_RingDoorbell_Debug, class sims4.tuning.instances.petInvestigate_Obsess_Watch_Doorbell_Dog, class sims4.tuning.instances.petInvestigate_Obsess_Watch_Doorbell_NoBark, class sims4.tuning.instances.clubPickerSuperInteraction_Padlock_Lock_Everyone_Allow_Club, class sims4.tuning.instances.clubPickerSuperInteraction_Padlock_Unlock_Club, class sims4.tuning.instances.Door_debug_setVFX_0_Off, class sims4.tuning.instances.Door_debug_setVFX_1_loudMusic, class sims4.tuning.instances.Door_debug_setVFX_2_loudWoohoo, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Adults, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Alien, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Child, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Elder, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Female, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Male, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Teen, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Ghosts, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Vampire, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_YoungAdult, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Adults, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Alien, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Child, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Elder, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Female, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Male, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Teen, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Ghosts, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Vampire, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_YoungAdult, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Celebs, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Fans, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Kleptos, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Papas, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Celebs, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Fans, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Kleptos, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Papas, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Mermaids, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Mermaids, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Human, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Human, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Spellcaster, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Spellcaster, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Disable_Werewolves, class sims4.tuning.instances.LittleMsSam:NoGAMAllowed_Enable_Werewolves, class sims4.tuning.instances.Scumbumbo_MCCC_AutonomyScan, class sims4.tuning.instances.tmex:tool_move, class sims4.tuning.instances.tmex:tool_rotate, class sims4.tuning.instances.tmex:tool_elevate, class sims4.tuning.instances.tmex:tool_SetActiveObject, class sims4.tuning.instances.tmex:TOOL_Scale, class sims4.tuning.instances.AI_Menu, class sims4.tuning.instances.btn_ModuleEditorMenu, class sims4.tuning.instances.btn_ScriptCoreMenu, class sims4.tuning.instances.btn_ModuleCareerMenu, class sims4.tuning.instances.btn_ModuleOutfitMenu, class sims4.tuning.instances.btn_ModuleEditorMenuDebug, class sims4.tuning.instances.btn_GotoCamera, class sims4.tuning.instances.Fart_Settings, class sims4.tuning.instances.Bathroom_Pee, class sims4.tuning.instances.MusicMenu, class sims4.tuning.instances.S4WE_Menu, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Debug_Temporary_Function, class sims4.tuning.instances.TURBODRIVER:WickedWhims_General_Object_CheatDebug_Info, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Main_Settings, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_Nudity_DoorLock_OnlyNudityEnthusiasts, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Climax, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Next, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeAnimation_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToPlaylist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Playlist_AddToFavorites, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_ChangeSexLocation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Teasing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Handjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Footjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Oraljob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Vaginal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Anal, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Random, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Start_NPC_Sex_Playlist, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_EnableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisableFromSexAutonomy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Cheat_DisplaySexAutonomyRoomInfo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_SexControl_SwitchSexAutonomyState, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_SexControl_AdjustSexAutonomyProbability, class sims4.tuning.instances.TURBODRIVER:WickedWhims_AffSuper_SexControl_AdjustCategorySexAutonomyProbability, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_NPC_Start_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Change_Context_dance, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_homosexual, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dressed, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_standing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sideways, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_upside_down, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_carry, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kneeling, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_masturbation, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_blowjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_deep_throat, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cunnilingus, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rimjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_licking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fingering, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sixtynine, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_face_sitting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_titjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_thighjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_buttjob, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_doggy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_missionary, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cowgirl, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spooning, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_pronebone, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_piledriver, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spitroast, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_kissing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_spanking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_choking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_groping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_tits_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toes_sucking, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_flexible, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_double_penetration, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_peeing, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_fisting, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_squirt, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cumshot, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_creampie, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_in_mouth, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cum_inside, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bukkake, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foreplay, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_slow, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_passionate, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_rough, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_forced, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_bdsm, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_femdom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_maledom, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_freeuse, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_shy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_awkward, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_futa, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_threesome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_foursome, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_orgy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gangbang, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_harem, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_toy, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dildo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_camera, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_story, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_cuck, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_onlooker, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_weird, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_sleeping, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_gross, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_vampire, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_alien, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_ghost, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_servo, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_magic, class sims4.tuning.instances.TURBODRIVER:WickedWhims_Sex_Start_Context_dance)
+(_supported_posture_families): frozenset(stand)
+(_suppress_statistic_callback_alarm_calculation): False
+(_surface_type_changed): bound method StateComponent._surface_type_changed of object_door(0x04170fe83ce406fb)
+(_swapping_from_parent): None
+(_swapping_parents): bound method ClientObjectMixin._swapping_parents of object_door(0x04170fe83ce406fb)
+(_swapping_to_parent): None
+(_tint): None
+(_transient): None
+(_transient_tuning): False
+(_tuning_loaded_callback): bound method ScriptObject._tuning_loaded_callback of class sims4.tuning.instances.object_door
+(_ui_metadata_cache): None
+(_ui_metadata_handles): None
+(_ui_metadata_stack): None
+(_update_location_callbacks): bound method GameObject._update_location_callbacks of object_door(0x04170fe83ce406fb)
+(_update_persistence_group): bound method GameObject._update_persistence_group of object_door(0x04170fe83ce406fb)
+(_update_preroll_commodity_flags): bound method ScriptObject._update_preroll_commodity_flags of class sims4.tuning.instances.object_door
+(_use_locations_for_posture_for_connect_to_sim_test): False
+(_used_utilities): None
+(_verify_tuning_callback): bound method GameObject._verify_tuning_callback of class sims4.tuning.instances.object_door
+(_video_playlist): None
+(_visibility): None
+(_visibility_flags): None
+(_visible_to_client): True
+(_voice_suffix_overrides): None
+(_wind_speed_effect): None
+(_work_locks): _weakrefset.WeakSet object at 0x00007FF4F5CDDAD0
+(_world_file_object_persists): False
+(add_auto_constraint): bound method GameObject.add_auto_constraint of class sims4.tuning.instances.object_door
+(add_awareness_scores): bound method ClientObjectMixin.add_awareness_scores of object_door(0x04170fe83ce406fb)
+(add_client_state_suppressor): bound method StateComponent.add_client_state_suppressor of object_door(0x04170fe83ce406fb)
+(add_component): bound method BaseObject.add_component of object_door(0x04170fe83ce406fb)
+(add_disallowed_sim): bound method PortalLockingComponent.add_disallowed_sim of object_door(0x04170fe83ce406fb)
+(add_dynamic_animation_overrides): bound method ScriptObject.add_dynamic_animation_overrides of object_door(0x04170fe83ce406fb)
+(add_dynamic_commodity_flags): bound method ScriptObject.add_dynamic_commodity_flags of object_door(0x04170fe83ce406fb)
+(add_dynamic_component): bound method ScriptObject.add_dynamic_component of object_door(0x04170fe83ce406fb)
+(add_geometry_state_override): bound method ClientObjectMixin.add_geometry_state_override of object_door(0x04170fe83ce406fb)
+(add_interaction_reference): bound method BaseObject.add_interaction_reference of object_door(0x04170fe83ce406fb)
+(add_lock_data): bound method BaseLockingComponent.add_lock_data of object_door(0x04170fe83ce406fb)
+(add_modifiers_for_interaction): bound method StatisticComponent.add_modifiers_for_interaction of object_door(0x04170fe83ce406fb)
+(add_modifiers_for_skill): bound method StatisticComponent.add_modifiers_for_skill of object_door(0x04170fe83ce406fb)
+(add_name_changed_callback): function NameComponent.lambda at 0x00007FF4791EC710
+(add_portal_data): bound method PortalComponent.add_portal_data of object_door(0x04170fe83ce406fb)
+(add_portal_events): bound method PortalComponent.add_portal_events of object_door(0x04170fe83ce406fb)
+(add_reservation_clobberer): bound method ReservationMixin.add_reservation_clobberer of object_door(0x04170fe83ce406fb)
+(add_reservation_handler): bound method ReservationMixin.add_reservation_handler of object_door(0x04170fe83ce406fb)
+(add_spawner_data): function SpawnerComponent.lambda at 0x00007FF46F2497A0
+(add_state_changed_callback): bound method StateComponent.add_state_changed_callback of object_door(0x04170fe83ce406fb)
+(add_statistic_component): bound method HasStatisticComponent.add_statistic_component of object_door(0x04170fe83ce406fb)
+(add_statistic_modifier): bound method StatisticComponent.add_statistic_modifier of object_door(0x04170fe83ce406fb)
+(add_to_collection_tracker): function CollectableComponent.lambda at 0x00007FF4747BBB90
+(add_to_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47049F050
+(add_ui_metadata): bound method ClientObjectMixin.add_ui_metadata of object_door(0x04170fe83ce406fb)
+(add_voice_suffix_override): bound method ClientObjectMixin.add_voice_suffix_override of object_door(0x04170fe83ce406fb)
+(add_work_lock): bound method GameObject.add_work_lock of object_door(0x04170fe83ce406fb)
+(additional_interaction_constraints): ()
+(all_valid_slot_types): frozenset()
+(allow_aop_forward): bound method ScriptObject.allow_aop_forward of object_door(0x04170fe83ce406fb)
+(allow_opacity_change): True
+(allow_preroll_multiple_targets): False
+(ancestry_gen): bound method ScriptObject.ancestry_gen of object_door(0x04170fe83ce406fb)
+(anim_boundary_conditions_check_carry): False
+(animation_actor): object_door:0x04170fe83ce406fb
+(aop_forward_data): ImmutableSlots(child_obj_tags: frozenset(), should_search_forwarded_child_aop: False, should_search_forwarded_parent_aop: False, should_search_forwarded_sim_aop: False)
+(append_audio_effect): bound method ClientObjectMixin.append_audio_effect of object_door(0x04170fe83ce406fb)
+(append_tags): bound method GameObject.append_tags of object_door(0x04170fe83ce406fb)
+(apply_children_component_anim_overrides): False
+(apply_definition): bound method ClientObjectMixin.apply_definition of object_door(0x04170fe83ce406fb)
+(attempt_to_remap_parent): bound method ClientObjectMixin.attempt_to_remap_parent of object_door(0x04170fe83ce406fb)
+(attributes): None
+(audio_effects): None
+(autonomy_modifiers): ()
+(awareness_scores): None
+(baby_cloth): None
+(base_value): 90
+(blocking_balloon_overrides): (TunableBalloonWrapper.factory,)
+(bone_name_hash): 0
+(build_buy_lockout): False
+(build_buy_use_flags): 0
+(c_api_get_portal_duration): bound method PortalComponent.c_api_get_portal_duration of object_door(0x04170fe83ce406fb)
+(camera_view): None
+(can_add_component): bound method ComponentContainer.can_add_component of object_door(0x04170fe83ce406fb)
+(can_go_in_inventory_type): function InventoryItemComponent.lambda at 0x00007FF47052BD40
+(can_reset): True
+(can_trigger_teleport_style): function BuffComponent.lambda at 0x00007FF46BA827A0
+(cancel_interactions_running_on_object): bound method BaseObject.cancel_interactions_running_on_object of object_door(0x04170fe83ce406fb)
+(catalog_description): 907912008
+(catalog_name): 1768246759
+(catalog_value): 90
+(ceiling_placement): False
+(censor_state): None
+(check_affordance_for_suppression): bound method StatisticComponent.check_affordance_for_suppression of object_door(0x04170fe83ce406fb)
+(check_line_of_sight): bound method ScriptObject.check_line_of_sight of object_door(0x04170fe83ce406fb)
+(child_provided_aops_gen): bound method SlotComponent.child_provided_aops_gen of object_door(0x04170fe83ce406fb)
+(children): ()
+(children_recursive_gen): bound method ClientObjectMixin.children_recursive_gen of object_door(0x04170fe83ce406fb)
+(claim): bound method ScriptObject.claim of object_door(0x04170fe83ce406fb)
+(clear_check_line_of_sight_cache): built-in method clear of collections.OrderedDict object at 0x00007FF46E115290
+(clear_commodity_flags): bound method ScriptObject.clear_commodity_flags of class sims4.tuning.instances.object_door
+(clear_default_children): bound method ClientObjectMixin.clear_default_children of object_door(0x04170fe83ce406fb)
+(clear_parent): bound method ClientObjectMixin.clear_parent of object_door(0x04170fe83ce406fb)
+(clear_portal_cost_override): bound method PortalComponent.clear_portal_cost_override of object_door(0x04170fe83ce406fb)
+(clear_raycast_context): bound method HasFootprintComponent.clear_raycast_context of object_door(0x04170fe83ce406fb)
+(clear_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF4794E6EF0
+(clone): bound method ScriptObject.clone of object_door(0x04170fe83ce406fb)
+(commodity_flags): frozenset(class sims4.tuning.instances.staticCommodity_Rival_BringPizza, class sims4.tuning.instances.motive_Fun, class sims4.tuning.instances.commodity_Pets_SniffNewObject, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_LoudNPC_answerDoor, class sims4.tuning.instances.StaticCommodity_RingDoorbell, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Angry, class sims4.tuning.instances.staticCommodity_CollegeOrganizations_SecretSociety_JoinVisit, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_CheckMail, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_Hangout_Uninvited_arrival, class sims4.tuning.instances.staticCommodity_ApartmentNeighborSituations_hangoutArrival_genericNotGreeted, class sims4.tuning.instances.staticCommodity_HolidayTradition_TrickorTreat_Arrival, class sims4.tuning.instances.commodity_RoleAutonomy_KnockOnDoor_Polite)
+(commodity_tracker): statistics.commodity_tracker.CommodityTracker object at 0x00007FF4BE524DF8
+(component_anim_overrides_gen): bound method ScriptObject.component_anim_overrides_gen of object_door(0x04170fe83ce406fb)
+(component_definitions): (class objects.components.state.StateComponent, class objects.components.statistic_component.StatisticComponent, class animation.focus.focus_component.FocusComponent, class objects.components.footprint_component.FootprintComponent, class objects.components.live_drag_component.LiveDragComponent, class objects.components.new_object_component.NewObjectComponent, class routing.portals.portal_animation_component.PortalAnimationComponent, class routing.portals.portal_component.PortalComponent, class objects.components.locking_components.PortalLockingComponent, class objects.components.slot_component.SlotComponent)
+(component_interactable_gen): bound method ScriptObject.component_interactable_gen of object_door(0x04170fe83ce406fb)
+(component_potential_interactions_gen): bound method ScriptObject.component_potential_interactions_gen of object_door(0x04170fe83ce406fb)
+(component_reset): bound method BaseObject.component_reset of object_door(0x04170fe83ce406fb)
+(component_super_affordances_gen): bound method ScriptObject.component_super_affordances_gen of object_door(0x04170fe83ce406fb)
+(component_zone_modifiers_gen): bound method ScriptObject.component_zone_modifiers_gen of object_door(0x04170fe83ce406fb)
+(components): dict_values(LiveDragComponent(object_door:0x04170fe83ce406fb), FootprintComponent(object_door:0x04170fe83ce406fb), SlotComponent(object_door:0x04170fe83ce406fb), FocusComponent(object_door:0x04170fe83ce406fb), PortalComponent(object_door:0x04170fe83ce406fb), PortalLockingComponent(object_door:0x04170fe83ce406fb), PortalAnimationComponent(object_door:0x04170fe83ce406fb), StateComponent(object_door:0x04170fe83ce406fb), StatisticComponent(object_door:0x04170fe83ce406fb), NewObjectComponent(object_door:0x04170fe83ce406fb))
+(components_sorted_gen): bound method ComponentContainer.components_sorted_gen of object_door(0x04170fe83ce406fb)
+(connectivity_handles): , ConectivityHandles: ()
+(content_source): 0
+(copy_state_values): bound method StateComponent.copy_state_values of object_door(0x04170fe83ce406fb)
+(create_auto_ensembles): function EnsembleComponent.lambda at 0x00007FF46F05E9E0
+(create_parent_location): bound method ClientObjectMixin.create_parent_location of object_door(0x04170fe83ce406fb)
+(create_statistic_tracker): bound method StatisticComponent.create_statistic_tracker of object_door(0x04170fe83ce406fb)
+(curfew): None
+(current_value): 90
+(custom_description): None
+(custom_name): None
+(deco_slot_size): 0
+(deco_slot_types): frozenset()
+(definition): Definition: 66452
+(delist): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4716B5950
+(depreciated): False
+(depreciated_value): 90
+(destroy): bound method ScriptObject.destroy of object_door(0x04170fe83ce406fb)
+(disable_los_reference_point): True
+(disable_slot): bound method SlotComponent.disable_slot of object_door(0x04170fe83ce406fb)
+(disable_slots): bound method SlotComponent.disable_slots of object_door(0x04170fe83ce406fb)
+(disallow_social_group_placement): False
+(display_number): None
+(does_state_reset_on_load): bound method StateComponent.does_state_reset_on_load of object_door(0x04170fe83ce406fb)
+(enable_slot): bound method SlotComponent.enable_slot of object_door(0x04170fe83ce406fb)
+(enable_slots): bound method SlotComponent.enable_slots of object_door(0x04170fe83ce406fb)
+(enter_distress): bound method StatisticComponent.enter_distress of object_door(0x04170fe83ce406fb)
+(environment_score_trait_modifiers): _sims4_collections.frozendict()
+(exit_distress): bound method StatisticComponent.exit_distress of object_door(0x04170fe83ce406fb)
+(fade_in): bound method ClientObjectMixin.fade_in of object_door(0x04170fe83ce406fb)
+(fade_opacity): bound method ClientObjectMixin.fade_opacity of object_door(0x04170fe83ce406fb)
+(fade_out): bound method ClientObjectMixin.fade_out of object_door(0x04170fe83ce406fb)
+(favorite_prop_animation_overrides): FavoritePropAnimationOverrides(overrides_by_prop_name_sims4_collections.frozendict())
+(finalize): bound method GameObject.finalize of object_door(0x04170fe83ce406fb)
+(finalize_statistics): bound method HasStatisticComponent.finalize_statistics of object_door(0x04170fe83ce406fb)
+(fire_retardant): False
+(flammable): False
+(flammable_area): fire.flammability.DefaultObjectRadialFlammability object at 0x00007FF46E836850
+(focus_component): FocusComponent(object_door:0x04170fe83ce406fb)
+(footprint): 00000000c55eaac449607a56.d382bf57
+(footprint_component): FootprintComponent(object_door:0x04170fe83ce406fb)
+(footprint_polygon): CompoundPolygon: Polygon148.278534,262.110565148.277161,262.866730148.137955,262.866455148.139328,262.110291 FlagsCCW, Polygon147.215805,262.109070149.195801,262.112671149.194443,262.866547147.214447,262.862946 FlagsCCW
+(force_multi_surface_constraints): False
+(force_spawn_object): function SpawnerComponent.lambda at 0x00007FF46F249170
+(forward): Vector3(-0.999998, 0.000000, -0.001815)
+(forward_direction_for_picking): Vector3(0.000000, 0.000000, 1.000000)
+(forward_offset_on_connectivity_check): None
+(forwarded_pick_targets): frozenset()
+(geometry_state): None
+(get_active_teleport_style): function BuffComponent.lambda at 0x00007FF46BA82710
+(get_added_monetary_value): bound method StatisticComponent.get_added_monetary_value of object_door(0x04170fe83ce406fb)
+(get_affordance_basic_content): function AffordanceTuningComponent.lambda at 0x00007FF47040E950
+(get_affordance_basic_extras): function AffordanceTuningComponent.lambda at 0x00007FF47040EA70
+(get_affordance_false_ads): function AffordanceTuningComponent.lambda at 0x00007FF47040E710
+(get_affordance_loot_list): function AffordanceTuningComponent.lambda at 0x00007FF47040E4D0
+(get_affordance_outcome): function AffordanceTuningComponent.lambda at 0x00007FF47040E830
+(get_affordance_skill_loot_data): function AffordanceTuningComponent.lambda at 0x00007FF47040E5F0
+(get_affordance_tests): function AffordanceTuningComponent.lambda at 0x00007FF47040E440
+(get_all_buffs_with_tag): function BuffComponent.lambda at 0x00007FF46BA800E0
+(get_all_children_gen): bound method ClientObjectMixin.get_all_children_gen of object_door(0x04170fe83ce406fb)
+(get_all_stats_gen): bound method StatisticComponent.get_all_stats_gen of object_door(0x04170fe83ce406fb)
+(get_allowed_hands): functools.partial(function ScriptObject.get_allowed_hands at 0x00007FF46E110320, class sims4.tuning.instances.object_door, object_door(0x04170fe83ce406fb))
+(get_anim_overrides): bound method BaseObject.get_anim_overrides of object_door(0x04170fe83ce406fb)
+(get_attribute_save_data): bound method ScriptObject.get_attribute_save_data of object_door(0x04170fe83ce406fb)
+(get_back_spawn_point): bound method Door.get_back_spawn_point of object_door(0x04170fe83ce406fb)
+(get_bounding_box): bound method HasFootprintComponent.get_bounding_box of object_door(0x04170fe83ce406fb)
+(get_canvas_texture_effect): function CanvasComponent.lambda at 0x00007FF470F44E60
+(get_canvas_texture_id): function CanvasComponent.lambda at 0x00007FF470F44D40
+(get_class_for_obj_state): bound method BaseObject.get_class_for_obj_state of class sims4.tuning.instances.object_door
+(get_client_states): bound method StateComponent.get_client_states of object_door(0x04170fe83ce406fb)
+(get_closest_parts_to_position): bound method ScriptObject.get_closest_parts_to_position of object_door(0x04170fe83ce406fb)
+(get_collectible_quality): function CollectableComponent.lambda at 0x00007FF4747BBE60
+(get_collectible_slot): function CollectableComponent.lambda at 0x00007FF4747BBC20
+(get_compatible_parts): bound method ScriptObject.get_compatible_parts of object_door(0x04170fe83ce406fb)
+(get_component): bound method ComponentContainer.get_component of object_door(0x04170fe83ce406fb)
+(get_component_managed_state_distributable): bound method StateComponent.get_component_managed_state_distributable of object_door(0x04170fe83ce406fb)
+(get_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF4707B9830
+(get_craftable_property): function CraftingComponent.lambda at 0x00007FF46D8D9EF0
+(get_create_after_objs): bound method ClientObjectMixin.get_create_after_objs of object_door(0x04170fe83ce406fb)
+(get_create_op): bound method ClientObjectMixin.get_create_op of object_door(0x04170fe83ce406fb)
+(get_created_constraint): bound method GameObject.get_created_constraint of object_door(0x04170fe83ce406fb)
+(get_deco_slot_hashes): bound method SlotComponent.get_deco_slot_hashes of object_door(0x04170fe83ce406fb)
+(get_delete_op): bound method ClientObjectMixin.get_delete_op of object_door(0x04170fe83ce406fb)
+(get_disabled_slot_hashes): bound method SlotComponent.get_disabled_slot_hashes of object_door(0x04170fe83ce406fb)
+(get_disallowed_sims): bound method BaseLockingComponent.get_disallowed_sims of object_door(0x04170fe83ce406fb)
+(get_distance_to_object_based_multiplier): bound method StatisticComponent.get_distance_to_object_based_multiplier of object_door(0x04170fe83ce406fb)
+(get_door_positions): bound method Door.get_door_positions of object_door(0x04170fe83ce406fb)
+(get_dynamic_portal_locations_gen): bound method PortalComponent.get_dynamic_portal_locations_gen of object_door(0x04170fe83ce406fb)
+(get_dynamic_tags): bound method GameObject.get_dynamic_tags of object_door(0x04170fe83ce406fb)
+(get_edge_constraint): bound method GameObject.get_edge_constraint of object_door(0x04170fe83ce406fb)
+(get_edges): bound method GameObject.get_edges of object_door(0x04170fe83ce406fb)
+(get_entry_clothing_change): bound method PortalComponent.get_entry_clothing_change of object_door(0x04170fe83ce406fb)
+(get_environment_score): function EnvironmentScoreComponent.lambda at 0x00007FF46D0E9680
+(get_exit_clothing_change): bound method PortalComponent.get_exit_clothing_change of object_door(0x04170fe83ce406fb)
+(get_focus_bone): bound method FocusComponent.get_focus_bone of object_door(0x04170fe83ce406fb)
+(get_fooptrint_polygon_bounds): bound method HasFootprintComponent.get_fooptrint_polygon_bounds of object_door(0x04170fe83ce406fb)
+(get_footprint): bound method FootprintComponent.get_footprint of object_door(0x04170fe83ce406fb)
+(get_game_animation_definition): function CollectableComponent.lambda at 0x00007FF4747BBD40
+(get_gsi_portal_items): bound method Door.get_gsi_portal_items of object_door(0x04170fe83ce406fb)
+(get_gsi_portal_items_list): bound method PortalComponent.get_gsi_portal_items_list of object_door(0x04170fe83ce406fb)
+(get_household_owner_id): bound method GameObject.get_household_owner_id of object_door(0x04170fe83ce406fb)
+(get_icon_info_data): bound method GameObject.get_icon_info_data of object_door(0x04170fe83ce406fb)
+(get_icon_override): bound method GameObject.get_icon_override of object_door(0x04170fe83ce406fb)
+(get_ignored_objects_for_line_of_sight): bound method ScriptObject.get_ignored_objects_for_line_of_sight of object_door(0x04170fe83ce406fb)
+(get_interaction_score_modifier): bound method StatisticComponent.get_interaction_score_modifier of object_door(0x04170fe83ce406fb)
+(get_inventory): function InventoryItemComponent.lambda at 0x00007FF47052BCB0
+(get_inventory_plex_id): function InventoryItemComponent.lambda at 0x00007FF47052DC20
+(get_inventory_visual_state): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4716B5B00
+(get_joint_transform_for_joint): bound method GameObject.get_joint_transform_for_joint of object_door(0x04170fe83ce406fb)
+(get_lightning_strike_multiplier): function WeatherAwareComponent.lambda at 0x00007FF46F0F5CB0
+(get_linked_objects_gen): function LinkedObjectComponent.lambda at 0x00007FF470536950
+(get_locations_for_posture): bound method ScriptObject._cache_and_return_get_locations_for_posture of object_door(0x04170fe83ce406fb)
+(get_locked_reason_list): bound method StatisticComponent.get_locked_reason_list of object_door(0x04170fe83ce406fb)
+(get_locking_component): bound method BaseLockingComponent.get_locking_component of object_door(0x04170fe83ce406fb)
+(get_lost_and_found_registration_info): function InventoryItemComponent.lambda at 0x00007FF47052D3B0
+(get_mapped_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF4707B9A70
+(get_nearest_posture_change): bound method PortalComponent.get_nearest_posture_change of object_door(0x04170fe83ce406fb)
+(get_notebook_information): function CraftingComponent.lambda at 0x00007FF46D8E00E0
+(get_object_property): bound method GameObject.get_object_property of object_door(0x04170fe83ce406fb)
+(get_object_rarity_string): bound method StateComponent.get_object_rarity_string of object_door(0x04170fe83ce406fb)
+(get_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF4707B9560
+(get_off_lot_autonomy_rule): bound method StatisticComponent.get_off_lot_autonomy_rule of object_door(0x04170fe83ce406fb)
+(get_on_entry_outfit): bound method PortalComponent.get_on_entry_outfit of object_door(0x04170fe83ce406fb)
+(get_on_exit_outfit): bound method PortalComponent.get_on_exit_outfit of object_door(0x04170fe83ce406fb)
+(get_or_create_routing_context): bound method HasFootprintComponent.get_or_create_routing_context of object_door(0x04170fe83ce406fb)
+(get_outside_object_score_modification): bound method StatisticComponent.get_outside_object_score_modification of object_door(0x04170fe83ce406fb)
+(get_param_overrides): bound method BaseObject.get_param_overrides of object_door(0x04170fe83ce406fb)
+(get_parent): bound method ClientObjectMixin.get_parent of object_door(0x04170fe83ce406fb)
+(get_parenting_root): bound method ClientObjectMixin.get_parenting_root of object_door(0x04170fe83ce406fb)
+(get_part_by_index): bound method BaseObject.get_part_by_index of object_door(0x04170fe83ce406fb)
+(get_part_by_part_group_index): bound method BaseObject.get_part_by_part_group_index of object_door(0x04170fe83ce406fb)
+(get_part_data): bound method ScriptObject.get_part_data of class sims4.tuning.instances.object_door
+(get_parts_for_posture): bound method ScriptObject.get_parts_for_posture of object_door(0x04170fe83ce406fb)
+(get_polygon_from_footprint_name_hashes): bound method HasFootprintComponent.get_polygon_from_footprint_name_hashes of object_door(0x04170fe83ce406fb)
+(get_portal_asm_params): bound method PortalComponent.get_portal_asm_params of object_door(0x04170fe83ce406fb)
+(get_portal_by_id): bound method PortalComponent.get_portal_by_id of object_door(0x04170fe83ce406fb)
+(get_portal_cost): bound method PortalComponent.get_portal_cost of object_door(0x04170fe83ce406fb)
+(get_portal_cost_override): bound method PortalComponent.get_portal_cost_override of object_door(0x04170fe83ce406fb)
+(get_portal_data): bound method PortalComponent.get_portal_data of object_door(0x04170fe83ce406fb)
+(get_portal_disallowed_tags): bound method PortalComponent.get_portal_disallowed_tags of object_door(0x04170fe83ce406fb)
+(get_portal_instances): bound method PortalComponent.get_portal_instances of object_door(0x04170fe83ce406fb)
+(get_portal_key_make_for_carry): function CarryableComponent.lambda at 0x00007FF470493200
+(get_portal_owner): bound method PortalComponent.get_portal_owner of object_door(0x04170fe83ce406fb)
+(get_portal_pairs): bound method PortalComponent.get_portal_pairs of object_door(0x04170fe83ce406fb)
+(get_portal_type): bound method PortalComponent.get_portal_type of object_door(0x04170fe83ce406fb)
+(get_position_and_routing_surface_for_posture): bound method ScriptObject._cache_and_return_get_position_and_routing_surface_for_posture of object_door(0x04170fe83ce406fb)
+(get_posture_aops_gen): bound method ScriptObject.get_posture_aops_gen of object_door(0x04170fe83ce406fb)
+(get_posture_change): bound method PortalComponent.get_posture_change of object_door(0x04170fe83ce406fb)
+(get_provided_slot_types): bound method SlotComponent.get_provided_slot_types of object_door(0x04170fe83ce406fb)
+(get_raycast_root): bound method HasFootprintComponent.get_raycast_root of object_door(0x04170fe83ce406fb)
+(get_relationship_score_multiplier_for_buff_on_target): bound method StatisticComponent.get_relationship_score_multiplier_for_buff_on_target of object_door(0x04170fe83ce406fb)
+(get_reservation_handler): bound method ReservationMixin.get_reservation_handler of object_door(0x04170fe83ce406fb)
+(get_reservation_handlers): bound method ReservationMixin.get_reservation_handlers of object_door(0x04170fe83ce406fb)
+(get_routing_location_for_transform): bound method ClientObjectMixin.get_routing_location_for_transform of object_door(0x04170fe83ce406fb)
+(get_running_behavior): function ObjectRoutingComponent.lambda at 0x00007FF4707B9050
+(get_runtime_slots_gen): bound method SlotComponent.get_runtime_slots_gen of object_door(0x04170fe83ce406fb)
+(get_save_lot_coords_and_level): bound method GameObject.get_save_lot_coords_and_level of object_door(0x04170fe83ce406fb)
+(get_score_multiplier): bound method StatisticComponent.get_score_multiplier of object_door(0x04170fe83ce406fb)
+(get_sim_owner_id): function OwnableComponent.lambda at 0x00007FF4793E83B0
+(get_single_portal_locations): bound method PortalComponent.get_single_portal_locations of object_door(0x04170fe83ce406fb)
+(get_sit_posture_transition_penalties): bound method StatisticComponent.get_sit_posture_transition_penalties of object_door(0x04170fe83ce406fb)
+(get_situation_type_social_score_multiplier): bound method StatisticComponent.get_situation_type_social_score_multiplier of object_door(0x04170fe83ce406fb)
+(get_slot_info): bound method SlotComponent.get_slot_info of object_door(0x04170fe83ce406fb)
+(get_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF4707B95F0
+(get_stack_sort_order): function InventoryItemComponent.lambda at 0x00007FF47052D200
+(get_stat_instance): bound method StatisticComponent.get_stat_instance of object_door(0x04170fe83ce406fb)
+(get_stat_multiplier): bound method StatisticComponent.get_stat_multiplier of object_door(0x04170fe83ce406fb)
+(get_stat_value): bound method StatisticComponent.get_stat_value of object_door(0x04170fe83ce406fb)
+(get_state): bound method StateComponent.get_state of object_door(0x04170fe83ce406fb)
+(get_state_strings): function TooltipComponent.lambda at 0x00007FF47943C050
+(get_state_value_from_stat_type): bound method StateComponent.get_state_value_from_stat_type of object_door(0x04170fe83ce406fb)
+(get_statistic_modifier): bound method StatisticComponent.get_statistic_modifier of object_door(0x04170fe83ce406fb)
+(get_statistic_modifiers_gen): bound method StatisticComponent.get_statistic_modifiers_gen of object_door(0x04170fe83ce406fb)
+(get_stored_cas_parts): function StoredInfoComponent.lambda at 0x00007FF4794E6E60
+(get_stored_sim_id): function StoredSimInfoComponent.lambda at 0x00007FF4793F9170
+(get_stored_sim_info): function ScholarshipLetterComponent.lambda at 0x00007FF46F0EC560
+(get_stored_sim_info_or_name_data): function StoredSimInfoComponent.lambda at 0x00007FF4793F9320
+(get_stored_sim_name_data): function StoredSimInfoComponent.lambda at 0x00007FF4793F9440
+(get_surface_access_animation): bound method SlotComponent.get_surface_access_animation of object_door(0x04170fe83ce406fb)
+(get_surface_access_constraint): bound method SlotComponent.get_surface_access_constraint of object_door(0x04170fe83ce406fb)
+(get_surface_override_for_posture): bound method GameObject.get_surface_override_for_posture of object_door(0x04170fe83ce406fb)
+(get_tags): bound method GameObject.get_tags of object_door(0x04170fe83ce406fb)
+(get_target_surface): bound method PortalComponent.get_target_surface of object_door(0x04170fe83ce406fb)
+(get_teleport_cost): function BuffComponent.lambda at 0x00007FF46BA828C0
+(get_template_content_overrides): function CraftingComponent.lambda at 0x00007FF46D8D9320
+(get_tested_relationship_score_multipliers): bound method StatisticComponent.get_tested_relationship_score_multipliers of object_door(0x04170fe83ce406fb)
+(get_tooltip_field): function TooltipComponent.lambda at 0x00007FF47943C3B0
+(get_tracker): bound method HasStatisticComponent.get_tracker of object_door(0x04170fe83ce406fb)
+(get_ui_metadata): bound method ClientObjectMixin.get_ui_metadata of object_door(0x04170fe83ce406fb)
+(get_unlocked_reason_list): bound method StatisticComponent.get_unlocked_reason_list of object_door(0x04170fe83ce406fb)
+(get_use_list_handler): bound method ReservationMixin.get_use_list_handler of object_door(0x04170fe83ce406fb)
+(get_users): bound method ReservationMixin.get_users of object_door(0x04170fe83ce406fb)
+(get_waiting_line_autonomy_multiplier): function WaitingLineComponent.lambda at 0x00007FF46C072680
+(give_weather_loot): function WeatherAwareComponent.lambda at 0x00007FF46F0F5C20
+(guid): 4166195495
+(guid64): 14872
+(has_any_tag): bound method GameObject.has_any_tag of object_door(0x04170fe83ce406fb)
+(has_component): bound method ComponentContainer.has_component of object_door(0x04170fe83ce406fb)
+(has_custom_description): function NameComponent.lambda at 0x00007FF4791EC320
+(has_custom_name): function NameComponent.lambda at 0x00007FF4791EC290
+(has_hidden_flags): bound method GameObject.has_hidden_flags of object_door(0x04170fe83ce406fb)
+(has_id): True
+(has_lock_data): bound method BaseLockingComponent.has_lock_data of object_door(0x04170fe83ce406fb)
+(has_locking_component): bound method BaseLockingComponent.has_locking_component of object_door(0x04170fe83ce406fb)
+(has_portals): bound method PortalComponent.has_portals of object_door(0x04170fe83ce406fb)
+(has_posture_portals): bound method PortalComponent.has_posture_portals of object_door(0x04170fe83ce406fb)
+(has_servings_statistic): function CraftingComponent.lambda at 0x00007FF46D8E04D0
+(has_slot): bound method SlotComponent.has_slot of object_door(0x04170fe83ce406fb)
+(has_state): bound method StateComponent.has_state of object_door(0x04170fe83ce406fb)
+(has_statistic): bound method StatisticComponent.has_statistic of object_door(0x04170fe83ce406fb)
+(has_tag): bound method GameObject.has_tag of object_door(0x04170fe83ce406fb)
+(has_trait_statistic_tracker): False
+(has_updated_commodity_flags): bound method ScriptObject.has_updated_commodity_flags of class sims4.tuning.instances.object_door
+(has_work_locks): False
+(hide): bound method GameObject.hide of object_door(0x04170fe83ce406fb)
+(household_owner_id): 0
+(hover_tip): None
+(icon): 000000000000000000000000.00000000
+(icon_info): (66452, 1)
+(icon_override): None
+(id): 294721790744463099
+(ideal_slot_types): frozenset()
+(in_pool): False
+(in_use): False
+(in_use_by): bound method ReservationMixin.in_use_by of object_door(0x04170fe83ce406fb)
+(intended_forward): Vector3(-0.999998, 0.000000, -0.001815)
+(intended_position): Vector3Immutable(148.205124, 157.949997, 262.487762)
+(intended_position_with_forward_offset): Vector3(148.165131, 157.949997, 262.487701)
+(intended_routing_surface): 53F0EA2415E2F33,0,World
+(intended_transform): Transform(Vector3(148.205124, 157.949997, 262.487762), Quaternion(0.000000, -0.707748, 0.000000, 0.706465))
+(interactable): True
+(interaction_refs): ()
+(is_connected): bound method ScriptObject.is_connected of object_door(0x04170fe83ce406fb)
+(is_disabled): bound method ScriptObject.is_disabled of object_door(0x04170fe83ce406fb)
+(is_door_portal): True
+(is_downloaded): False
+(is_fire_related_object): False
+(is_from_gallery): False
+(is_hidden): bound method GameObject.is_hidden of object_door(0x04170fe83ce406fb)
+(is_in_distress): bound method StatisticComponent.is_in_distress of object_door(0x04170fe83ce406fb)
+(is_in_inventory): function InventoryItemComponent.lambda at 0x00007FF47052B440
+(is_in_locked_commodities): bound method StatisticComponent.is_in_locked_commodities of object_door(0x04170fe83ce406fb)
+(is_in_navmesh): True
+(is_in_sim_inventory): function InventoryItemComponent.lambda at 0x00007FF47052B830
+(is_inside_building): True
+(is_locked): bound method StatisticComponent.is_locked of object_door(0x04170fe83ce406fb)
+(is_new_object): True
+(is_object_usable): bound method StateComponent.is_object_usable of object_door(0x04170fe83ce406fb)
+(is_on_active_lot): bound method GameObject.is_on_active_lot of object_door(0x04170fe83ce406fb)
+(is_on_hidden_or_shown_callback_registered): bound method GameObject.is_on_hidden_or_shown_callback_registered of object_door(0x04170fe83ce406fb)
+(is_on_location_changed_callback_registered): bound method GameObject.is_on_location_changed_callback_registered of object_door(0x04170fe83ce406fb)
+(is_on_natural_ground): bound method GameObject.is_on_natural_ground of object_door(0x04170fe83ce406fb)
+(is_outside): False
+(is_part): False
+(is_persistable): bound method ScriptObject.is_persistable of object_door(0x04170fe83ce406fb)
+(is_prop): False
+(is_reservation_clobberer): bound method ReservationMixin.is_reservation_clobberer of object_door(0x04170fe83ce406fb)
+(is_routing_surface_overlapped_at_position): bound method GameObject.is_routing_surface_overlapped_at_position of object_door(0x04170fe83ce406fb)
+(is_same_object_or_part): bound method ScriptObject.is_same_object_or_part of object_door(0x04170fe83ce406fb)
+(is_scorable): bound method StatisticComponent.is_scorable of object_door(0x04170fe83ce406fb)
+(is_set_as_head): False
+(is_sim): False
+(is_skill_bar_suppressed): bound method StatisticComponent.is_skill_bar_suppressed of object_door(0x04170fe83ce406fb)
+(is_social_group): False
+(is_stat_type_locked): bound method StatisticComponent.is_stat_type_locked of object_door(0x04170fe83ce406fb)
+(is_statistic_type_added_by_modifier): bound method StatisticComponent.is_statistic_type_added_by_modifier of object_door(0x04170fe83ce406fb)
+(is_surface): bound method GameObject.is_surface of object_door(0x04170fe83ce406fb)
+(is_terrain): False
+(is_ungreeted_sim_disallowed): bound method PortalComponent.is_ungreeted_sim_disallowed of object_door(0x04170fe83ce406fb)
+(is_valid_for_height_checks): True
+(is_valid_pack): bound method ComponentContainer.is_valid_pack of object_door(0x04170fe83ce406fb)
+(is_valid_posture_graph_object): True
+(item_location): ItemLocation.ON_LOT
+(level): 0
+(list): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4716B5680
+(live_drag_component): LiveDragComponent(object_door:0x04170fe83ce406fb)
+(load): bound method ScriptObject.load of object_door(0x04170fe83ce406fb)
+(load_object): bound method GameObject.load_object of object_door(0x04170fe83ce406fb)
+(location): Location(Transform(Vector3(148.205124, 157.949997, 262.487762), Quaternion(0.000000, -0.707748, 0.000000, 0.706465)), 53F0EA2415E2F33,0,World, joint_name_or_hashNone, parentNone, slot_hash0)
+(lock): bound method BaseLockingComponent.lock of object_door(0x04170fe83ce406fb)
+(lock_portal_on_use): bound method PortalComponent.lock_portal_on_use of object_door(0x04170fe83ce406fb)
+(lock_sim): bound method BaseLockingComponent.lock_sim of object_door(0x04170fe83ce406fb)
+(lock_statistic): bound method StatisticComponent.lock_statistic of object_door(0x04170fe83ce406fb)
+(make_transient): bound method GameObject.make_transient of object_door(0x04170fe83ce406fb)
+(manager): object_manager
+(manager_id): 1
+(mark_get_locations_for_posture_needs_update): bound method ScriptObject.mark_get_locations_for_posture_needs_update of object_door(0x04170fe83ce406fb)
+(material_hash): 0
+(material_state): None
+(material_variant): 1002510387
+(may_move): False
+(may_reserve): bound method GameObject.may_reserve of object_door(0x04170fe83ce406fb)
+(model): 00000000c55eaac449607a56.01661233
+(model_with_material_variant): (00000000c55eaac449607a56.01661233, 1002510387)
+(modify_interactable_flags): bound method ScriptObject.modify_interactable_flags of object_door(0x04170fe83ce406fb)
+(move_to): bound method ClientObjectMixin.move_to of object_door(0x04170fe83ce406fb)
+(multicolor): None
+(new_in_inventory): True
+(newobject_component): NewObjectComponent(object_door:0x04170fe83ce406fb)
+(non_deletable_by_user): False
+(object_bounds_for_flammable_object): bound method GameObject.object_bounds_for_flammable_object of object_door(0x04170fe83ce406fb)
+(object_manager_for_create): object_manager
+(object_radius): 1.0593369007110596
+(object_tags_override_off_lot_autonomy_ref_count): bound method StatisticComponent.object_tags_override_off_lot_autonomy_ref_count of object_door(0x04170fe83ce406fb)
+(on_add): bound method GameObject.on_add of object_door(0x04170fe83ce406fb)
+(on_add_to_client): bound method BaseObject.on_add_to_client of object_door(0x04170fe83ce406fb)
+(on_added_to_inventory): bound method GameObject.on_added_to_inventory of object_door(0x04170fe83ce406fb)
+(on_before_added_to_inventory): bound method BaseObject.on_before_added_to_inventory of object_door(0x04170fe83ce406fb)
+(on_before_removed_from_inventory): bound method BaseObject.on_before_removed_from_inventory of object_door(0x04170fe83ce406fb)
+(on_buildbuy_exit): bound method GameObject.on_buildbuy_exit of object_door(0x04170fe83ce406fb)
+(on_child_added): bound method GameObject.on_child_added of object_door(0x04170fe83ce406fb)
+(on_child_removed): bound method GameObject.on_child_removed of object_door(0x04170fe83ce406fb)
+(on_client_connect): bound method BaseObject.on_client_connect of object_door(0x04170fe83ce406fb)
+(on_client_suppressor_added): function IdleComponent.lambda at 0x00007FF4704BE9E0
+(on_client_suppressor_removed): function IdleComponent.lambda at 0x00007FF4704BEA70
+(on_failed_to_load_component): bound method ComponentContainer.on_failed_to_load_component of object_door(0x04170fe83ce406fb)
+(on_finalize_load): bound method ScriptObject.on_finalize_load of object_door(0x04170fe83ce406fb)
+(on_hovertip_requested): bound method GameObject.on_hovertip_requested of object_door(0x04170fe83ce406fb)
+(on_leaf_child_changed): bound method GameObject.on_leaf_child_changed of object_door(0x04170fe83ce406fb)
+(on_location_changed): bound method GameObject.on_location_changed of object_door(0x04170fe83ce406fb)
+(on_object_added_to_inventory): bound method BaseObject.on_object_added_to_inventory of object_door(0x04170fe83ce406fb)
+(on_object_removed_from_inventory): bound method BaseObject.on_object_removed_from_inventory of object_door(0x04170fe83ce406fb)
+(on_object_replaced): bound method BaseObject.on_object_replaced of object_door(0x04170fe83ce406fb)
+(on_object_stack_id_updated): bound method BaseObject.on_object_stack_id_updated of object_door(0x04170fe83ce406fb)
+(on_parent_change): bound method ClientObjectMixin.on_parent_change of object_door(0x04170fe83ce406fb)
+(on_placed_in_slot): bound method StateComponent.on_placed_in_slot of object_door(0x04170fe83ce406fb)
+(on_post_bb_fixup): bound method ClientObjectMixin.on_post_bb_fixup of object_door(0x04170fe83ce406fb)
+(on_post_load): bound method ScriptObject.on_post_load of object_door(0x04170fe83ce406fb)
+(on_remove): bound method Door.on_remove of object_door(0x04170fe83ce406fb)
+(on_remove_from_client): bound method ClientObjectMixin.on_remove_from_client of object_door(0x04170fe83ce406fb)
+(on_removed_from_inventory): bound method GameObject.on_removed_from_inventory of object_door(0x04170fe83ce406fb)
+(on_removed_from_slot): bound method StateComponent.on_removed_from_slot of object_door(0x04170fe83ce406fb)
+(on_reset_component_get_interdependent_reset_records): bound method BaseObject.on_reset_component_get_interdependent_reset_records of object_door(0x04170fe83ce406fb)
+(on_reset_destroy): bound method BaseObject.on_reset_destroy of object_door(0x04170fe83ce406fb)
+(on_reset_early_detachment): bound method ScriptObject.on_reset_early_detachment of object_door(0x04170fe83ce406fb)
+(on_reset_element_hard_stop): bound method GameObject.on_reset_element_hard_stop of object_door(0x04170fe83ce406fb)
+(on_reset_get_elements_to_hard_stop): bound method GameObject.on_reset_get_elements_to_hard_stop of object_door(0x04170fe83ce406fb)
+(on_reset_get_interdependent_reset_records): bound method ClientObjectMixin.on_reset_get_interdependent_reset_records of object_door(0x04170fe83ce406fb)
+(on_reset_internal_state): bound method ClientObjectMixin.on_reset_internal_state of object_door(0x04170fe83ce406fb)
+(on_reset_notification): bound method BaseObject.on_reset_notification of object_door(0x04170fe83ce406fb)
+(on_reset_restart): bound method BaseObject.on_reset_restart of object_door(0x04170fe83ce406fb)
+(on_reset_send_op): bound method ClientObjectMixin.on_reset_send_op of object_door(0x04170fe83ce406fb)
+(on_restock): bound method ScriptObject.on_restock of object_door(0x04170fe83ce406fb)
+(on_set_sold): bound method ScriptObject.on_set_sold of object_door(0x04170fe83ce406fb)
+(on_state_changed): bound method ScriptObject.on_state_changed of object_door(0x04170fe83ce406fb)
+(opacity): None
+(orientation): QuaternionImmutable(0.000000, -0.707748, 0.000000, 0.706465)
+(parent): None
+(parent_object): bound method ClientObjectMixin.parent_object of object_door(0x04170fe83ce406fb)
+(parent_slot): None
+(parent_type): 0
+(parent_type_info): (0, 0)
+(parenting_hierarchy_gen): bound method ClientObjectMixin.parenting_hierarchy_gen of object_door(0x04170fe83ce406fb)
+(part_suffix): None
+(parts): part 0 on object_door:0x04170fe83ce406fb, part 1 on object_door:0x04170fe83ce406fb
+(persistence_group): PersistenceGroups.OBJECT
+(placement_footprint_hash_set): frozenset()
+(populate_icon_canvas_texture_info): function CanvasComponent.lambda at 0x00007FF470F44CB0
+(populate_localization_token): bound method GameObject.populate_localization_token of object_door(0x04170fe83ce406fb)
+(portal_added_callback): bound method GameObject.portal_added_callback of object_door(0x04170fe83ce406fb)
+(portal_animation_component): PortalAnimationComponent(object_door:0x04170fe83ce406fb)
+(portal_component): PortalComponent(object_door:0x04170fe83ce406fb)
+(portal_locking_component): PortalLockingComponent(object_door:0x04170fe83ce406fb)
+(position): Vector3Immutable(148.205124, 157.949997, 262.487762)
+(position_with_forward_offset): Vector3(148.165131, 157.949997, 262.487701)
+(post_component_reset): bound method BaseObject.post_component_reset of object_door(0x04170fe83ce406fb)
+(post_remove): bound method ClientObjectMixin.post_remove of object_door(0x04170fe83ce406fb)
+(post_tooltip_save_data_stored): function SpoilableObjectMixin.lambda at 0x00007FF46F171B00
+(posture_transition_target_tag): PostureTransitionTargetPreferenceTag.INVALID
+(potential_interactions): bound method ScriptObject.potential_interactions of object_door(0x04170fe83ce406fb)
+(potential_preroll_interactions): bound method ScriptObject.potential_preroll_interactions of object_door(0x04170fe83ce406fb)
+(pre_add): bound method BaseObject.pre_add of object_door(0x04170fe83ce406fb)
+(pre_parent_change): bound method ClientObjectMixin.pre_parent_change of object_door(0x04170fe83ce406fb)
+(preroll_commodity_flags): frozenset()
+(primitives): DistributionSet(set())
+(provide_route_events): bound method PortalComponent.provide_route_events of object_door(0x04170fe83ce406fb)
+(provided_mobile_posture_affordances): frozenset()
+(provided_mobile_posture_operations): set()
+(provided_mobile_posture_types): frozenset()
+(provided_routing_surface): None
+(provides_ocean_interactions): False
+(provides_terrain_interactions): False
+(raycast_context): bound method HasFootprintComponent.raycast_context of object_door(0x04170fe83ce406fb)
+(recycling_data): ImmutableSlots(recycling_loot: (), recycling_values: _sims4_collections.frozendict(BucksType.RecycleBitsBucks  66: 0.5, BucksType.RecyclePiecesBucks  67: 0.5))
+(ref): bound method BaseObject.ref of object_door(0x04170fe83ce406fb)
+(reference_arb): None
+(refresh_locks): bound method BaseLockingComponent.refresh_locks of object_door(0x04170fe83ce406fb)
+(register_for_on_children_changed_callback): bound method ClientObjectMixin.register_for_on_children_changed_callback of object_door(0x04170fe83ce406fb)
+(register_on_hidden_or_shown): bound method GameObject.register_on_hidden_or_shown of object_door(0x04170fe83ce406fb)
+(register_on_location_changed): bound method GameObject.register_on_location_changed of object_door(0x04170fe83ce406fb)
+(register_on_use_list_changed): bound method ReservationMixin.register_on_use_list_changed of object_door(0x04170fe83ce406fb)
+(register_rebate_tests): bound method GameObject.register_rebate_tests of object_door(0x04170fe83ce406fb)
+(register_reset_element): bound method GameObject.register_reset_element of object_door(0x04170fe83ce406fb)
+(register_transition_controller): bound method ScriptObject.register_transition_controller of object_door(0x04170fe83ce406fb)
+(register_tuned_animation): bound method GameObject.register_tuned_animation of class sims4.tuning.instances.object_door
+(reloadable): True
+(remap_child_parenting): False
+(remove_audio_effect): bound method ClientObjectMixin.remove_audio_effect of object_door(0x04170fe83ce406fb)
+(remove_awareness_scores): bound method ClientObjectMixin.remove_awareness_scores of object_door(0x04170fe83ce406fb)
+(remove_children_from_posture_graph_on_delete): True
+(remove_claim_requirement): bound method ScriptObject.remove_claim_requirement of object_door(0x04170fe83ce406fb)
+(remove_client_state_suppressor): bound method StateComponent.remove_client_state_suppressor of object_door(0x04170fe83ce406fb)
+(remove_component): bound method BaseObject.remove_component of object_door(0x04170fe83ce406fb)
+(remove_disallowed_sim): bound method PortalLockingComponent.remove_disallowed_sim of object_door(0x04170fe83ce406fb)
+(remove_dynamic_animation_overrides): bound method ScriptObject.remove_dynamic_animation_overrides of object_door(0x04170fe83ce406fb)
+(remove_dynamic_commodity_flags): bound method ScriptObject.remove_dynamic_commodity_flags of object_door(0x04170fe83ce406fb)
+(remove_dynamic_tags): bound method GameObject.remove_dynamic_tags of object_door(0x04170fe83ce406fb)
+(remove_from_client): bound method BaseObject.remove_from_client of object_door(0x04170fe83ce406fb)
+(remove_from_crafting_cache): function CraftingStationComponent.lambda at 0x00007FF47049F0E0
+(remove_geometry_state_override): bound method ClientObjectMixin.remove_geometry_state_override of object_door(0x04170fe83ce406fb)
+(remove_interaction_reference): bound method BaseObject.remove_interaction_reference of object_door(0x04170fe83ce406fb)
+(remove_locks): bound method BaseLockingComponent.remove_locks of object_door(0x04170fe83ce406fb)
+(remove_name_changed_callback): function NameComponent.lambda at 0x00007FF4791EC7A0
+(remove_reference_from_parent): bound method ClientObjectMixin.remove_reference_from_parent of object_door(0x04170fe83ce406fb)
+(remove_reservation_clobberer): bound method ReservationMixin.remove_reservation_clobberer of object_door(0x04170fe83ce406fb)
+(remove_reservation_handler): bound method GameObject.remove_reservation_handler of object_door(0x04170fe83ce406fb)
+(remove_state_changed_callback): bound method StateComponent.remove_state_changed_callback of object_door(0x04170fe83ce406fb)
+(remove_statistic_modifier): bound method StatisticComponent.remove_statistic_modifier of object_door(0x04170fe83ce406fb)
+(remove_ui_metadata): bound method ClientObjectMixin.remove_ui_metadata of object_door(0x04170fe83ce406fb)
+(remove_voice_suffix_override): bound method ClientObjectMixin.remove_voice_suffix_override of object_door(0x04170fe83ce406fb)
+(remove_work_lock): bound method GameObject.remove_work_lock of object_door(0x04170fe83ce406fb)
+(resend_audio_effects): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_awareness_scores): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_display_number): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_interactable): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_location): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_model_with_material_variant): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_multicolor): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_slot): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_state_index): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_tint): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(resend_voice_suffix_overrides): bound method Field.get_resend.locals._resend of object_door(0x04170fe83ce406fb)
+(reset): bound method BaseObject.reset of object_door(0x04170fe83ce406fb)
+(reset_reason): bound method BaseObject.reset_reason of object_door(0x04170fe83ce406fb)
+(reset_states_to_default): bound method StateComponent.reset_states_to_default of object_door(0x04170fe83ce406fb)
+(resolve): bound method BaseObject.resolve of object_door(0x04170fe83ce406fb)
+(resolve_retarget): bound method BaseObject.resolve_retarget of object_door(0x04170fe83ce406fb)
+(resource_key): 000000000000000000003a18.b61de6b4
+(resume_statistic_modifier): bound method StatisticComponent.resume_statistic_modifier of object_door(0x04170fe83ce406fb)
+(rig): 00000000c55eaac449607a56.8eaf13de
+(route_target): (RouteTargetType.PARTS  3, part 0 on object_door:0x04170fe83ce406fb, part 1 on object_door:0x04170fe83ce406fb)
+(routing_context): ObjectID: 0, Radius: 1.0593, Key14221992433303976534,3548561239,0, FootprintID: 30321, ConectivityHandles: () FlagsIgnoreOwnFootprint
+(routing_location): 53F0EA2415E2F33,0,World:0.000,-0.708,0.000,0.706:148.205124,157.949997,262.487762
+(routing_surface): 53F0EA2415E2F33,0,World
+(save): bound method ScriptObject.save of object_door(0x04170fe83ce406fb)
+(save_object): bound method GameObject.save_object of object_door(0x04170fe83ce406fb)
+(scale): 1
+(scale_modifiers_gen): bound method ClientObjectMixin.scale_modifiers_gen of object_door(0x04170fe83ce406fb)
+(schedule_destroy_asap): bound method BaseObject.schedule_destroy_asap of object_door(0x04170fe83ce406fb)
+(schedule_element): bound method GameObject.schedule_element of object_door(0x04170fe83ce406fb)
+(schedule_reset_asap): bound method BaseObject.schedule_reset_asap of object_door(0x04170fe83ce406fb)
+(scratched): False
+(self_or_part_in_use): False
+(sell): function ObjectFashionMarketplaceComponent.lambda at 0x00007FF4716B59E0
+(set_build_buy_lockout_state): bound method GameObject.set_build_buy_lockout_state of object_door(0x04170fe83ce406fb)
+(set_controlling_social_interaction_id): function ObjectRoutingComponent.lambda at 0x00007FF4707B9950
+(set_definition): bound method ClientObjectMixin.set_definition of object_door(0x04170fe83ce406fb)
+(set_dynamic_timed_state): bound method StateComponent.set_dynamic_timed_state of object_door(0x04170fe83ce406fb)
+(set_front_door_availability): bound method Door.set_front_door_availability of object_door(0x04170fe83ce406fb)
+(set_front_door_status): bound method Door.set_front_door_status of object_door(0x04170fe83ce406fb)
+(set_household_owner_id): bound method GameObject.set_household_owner_id of object_door(0x04170fe83ce406fb)
+(set_ico_as_carry_target): True
+(set_inactive_apartment_door_status): bound method Door.set_inactive_apartment_door_status of object_door(0x04170fe83ce406fb)
+(set_location): bound method ClientObjectMixin.set_location of object_door(0x04170fe83ce406fb)
+(set_location_without_distribution): bound method ClientObjectMixin.set_location_without_distribution of object_door(0x04170fe83ce406fb)
+(set_object_def_state_index): bound method GameObject.set_object_def_state_index of object_door(0x04170fe83ce406fb)
+(set_parent): bound method ClientObjectMixin.set_parent of object_door(0x04170fe83ce406fb)
+(set_portal_cost_override): bound method PortalComponent.set_portal_cost_override of object_door(0x04170fe83ce406fb)
+(set_post_bb_fixup_needed): bound method ClientObjectMixin.set_post_bb_fixup_needed of object_door(0x04170fe83ce406fb)
+(set_social_transform_constraint): function ObjectRoutingComponent.lambda at 0x00007FF4707B9710
+(set_stack_count): function InventoryItemComponent.lambda at 0x00007FF47052B5F0
+(set_stack_id): function InventoryItemComponent.lambda at 0x00007FF47052D050
+(set_stat_value): bound method StatisticComponent.set_stat_value of object_door(0x04170fe83ce406fb)
+(set_state): bound method StateComponent.set_state of object_door(0x04170fe83ce406fb)
+(set_state_dynamically): bound method StateComponent.set_state_dynamically of object_door(0x04170fe83ce406fb)
+(set_statistics_callback_alarm_calculation_supression): bound method HasStatisticComponent.set_statistics_callback_alarm_calculation_supression of object_door(0x04170fe83ce406fb)
+(should_mark_as_new): True
+(show): bound method GameObject.show of object_door(0x04170fe83ce406fb)
+(skill_bar_suppression): bound method StatisticComponent.skill_bar_suppression of object_door(0x04170fe83ce406fb)
+(slot): 00000000c55eaac449607a56.d3044521
+(slot_component): SlotComponent(object_door:0x04170fe83ce406fb)
+(slot_cost_modifiers): _sims4_collections.frozendict()
+(slot_hash): 0
+(slot_object): bound method SlotComponent.slot_object of object_door(0x04170fe83ce406fb)
+(slot_type_set): None
+(slot_types): frozenset()
+(slots_resource): sims4.ObjectSlots
+(social_clustering): None
+(split_path_on_portal): bound method PortalComponent.split_path_on_portal of object_door(0x04170fe83ce406fb)
+(stack_count): function InventoryItemComponent.lambda at 0x00007FF47052B4D0
+(standin_model): None
+(state_component): StateComponent(object_door:0x04170fe83ce406fb)
+(state_index): 0
+(state_value_active): bound method StateComponent.state_value_active of object_door(0x04170fe83ce406fb)
+(static_commodity_tracker): statistics.base_statistic_tracker.BaseStatisticTracker object at 0x00007FF3F3586408
+(statistic_component): StatisticComponent(object_door:0x04170fe83ce406fb)
+(statistic_tracker): statistics.statistic_tracker.StatisticTracker object at 0x00007FF46BB01D40
+(stop_running_object_routing_behavior): function ObjectRoutingComponent.lambda at 0x00007FF4707B9290
+(super_affordances): functools.partial(function ScriptObject.super_affordances at 0x00007FF46E110EF0, class sims4.tuning.instances.object_door, object_door(0x04170fe83ce406fb))
+(supported_posture_types): ()
+(supports_affordance): bound method ScriptObject.supports_affordance of object_door(0x04170fe83ce406fb)
+(supports_posture_type): bound method ScriptObject.supports_posture_type of object_door(0x04170fe83ce406fb)
+(suspend_statistic_modifier): bound method StatisticComponent.suspend_statistic_modifier of object_door(0x04170fe83ce406fb)
+(swap_there_and_back): bound method Door.swap_there_and_back of object_door(0x04170fe83ce406fb)
+(swapping_from_parent): None
+(swapping_to_parent): None
+(test_lock): bound method BaseLockingComponent.test_lock of object_door(0x04170fe83ce406fb)
+(tests_to_bypass_utility_requirement): _sims4_collections.frozendict()
+(tint): None
+(trait_statistic_tracker): statistics.trait_statistic_tracker.TraitStatisticTracker object at 0x00007FF40458B6C8
+(transform): Transform(Vector3(148.205124, 157.949997, 262.487762), Quaternion(0.000000, -0.707748, 0.000000, 0.706465))
+(transient): False
+(try_mark_as_new_object): bound method GameObject.try_mark_as_new_object of object_door(0x04170fe83ce406fb)
+(try_post_bb_fixup): bound method ClientObjectMixin.try_post_bb_fixup of object_door(0x04170fe83ce406fb)
+(try_split_object_from_stack): function InventoryItemComponent.lambda at 0x00007FF47052D290
+(tuned_components): ImmutableSlots(affordance_tuning: None, animal_home_component: None, animal_object_component: None, animal_preferences: None, autonomy: None, autonomy_marker: None, camera_view: None, canvas: None, carryable: None, censor_grid: None, collectable: None, consumable: None, crafting_station: None, curfew: None, display_component: None, fishing_location: None, flowing_puddle: None, focus: TunableFocusComponentWrapper.FocusComponent, game: None, gardening: None, idle_component: None, inventory: None, inventory_item: None, lighting: None, line_of_sight: None, linked_object_component: None, live_drag_target: None, lunar_phase_aware_component: None, mannequin: None, name: None, narrative_aware_component: None, object_age: None, object_fashion_marketplace_component: None, object_locking_component: None, object_marketplace_component: None, object_relationships: None, object_teleportation: None, ownable_component: None, owning_household_component: None, portal: TunablePortalComponentWrapper.PortalComponent, privacy: None, procedural_animation: None, proximity_component: None, retail_component: None, routing_component: None, scholarship_letter_component: None, season_aware_component: None, situation_scheduler_component: None, spawn_point: None, spawner_component: None, state: TunableStateComponentWrapper.StateComponent, stereo: None, stolen: None, stored_audio_component: None, time_of_day_component: None, tooltip_component: None, vehicle_component: None, weather_aware_component: None, whim_component: None, zone_modifier_component: None)
+(tuning_manager): InstanceManager_object
+(ui_metadata): distributor.sparse.SparseMessage object at 0x00007FF421B05990
+(ui_metadata_immediate): distributor.sparse.SparseMessage object at 0x00007FF421B05990
+(unlock): bound method BaseLockingComponent.unlock of object_door(0x04170fe83ce406fb)
+(unlock_statistic): bound method StatisticComponent.unlock_statistic of object_door(0x04170fe83ce406fb)
+(unregister_for_on_children_changed_callback): bound method ClientObjectMixin.unregister_for_on_children_changed_callback of object_door(0x04170fe83ce406fb)
+(unregister_on_hidden_or_shown): bound method GameObject.unregister_on_hidden_or_shown of object_door(0x04170fe83ce406fb)
+(unregister_on_location_changed): bound method GameObject.unregister_on_location_changed of object_door(0x04170fe83ce406fb)
+(unregister_on_use_list_changed): bound method ReservationMixin.unregister_on_use_list_changed of object_door(0x04170fe83ce406fb)
+(unregister_reset_element): bound method GameObject.unregister_reset_element of object_door(0x04170fe83ce406fb)
+(unregister_transition_controller): bound method ScriptObject.unregister_transition_controller of object_door(0x04170fe83ce406fb)
+(update_all_commodities): bound method StatisticComponent.update_all_commodities of object_door(0x04170fe83ce406fb)
+(update_commodity_flags): bound method ScriptObject.update_commodity_flags of class sims4.tuning.instances.object_door
+(update_component_commodity_flags): bound method ScriptObject.update_component_commodity_flags of object_door(0x04170fe83ce406fb)
+(update_current_value): bound method ClientObjectMixin.update_current_value of object_door(0x04170fe83ce406fb)
+(update_display_number): bound method ClientObjectMixin.update_display_number of object_door(0x04170fe83ce406fb)
+(update_object_tooltip): function TooltipComponent.lambda at 0x00007FF479433E60
+(update_ownership): bound method GameObject.update_ownership of object_door(0x04170fe83ce406fb)
+(update_portal_cache): bound method PortalComponent.update_portal_cache of object_door(0x04170fe83ce406fb)
+(update_reference_arb): bound method ClientObjectMixin.update_reference_arb of object_door(0x04170fe83ce406fb)
+(update_stack_count): function InventoryItemComponent.lambda at 0x00007FF47052B710
+(update_tooltip_field): function TooltipComponent.lambda at 0x00007FF47943C320
+(update_ui_metadata): bound method ClientObjectMixin.update_ui_metadata of object_door(0x04170fe83ce406fb)
+(usable_by_transition_controller): bound method ReservationMixin.usable_by_transition_controller of object_door(0x04170fe83ce406fb)
+(use_base_object_for_slot_constraints): False
+(valid_for_distribution): True
+(validate_definition): bound method GameObject.validate_definition of object_door(0x04170fe83ce406fb)
+(video_playlist): None
+(visibility): None
+(visibility_flags): None
+(visible_to_client): True
+(voice_suffix_overrides): None
+(wall_object_padding): None
+(wall_or_fence_placement): True
+(wind_speed_level): None
+(with_skill_bar_suppression): bound method StatisticComponent.with_skill_bar_suppression of object_door(0x04170fe83ce406fb)
+(zone_id): 378036983766593331

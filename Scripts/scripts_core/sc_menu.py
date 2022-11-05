@@ -12,11 +12,13 @@ import objects
 import services
 import sims4
 from ensemble.ensemble_service import EnsembleService
+from interactions import ParticipantType
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from interactions.interaction_finisher import FinishingType
 from objects.components.types import LIGHTING_COMPONENT
 from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
+from seasons import SeasonType
 from server_commands.argument_helpers import get_tunable_instance
 from sims.sim_info_types import Species, Age
 from sims4.localization import LocalizationHelperTuning
@@ -29,6 +31,7 @@ from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 from vfx import PlayEffect
 from weather.lightning import LightningStrike
 
+from module_simulation.sc_simulation import set_distance_score
 from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_goto_camera import update_camera, camera_info
@@ -39,7 +42,8 @@ from scripts_core.sc_jobs import get_tag_name, get_sim_info, advance_game_time_a
     assign_role, add_to_inventory, go_here_routine, make_sim_at_work, clear_sim_instance, assign_role_title, \
     assign_title, activate_sim_icon, \
     get_object_info, get_trait_name_from_string, add_trait_by_name, \
-    get_sim_travel_group, clear_jobs, get_filters, send_sim_home, distance_to_pos, remove_annoying_buffs
+    get_sim_travel_group, clear_jobs, get_filters, send_sim_home, distance_to_pos, remove_annoying_buffs, \
+    get_sim_posture_target, set_season_and_time, add_sim_buff
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
@@ -100,8 +104,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "All Lights Off")
         self.sc_effects_choices = ("Lightning Strike", "Place Fireworks", "Start Fireworks", "Stop Fireworks")
         self.sc_time_choices = ("Advance Game Time",
-                            "Game Time Speed",
-                            "Reset Timeline")
+                                "Set Season And Time",
+                                "Game Time Speed",
+                                "Reset Timeline")
 
         self.sc_sims_choices = ("Max Motives",
                                 "Remove Sims",
@@ -120,7 +125,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             "Select And Fix Sim Icons",
                             "Remove Jobs From Sims",
                             "Reset All Sims",
-                            "Indexed Sims")
+                            "Indexed Sims",
+                            "Scheduled Sims",
+                            "Idle Sims",
+                            "Get Posture Target")
 
         self.sc_control_choices = ("<font color='#990000'>Toggle Directional Controls</font>",
                                 "Get Camera Info",
@@ -133,6 +141,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Reload Sims",
                                 "Add Career To Sims",
                                 "Add Role To Sim",
+                                "Add Buff To Sim",
                                 "Add Title To Sim",
                                 "Remove Career",
                                 "Tag Sim For Debugging",
@@ -145,7 +154,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Reset Lot",
                                 "Enable Autonomy",
                                 "Disable Autonomy",
-                                "Set Autonomy")
+                                "Set Autonomy",
+                                "Set Distance Score")
 
 
         self.sc_grab_drink_choices = ("Grab Vodka Soda",
@@ -350,6 +360,13 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         except BaseException as e:
             error_trap(e)
 
+    def set_distance_score(self, timeline):
+        inputbox("Set Sim Perception Size", "Set to a number between 10 and 50. 0 would be no perception for priority sorting. Default is 5.",
+            self.set_distance_score_callback)
+
+    def set_distance_score_callback(self, score: str):
+        set_distance_score(int(score))
+
     def disable_autonomy(self, timeline):
         client = services.client_manager().get_first_client()
         target = client.active_sim
@@ -507,22 +524,12 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 message_box(self.target, None, "Object Use", "No one is using this object!")
 
     def reset_in_use(self, timeline):
-        if not self.target.is_sim:
-            client = services.client_manager().get_first_client()
-            sim = None
-            for interaction in tuple(self.target.interaction_refs):
-                sim = interaction.sim
-            if sim:
-                if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and \
-                        client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                    travel_group = get_sim_travel_group(client.active_sim, False)
-                    sim.sim_info.remove_from_travel_group(travel_group)
-                remove_sim(sim)
+        if not self.target.is_sim and self.target.definition.id != 816:
+            if len(self.target.interaction_refs):
+                for interaction in tuple(self.target.interaction_refs):
+                    interaction.sim.reset(ResetReason.NONE, None, 'Command')
             routing_fix(self.target)
-            sc_Vars._running = False
-            sc_Vars._config_loaded = False
-            sc_Vars.DISABLE_ROUTINE = False
-            sc_Vars.DISABLE_MOD = False
+            message_box(self.target, None, "Reset In Use", "A note on using this reset:\nWhen resetting a target object in a slot like the front desk or other objects that require a slotted object to function, use live drag to place the object back into the slot otherwise the object will not function properly and cause routing issues!")
 
     def rename_world(self, timeline):
         try:
@@ -700,10 +707,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             for interaction in sim.get_all_running_and_queued_interactions():
                                 if interaction is not None:
                                     interaction.cancel(FinishingType.RESET, 'Stop')
-                            client = services.client_manager().get_first_client()
-                            if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                                travel_group = get_sim_travel_group(client.active_sim, False)
-                                sim.sim_info.remove_from_travel_group(travel_group)
+
                             make_sim_unselectable(sim.sim_info)
                             sim.destroy()
                         services.sim_info_manager().remove_permanently(sim_info)
@@ -802,17 +806,32 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
             self.picker("Push Sim", "Pick up to 50 Sims", 50, get_push_sim_callback)
 
-    def add_role_to_sim(self, timeline):
+    def add_buff_to_sim(self, timeline):
+        inputbox("Add Buff To Sim", "Enter the buff id", self._add_buff_to_sim_callback)
+
+    def _add_buff_to_sim_callback(self, id: str):
         if self.target.is_sim:
-            inputbox("Add Role To Sim", "Enter the role id", self._add_role_to_sim_callback)
+            sim = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            sim = client.active_sim
+        if id != "0" and "none" not in id.lower() and id != "":
+            add_sim_buff(int(id), sim.sim_info)
+
+    def add_role_to_sim(self, timeline):
+        inputbox("Add Role To Sim", "Enter the role id", self._add_role_to_sim_callback)
 
     def _add_role_to_sim_callback(self, role: str):
         if self.target.is_sim:
-            role_tracker = self.target.autonomy_component._role_tracker
-            role_tracker.reset()
-            if "0" not in role and "none" not in role.lower() and role != "":
-                assign_role(int(role), self.target.sim_info)
-            assign_role_title(self.target)
+            sim = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            sim = client.active_sim
+        role_tracker = sim.autonomy_component._role_tracker
+        role_tracker.reset()
+        if role != "0" and "none" not in role.lower() and role != "":
+            assign_role(int(role), sim.sim_info)
+        assign_role_title(sim)
 
     def add_title_to_sim(self, timeline):
         if self.target.is_sim:
@@ -836,10 +855,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 return
             try:
                 for sim in dialog.get_result_tags():
-                    client = services.client_manager().get_first_client()
-                    if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                        travel_group = get_sim_travel_group(client.active_sim, False)
-                        sim.sim_info.assign_to_travel_group(travel_group)
                     make_sim_at_work(sim.sim_info)
                     activate_sim_icon(sim.sim_info)
             except BaseException as e:
@@ -1092,23 +1107,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         except BaseException as e:
             error_trap(e)
 
-    def rename_world(self, timeline):
-        try:
-            zone_manager = services.get_zone_manager()
-            persistence_service = services.get_persistence_service()
-            current_zone = zone_manager.current_zone
-            neighborhood = persistence_service.get_neighborhood_proto_buff(current_zone.neighborhood_id)
-
-            def on_response(dialog):
-                if not dialog.accepted:
-                    return
-                neighborhood.name = dialog.text_input_responses.get(TEXT_INPUT_NAME)
-
-            dialog = input_text.DIALOG(owner=None)
-            dialog.show_dialog(on_response=on_response)
-        except BaseException as e:
-            error_trap(e)
-
     def reload_sims(self, timeline):
         ScriptCoreMain.check_sims_ini(self)
         ScriptCoreMain.sims_ini(self)
@@ -1149,10 +1147,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                         self.sc_spawn.spawn_sim(sim_info, sim_location, level)
 
                     if sc_Vars.select_when_teleport:
-                        client = services.client_manager().get_first_client()
-                        if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                            travel_group = get_sim_travel_group(client.active_sim, False)
-                            sim_info.assign_to_travel_group(travel_group)
                         make_sim_at_work(sim_info)
                         activate_sim_icon(sim_info)
                     if clear_role:
@@ -1177,7 +1171,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             else:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if str(name).lower() in str(sim_info.first_name).lower() or str(name).lower() in str(sim_info.last_name).lower()]
 
-            self.picker("Mass Teleport {} Sims".format(filter.title()), "Pick 50 Sim(s) to Teleport", 50, teleport_callback, all_sims)
+            if all_sims:
+                self.picker("Mass Teleport {} Sims".format(filter.title()), "Pick 50 Sim(s) to Teleport", 50, teleport_callback, all_sims)
+            else:
+                message_box(None, None, "Teleport", "No Sims Found!", "GREEN")
+
         except BaseException as e:
             error_trap(e)
 
@@ -1188,10 +1186,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             try:
                 for sim in dialog.get_result_tags():
                     sim_info = sim.sim_info
-                    client = services.client_manager().get_first_client()
-                    if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                        travel_group = get_sim_travel_group(client.active_sim, False)
-                        sim.sim_info.remove_from_travel_group(travel_group)
                     make_sim_unselectable(sim_info)
                     send_sim_home(sim)
             except BaseException as e:
@@ -1342,9 +1336,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     return
                 try:
                     for sim in dialog.get_result_tags():
-                        if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                            travel_group = get_sim_travel_group(client.active_sim, False)
-                            sim.sim_info.remove_from_travel_group(travel_group)
                         remove_sim(sim)
 
                 except BaseException as e:
@@ -1354,9 +1345,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 self.picker("Remove Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
 
             elif self.target.is_sim:
-                if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                    travel_group = get_sim_travel_group(client.active_sim, False)
-                    self.target.sim_info.remove_from_travel_group(travel_group)
                 make_sim_unselectable(self.target.sim_info)
                 sim_info_home_zone_id = self.target.sim_info.household.home_zone_id
                 self.target.sim_info.inject_into_inactive_zone(sim_info_home_zone_id, skip_instanced_check=True)
@@ -1376,10 +1364,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     return
                 for sim in dialog.get_result_tags():
                     sim_info = sim.sim_info
-                    if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                        travel_group = get_sim_travel_group(client.active_sim, False)
-                        sim_info.assign_to_travel_group(travel_group)
-
                     make_sim_selectable(sim_info)
 
             self.picker("Select Sims", "Pick up to 50 Sims", 50, get_simpicker_results_callback)
@@ -1394,10 +1378,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     return
                 for sim in dialog.get_result_tags():
                     sim_info = sim.sim_info
-                    if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                        travel_group = get_sim_travel_group(client.active_sim, False)
-                        sim_info.remove_from_travel_group(travel_group)
-
                     make_sim_unselectable(sim_info)
 
             pick_sims = [sim_info for sim_info in client._selectable_sims._selectable_sim_infos]
@@ -1411,10 +1391,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             active_sim = services.get_active_sim()
             for sim_info in client.selectable_sims:
                 if sim_info not in services.active_household():
-                    if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                        travel_group = get_sim_travel_group(client.active_sim, False)
-                        sim_info.remove_from_travel_group(travel_group)
-
                     make_sim_unselectable(sim_info)
         except BaseException as e:
             error_trap(e)
@@ -1424,10 +1400,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         client = services.client_manager().get_first_client()
         try:
             for sim in services.sim_info_manager().instanced_sims_gen():
-                if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
-                    travel_group = get_sim_travel_group(client.active_sim, False)
-                    sim.sim_info.assign_to_travel_group(travel_group)
-
                 make_sim_selectable(sim.sim_info)
         except BaseException as e:
             error_trap(e)
@@ -1440,6 +1412,14 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                 if isinstance(handle.element, alarms.AlarmElement):
                     continue
                 timeline.hard_stop(handle)
+    def set_season_and_time(self, timeline):
+        inputbox("Set Season And Time", "[Season 0-3], [Time in minutes to advance]", self.set_season_and_time_callback)
+
+    def set_season_and_time_callback(self, set_season: str):
+        time_seg = set_season.lower().split(",") if "," in set_season else [int(set_season), None]
+        season = SeasonType(int(time_seg[0]))
+        minutes = int(time_seg[1]) if time_seg[1] is not None else None
+        set_season_and_time(season, minutes)
 
     def advance_game_time(self, timeline):
         try:
@@ -1503,6 +1483,22 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def indexed_sims(self, timeline):
         self.sc_bulletin.show_indexed_sims(camera.focus_on_object)
+
+    def scheduled_sims(self, timeline):
+        self.sc_bulletin.show_scheduled_sims(camera.focus_on_object)
+
+    def idle_sims(self, timeline):
+        self.sc_bulletin.show_idle_sims(camera.focus_on_object)
+
+    def get_posture_target(self, timeline):
+        if self.target.is_sim:
+            sim = self.target
+        else:
+            client = services.client_manager().get_first_client()
+            sim = client.active_sim
+
+        posture_target = get_sim_posture_target(sim)
+        message_box(sim, posture_target, "Posture Target", "Posture target for sim", "GREEN")
 
     def get_info(self, timeline):
         try:

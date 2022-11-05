@@ -2,6 +2,7 @@ import build_buy
 import date_and_time
 import services
 import sims4
+from event_testing.results import TestResult
 from interactions.base.super_interaction import SuperInteraction
 from interactions.interaction_finisher import FinishingType
 from interactions.interaction_queue import BucketBase
@@ -112,7 +113,7 @@ class sc_Autonomy:
         return
 
     def append(self, interaction):
-        result = None
+        result = TestResult.NONE
 
         if not sc_Vars.DISABLE_MOD:
             if not sc_Autonomy.run_interaction_filter(self, interaction):
@@ -130,8 +131,7 @@ class sc_Autonomy:
 
         sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
         autonomy_choices = []
-        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if
-         x not in autonomy_choices]
+        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices]
         sc_Vars.non_filtered_autonomy_list = autonomy_choices
         if len(sc_Vars.non_filtered_autonomy_list) > 24:
             sc_Vars.non_filtered_autonomy_list.pop()
@@ -143,7 +143,7 @@ class sc_Autonomy:
     def insert_next(self, interaction, **kwargs):
         if not hasattr(interaction, "guid64"):
             return None
-        result = None
+        result = TestResult.NONE
 
         if not sc_Vars.DISABLE_MOD:
             if not sc_Autonomy.run_interaction_filter(self, interaction):
@@ -162,8 +162,7 @@ class sc_Autonomy:
 
         sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
         autonomy_choices = []
-        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if
-         x not in autonomy_choices]
+        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices]
         sc_Vars.non_filtered_autonomy_list = autonomy_choices
         if len(sc_Vars.non_filtered_autonomy_list) > 24:
             sc_Vars.non_filtered_autonomy_list.pop()
@@ -219,9 +218,9 @@ class sc_Autonomy:
         if autonomy == AutonomyState.DISABLED and "chat" in action and not interaction.is_user_directed or \
                 autonomy == AutonomyState.DISABLED and "social" in action and not interaction.is_user_directed:
             if distance_to_by_room(interaction.sim, interaction.target) > 5:
-                if sc_Vars.tag_sim_for_debugging:
+                if sc_Vars.tag_sim_for_debugging or sc_Vars.DEBUG_AUTONOMY:
                     name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
-                    if name in sc_Vars.tag_sim_for_debugging:
+                    if name in str(sc_Vars.tag_sim_for_debugging) or sc_Vars.DEBUG_AUTONOMY:
                         debugger("Sim: {} {} - Long Distance: ({}) {} Autonomy: {}".format(interaction.sim.first_name,
                                                                                            interaction.sim.last_name,
                                                                                            get_guid64(interaction), action,
@@ -330,7 +329,7 @@ class sc_Autonomy:
             return True
 
         if autonomy == AutonomyState.ROUTINE_MEDICAL:
-            if "research" in action or "chemistry" in action or "analysis" in action or "browse" in action \
+            if "research" in action or "chemistry" in action or "analysis" in action or "browse_web" in action \
                     or "examine" in action or "hospital" in action or "xray" in action or "treadmill" in action \
                     or "sit" in action or "computer_use" in action or "social" in action or "chat" in action \
                     or "stand" in action or "analyze" in action or "makecall" in action or "takecall" in action \
@@ -435,7 +434,6 @@ class sc_Autonomy:
     def prepare_gen(self: SuperInteraction):
         try:
             action = self.__class__.__name__.lower()
-            result = None
 
             if sc_Vars.tag_sim_for_debugging:
                 name = "{} {}".format(self.sim.first_name, self.sim.last_name)

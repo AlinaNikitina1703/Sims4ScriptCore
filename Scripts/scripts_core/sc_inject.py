@@ -7,6 +7,7 @@ from clubs.club_service import ClubService
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
 from postures.posture_graph import PostureGraphService
+from scheduling import Timeline
 from sims.sim_info_base_wrapper import SimInfoBaseWrapper
 from sims.sim_info_manager import SimInfoManager
 from singletons import DEFAULT
@@ -17,6 +18,7 @@ from scripts_core.sc_autonomy import sc_Autonomy
 from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
     sc_club_on_zone_load_handler
 from scripts_core.sc_main import ScriptCoreMain
+from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
 from scripts_core.sc_zone import sc_zone_update, sc_zone_on_build_buy_enter_handler, sc_zone_on_build_buy_exit_handler
 
@@ -46,6 +48,12 @@ def safe_inject(target_object, target_function_name, safe=False):
         return wrap_function
 
     return _injected
+
+@safe_inject(Timeline, 'simulate')
+def sc_timeline_simulate(original, self, *args, **kwargs):
+    result = original(self, *args, **kwargs)
+    sc_Vars.timeline = self
+    return result
 
 @safe_inject(ClubService, 'on_gathering_started')
 def c_zone_club_gathering_start(original, self, gathering, *args, **kwargs):

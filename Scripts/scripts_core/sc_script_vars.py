@@ -116,8 +116,11 @@ class sc_Weather:
 class sc_Vars:
     TMEX = False
     DEBUG = False
+    DEBUG_FULL = False
+    DEBUG_SPAWN = False
     DEBUG_TIME = False
     DEBUG_AUTONOMY = False
+    DEBUG_ROUTING = False
     debug_log_text = ""
     AUTO_SELECTED_SIMS = True
     SELECTED_SIMS_AUTONOMY = 0
@@ -166,6 +169,7 @@ class sc_Vars:
     sim_index = 0
     routine_sim_index = 0
     sim_tracker = {}
+    routine_sims = []
     wants_and_fears = False
     disable_tracking = False
     dont_sleep_on_lot = False
@@ -179,6 +183,11 @@ class sc_Vars:
     config_data_location = os.path.abspath(os.path.dirname(__file__))
     disable_forecasts = False
     directional_controls = False
+    stereos_on_lot = []
+    beds_on_lot = []
+    routine_objects = []
+    dirty_objects = []
+    timeline = None
 
     def __init__(self):
         super().__init__()

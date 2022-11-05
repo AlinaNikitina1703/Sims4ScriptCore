@@ -50,6 +50,7 @@ class MainMenu(ImmediateSuperInteraction):
     def files(self, timeline, className, funcName, filename: str):
         try:
             filename = filename.replace(".txt","")
+            filename = filename.replace(".dat","")
             filename = filename.replace(".py", "")
             method = getattr(className, funcName)(filename)
             if method is not None:

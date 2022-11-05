@@ -1,0 +1,567 @@
+
+
+Fri Nov  4 10:33:16 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@184 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 10:34:18 2022
+Request Failed: aurore poustel Situation: openstreets_stallvendor_seasonal(355520382588421292) Reason: SimSpawnReason.ZONE_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 10:35:29 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@186 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 11:18:55 2022
+Request Success: geoffrey landgraab Situation: situation_walkby_ambient_gardendistrict_park_jogger(578448564991361688) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 11:18:55 2022
+Spawn Success: geoffrey landgraab Situation: situation_walkby_ambient_gardendistrict_park_jogger(578448564991361688) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 11:21:28 2022
+Request Success: geoffrey landgraab Situation: situation_walkby_ambient_gardendistrict_park_jogger(578448565001388713) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 11:21:28 2022
+Spawn Success: geoffrey landgraab Situation: situation_walkby_ambient_gardendistrict_park_jogger(578448565001388713) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 11:46:45 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@186 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 12:38:58 2022
+Request Success: paige harris Situation: None Reason: SimSpawnReason.LOT_OWNER Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: saanvi banerjee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: carrie lee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: angela pleasant Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: arnessa thebe Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: terre rienne Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: vanessa guillaume Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: beatriz rosario Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: martine balt Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: paige harris Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: raven winds Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: sakura kudo Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: dominic fyres Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: seema joyson Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: mortimer goth Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:38:59 2022
+Request Success: tom peeping Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:39:00 2022
+Request Success: saanvi banerjee Situation: situation_walkby_ambient_gardendistrict_park_jogger(816013445650055344) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: paige harris Situation: None Reason: SimSpawnReason.LOT_OWNER Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: raven winds Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: sakura kudo Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: dominic fyres Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: seema joyson Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: mortimer goth Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: tom peeping Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: saanvi banerjee Situation: situation_walkby_ambient_gardendistrict_park_jogger(816013445650055344) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:00 2022
+Spawn Success: carrie lee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:01 2022
+Spawn Success: angela pleasant Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:01 2022
+Spawn Success: arnessa thebe Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:01 2022
+Spawn Success: terre rienne Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:01 2022
+Spawn Success: vanessa guillaume Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:01 2022
+Spawn Success: beatriz rosario Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:39:01 2022
+Spawn Success: martine balt Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 12:42:06 2022
+Request Failed: kirsten gossett Situation: openstreets_stallvendor_seasonal(355520382588421292) Reason: SimSpawnReason.ZONE_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 12:42:18 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@186 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 12:43:10 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@186 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 12:44:42 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@186 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 12:47:08 2022
+Arb: False Actor: x Key: '00000000!96392ae3'071559f7.02d5df13'
+@186 - sc_jobs.py - do_change_outfit_spinup
+
+Fri Nov  4 13:12:11 2022
+Request Success: paige harris Situation: None Reason: SimSpawnReason.LOT_OWNER Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:11 2022
+Request Success: angela pleasant Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:11 2022
+Request Success: saanvi banerjee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: carrie lee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: martine balt Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: arnessa thebe Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: vanessa guillaume Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: terre rienne Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: beatriz rosario Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: sakura kudo Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: raven winds Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: paige harris Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: dominic fyres Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: tom peeping Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: mortimer goth Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: seema joyson Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:12 2022
+Request Success: malcolm landgraab Situation: situation_walkby_ambient_gardendistrict_park_afterdark(703423455096406163) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.PREROLL
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: paige harris Situation: None Reason: SimSpawnReason.LOT_OWNER Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: raven winds Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: sakura kudo Situation: None Reason: SimSpawnReason.SAVED_ON_ZONE Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: dominic fyres Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: tom peeping Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: mortimer goth Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: seema joyson Situation: None Reason: SimSpawnReason.SAVED_ON_OPEN_STREETS Spin Up: SimZoneSpinUpAction.RESTORE_SI
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: malcolm landgraab Situation: situation_walkby_ambient_gardendistrict_park_afterdark(703423455096406163) Reason: SimSpawnReason.OPEN_STREETS_SITUATION Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: angela pleasant Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: saanvi banerjee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:13 2022
+Spawn Success: carrie lee Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:14 2022
+Spawn Success: martine balt Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:14 2022
+Spawn Success: arnessa thebe Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:14 2022
+Spawn Success: vanessa guillaume Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:14 2022
+Spawn Success: terre rienne Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:14 2022
+Spawn Success: beatriz rosario Situation: None Reason: SimSpawnReason.DEFAULT Spin Up: SimZoneSpinUpAction.PREROLL
+@69 - sc_spawn_handler.py - _spawn_requested_sim
+
+Fri Nov  4 13:12:40 2022
+Request Failed: kirsten gossett Situation: openstreets_stallvendor_seasonal(355520382588421292) Reason: SimSpawnReason.ZONE_SITUATION Spin Up: SimZoneSpinUpAction.NONE
+@128 - sc_spawn_handler.py - submit_request
+
+Fri Nov  4 19:49:14 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF456E705F0>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:17 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF4375D6C68>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:19 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF4073AFD88>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:21 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF41E5E8128>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:23 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF405D134D0>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:25 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF40A01AA70>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:27 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF3F470BB48>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:29 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF48C12DE60>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:31 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF409DF3950>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
+
+Fri Nov  4 19:49:33 2022
+Script failed: {} 
+'list' object has no attribute 'system'
+
+(<class 'AttributeError'>, AttributeError("'list' object has no attribute 'system'"), <traceback object at 0x00007FF3F2E1ADD0>)
+
+[Traceback (most recent call last):  File "sc_main.py", line 409, in init    obj = objects.system.find_object(int(obj_id), include_props=True)AttributeError: 'list' object has no attribute 'system']
+
+@47 - sc_debugger.py - debugger
+@221 - sc_util.py - error_trap_console
+@447 - sc_main.py - init
+@17 - sc_zone.py - sc_zone_update
+@139 - sc_inject.py - sc_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@25 - sc_ai_inject.py - sc_ai_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_career_inject.py - sc_career_run_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@12 - sc_weather_inject.py - sc_weather_zone_update_module
+@39 - sc_inject.py - _wrapped_function
+@87 - music_io.py - music_run_zone_update_module
+@28 - music_io.py - _wrapped_function
+@209 - areaserver.py - c_api_server_tick
+@179 - utils.py - wrapper
