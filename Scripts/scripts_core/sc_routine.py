@@ -1,8 +1,10 @@
 import alarms
 import services
 from date_and_time import create_time_span
+
+from scripts_core.sc_gohere import go_here
 from scripts_core.sc_jobs import function_options, find_all_objects_by_title, distance_to, check_actions, \
-    clear_sim_instance, go_here_routine, add_to_inventory_by_id
+    clear_sim_instance, add_to_inventory_by_id
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 
@@ -41,7 +43,7 @@ class ScriptCoreRoutine:
             cooler = next(iter(coolers))
             if not check_actions(sim, "gohere") and distance_to(sim, cooler) > 1.0:
                 clear_sim_instance(sim.sim_info)
-                go_here_routine(sim, cooler.position, cooler.level)
+                go_here(sim, cooler.position, cooler.level)
             elif distance_to(sim, cooler) < 1.0:
                 message_box(sim, cooler, "Grab A Drink",
                             "{} grabs a drink from the cooler.".format(sim.first_name), "PURPLE")

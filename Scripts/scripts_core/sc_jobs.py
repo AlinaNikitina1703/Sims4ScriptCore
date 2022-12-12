@@ -1,4 +1,3 @@
-import ast
 import configparser
 import math
 import os
@@ -29,8 +28,8 @@ from autonomy.autonomy_request import AutonomyPostureBehavior, AutonomyRequest
 from autonomy.content_sets import get_valid_aops_gen
 from careers.career_ops import CareerTimeOffReason
 from event_testing import test_events
+from event_testing.results import EnqueueResult, TestResult, ExecuteResult
 from interactions import priority
-from interactions.aop import AffordanceObjectPair
 from interactions.aop import AffordanceObjectPair
 from interactions.context import InteractionContext, InteractionBucketType
 from interactions.context import QueueInsertStrategy
@@ -38,19 +37,19 @@ from interactions.interaction_finisher import FinishingType
 from interactions.priority import Priority
 from objects.components.portal_lock_data import IndividualSimDoorLockData
 from objects.components.portal_locking_enums import LockPriority, LockSide, ClearLock
-from objects.components.types import LIGHTING_COMPONENT, PORTAL_COMPONENT
+from objects.components.types import LIGHTING_COMPONENT, PORTAL_LOCKING_COMPONENT
 from objects.object_enums import ResetReason
+from objects.system import create_script_object
+from plex.plex_enums import INVALID_PLEX_ID
 from seasons.seasons_enums import SeasonSetSource, SeasonType
-from server.pick_info import PickType
 from server_commands.argument_helpers import get_tunable_instance, TunableInstanceParam, get_optional_target, \
     OptionalTargetParam
-from server_commands.sim_commands import _build_terrain_interaction_target_and_context, CommandTuning
 from sims.outfits.outfit_enums import OutfitCategory
 from sims.outfits.outfit_tuning import OutfitTuning
-from sims.sim import Sim
 from sims.sim_info_lod import SimInfoLODLevel
 from sims.sim_info_manager import SimInfoManager
 from sims4 import resources
+from sims4.color import Color
 from sims4.localization import LocalizationHelperTuning
 from sims4.math import Location, Transform, Quaternion, Vector3
 from sims4.resources import Types, get_resource_key
@@ -58,12 +57,14 @@ from situations.bouncer.bouncer_request import RequestSpawningOption
 from situations.bouncer.bouncer_types import BouncerRequestPriority
 from situations.situation_guest_list import SituationGuestList, SituationGuestInfo
 from tag import Tag
-from terrain import get_terrain_center, get_terrain_height
+from terrain import get_terrain_height
 from traits.trait_type import TraitType
 from travel_group.travel_group import TravelGroup
 from weather.weather_enums import Temperature
 
+from scripts_core.sc_affordance import sc_Affordance
 from scripts_core.sc_debugger import debugger
+from scripts_core.sc_file import get_config
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars, AutonomyState
 from scripts_core.sc_util import error_trap, init_sim, clean_string, error_trap_console
@@ -101,7 +102,6 @@ def remove_annoying_buffs(sim_info):
     remove_sim_buff(237919, sim_info)
     remove_sim_buff(180207, sim_info)
     remove_sim_buff(185937, sim_info)
-    unassign_role(24315, sim_info)
     if is_sim_in_group(sim):
         assign_role(122318, sim_info)
 
@@ -156,11 +156,12 @@ def assign_situation(potential_key: int, sim_info):
     except BaseException as e:
         error_trap(e)
 
+
 def do_change_outfit_spinup(sim, category, timeline):
     try:
         did_change = False
         arb = Arb()
-        #timeline = scheduling.Timeline(services.time_service().sim_now)
+        # timeline = scheduling.Timeline(services.time_service().sim_now)
         if not timeline:
             return
 
@@ -183,57 +184,65 @@ def do_change_outfit_spinup(sim, category, timeline):
         if not arb.empty:
             animation_element = create_run_animation(arb)
             element_utils.run_child(timeline, animation_element)
-        debugger("Arb: {} Actor: {} Key: {}".format(arb.empty, animation_element_tuning.actor_name, animation_element_tuning.asm_key))
+        debugger("Arb: {} Actor: {} Key: {}".format(arb.empty, animation_element_tuning.actor_name,
+                                                    animation_element_tuning.asm_key))
 
     except BaseException as e:
         error_trap(e)
 
-def set_proper_sim_outfit(sim, is_player=False, use_career=False, use_buffs=False):
-    t = None
+
+def set_proper_sim_outfit(sim, is_player=False, routine=None, use_buffs=False):
+    t = get_current_temperature()
+    venue = get_venue()
     robot_traits = sim.trait_tracker.get_traits_of_type(TraitType.ROBOT)
     if robot_traits:
         return
     if use_buffs:
         buff_manager = services.get_instance_manager(Types.BUFF)
         if sim.sim_info.has_buff(buff_manager.get(get_resource_key(180208, Types.BUFF))):
+            debugger("Sim: {} is cold".format(sim.first_name))
             remove_sim_buff(180208, sim.sim_info)
+            clear_sim_instance(sim.sim_info)
             push_sim_function(sim, sim, 186282, False)
-        return
+            return
+
     if check_actions(sim, "wicked") or check_actions(sim, "toilet") or check_actions(sim, "basketball") or \
             check_actions(sim, "workout"):
         return
 
-    if sim.sim_info._current_outfit[0] == OutfitCategory.BATHING or sim.sim_info._current_outfit[
-        0] == OutfitCategory.SWIMWEAR:
+    if sim.sim_info._current_outfit[0] == OutfitCategory.BATHING and t > Temperature.COOL and sim.is_outside or \
+            sim.sim_info._current_outfit[0] == OutfitCategory.BATHING and not sim.is_outside:
         return
 
-    if not is_player:
-        t = get_current_temperature()
-
-    venue = get_venue()
-
-    if use_career:
-        picked_outfit = (OutfitCategory.CAREER, 0)
-        if not sim.sim_info.has_outfit(picked_outfit):
+    picked_outfit = (OutfitCategory.CURRENT_OUTFIT, 0)
+    if routine:
+        if routine == "patient":
             picked_outfit = (OutfitCategory.SITUATION, 0)
-    elif check_actions(sim, "pool") or check_actions(sim, "swim") or "beach" in venue or "pool" in venue:
-        picked_outfit = (OutfitCategory.SWIMWEAR, 0)
-    elif t == Temperature.FREEZING and not is_player:
-        picked_outfit = (OutfitCategory.COLDWEATHER, 0)
-    elif t == Temperature.COLD and not is_player:
-        picked_outfit = (OutfitCategory.COLDWEATHER, 0)
-    elif t == Temperature.WARM and not is_player:
-        picked_outfit = (OutfitCategory.EVERYDAY, 0)
-    elif t == Temperature.HOT and not is_player:
-        picked_outfit = (OutfitCategory.HOTWEATHER, 0)
-    elif t == Temperature.BURNING and not is_player:
-        picked_outfit = (OutfitCategory.HOTWEATHER, 0)
-    else:
-        picked_outfit = (OutfitCategory.CURRENT_OUTFIT, 0)
+        else:
+            picked_outfit = (OutfitCategory.CAREER, 0)
+            if not sim.sim_info.has_outfit(picked_outfit):
+                picked_outfit = (OutfitCategory.SITUATION, 0)
 
-    if has_role(sim) and not use_career and not is_player:
-        picked_outfit = (OutfitCategory.CURRENT_OUTFIT, 0)
-    if sim.sim_info.has_outfit(picked_outfit) and sim.sim_info._current_outfit != picked_outfit:
+    elif sim.sim_info._current_outfit[0] == OutfitCategory.SWIMWEAR and not check_actions(sim, "swim") and \
+            "beach" not in venue and "pool" not in venue and t < Temperature.WARM and sim.is_outside or not is_player:
+        if t == Temperature.FREEZING:
+            picked_outfit = (OutfitCategory.COLDWEATHER, 0)
+        elif t == Temperature.COLD:
+            picked_outfit = (OutfitCategory.COLDWEATHER, 0)
+        elif t == Temperature.COOL:
+            picked_outfit = (OutfitCategory.EVERYDAY, 0)
+        elif t == Temperature.WARM:
+            picked_outfit = (OutfitCategory.EVERYDAY, 0)
+        elif t == Temperature.HOT:
+            picked_outfit = (OutfitCategory.HOTWEATHER, 0)
+        elif t == Temperature.BURNING:
+            picked_outfit = (OutfitCategory.HOTWEATHER, 0)
+
+    if not routine and not is_player:
+        if has_role(sim, "bartender") or has_role(sim, "mail"):
+            picked_outfit = (OutfitCategory.CAREER, 0)
+
+    if sim.sim_info.has_outfit(picked_outfit):
         sim.sim_info._current_outfit = picked_outfit
 
 
@@ -359,8 +368,9 @@ def add_career_to_sim(career_name: str, sim_info):
         error_trap(e)
 
 
-def update_lights(all_on=False, height_shift=2.0):
+def fade_lights_in_live_mode(all_on=False, height_shift=2.0):
     try:
+        CAW_Lights_because_tmex_is_lazy = get_config("lights.ini", "caw", "lights")
         lights = [obj for obj in services.object_manager().valid_objects() if obj.has_component(LIGHTING_COMPONENT) and
                   hasattr(obj, "zone_id") and hasattr(obj, "position")]
         for obj in lights:
@@ -376,6 +386,12 @@ def update_lights(all_on=False, height_shift=2.0):
                                 obj.fade_opacity(0.0, 0.1)
                             else:
                                 obj.fade_opacity(1.0, 0.1)
+                if [light for light in CAW_Lights_because_tmex_is_lazy if
+                    light == obj.definition.id or light == obj.id]:
+                    if all_on:
+                        obj.fade_opacity(1.0, 0.1)
+                    else:
+                        obj.fade_opacity(0.0, 0.1)
     except:
         pass
 
@@ -623,12 +639,14 @@ def create_dust(target=None):
         return dust
     return None
 
+
 def make_broken(obj):
     for commodity in obj.commodity_tracker:
         if "brokenness" in str(commodity).lower():
             commodity.set_value(0)
         if "calibrate" in str(commodity).lower():
             commodity.set_value(0)
+
 
 def make_fixed(obj):
     for commodity in obj.commodity_tracker:
@@ -637,14 +655,21 @@ def make_fixed(obj):
         if "calibrate" in str(commodity).lower():
             commodity.set_value(100)
 
+
 def set_object_state(obj, state, value):
     for commodity in obj.commodity_tracker:
         if state in str(commodity).lower():
             commodity.set_value(value)
 
+
 def make_dirty(obj):
+    if not obj:
+        return
+    if not hasattr(obj, "commodity_tracker"):
+        return
     if "sink" not in obj.__class__.__name__.lower():
-        if [test for test in services.object_manager().get_all() if distance_to(test, obj) <= 0.15 and "sink" in test.__class__.__name__.lower()]:
+        if [test for test in services.object_manager().get_all() if
+            distance_to(test, obj) <= 0.15 and "sink" in test.__class__.__name__.lower()]:
             return
     for commodity in obj.commodity_tracker:
         if "exambed_dirtiness" in str(commodity).lower():
@@ -654,6 +679,10 @@ def make_dirty(obj):
 
 
 def make_clean(obj):
+    if not obj:
+        return
+    if not hasattr(obj, "commodity_tracker"):
+        return
     for commodity in obj.commodity_tracker:
         if "exambed_dirtiness" in str(commodity).lower():
             commodity.set_value(0)
@@ -664,6 +693,8 @@ def make_clean(obj):
 def object_is_dirty(obj):
     try:
         if not obj:
+            return False
+        if not hasattr(obj, "commodity_tracker"):
             return False
         if obj.is_sim:
             return False
@@ -700,7 +731,7 @@ def find_all_objects_by_id(target,
                            dist_limit=sc_Vars.MAX_DISTANCE,
                            dirty=False):
     try:
-        if hasattr(id, "isnumeric)"):
+        if hasattr(id, "isnumeric"):
             if not id.isnumeric():
                 return None
         object_list = [obj for obj in services.object_manager().get_all()
@@ -718,6 +749,7 @@ def find_all_objects_by_id(target,
     except BaseException as e:
         error_trap(e)
 
+
 def find_all_objects_by_title(target,
                               title,
                               level=sc_Vars.MIN_LEVEL,
@@ -730,22 +762,34 @@ def find_all_objects_by_title(target,
             value = title.split("|")
         if len(value) == 0 and not outside:
             object_list = [obj for obj in services.object_manager().get_all()
-                           if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower() and dirty and object_is_dirty(obj)
-                           or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
-                           or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj.definition.id)]
+                           if not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and title in str(
+                    obj).lower() and dirty and object_is_dirty(obj)
+                           or not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and title in str(
+                    obj).lower()
+                           or not obj.is_outside and distance_to(target,
+                                                                 obj) < dist_limit and obj.level >= level and title in str(
+                    obj.definition.id)]
         elif len(value) == 0 and outside:
             object_list = [obj for obj in services.object_manager().get_all()
-                           if distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower() and dirty and object_is_dirty(obj)
+                           if distance_to(target, obj) < dist_limit and obj.level >= level and title in str(
+                    obj).lower() and dirty and object_is_dirty(obj)
                            or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
-                           or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj.definition.id)]
+                           or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(
+                    obj.definition.id)]
         elif outside:
             object_list = [obj for obj in services.object_manager().get_all()
-                           if distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()] and dirty and object_is_dirty(obj)
-                           or distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
+                           if distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if
+                                                                                                v in str(
+                                                                                                    obj).lower()] and dirty and object_is_dirty(
+                    obj)
+                           or distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if
+                                                                                                v in str(obj).lower()]]
         else:
             object_list = [obj for obj in services.object_manager().get_all()
-                           if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()] and dirty and object_is_dirty(obj)
-                           or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
+               if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()] and dirty and object_is_dirty(obj)
+               or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
 
         if len(object_list):
             object_list.sort(key=lambda obj: distance_to_by_room(obj, target))
@@ -807,6 +851,24 @@ def assign_role(potential_key: int, sim_info):
         new_role = services.role_state_manager().get(potential_key)
         if new_role:
             sim.add_role(new_role)
+
+
+def assign_button(potential_key: int, obj):
+    try:
+        affordances = sc_Affordance(obj)
+        if affordances.add_instance_id_to_object(potential_key):
+            obj._super_affordances = affordances.affordance_instances
+    except BaseException as e:
+        error_trap(e)
+
+
+def remove_button(potential_key: int, obj):
+    try:
+        affordances = sc_Affordance(obj)
+        affordances.remove_instance_id_from_object(potential_key)
+        obj._super_affordances = affordances.affordance_instances
+    except BaseException as e:
+        error_trap(e)
 
 
 def function_options(option, class_name, function_name, suffix="_routine", custom_name="custom"):
@@ -888,9 +950,36 @@ def clear_all_buffs(sim_info):
 
 def get_room(obj):
     if hasattr(obj, "zone_id") and hasattr(obj, "position") and hasattr(obj, "level"):
-        return build_buy.get_room_id(obj.zone_id, obj.position, obj.level)
+        return build_buy.get_block_id(obj.zone_id, obj.position, obj.level)
     else:
         return -1
+
+
+def get_room_by_position(position, level, offset=0.0):
+    return build_buy.get_block_id(services.current_zone_id(),
+                                  Vector3(position.x + offset, position.y, position.z + offset), level)
+
+
+def get_polygons():
+    plex_service = services.get_plex_service()
+    plex_id = plex_service.get_active_zone_plex_id() or INVALID_PLEX_ID
+    return build_buy.get_all_block_polygons(plex_id).values()
+
+
+def get_blocking_objects_gen(obj):
+    result, errors, blocking_objects = build_buy.test_location_for_object(obj=obj, return_blocking_object_ids=True)
+    if blocking_objects:
+        for blocking_obj_id in blocking_objects:
+            blocking_obj_id = blocking_obj_id[0]
+            blocking_obj = services.object_manager().get(blocking_obj_id)
+            yield blocking_obj
+    yield None
+
+
+def get_walls(obj):
+    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), obj.level,
+                                                routing.SurfaceType.SURFACETYPE_WORLD)
+    return build_buy.get_wall_contours(obj.position.x, obj.position.z, routing_surface, True)
 
 
 def compare_room(obj1, obj2):
@@ -899,134 +988,15 @@ def compare_room(obj1, obj2):
     return False
 
 
-def go_here_routine(sim, location, level=0, offset=1.5, remove=False):
-    count = 25
-    success = None
-    pos = location
-    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level,
-                                                routing.SurfaceType.SURFACETYPE_WORLD)
-    try:
-        target, context = _build_terrain_interaction_target_and_context(sim, pos, routing_surface,
-                                                                        PickType.PICK_TERRAIN,
-                                                                        objects.terrain.TerrainPoint)
-    except:
-        if sc_Vars.DEBUG:
-            debugger("Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
-        return False
-    random.seed(int(time.process_time()) + int(sim.sim_id))
-    while not success and count > 0:
-        pos = Vector3(location.x + random.uniform(-offset, offset), location.y,
-                      location.z + random.uniform(-offset, offset))
-        routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level,
-                                                    routing.SurfaceType.SURFACETYPE_WORLD)
-        try:
-            target, context = _build_terrain_interaction_target_and_context(sim, pos, routing_surface,
-                                                                            PickType.PICK_TERRAIN,
-                                                                            objects.terrain.TerrainPoint)
-        except:
-            if sc_Vars.DEBUG:
-                debugger(
-                    "Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
-            return False
-
-        if not hasattr(target, "position"):
-            setattr(target, "position", target.location.transform.translation)
-
-        success = sim.push_super_affordance(CommandTuning.TERRAIN_GOHERE_AFFORDANCE, target, context)
-        if sc_Vars.DEBUG and not success:
-            debugger("Sim: {} - Go Here Failed! Count: {} Pos: [{} {} {}]".format(sim.first_name, count, pos.x, pos.y,
-                                                                                  pos.z))
-        count = count - 1
-        if count < 1:
-            if remove:
-                remove_sim(sim)
-            return False
-        if success:
-            break
-    if sc_Vars.DEBUG:
-        debugger("Sim: {} - Go Here Succeeded! Pos: [{} {} {}]".format(sim.first_name, pos.x, pos.y, pos.z))
-    return True
+def focus_camera_on_sim(sim_info):
+    sim = sim_info.get_sim_instance()
+    if sim is None:
+        return
+    camera.focus_on_sim(sim, follow=True)
 
 
-def go_here(sim, location, level=0):
-    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), level,
-                                                routing.SurfaceType.SURFACETYPE_WORLD)
-    try:
-        target, context = _build_terrain_interaction_target_and_context(sim, location, routing_surface,
-                                                                        PickType.PICK_TERRAIN,
-                                                                        objects.terrain.TerrainPoint)
-    except:
-        if sc_Vars.DEBUG:
-            debugger(
-                "Sim: {} - Go Here Failed. No tries! Pos: [{} {} {}]".format(sim.first_name, location.x, location.y,
-                                                                             location.z))
-        return False
-
-    success = sim.push_super_affordance(CommandTuning.TERRAIN_GOHERE_AFFORDANCE, target, context)
-    if not success:
-        if sc_Vars.DEBUG:
-            debugger(
-                "Sim: {} - Go Here Failed! Pos: [{} {} {}]".format(sim.first_name, location.x, location.y, location.z))
-        return False
-    if sc_Vars.DEBUG:
-        debugger(
-            "Sim: {} - Go Here Succeeded! Pos: [{} {} {}]".format(sim.first_name, location.x, location.y, location.z))
-    return True
-
-
-def push_sim_out(sim, dist=10):
-    room_sim_is_in = get_room(sim)
-    object_list = [obj for obj in services.object_manager().get_all() if get_room(obj) != room_sim_is_in and
-                   distance_to_by_level(obj, sim) > dist]
-    object_list.sort(key=lambda obj: distance_to_by_level(obj, sim))
-    obj = object_list[0]
-    go_here_routine(sim, obj.position)
-
-def make_sim_goto_spawn(sim):
-    center_pos = services.current_zone().lot.position
-    spawn_point = get_spawn_point_by_distance(center_pos, 64)
-    if not [action for action in sim.get_all_running_and_queued_interactions() if "gohere" in str(action).lower()]:
-        clear_sim_instance(sim.sim_info, "gohere", True)
-        if hasattr(spawn_point, "_center"):
-            pos = spawn_point._center
-        else:
-            pos = get_terrain_center()
-            pos.y = get_terrain_height(pos.x, pos.z)
-        go_here_routine(sim, pos)
-
-def get_spawn_point_by_distance(point, dist):
-    zone = services.current_zone()
-    for spawn_point in zone.spawn_points_gen():
-        if distance_to_pos(point, spawn_point._center) < dist:
-            return spawn_point
-
-
-def make_sim_leave(sim):
-    try:
-        center_pos = services.current_zone().lot.position
-        spawn_point = get_spawn_point_by_distance(center_pos, 64)
-        set_proper_sim_outfit(sim)
-        assign_role(24315, sim.sim_info)
-        if not [action for action in sim.get_all_running_and_queued_interactions() if "gohere" in str(action).lower()]:
-            clear_sim_instance(sim.sim_info, "gohere", True)
-            if hasattr(spawn_point, "_center"):
-                pos = spawn_point._center
-            else:
-                pos = get_terrain_center()
-                pos.y = get_terrain_height(pos.x, pos.z)
-
-            if distance_to_pos(sim.position, pos) < 8:
-                try:
-                    remove_sim(sim)
-                except:
-                    zone_director = services.venue_service().get_zone_director()
-                    zone_director._send_sim_home(sim.sim_info)
-                    pass
-            else:
-                go_here_routine(sim, pos)
-
-    except BaseException as e:
-        error_trap(e)
+def focus_camera_on_position(pos):
+    camera.focus_on_position(pos)
 
 
 def assign_title(sim_info, title):
@@ -1075,50 +1045,80 @@ def set_autonomy(sim_info, routine=4):
     sim_info.autonomy = AutonomyState(routine)
 
 
-def send_sim_home(sim):
-    try:
-        ensemble_service = services.ensemble_service()
-        ensemble = ensemble_service.get_visible_ensemble_for_sim(sim)
-        if ensemble is not None:
-            ensemble.end_ensemble()
-        set_autonomy(sim.sim_info, AutonomyState.FULL)
-        assign_routine(sim.sim_info, "leave")
-        make_sim_leave(sim)
-
-    except BaseException as e:
-        error_trap(e)
+# New private objects code
+def get_private_objects(target, private_objects):
+    object_list = [obj for obj in private_objects if check_private_objects(target, obj)]
+    object_list.sort(key=lambda obj: distance_to_by_level(obj, target))
+    return object_list
 
 
-def keep_sims_outside():
-    venue = get_venue()
-    if "residential" in venue or "rentable" in venue or "clinic" in venue:
-        sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info not in
-                services.active_household() and not sim.sim_info.routine and not sim.sim_info.is_selectable]
-        for sim in sims:
-            keep_sim_outside(sim)
+def is_allowed_privacy_role(sim):
+    allowed_roles = get_config("spawn.ini", "spawn", "allowed")
+    if [role for role in allowed_roles if has_role(sim, role)]:
+        return True
+    return False
 
 
-def keep_sim_outside(sim):
-    venue = get_venue()
-    allowed_roles = ['visitor', 'maid', 'butler', 'patient', "invited", "club"]
-    if "residential" in venue or "rentable" in venue or "clinic" in venue:
-        is_outside = not sim.is_hidden() and sim.is_outside
-        if not [role for role in allowed_roles if has_role(sim, role)] and not is_outside:
-            make_sim_goto_spawn(sim)
+def check_private_objects(sim, private_object):
+    if not private_object:
+        return False
+    if sim.sim_info.routine:
+        return False
+    if distance_to_by_level(sim, private_object) < 10 and not is_allowed_privacy_role(sim):
+        return True
+    interaction_objects = [interaction.target for interaction in sim.get_all_running_and_queued_interactions() if
+                           interaction.target]
+    if not interaction_objects:
+        return False
+    if [obj for obj in interaction_objects if
+        distance_to_by_level(private_object, obj) < 10] and not is_allowed_privacy_role(sim):
+        return True
+    return False
 
 
-def give_sim_access(sim):
-    doors = [obj for obj in services.object_manager().valid_objects() if obj.has_component(PORTAL_COMPONENT)]
-    for door in doors:
-        if hasattr(door, 'add_lock_data'):
-            lock_data = IndividualSimDoorLockData(unlock_sim=sim.sim_info, lock_priority=(LockPriority.PLAYER_LOCK),
-                                                  lock_sides=(LockSide.LOCK_BOTH), should_persist=True)
-            door.add_lock_data(lock_data, replace_same_lock_type=True, clear_existing_locks=(ClearLock.CLEAR_NONE))
+def check_interaction_on_private_objects(sim, target, interaction=None, debug=False):
+    for obj in sc_Vars.private_objects:
+        if target == obj and not is_allowed_privacy_role(sim) or distance_to_by_level(target,
+                                                                                      obj) < 10 and not is_allowed_privacy_role(
+                sim):
+            if debug:
+                message_box(sim, target, str(interaction.__class__.__name__) if interaction else None,
+                            str(target.__class__.__name__) if target else None)
+            return False
+    return True
+
+
+def unlock_for_sim(door, sim):
+    lock_data = IndividualSimDoorLockData(unlock_sim=sim.sim_info, lock_priority=(LockPriority.PLAYER_LOCK),
+                                          lock_sides=(LockSide.LOCK_BOTH), should_persist=True)
+    door.add_lock_data(lock_data, replace_same_lock_type=False, clear_existing_locks=(ClearLock.CLEAR_NONE))
+
+
+def get_locked_for_sim(door, sim):
+    if sim not in door.get_disallowed_sims():
+        return False
+    return True
+
+
+def get_routable_for_sim(target, sim):
+    doors = [obj for obj in services.object_manager().get_all() if obj.has_component(PORTAL_LOCKING_COMPONENT)]
+    if not doors:
+        return False
+    doors = [obj for obj in doors if get_room_by_position(obj.position, obj.level, 0.5) == get_room(target) or
+             get_room_by_position(obj.position, obj.level, -0.5) == get_room(target)]
+    if doors:
+        if any(not get_locked_for_sim(door, sim) for door in doors):
+            return True
+    return False
+
 
 def assign_role_title(sim):
-    title_filter = ["lt:", "ya ", "littlemssam:", "visiting", "player", "turbodriver:", "wickedwhims", "autonomy", "petworld", " walker", " walk", "rolestates",
-                    "rolestate", "basictrait", "island", "situations", "state", "hospital", "generic", "background", "open streets", "openstreets",
-                    "openstreet", "master", "fanstan", "sim", "roles", "role", "venue", "start", "playersim", "fleamarket", "openstreets", "marketstalls",
+    title_filter = ["lt:", "ya ", "littlemssam:", "visiting", "player", "turbodriver:", "wickedwhims", "autonomy",
+                    "petworld", " walker", " walk", "rolestates",
+                    "rolestate", "basictrait", "island", "situations", "state", "hospital", "generic", "background",
+                    "open streets", "openstreets",
+                    "openstreet", "master", "fanstan", "sim", "roles", "role", "venue", "start", "playersim",
+                    "fleamarket", "openstreets", "marketstalls",
                     "npc", "situation", "dj", "packb"]
     role_name = None
     if not hasattr(sim, "autonomy_component"):
@@ -1141,23 +1141,28 @@ def assign_role_title(sim):
         assign_title(sim.sim_info, "")
 
 
-def assign_routine(sim_info, title, clear_state=True, set_title=True):
+def assign_routine(sim_info, title, clear_state=True, set_title=True, assign=True):
     roles = [role for role in sc_Vars.roles if title in role.title]
     if roles:
         sim_info.routine_info = roles[0]
-        sim_info.routine = True
         sim_info.choice = 0
         if clear_state:
+            sim_info.routine = False
             clear_jobs(sim_info)
             clear_all_buffs(sim_info)
-        for buff in list(sim_info.routine_info.buffs):
-            add_sim_buff(int(buff), sim_info)
-        add_sim_buff(182697, sim_info)
+            for button in sim_info.routine_info.role_buttons:
+                remove_button(button, sim_info.get_sim_instance())
+            assign_title(sim_info, "")
+        if assign:
+            sim_info.routine = True
+            for buff in list(sim_info.routine_info.buffs):
+                add_sim_buff(int(buff), sim_info)
+            add_sim_buff(182697, sim_info)
+            for button in sim_info.routine_info.role_buttons:
+                assign_button(button, sim_info.get_sim_instance())
+            assign_role(sim_info.routine_info.role, sim_info)
         if set_title:
             assign_title(sim_info, sim_info.routine_info.title.title())
-        else:
-            assign_title(sim_info, "")
-        assign_role(sim_info.routine_info.role, sim_info)
 
 
 def unassign_role_old(potential_key: int, sim_info):
@@ -1178,25 +1183,22 @@ def unassign_role_old(potential_key: int, sim_info):
 def unassign_role(potential_key: int, sim_info):
     sim = init_sim(sim_info)
     if sim:
-        new_role = services.role_state_manager().get(potential_key)
-        if new_role:
-            sim.remove_role(new_role)
+        roles = sim.autonomy_component.active_roles()
+        role_list = []
+        for role in roles:
+            if potential_key != role.guid64:
+                role_list.append(role.guid64)
+        role_tracker = sim.autonomy_component._role_tracker
+        role_tracker.reset()
+        for role in role_list:
+            assign_role(role, sim.sim_info)
 
 
 def clear_leaving(sim):
-    active_roles = sim.autonomy_component.active_roles()
-    try:
-        for role_id in active_roles:
-            role_name = role_id.__class__.__name__
-            if "leave" in role_name:
-                clear_jobs(sim.sim_info)
-                clear_sim_instance(sim.sim_info, "leave|gohere")
-                return
-        if check_actions(sim, "leave"):
-            clear_sim_instance(sim.sim_info, "leave|gohere")
-
-    except BaseException as e:
-        error_trap(e)
+    if "leave" in get_sim_role(sim):
+        remove_sim_role(sim, "leave")
+    if check_actions(sim, "leave"):
+        clear_sim_instance(sim.sim_info, "leave|gohere")
 
 
 def pause_routine(timeout):
@@ -1233,8 +1235,9 @@ def get_number_of_role_sims():
     return len(sims)
 
 
-def get_number_of_routine_sims():
+def get_number_of_routine_sims(title=None):
     sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
+    sims = [sim for sim in sims if title and title in sim.sim_info.routine_info.title or not title]
     return len(sims)
 
 
@@ -1259,6 +1262,7 @@ def check_actions(sim, action):
                 return True
     return False
 
+
 def only_this_action(sim, action):
     if isinstance(action, int):
         if all(str(action) in str(interaction.guid64) for interaction in sim.get_all_running_and_queued_interactions()):
@@ -1268,11 +1272,13 @@ def only_this_action(sim, action):
             return True
     return False
 
+
 def doing_nothing(sim):
     if all("sit" in str(interaction).lower() for interaction in sim.get_all_running_and_queued_interactions()) or \
             all("stand" in str(interaction).lower() for interaction in sim.get_all_running_and_queued_interactions()):
         return True
     return False
+
 
 def check_action_list(sim, action_list):
     if [action for action in action_list if
@@ -1314,12 +1320,25 @@ def reset_all_sims():
         situation_manager.create_visit_situation(sim)
         sim.reset(ResetReason.NONE, None, 'Command')
 
+
 def get_important_objects_on_lot():
+    street_slab_ids = [10187084955449712340, 14186679418776011434, 13228907805291488430, 11847614138216790047]
+    venue = get_venue()
     sc_Vars.stereos_on_lot = [obj for obj in services.object_manager().get_all() if "stereo" in str(obj).lower()]
     sc_Vars.beds_on_lot = [obj for obj in services.object_manager().get_all() if "object_bed" in str(obj).lower()]
+    sc_Vars.street_slabs = [obj for obj in services.object_manager().get_all() if
+                            [slab for slab in street_slab_ids if obj.definition.id == slab]]
+    # New private objects code
+    sc_Vars.private_objects = []
+    if "residential" in venue or "rentable" in venue or "clinic" in venue:
+        sc_Vars.private_objects = [obj for obj in
+                                   services.object_manager().get_all_objects_with_component_gen(LIGHTING_COMPONENT)
+                                   if obj.is_on_active_lot() and not obj.is_outside]
+
 
 @sims4.commands.Command('stats.solve_motive', command_type=(sims4.commands.CommandType.Live))
-def solve_motive(stat_type: TunableInstanceParam((sims4.resources.Types.STATISTIC), exact_match=True), opt_sim: OptionalTargetParam=None, _connection=None):
+def solve_motive(stat_type: TunableInstanceParam((sims4.resources.Types.STATISTIC), exact_match=True),
+                 opt_sim: OptionalTargetParam = None, _connection=None):
     try:
         sim = get_optional_target(opt_sim, _connection)
         if sim is None or stat_type is None:
@@ -1336,15 +1355,15 @@ def solve_motive(stat_type: TunableInstanceParam((sims4.resources.Types.STATISTI
             debugger('Interaction queue is full, cannot add anymore interactions.')
             return
         context = InteractionContext(sim, (InteractionContext.SOURCE_AUTONOMY), (priority.Priority.High),
-          bucket=(InteractionBucketType.DEFAULT))
+                                     bucket=(InteractionBucketType.DEFAULT))
         autonomy_request = AutonomyRequest(sim, autonomy_mode=FullAutonomy, commodity_list=[
-         stat],
-          context=context,
-          consider_scores_of_zero=True,
-          posture_behavior=(AutonomyPostureBehavior.IGNORE_SI_STATE),
-          is_script_request=True,
-          allow_opportunity_cost=False,
-          autonomy_mode_label_override='AutoSolveMotive')
+            stat],
+                                           context=context,
+                                           consider_scores_of_zero=True,
+                                           posture_behavior=(AutonomyPostureBehavior.IGNORE_SI_STATE),
+                                           is_script_request=True,
+                                           allow_opportunity_cost=False,
+                                           autonomy_mode_label_override='AutoSolveMotive')
         selected_interaction = services.autonomy_service().find_best_action(autonomy_request)
         if selected_interaction is None:
             commodity_interaction = stat_type.commodity_autosolve_failure_interaction
@@ -1364,6 +1383,7 @@ def solve_motive(stat_type: TunableInstanceParam((sims4.resources.Types.STATISTI
         debugger('Successfully executed SI {}.'.format(selected_interaction))
     except BaseException as e:
         error_trap(e)
+
 
 def advance_game_time(hours: int = 0, minutes: int = 0, seconds: int = 0, _connection=None):
     services.game_clock_service().advance_game_time(hours, minutes, seconds)
@@ -1397,6 +1417,7 @@ def set_season_and_time(season: SeasonType, time_in_minutes=None):
     services.season_service().reset_region_season_params()
     services.season_service().set_season(season, SeasonSetSource.CHEAT, time_in_minutes)
     services.weather_service().reset_forecasts()
+
 
 def get_number_of_objects():
     objects = services.object_manager().get_all()
@@ -1437,31 +1458,35 @@ def get_guid64(tunable):
         return 0
         pass
 
-def get_config(filename, section, option):
-    try:
-        datapath = sc_Vars.config_data_location
-        filename = datapath + r"\Data\{}".format(filename)
-        if not os.path.exists(filename):
-            return None
-        config = configparser.ConfigParser()
-        config.read(filename)
-        if config.has_section(section):
-            if config.has_option(section, option):
-                value = ast.literal_eval(config.get(section, option))
-                if type(value) is bool:
-                    return config.getboolean(section, option)
-                elif type(value) is int:
-                    return config.getint(section, option)
-                elif type(value) is float:
-                    return config.getfloat(section, option)
-                elif type(value) is list:
-                    return value
-                else:
-                    return config.get(section, option)
-        return None
 
-    except BaseException as e:
-        error_trap(e)
+def search_config_option(filename, search_option, search_value):
+    datapath = sc_Vars.config_data_location
+    filename = datapath + r"\Data\{}".format(filename)
+    if not os.path.exists(filename):
+        return None
+    config = configparser.ConfigParser()
+    config.read(filename)
+    for section in config.sections():
+        if search_option.lower() in str(section).lower():
+            for (option, value) in config.items(section):
+                if str(search_value).lower() in str(value).lower():
+                    return get_config(filename, section, option)
+    return None
+
+
+def search_config_section(filename, search, option):
+    datapath = sc_Vars.config_data_location
+    filename = datapath + r"\Data\{}".format(filename)
+    if not os.path.exists(filename):
+        return None
+    config = configparser.ConfigParser()
+    config.read(filename)
+    sections = [section for section in config.sections() if search.lower() in str(section).lower()]
+    if sections:
+        for section in sections:
+            return get_config(filename, section, option)
+    return None
+
 
 def get_sim_info(sim=None):
     try:
@@ -1487,7 +1512,7 @@ def get_sim_info(sim=None):
             career = sim_info.career_tracker._careers[career_id]
             if career is not None:
                 type = career_manager.get(career_id)
-                activeCareer = activeCareer + type.__name__ + " ({}) Level: {}".format(career_id, career.level)
+                activeCareer = activeCareer + type.__name__ + " ({}) Level: {} ".format(career_id, career.level)
             else:
                 activeCareer = "None"
         activeRoles = sim.autonomy_component.active_roles()
@@ -1538,13 +1563,16 @@ def get_sim_info(sim=None):
             room = 0
             pass
 
-        selected_sims = [str(sim_info) for sim_info in client._selectable_sims._selectable_sim_infos]
+        selected_sims = [(_info.first_name + " " + _info.last_name) for _info in
+                         client._selectable_sims._selectable_sim_infos]
+        routine_choice = list(sim_info.routine_info.routine)[sim_info.choice] if sim_info.routine else None
 
         returnText = "[Name:] {} {}\n" \
                      "[ID:] {}\n" \
                      "[Age:] {}\n" \
                      "[Active Household:] {}\n" \
                      "[Active:] {}\n" \
+                     "[Routine:] {}\n" \
                      "[Career:] {}\n" \
                      "[Role({}):] {}\n" \
                      "[Interactions:]\n{}\n" \
@@ -1556,7 +1584,8 @@ def get_sim_info(sim=None):
             .format(sim_info.first_name, sim_info.last_name, sim_info.sim_id,
                     get_sim_age(sim_info),
                     sim_info.household.home_zone_id,
-                    sim.is_simulating,
+                    not doing_nothing(sim),
+                    routine_choice,
                     activeCareer,
                     len(sim.autonomy_component.active_roles()),
                     roleStateName,
@@ -1577,9 +1606,34 @@ def get_tag_name(tag):
         try:
             tag = Tag(tag)
         except:
-            return ""
+            return str(tag)
             pass
     return tag.name
+
+
+def get_tag_ids(id) -> list:
+    return list(set(build_buy.get_object_all_tags(id)))
+
+
+def get_tags_from_id(id) -> str:
+    target_object_tags = list(set(build_buy.get_object_all_tags(id)))
+    if target_object_tags:
+        for tag in target_object_tags:
+            tag_title = get_tag_name(tag)
+            target_object_tags.append(tag_title)
+            return clean_string(str(target_object_tags))
+    return ""
+
+
+def get_tags_from_object(obj) -> str:
+    target_object_tags = []
+    object_tags_by_name = [str(Tag(object_tag)) if type(object_tag) is int else str(object_tag) for object_tag in
+                           obj.get_tags()]
+    if object_tags_by_name:
+        for tag in object_tags_by_name:
+            target_object_tags.append(tag)
+            return clean_string(str(target_object_tags))
+    return ""
 
 
 def set_exam_info(sim_info):
@@ -1601,6 +1655,7 @@ def get_career(sim_info):
         return False
     except BaseException as e:
         error_trap(e)
+
 
 def get_career_id(career_name: str):
     try:
@@ -1662,6 +1717,18 @@ def get_sim_role(sim) -> str:
         return "None\n"
     except BaseException as e:
         error_trap(e)
+
+
+def remove_sim_role(sim, role_title):
+    roles = sim.autonomy_component.active_roles()
+    role_list = []
+    for role in roles:
+        if role_title not in role.__class__.__name__.lower():
+            role_list.append(role.guid64)
+    role_tracker = sim.autonomy_component._role_tracker
+    role_tracker.reset()
+    for role in role_list:
+        assign_role(role, sim.sim_info)
 
 
 def is_sim_in_group(sim):
@@ -1843,15 +1910,20 @@ def distance_to_by_room(target, dest):
         return 1024
     return d
 
+
 def objects_by_room(target):
     if target is None:
         return None
-    if target.definition.id == 816:
-        return None
     if not hasattr(target, "position"):
         return None
-    target_room = build_buy.get_room_id(target.zone_id, target.position, target.level)
-    return [obj for obj in services.object_manager().valid_objects() if build_buy.get_room_id(obj.zone_id, obj.position, obj.level) == target_room]
+    target_room = get_room_by_position(target.position, target.level)
+    return [obj for obj in services.object_manager().valid_objects() if
+            get_room_by_position(obj.position, obj.level, 0.5) == target_room and obj.has_component(
+                PORTAL_LOCKING_COMPONENT) or
+            get_room_by_position(obj.position, obj.level, -0.5) == target_room and obj.has_component(
+                PORTAL_LOCKING_COMPONENT) or
+            get_room_by_position(obj.position, obj.level) == target_room]
+
 
 def distance_from_spawn(target, spawn):
     if target is None or spawn is None:
@@ -1876,6 +1948,7 @@ def clamp(n, smallest, largest): return max(smallest, min(n, largest))
 
 
 def get_object_info(target, long_version=False):
+    client = services.client_manager().get_first_client()
     zone_id = services.current_zone_id()
     zone_info = services.current_zone_info()
     zone = services.current_zone()
@@ -1886,7 +1959,7 @@ def get_object_info(target, long_version=False):
     object_tuning = services.definition_manager().get(target.definition.id)
     object_class = clean_string(str(object_tuning._cls))
 
-    obj_room_id = build_buy.get_room_id(zone_id, target.position, target.level)
+    obj_room_id = get_room(target)
     dirty = 100
     commodity_list = ""
     if hasattr(target, "commodity_tracker"):
@@ -1916,10 +1989,13 @@ def get_object_info(target, long_version=False):
         scale = target.scale
     else:
         scale = 1
-    if hasattr(target, "_lock"):
-        locked = target._lock
+    if hasattr(target, "get_disallowed_sims"):
+        locked = get_locked_for_sim(target, client.active_sim)
     else:
         locked = None
+
+    routable = get_routable_for_sim(target, client.active_sim)
+
     if hasattr(target, "__file__"):
         filename = target.__file__
     else:
@@ -1961,8 +2037,10 @@ def get_object_info(target, long_version=False):
                   "[Object Footprint:] {}\n" \
                   "[Object Outside:] {}\n" \
                   "[Object In Use:] {}\n" \
+                  "[Object Use Sim Count:] {}\n" \
                   "[Object Scale:] {}\n" \
                   "[Object Locked:] {}\n" \
+                  "[Object Routable:] {}\n" \
                   "[Object Dirty:] {}\n" \
                   "[Object Room ID:] {}\n" \
                   "[Object Level:] {}\n" \
@@ -1983,8 +2061,10 @@ def get_object_info(target, long_version=False):
                 object_width,
                 target.is_outside,
                 in_use,
+                len(get_sims_using_object(target)),
                 scale,
                 locked,
+                routable,
                 object_is_dirty(target),
                 obj_room_id,
                 target.level,
@@ -2022,40 +2102,76 @@ def get_object_info(target, long_version=False):
 
     return info_string
 
-def transmogrify(source, target):
-    if hasattr(source, "definition") and hasattr(target, "definition"):
-        target.tuning_manager._definitions_cache[target.definition.id] = target.tuning_manager._load_definition(source.definition.id)
 
 def is_object_in_use(obj):
     interaction_refs = obj.interaction_refs if hasattr(obj, "interaction_refs") else None
-    if len(interaction_refs):
+    if interaction_refs:
         return True
     return obj.in_use if hasattr(obj, "in_use") else False
 
-def is_object_in_use_by(obj, sim):
-    interaction_refs = obj.interaction_refs if hasattr(obj, "interaction_refs") else None
-    if len(interaction_refs):
-        for interaction in interaction_refs:
-            if interaction.sim:
-                if hasattr(interaction.sim.sim_info, "sim_id"):
-                    if interaction.sim.sim_info.sim_id == sim.sim_info.sim_id:
-                        return True
-    return obj.in_use_by(sim) if hasattr(obj, "in_use_by") else False
 
-def get_object_dump(obj):
+def is_object_in_use_by(obj, sim):
+    if obj.in_use_by(sim):
+        return True
+    if any(sim == sim_using for sim_using in get_sims_using_object(obj)):
+        return True
+    return False
+
+
+def does_object_have_action(obj, action):
+    interaction_refs = obj.interaction_refs if hasattr(obj, "interaction_refs") else None
+    if interaction_refs:
+        for interaction in interaction_refs:
+            if action in str(interaction.__class__.__name__).lower():
+                return True
+    return False
+
+
+def is_object_type_in_use_by(type_string, sim):
+    objs = [obj for obj in services.object_manager().valid_objects() if
+            type_string in str(obj).lower() and [obj_sim for obj_sim in get_sims_using_object(obj) if obj_sim == sim]]
+    if objs:
+        return True
+    return False
+
+
+def get_objects_used_by_sim(sim):
+    return [obj for obj in services.object_manager().valid_objects() if
+            [obj_sim for obj_sim in get_sims_using_object(obj) if obj_sim == sim]]
+
+
+def get_sims_using_object(obj):
+    interaction_refs = obj.interaction_refs if hasattr(obj, "interaction_refs") else None
+    if interaction_refs:
+        return set([interaction.sim for interaction in interaction_refs])
+    return []
+
+
+def debugger_get_object_dump(obj, filter=None):
+    debugger(get_object_dump(obj, filter))
+
+
+def get_object_dump(obj, filter=None):
     info_string = ""
     result = obj
     for att in dir(result):
         if hasattr(result, att):
+            attribute = getattr(result, att)
+            if filter:
+                if not attribute:
+                    continue
+                if filter not in str(att).lower():
+                    continue
             info_string = info_string + "\n(" + str(att) + "): " + clean_string(str(getattr(result, att)))
-
     return info_string
+
 
 def get_instance_tuning(id):
     # Get the tuning manager for interaction instance types
     tuning_manager = services.get_instance_manager(Types.INTERACTION)
     # Return the SI tuning from the manager
     return tuning_manager.get(id)
+
 
 def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
     try:
@@ -2065,10 +2181,10 @@ def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
         if sc_Vars.tag_sim_for_debugging:
             name = "{} {}".format(sim.first_name, sim.last_name)
             if name in sc_Vars.tag_sim_for_debugging:
-                debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, dc_interaction), 0, True)
+                debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, dc_interaction))
         if sc_Vars.DEBUG_FULL:
             name = "{} {}".format(sim.first_name, sim.last_name)
-            debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, dc_interaction), 0, True)
+            debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, dc_interaction))
 
         zone = services.current_zone()
         if not hasattr(target, "definition"):
@@ -2090,7 +2206,7 @@ def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
         if affordance_instance is None:
             return False
         if affordance_instance.is_super:
-            result = push_super_affordance(sim, affordance_instance, target, context)
+            result = push_super_affordance(sim, affordance_instance, target, context, autonomous=autonomous)
         elif affordance_instance.is_social:
             result = push_social_affordance(sim, 13998, dc_interaction, target, context)
         else:
@@ -2100,14 +2216,16 @@ def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
         error_trap(e)
         if sim:
             name = "{} {}".format(sim.first_name, sim.last_name)
-            debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, dc_interaction), 0, True)
+            debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, dc_interaction), 0,
+                     True)
             sim.reset(ResetReason.RESET_ON_ERROR, None, 'Interaction killed on error.')
         pass
+
 
 def push_super_affordance(sim, affordance, target=None,
                           interaction_context=InteractionContext.SOURCE_SCRIPT,
                           priority=Priority.High, run_priority=Priority.High,
-                          insert_strategy=QueueInsertStrategy.FIRST, must_run_next=False):
+                          insert_strategy=QueueInsertStrategy.FIRST, must_run_next=False, autonomous=True):
     try:
         affordance_instance = affordance
         if affordance_instance is None:
@@ -2118,10 +2236,12 @@ def push_super_affordance(sim, affordance, target=None,
             if not context:
                 return False
 
-            result = sim.push_super_affordance(affordance_instance, target, context, picked_object=target, time_overhead=1)
+            result = sc_push_super_affordance(sim, affordance_instance, target, context, picked_object=target,
+                                              time_overhead=1, autonomous=autonomous)
             return result
     except BaseException as e:
         error_trap(e)
+
 
 def get_posture_target(sim, interaction):
     for si in sim.si_state:
@@ -2129,46 +2249,53 @@ def get_posture_target(sim, interaction):
             return si.get_participant(interactions.ParticipantType.ActorPostureTarget)
     return None
 
+def get_posture_target_by_name(sim, name):
+    for si in sim.si_state:
+        if name in str(si).lower():
+            return si.get_participant(interactions.ParticipantType.ActorPostureTarget)
+    return None
+
+def get_interaction_target_by_name(sim, name):
+    for interaction in sim.get_all_running_and_queued_interactions():
+        if name in str(interaction).lower():
+            return interaction.target
+    return None
+
+def dump_interaction_object_by_name(sim, name) -> str:
+    for interaction in sim.get_all_running_and_queued_interactions():
+        if name in str(interaction).lower():
+            return get_object_dump(interaction)
+    return ""
+
 def get_sim_posture_target(sim):
     return sim.posture.target
+
 
 def set_sim_posture_target(sim, target):
     sim.posture.target = target
 
-def _push_super_affordance(self, super_affordance, target, context, **kwargs):
+
+def sc_push_super_affordance(sim, super_affordance, target, context, autonomous=True, **kwargs):
     try:
-        if self is None:
-            return False
-
-        if sc_Vars.tag_sim_for_debugging:
-            name = "{} {}".format(self.first_name, self.last_name)
-            if name in sc_Vars.tag_sim_for_debugging:
-                debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, super_affordance), 0, True)
-        if sc_Vars.DEBUG_FULL:
-            name = "{} {}".format(self.first_name, self.last_name)
-            debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, super_affordance), 0, True)
-
-        zone = services.current_zone()
-        sim = services.get_zone(zone.id).find_object(self.id)
-        if not sim:
-            return False
-
+        if autonomous:
+            if check_interaction_on_private_objects(sim, target, super_affordance):
+                return sim.push_super_affordance(super_affordance, target, context, picked_object=target,
+                                                 time_overhead=1)
+            return EnqueueResult(TestResult.NONE, ExecuteResult.NONE)
         if isinstance(super_affordance, str):
-            super_affordance = services.get_instance_manager(sims4.resources.Types.INTERACTION).get(super_affordance)
+            super_affordance = services.get_instance_manager(Types.INTERACTION).get(super_affordance)
             if not super_affordance:
-                return False
-        aop = (interactions.aop.AffordanceObjectPair)(super_affordance, target, super_affordance, None, **kwargs)
-        if not aop:
-            return False
+                raise ValueError('{0} is not a super affordance'.format(super_affordance))
+        aop = (AffordanceObjectPair)(super_affordance, target, super_affordance, None, **kwargs)
         res = aop.test_and_execute(context)
         return res
     except BaseException as e:
         error_trap(e)
-        if self:
-            name = "{} {}".format(self.first_name, self.last_name)
-            debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, super_affordance), 0, True)
-            self.reset(ResetReason.RESET_ON_ERROR, None, 'Interaction killed on error.')
-        pass
+        name = "{} {}".format(sim.first_name, sim.last_name)
+        debugger("Sim: {} Target: {} Interaction: {}".format(name, target.__class__.__name__, super_affordance), 0,
+                 True)
+        return EnqueueResult(TestResult.NONE, ExecuteResult.NONE)
+
 
 def push_social_affordance(sim, social_super_affordance, mixer_affordance, target, interaction_context,
                            priority=Priority.High, run_priority=Priority.High,
@@ -2196,7 +2323,7 @@ def push_social_affordance(sim, social_super_affordance, mixer_affordance, targe
     if super_interaction is None:
         si_context = InteractionContext(sim, interaction_context, priority, run_priority=run_priority,
                                         insert_strategy=insert_strategy, must_run_next=must_run_next)
-        si_result = (sim.push_super_affordance)(super_affordance_instance, target, si_context, picked_object=target)
+        si_result = sc_push_super_affordance(sim, super_affordance_instance, target, si_context, picked_object=target)
         if not si_result:
             return False
         super_interaction = si_result.interaction
@@ -2242,7 +2369,8 @@ def push_mixer_affordance(sim, affordance, target=None,
 def make_sim_selectable(sim_info):
     client = services.client_manager().get_first_client()
     if len(client._selectable_sims._selectable_sim_infos):
-        if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
+        if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and \
+                client._selectable_sims._selectable_sim_infos[0] in services.active_household():
             travel_group = get_sim_travel_group(client.active_sim, False)
             sim_info.assign_to_travel_group(travel_group)
     try:
@@ -2272,7 +2400,8 @@ def make_sim_unselectable(sim_info):
         return
     client = services.client_manager().get_first_client()
     if len(client._selectable_sims._selectable_sim_infos):
-        if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and client._selectable_sims._selectable_sim_infos[0] in services.active_household():
+        if client._selectable_sims._selectable_sim_infos[0].is_in_travel_group() and \
+                client._selectable_sims._selectable_sim_infos[0] in services.active_household():
             travel_group = get_sim_travel_group(client.active_sim, False)
             sim_info.remove_from_travel_group(travel_group)
     try:
@@ -2431,6 +2560,43 @@ def get_sim_age(sim_info):
         return sim_info.age_progress
     return sim_info._time_alive
 
+def is_unroutable_object(sim, obj):
+    if [unroutable for unroutable in sc_Vars.non_routable_obj_list if unroutable.object == obj and unroutable.sim == sim]:
+        return True
+    return False
+
+def find_empty_chair(sim, obj=None, dist=sc_Vars.MAX_DISTANCE, index=0):
+    if obj:
+        search = obj
+    else:
+        search = sim
+    chairs = find_all_objects_by_title(search, "sitliving|sitdining|sitsofa|sitlove|beddouble|bedsingle|chair|stool|hospitalexambed", sim.level, dist)
+    if not chairs:
+        return None
+    for i, chair in enumerate(chairs):
+        if i >= index:
+            if is_unroutable_object(sim, chair):
+                continue
+            if not get_routable_for_sim(chair, sim):
+                continue
+            if "sitsofa" in str(chair).lower() and len(get_sims_using_object(chair)) < 3:
+                return chair
+            if "sitlove" in str(chair).lower() or "beddouble" in str(chair).lower() or "bedsingle" in str(chair).lower():
+                if len(get_sims_using_object(chair)) < 2:
+                    return chair
+            if not is_object_in_use(chair) or is_object_in_use_by(chair, sim):
+                return chair
+    return None
+
+# New code to disable standing while chatting and sitting.
+def disable_chat_movement(interaction):
+    action = interaction.__class__.__name__.lower()
+    if "stand" in action and check_actions(interaction.sim, "sit") and check_actions(interaction.sim, "chat"):
+        target = get_interaction_target_by_name(interaction.sim, "social")
+        clear_sim_instance(interaction.sim.sim_info, "chat|social|stand")
+        push_sim_function(target, interaction.sim, 13998)
+
+
 def create_trauma(target):
     amount_puddle = int(random.uniform(1, 5))
     for i in range(amount_puddle):
@@ -2443,7 +2609,7 @@ def create_trauma(target):
             orientation = sims4.math.Quaternion(orientation.x, orientation.y + random.uniform(-1.0, 1.0),
                                                 orientation.z, orientation.w)
             puddle_pos = sims4.math.Vector3(translation.x + random.uniform(-2.0, 2.0), translation.y,
-                                     translation.z + random.uniform(-2.0, 2.0))
+                                            translation.z + random.uniform(-2.0, 2.0))
             zone_id = services.current_zone_id()
             routing_surface = routing.SurfaceIdentifier(zone_id, level, routing.SurfaceType.SURFACETYPE_WORLD)
             puddle.location = sims4.math.Location(sims4.math.Transform(puddle_pos, orientation), routing_surface)
@@ -2475,7 +2641,5 @@ def create_trauma(target):
                     gibs.location = sims4.math.Location(sims4.math.Transform(pos, orientation), routing_surface)
 
 
-Sim.push_super_affordance = _push_super_affordance
 SimInfoManager.instanced_sims_gen = _instanced_sims_gen
 TravelGroup.instanced_sims_gen = _instanced_sims_gen
-1

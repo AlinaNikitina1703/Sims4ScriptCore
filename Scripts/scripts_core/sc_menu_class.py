@@ -1,15 +1,13 @@
 import math
 import re
 
-import objects
-import services
-from scripts_core.sc_dialog import display_choices
-from scripts_core.sc_util import error_trap, ld_notice
 from distributor.shared_messages import IconInfoData
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from objects.game_object import GameObject
 from sims4.localization import LocalizationHelperTuning
-from ui.ui_dialog_picker import ObjectPickerRow, ObjectPickerType, UiObjectPicker
+
+from scripts_core.sc_dialog import display_choices
+from scripts_core.sc_util import error_trap
 
 ICON_MORE = 14257953832746441564
 ICON_NONE = 15219575448586220634
@@ -112,7 +110,7 @@ class MainMenu(ImmediateSuperInteraction):
                     self.main_index = index
                     for choice in this_menu_items:
                         if result == choice and not show_files:
-                            self.options(timeline, className, choice)
+                            self.options(timeline, className, result)
                         elif result == choice and show_files is True:
                             self.files(timeline, className, funcName, result)
                         count = count + 1
@@ -145,117 +143,6 @@ class MainMenu(ImmediateSuperInteraction):
             else:
                 max_pages = 1
             display_choices(this_menu_items, handle_result, text=text + "\nPage {} of {}".format(page, max_pages), title=title)
-        except BaseException as e:
-            error_trap(e)
-
-class ObjectMenu(ImmediateSuperInteraction):
-    def __init__(self, *args, **kwargs):
-        (super().__init__)(*args, **kwargs)
-        self.MAX_MENU_ITEMS_TO_LIST = 10
-        self.MENU_MORE = -1
-        self.MENU_BACK = -2
-
-    def show(self, path: str, filename: str, index: int, target: GameObject, delete=False, max=1):
-        try:
-            client = services.client_manager().get_first_client()
-
-            def get_picker_results_callback(dialog):
-                try:
-                    if not dialog.accepted:
-                        return
-                    result_tags = dialog.get_result_tags()
-                    deleted = 0
-                    indexes = []
-                    for tags in result_tags:
-                        if tags is self.MENU_MORE:
-                            self.show(path, filename, index + self.MAX_MENU_ITEMS_TO_LIST, target, delete, max)
-                        elif tags is self.MENU_BACK and index is not 0:
-                            self.show(path, filename, index - self.MAX_MENU_ITEMS_TO_LIST, target, delete, max)
-                        elif tags is self.MENU_BACK:
-                            return
-                        elif delete:
-                            deleted = deleted + 1
-                            indexes.append(tags)
-
-                            ld_notice(None, filename, "Object index: {}".format(tags), False,
-                                  "GREEN")
-                        elif tags is None:
-                            return
-                        else:
-                            new_obj = objects.system.find_object(tags.definition.id)
-                            if new_obj is None:
-                                new_obj = objects.system.create_object(tags.definition.id)
-                            if new_obj is not None:
-                                new_obj.location = target.location
-                            else:
-                                ld_notice(None, filename, "Unable to place object {}".format(tags.definition.id), False,
-                                          "GREEN")
-                    if delete and deleted > 0:
-                        #remove_object_from_file_by_index(path, filename, indexes)
-                        ld_notice(None, filename, "Deleted {} objects".format(deleted), False,
-                                  "GREEN")
-
-                except BaseException as e:
-                    error_trap(e)
-
-            open_file = path + r"\{}.txt".format(filename)
-            file = open(open_file, "r")
-            all_lines = file.readlines()
-            file.close()
-
-            localized_title = lambda **_: LocalizationHelperTuning.get_raw_text(filename)
-            localized_text = lambda **_: LocalizationHelperTuning.get_raw_text("Page {} of {}".format(int((index+1)/self.MAX_MENU_ITEMS_TO_LIST+1),
-                                                                                                      int((len(all_lines)+1)/self.MAX_MENU_ITEMS_TO_LIST+1)))
-
-            dialog = UiObjectPicker.TunableFactory().default(client.active_sim,
-                                                             text=localized_text,
-                                                             title=localized_title,
-                                                             max_selectable=max,
-                                                             min_selectable=1,
-                                                             picker_type=ObjectPickerType.OBJECT)
-
-            count = 0
-            file_index = 0
-            for line in all_lines:
-                if count >= index:
-                    values = line.split(":")
-                    obj_id = int(values[0])
-                    obj = objects.system.create_object(obj_id)
-                    if obj is not None:
-                        obj_name = LocalizationHelperTuning.get_object_name(obj)
-                        obj_label = LocalizationHelperTuning.get_raw_text("Index: ({}) Object ID: ({})".format(file_index, obj.definition.id))
-                        obj_icon = get_icon_info_data(obj)
-                    else:
-                        obj_name = LocalizationHelperTuning.get_raw_text("No Object")
-                        obj_label = LocalizationHelperTuning.get_raw_text("Index: ({}) Object ID: ({})".format(file_index, obj_id))
-                        obj_icon = None
-                    if not delete:
-                        dialog.add_row(
-                            ObjectPickerRow(name=obj_name, row_description=obj_label, icon_info=obj_icon,
-                            tag=obj))
-                    else:
-                        dialog.add_row(
-                            ObjectPickerRow(name=obj_name, row_description=obj_label, icon_info=obj_icon,
-                            tag=file_index))
-
-                count = count + 1
-                file_index = file_index + 1
-                if count >= self.MAX_MENU_ITEMS_TO_LIST + index:
-                    obj_name = LocalizationHelperTuning.get_raw_text("<p style='font-size:30px'><b>[Show More]</b></p>")
-                    obj_label = LocalizationHelperTuning.get_raw_text("")
-                    dialog.add_row(
-                        ObjectPickerRow(name=obj_name, row_description=obj_label, icon_info=None,
-                                        tag=self.MENU_MORE))
-                    break
-
-            obj_name = LocalizationHelperTuning.get_raw_text("<p style='font-size:30px'><b>[Go Back]</b></p>")
-            obj_label = LocalizationHelperTuning.get_raw_text("")
-            dialog.add_row(
-                ObjectPickerRow(name=obj_name, row_description=obj_label, icon_info=None,
-                                tag=self.MENU_BACK))
-
-            dialog.add_listener(get_picker_results_callback)
-            dialog.show_dialog()
         except BaseException as e:
             error_trap(e)
 

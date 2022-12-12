@@ -1,35 +1,40 @@
 import ast
 import configparser
 import os
-import random
 
 import objects
 import services
 import sims4
-from sims.sim_info_types import Age
+from date_and_time import TimeSpan
+from filters.tunable import TunableSimFilter
 from sims.sim_spawner_service import SimSpawnerService
 
+from module_simulation.sc_simulation import set_sim_buffer, set_sim_delay
 from scripts_core.sc_clubs import C_ZoneClubs
 from scripts_core.sc_debugger import debugger
+from scripts_core.sc_file import get_config
+from scripts_core.sc_filter import sc_Filter
+from scripts_core.sc_gohere import make_sim_leave, keep_sim_outside
 from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims, \
-    update_lights, \
+    fade_lights_in_live_mode, \
     add_career_to_sim, set_proper_sim_outfit, remove_all_careers, \
     remove_annoying_buffs, has_role, \
-    assign_role_title, clear_jobs, assign_title, assign_routine, clamp, get_work_hours, keep_sims_outside, \
-    keep_sim_outside, make_sim_leave, set_autonomy, send_sim_home, get_number_of_role_sims, check_actions, \
-    unassign_role, clear_leaving, distance_to_by_room, get_important_objects_on_lot, doing_nothing, get_config, \
+    clear_jobs, assign_title, set_autonomy, clear_leaving, get_important_objects_on_lot, \
+    doing_nothing, \
     push_sim_function
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars, AutonomyState
 from scripts_core.sc_sim_tracker import track_sim, load_sim_tracking, save_sim_tracking, update_sim_tracking_info
 from scripts_core.sc_spawn_handler import sc_SpawnHandler
+from scripts_core.sc_transmogrify import load_material
 from scripts_core.sc_util import error_trap_console, init_sim
 
 
 class ScriptCoreMain:
     timestamp = None
     index = 0
+    sim_filter = None
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
@@ -163,14 +168,25 @@ class ScriptCoreMain:
         sc_Vars.disable_tracking = config.getboolean("control", "disable_tracking")
         sc_Vars.disable_forecasts = config.getboolean("control", "disable_forecasts")
         sc_Vars.disable_social_autonomy = config.getboolean("control", "disable_social_autonomy")
+        sc_Vars.disable_new_sims = config.getboolean("control", "disable_new_sims")
+        sc_Vars.disable_chat_movement = config.getboolean("control", "disable_chat_movement")
         services.weather_service()._icy_conditions_option = not config.getboolean("control", "disable_icy_conditions")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
         sc_Vars.chance_role_trait = config.getfloat("control", "chance_role_trait")
+        sim_buffer = config.getfloat("control", "set_sim_buffer")
+        sim_delay = config.getint("control", "set_sim_delay")
+
+        set_sim_buffer(sim_buffer)
+        set_sim_delay(TimeSpan(sim_delay))
         SimSpawnerService.NPC_SOFT_CAP = 255
         sc_Vars.timestamp = 0
         services.sim_spawner_service().set_npc_soft_cap_override(sc_Vars.MAX_SIMS)
+        services.fire_service.fire_enabled = False
+        if sc_Vars.disable_new_sims:
+            TunableSimFilter._template_chooser = None
+        ScriptCoreMain.sim_filter = sc_Filter()
 
     def show_mod_status(self, live=False):
         venue = get_venue()
@@ -228,6 +244,14 @@ class ScriptCoreMain:
     def load(self):
         ScriptCoreMain.config_ini(self)
         ScriptCoreMain.assign_all_sims(self)
+        ScriptCoreMain.load_object_data(self)
+
+    # New transmog code
+    def load_object_data(self):
+        sc_Vars.transmog_objects = []
+        for obj in services.object_manager().get_all():
+            if load_material(obj):
+                sc_Vars.transmog_objects.append(obj) if obj not in sc_Vars.transmog_objects else None
 
     def spawn_load(self):
         try:
@@ -262,6 +286,8 @@ class ScriptCoreMain:
                 ScriptCoreMain.assign_sim(self, sim)
 
     def assign_sim(self, sim):
+        if not sim.sim_info.is_instanced():
+            return
         zone = services.current_zone()
         now = services.time_service().sim_now
         autonomy_service = services.autonomy_service()
@@ -278,7 +304,8 @@ class ScriptCoreMain:
         else:
             autonomy_setting = AutonomyState.FULL
 
-        set_proper_sim_outfit(sim, False, False, True)
+        if not sim.sim_info.routine:
+            set_proper_sim_outfit(sim, sim.sim_info.is_selectable, None, True)
         remove_annoying_buffs(sim.sim_info)
         track_sim(sim.sim_info)
         update_sim_tracking_info(sim.sim_info)
@@ -292,7 +319,7 @@ class ScriptCoreMain:
         elif sim.sim_info.routine:
             if not sim.sim_info.routine_info.title:
                 if not has_role(sim):
-                    send_sim_home(sim)
+                    make_sim_leave(sim)
                     return
             if now.hour() >= sim.sim_info.routine_info.off_duty and not sim.sim_info.routine_info.off_duty == 0 or \
                     now.hour() < sim.sim_info.routine_info.on_duty and not sim.sim_info.routine_info.on_duty == 0:
@@ -302,7 +329,7 @@ class ScriptCoreMain:
                 assign_title(sim.sim_info, "")
                 sim.sim_info.routine = False
                 if not sim.sim_info.is_selectable:
-                    send_sim_home(sim)
+                    make_sim_leave(sim)
                 return
             if sim == services.get_active_sim():
                 clear_leaving(sim)
@@ -339,10 +366,11 @@ class ScriptCoreMain:
             clear_leaving(sim)
             set_autonomy(sim.sim_info, AutonomyState.FULL)
             return
-        elif has_allowed_role(sim):
+        elif ScriptCoreMain.sim_filter.has_allowed_role(sim):
             set_autonomy(sim.sim_info, AutonomyState.FULL)
+            # New private objects code
             if sc_Vars.keep_sims_outside:
-                keep_sim_outside(sim)
+                keep_sim_outside(sim, sc_Vars.private_objects)
             return
         if sc_Vars.DEBUG:
             debugger("Sim: {} - Filtered".format(sim.first_name))
@@ -350,7 +378,7 @@ class ScriptCoreMain:
 
     def init_routine(self):
         try:
-            if sc_Vars._running and not sc_Vars.DISABLE_MOD:
+            if sc_Vars._running and not sc_Vars.DISABLE_MOD and not sc_Vars.DISABLE_ROUTINE:
                 update_sim = None
                 sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
                 sims_doing_nothing = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and doing_nothing(sim) and sim.sim_info.routine_info.title != "patient"]
@@ -370,12 +398,12 @@ class ScriptCoreMain:
                 if sc_Vars.routine_sim_index >= len(sims):
                     sc_Vars.routine_sim_index = 0
 
-                update_lights(False, 0.0)
+                fade_lights_in_live_mode(False, 0.0)
 
                 if sim.sim_info.is_instanced():
                     ScriptCoreMain.assign_sim(self, sim)
                 if update_sim:
-                    if update_sim.id != sim.id and update_sim.sim_info.is_instanced():
+                    if update_sim != sim and update_sim.sim_info.is_instanced():
                         ScriptCoreMain.assign_sim(self, update_sim)
 
         except BaseException as e:
@@ -386,6 +414,7 @@ class ScriptCoreMain:
             zone = services.current_zone()
             venue = get_venue()
             sc_club = C_ZoneClubs()
+            sc_Vars.DISABLE_MOD = get_config("config.ini", "control", "disable_mod")
             if sc_Vars.DISABLE_MOD:
                 return
             if not sc_Vars._config_loaded and not sc_Vars._running:
@@ -402,7 +431,7 @@ class ScriptCoreMain:
                 ScriptCoreMain.show_mod_status(self)
                 sims4.commands.client_cheat("fps off", client.id)
 
-                update_lights(True, 0.0)
+                fade_lights_in_live_mode(True, 0.0)
                 object_list = get_config("zones.ini", "global", "objects")
                 actions = get_config("zones.ini", "global", "actions")
                 if object_list:
@@ -427,7 +456,12 @@ class ScriptCoreMain:
                             set_proper_sim_outfit(sim, False)
                         sc_SpawnHandler.spawned_sims.remove(sim_info)
 
-                sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if not sim.sim_info.routine]
+                sims = [sim for sim in services.sim_info_manager().instanced_sims_gen(allow_hidden_flags=objects.ALL_HIDDEN_REASONS) if not sim.sim_info.routine]
+                sims_doing_nothing = [sim for sim in sims if doing_nothing(sim)]
+                update_sim = None
+                if len(sims_doing_nothing):
+                    update_sim = sims_doing_nothing[0]
+
                 if not len(sims):
                     return
                 if sc_Vars.sim_index >= len(sims):
@@ -439,158 +473,14 @@ class ScriptCoreMain:
                 if sc_Vars.sim_index >= len(sims):
                     sc_Vars.sim_index = 0
 
-                update_lights(False, 0.0)
-
-                if sim.sim_info.is_instanced():
-                    ScriptCoreMain.assign_sim(self, sim)
+                fade_lights_in_live_mode(False, 0.0)
+                ScriptCoreMain.assign_sim(self, sim)
+                if update_sim:
+                    if update_sim != sim and update_sim.sim_info.is_instanced() and not sim.sim_info.is_selectable and sc_Vars.career_function:
+                        sc_Vars.career_function.default_routine(sim.sim_info)
 
         except BaseException as e:
             error_trap_console(e)
 
     def on_build_buy_enter_handler(self):
-        update_lights(True, 0.0)
-
-def has_allowed_role(sim):
-    zone = services.current_zone()
-    venue = get_venue()
-    disallowed_roles = get_config("spawn.ini", "spawn", "roles")
-
-    if sim.sim_info.routine:
-        return True
-    if sim == services.get_active_sim():
-        return True
-    elif sim.sim_info.is_selectable:
-        return True
-    elif is_sim_in_group(sim):
-        return True
-    elif sim.sim_info in services.active_household():
-        return True
-    elif sim.sim_info.household.home_zone_id == zone.id:
-        return True
-    if sc_Vars.DISABLE_SPAWNS:
-        return False
-    if not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() < sc_Vars.spawn_time_start and sc_Vars.spawn_time_start > 0 or \
-            not sc_Vars.DISABLE_CULLING and services.time_service().sim_now.hour() > sc_Vars.spawn_time_end - 1 and sc_Vars.spawn_time_end > 0:
-        return False
-    if add_role_and_trait_sims_to_routine(sim):
-        return True
-    if [role for role in disallowed_roles if has_role(sim, role)] and not sc_Vars.DISABLE_ROUTINE and not "venue_stripclub" in venue:
-        return False
-
-
-    sims_on_lot = get_number_of_sims()
-    if sims_on_lot > sc_Vars.MAX_SIMS and not len(sim.autonomy_component.active_roles()):
-        return False
-
-    role_sims_on_lot = get_number_of_role_sims()
-    if role_sims_on_lot > sc_Vars.MAX_SIMS:
-        return False
-
-    if sims_on_lot + role_sims_on_lot > sc_Vars.MAX_SIMS * 1.2:
-        return False
-
-
-    # if disable culling is true that means no sims will be removed, always return true role sims or not.
-    # no role sims get auto removed.
-    if not sc_Vars.DISABLE_CULLING and not len(sim.autonomy_component.active_roles()):
-        return False
-
-    if not sc_Vars.DISABLE_ROLE_TITLES:
-        assign_role_title(sim)
-    return True
-
-def add_role_and_trait_sims_to_routine(sim):
-    venue = get_venue()
-
-    if [r for r in sim.autonomy_component.active_roles() if "leave" in str(r).lower()]:
-        return
-
-    roles = [role for role in sc_Vars.roles if [r for r in sim.autonomy_component.active_roles() if role.title in
-        str(r).lower() or role.career.lower() in str(r).lower() and role.career != "None"] or [trait for trait in sim.sim_info.trait_tracker
-        if role.title in str(trait).lower() or role.career.lower() in str(trait).lower()] and role.career != "None"]
-    if not roles:
-        return
-
-    for role in roles:
-        # Sims based on traits
-        if "metalhead" in role.title:
-            stereos = [stereo for stereo in sc_Vars.stereos_on_lot if "broadcaster_Stereo_Metal" in str(stereo._on_location_changed_callbacks)]
-            if stereos:
-                for stereo in stereos:
-                    if not role.venue and sim.sim_info.age > Age.CHILD and distance_to_by_room(sim, stereo) < 2 or \
-                            [v for v in role.venue if v in venue] and sim.sim_info.age > Age.CHILD and distance_to_by_room(sim, stereo) < 2:
-                        assign_routine(sim.sim_info, "metalhead", True, (not sc_Vars.DISABLE_ROLE_TITLES))
-                        if sc_Vars.DEBUG:
-                            debugger("Metalhead: {}".format(sim.first_name))
-                        return True
-
-        # Sims based on roles
-        if "butler" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                assign_routine(sim.sim_info, "butler", False)
-                if sc_Vars.DEBUG:
-                    debugger("Butler: {}".format(sim.first_name))
-                return True
-
-        if "patient" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                assign_routine(sim.sim_info, "patient", False)
-                if sc_Vars.DEBUG:
-                    debugger("Patient: {}".format(sim.first_name))
-                return True
-
-        if "visitor" in role.title:
-            assign_routine(sim.sim_info, "visitor", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-            if sc_Vars.DEBUG:
-                debugger("Visitor: {}".format(sim.first_name))
-            return True
-
-        if "invited" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                assign_routine(sim.sim_info, "invited", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-                if sc_Vars.DEBUG:
-                    debugger("Invited: {}".format(sim.first_name))
-                return True
-
-        if "park" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                assign_routine(sim.sim_info, "park", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-                if sc_Vars.DEBUG:
-                    debugger("Park: {}".format(sim.first_name))
-                return True
-
-        if "hiker" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                assign_routine(sim.sim_info, "hiker", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-                if sc_Vars.DEBUG:
-                    debugger("Hiker: {}".format(sim.first_name))
-                return True
-
-        if "traveler" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) and len(sc_Vars.beds_on_lot) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty) and len(sc_Vars.beds_on_lot):
-                assign_routine(sim.sim_info, "traveler", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-                if sc_Vars.DEBUG:
-                    debugger("Traveler: {}".format(sim.first_name))
-                return True
-
-        if "gamer" in role.title:
-            if not role.venue and get_work_hours(role.on_duty, role.off_duty) or \
-                    [v for v in role.venue if v in venue] and get_work_hours(role.on_duty, role.off_duty):
-                assign_routine(sim.sim_info, "gamer", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-                if sc_Vars.DEBUG:
-                    debugger("Gamer: {}".format(sim.first_name))
-                return True
-
-        if "leave" in role.title:
-            assign_routine(sim.sim_info, "leave", False, (not sc_Vars.DISABLE_ROLE_TITLES))
-            if sc_Vars.DEBUG:
-                debugger("Leave: {}".format(sim.first_name))
-            return True
-    return False
-
+        fade_lights_in_live_mode(True, 0.0)

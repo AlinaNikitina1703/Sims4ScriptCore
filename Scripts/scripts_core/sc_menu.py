@@ -1,7 +1,9 @@
 import os
 import random
 import re
+from math import atan2
 from os.path import isfile, join
+from pathlib import Path
 
 import alarms
 import build_buy
@@ -12,7 +14,6 @@ import objects
 import services
 import sims4
 from ensemble.ensemble_service import EnsembleService
-from interactions import ParticipantType
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from interactions.interaction_finisher import FinishingType
 from objects.components.types import LIGHTING_COMPONENT
@@ -22,8 +23,8 @@ from seasons import SeasonType
 from server_commands.argument_helpers import get_tunable_instance
 from sims.sim_info_types import Species, Age
 from sims4.localization import LocalizationHelperTuning
-from sims4.math import Location, Transform, Vector3
-from sims4.resources import Types
+from sims4.math import Location, Transform, Vector3, angle_to_yaw_quaternion
+from sims4.resources import Types, get_resource_key
 from terrain import get_terrain_height
 from ui.ui_dialog_generic import UiDialogTextInputOkCancel
 from ui.ui_dialog_notification import UiDialogNotification
@@ -32,28 +33,31 @@ from vfx import PlayEffect
 from weather.lightning import LightningStrike
 
 from module_simulation.sc_simulation import set_distance_score
+from scripts_core.sc_affordance import sc_Affordance
 from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
+from scripts_core.sc_gohere import go_here, send_sim_home
 from scripts_core.sc_goto_camera import update_camera, camera_info
-from scripts_core.sc_input import inputbox, TEXT_INPUT_NAME, input_text
-from scripts_core.sc_jobs import get_tag_name, get_sim_info, advance_game_time_and_timeline, \
+from scripts_core.sc_input import inputbox, TEXT_INPUT_NAME
+from scripts_core.sc_jobs import get_sim_info, advance_game_time_and_timeline, \
     advance_game_time, sc_Vars, make_sim_selectable, make_sim_unselectable, remove_sim, remove_all_careers, \
     add_career_to_sim, get_career_name_from_string, push_sim_function, distance_to_by_room, \
-    assign_role, add_to_inventory, go_here_routine, make_sim_at_work, clear_sim_instance, assign_role_title, \
+    assign_role, add_to_inventory, make_sim_at_work, clear_sim_instance, assign_role_title, \
     assign_title, activate_sim_icon, \
     get_object_info, get_trait_name_from_string, add_trait_by_name, \
-    get_sim_travel_group, clear_jobs, get_filters, send_sim_home, distance_to_pos, remove_annoying_buffs, \
-    get_sim_posture_target, set_season_and_time, add_sim_buff
+    clear_jobs, get_filters, get_sim_posture_target, set_season_and_time, add_sim_buff, get_object_dump, \
+    distance_to_by_level, get_private_objects, get_sims_using_object, is_allowed_privacy_role, get_locked_for_sim, \
+    unlock_for_sim, debugger_get_object_dump, assign_button, remove_button
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
-from scripts_core.sc_object_menu import ObjectMenuNoFile
+from scripts_core.sc_object_menu import ObjectMenu
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_routing import routing_fix
 from scripts_core.sc_script_vars import sc_DisabledAutonomy, AutonomyState
-from scripts_core.sc_sim_tracker import load_sim_tracking, save_sim_tracking, track_sim, update_sim_tracking_info
+from scripts_core.sc_sim_tracker import load_sim_tracking, save_sim_tracking
 from scripts_core.sc_spawn import sc_Spawn
-from scripts_core.sc_util import error_trap, ld_notice, ld_file_loader, clean_string, init_sim
+from scripts_core.sc_util import error_trap, ld_file_loader, clean_string, init_sim
 
 
 class CloneWorldModule:
@@ -73,6 +77,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     firework_height = 0
     firework_alarm = None
     vfx = None
+    debug_mode = False
+    timeline = None
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
@@ -122,13 +128,14 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                             "Delete Menu",
                             "Goto Sim",
                             "Add Object To Inventory",
+                            "Show Objects In Inventory",
+                            "Take Ownership",
                             "Select And Fix Sim Icons",
                             "Remove Jobs From Sims",
                             "Reset All Sims",
-                            "Indexed Sims",
-                            "Scheduled Sims",
-                            "Idle Sims",
-                            "Get Posture Target")
+                            "Get Posture Target",
+                            "Add Private Object",
+                            "Clear Private Objects")
 
         self.sc_control_choices = ("<font color='#990000'>Toggle Directional Controls</font>",
                                 "Get Camera Info",
@@ -136,7 +143,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Load Config",
                                 "Load Routine",
                                 "Toggle Routine",
-                                "Toggle Debug",
                                 "Rename World",
                                 "Reload Sims",
                                 "Add Career To Sims",
@@ -144,19 +150,34 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Add Buff To Sim",
                                 "Add Title To Sim",
                                 "Remove Career",
-                                "Tag Sim For Debugging",
-                                "Load Sim Tracking",
                                 "Rename World",
-                                "Debug Error",
-                                "Get In Use By",
-                                "Reset In Use",
-                                "Find Go Here",
-                                "Reset Lot",
                                 "Enable Autonomy",
                                 "Disable Autonomy",
                                 "Set Autonomy",
                                 "Set Distance Score")
 
+        self.sc_debug_choices = ("Reload Weather Scripts", "Reload Tracker Scripts", "Reload Simulation Scripts",
+                                    "Toggle Debug",
+                                    "Tag Sim For Debugging",
+                                    "Load Sim Tracking",
+                                    "Debug Error",
+                                    "Add Button To Object",
+                                    "Get In Use By",
+                                    "Check Private Objects",
+                                    "List Private Objects",
+                                    "Sim Using Objects",
+                                    "Sim Unroutable Objects",
+                                    "Get Locked For",
+                                    "Interaction Objects",
+                                    "Indexed Sims",
+                                    "Scheduled Sims",
+                                    "Idle Sims",
+                                    "Transmog Objects",
+                                    "Reset In Use",
+                                    "Find Go Here",
+                                    "Reset Lot",
+                                    "Object Dump",
+                                    "Transform Werewolf")
 
         self.sc_grab_drink_choices = ("Grab Vodka Soda",
                                     "Grab Beer",
@@ -178,10 +199,12 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_menu = MainMenu(*args, **kwargs)
         self.sc_fixes_menu = MainMenu(*args, **kwargs)
         self.sc_grab_drink_menu = MainMenu(*args, **kwargs)
+        self.sc_push_sim_menu = MainMenu(*args, **kwargs)
         self.sc_effects_menu = MainMenu(*args, **kwargs)
         self.sc_time_menu = MainMenu(*args, **kwargs)
         self.sc_sims_menu = MainMenu(*args, **kwargs)
         self.sc_control_menu = MainMenu(*args, **kwargs)
+        self.sc_debug_menu = MainMenu(*args, **kwargs)
         self.sc_teleport_menu = MainMenu(*args, **kwargs)
         self.sc_delete_menu = MainMenu(*args, **kwargs)
         self.sc_autonomy_menu = MainMenu(*args, **kwargs)
@@ -190,12 +213,13 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_bulletin = sc_Bulletin()
         self.sc_main = ScriptCoreMain()
         self.sc_spawn = sc_Spawn()
-        self.object_picker = ObjectMenuNoFile(*args, **kwargs)
+        self.object_picker = ObjectMenu(*args, **kwargs)
 
     def _run_interaction_gen(self, timeline):
         self.sc_menu.MAX_MENU_ITEMS_TO_LIST = 10
         self.sc_menu.commands = []
         self.sc_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_menu.show(timeline, self, 0, self.sc_menu_choices, "Scripts Core Menu", "Make a selection.")
 
@@ -203,6 +227,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_menu.MAX_MENU_ITEMS_TO_LIST = 10
         self.sc_menu.commands = []
         self.sc_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_menu.show(timeline, self, 0, self.sc_menu_choices, "Scripts Core Menu", "Make a selection.")
 
@@ -210,6 +235,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_fixes_menu.MAX_MENU_ITEMS_TO_LIST = 10
         self.sc_fixes_menu.commands = []
         self.sc_fixes_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_fixes_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_fixes_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_fixes_menu.show(timeline, self, 0, self.sc_fixes_choices, "Fixes Menu", "Make a selection.")
 
@@ -217,6 +243,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_effects_menu.MAX_MENU_ITEMS_TO_LIST = 10
         self.sc_effects_menu.commands = []
         self.sc_effects_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_effects_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_effects_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_effects_menu.show(timeline, self, 0, self.sc_effects_choices, "Effects Menu", "Make a selection.")
 
@@ -224,6 +251,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_time_menu.MAX_MENU_ITEMS_TO_LIST = 10
         self.sc_time_menu.commands = []
         self.sc_time_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_time_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_time_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_time_menu.show(timeline, self, 0, self.sc_time_choices, "Time Menu", "Make a selection.")
 
@@ -231,6 +259,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_sims_menu.MAX_MENU_ITEMS_TO_LIST = 12
         self.sc_sims_menu.commands = []
         self.sc_sims_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_sims_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_sims_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
 
         menu_choices = []
@@ -245,22 +274,47 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_control_menu.MAX_MENU_ITEMS_TO_LIST = 12
         self.sc_control_menu.commands = []
         self.sc_control_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_control_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_control_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_control_menu.show(timeline, self, 0, self.sc_control_choices, "Control Menu", "Make a selection.")
+
+    def _debug(self, timeline):
+        self.sc_debug_menu.MAX_MENU_ITEMS_TO_LIST = 12
+        self.sc_debug_menu.commands = []
+        self.sc_debug_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_debug_menu.commands.append("<font color='#990000'>[Debug]</font>")
+        self.sc_debug_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
+        self.sc_debug_menu.show(timeline, self, 0, self.sc_debug_choices, "Debug Menu", "Make a selection.")
 
     def teleport_menu(self, timeline):
         self.sc_teleport_menu.MAX_MENU_ITEMS_TO_LIST = 12
         self.sc_teleport_menu.commands = []
         self.sc_teleport_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_teleport_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_teleport_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_teleport_menu.show(timeline, self, 0, self.sc_teleport_choices, "Teleport Menu", "Make a selection.")
 
     def delete_menu(self, timeline):
+        if self.target.is_sim:
+            self.permanently_delete_sims("sim")
+            return
         self.sc_delete_menu.MAX_MENU_ITEMS_TO_LIST = 12
         self.sc_delete_menu.commands = []
         self.sc_delete_menu.commands.append("<font color='#990000'>[Menu]</font>")
+        self.sc_delete_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_delete_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_delete_menu.show(timeline, self, 0, self.sc_delete_choices, "Delete Sim Menu", "Make a selection.")
+
+    def transform_werewolf(self, timeline):
+        client = services.client_manager().get_first_client()
+        target = client.active_sim
+        if self.target.is_sim:
+            target = self.target
+        buff_manager = services.get_instance_manager(Types.BUFF)
+        if target.sim_info.has_buff(buff_manager.get(get_resource_key(300835, Types.BUFF))):
+            push_sim_function(target, target, 288763, False)
+        else:
+            push_sim_function(target, target, 291509, False)
 
     def toggle_directional_controls(self, timeline):
         sc_Vars.directional_controls = not sc_Vars.directional_controls
@@ -270,17 +324,17 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             update_camera(self.sim, 2.0, True)
 
     def get_camera_info(self, timeline):
-        camera_info(self.sim)
+        camera_info(self.sim, None, True)
 
     def go_here(self, timeline):
-        go_here_routine(self.sim, self.target.position)
+        go_here(self.sim, self.target.position)
 
     def go_to_camera(self, timeline):
         camera_target = Vector3(camera._target_position.x,
                                 get_terrain_height(camera._target_position.x, camera._target_position.z),
                                 camera._target_position.z)
 
-        go_here_routine(self.sim, camera_target)
+        go_here(self.sim, camera_target)
 
     def enable_autonomy(self, timeline):
         client = services.client_manager().get_first_client()
@@ -515,16 +569,100 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     camera.focus_on_position(action.target.position, client)
 
     def get_in_use_by(self, timeline):
-        if not self.target.is_sim:
-            use_sim_list = [sim_info for sim_info in services.sim_info_manager().get_all() if self.target.in_use_by(sim_info.get_sim_instance(allow_hidden_flags=objects.ALL_HIDDEN_REASONS))]
-            if use_sim_list:
-                for sim_info in use_sim_list:
-                    message_box(sim_info, self.target, "Object Use", "This sim is using this object!")
-            else:
-                message_box(self.target, None, "Object Use", "No one is using this object!")
+        if not self.target.is_sim and self.target.definition.id != 816:
+            self.sc_bulletin.show_sims_using_object(self.target, camera.focus_on_object)
+
+    def sim_using_objects(self, timeline):
+        client = services.client_manager().get_first_client()
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = client.active_sim
+        if hasattr(target.sim_info, "tracker"):
+            if target.sim_info.tracker.objects:
+                self.object_picker.title = "Sim Using Object List"
+                self.object_picker.show(target.sim_info.tracker.objects, 0, target, 1, True)
+                return
+        object_list = [interaction.target for interaction in target.get_all_running_and_queued_interactions() if interaction.target]
+        if object_list:
+            self.object_picker.show(object_list, 0, target, 1, True, debugger_get_object_dump)
+            return
+        message_box(None, None, "Sim Using Objects", "No objects found!", "GREEN")
+
+    def transmog_objects(self, timeline):
+        if sc_Vars.transmog_objects:
+            self.object_picker.show(sc_Vars.transmog_objects, 0, self.target, 1, True, debugger_get_object_dump)
+            return
+        message_box(None, None, "Transmog Objects", "No objects found!", "GREEN")
+
+    def sim_unroutable_objects(self, timeline):
+        client = services.client_manager().get_first_client()
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = client.active_sim
+        object_list = [route.object for route in sc_Vars.non_routable_obj_list if route.sim == target]
+        if len(object_list):
+            self.object_picker.title = "Unroutable Object List"
+            self.object_picker.show(object_list, 0, target, 1, True)
+            return
+        message_box(None, None, "Sim Unroutable Objects", "No objects found!", "GREEN")
+
+    def get_locked_for(self, timeline):
+        object_list = [sim for sim in services.sim_info_manager().instanced_sims_gen() if get_locked_for_sim(self.target, sim)]
+        if len(object_list):
+            def unlock_for_sim_callback(sim):
+                unlock_for_sim(self.target, sim)
+
+            self.object_picker.title = "Sims Locked Out"
+            self.object_picker.show(object_list, 0, self.target, 50, False, unlock_for_sim_callback)
+            return
+        message_box(None, None, "Sims Locked Out", "No sims found!", "GREEN")
+
+    # New private objects code
+    def check_private_objects(self, timeline):
+        client = services.client_manager().get_first_client()
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = client.active_sim
+        object_list = get_private_objects(target, sc_Vars.private_objects)
+        if len(object_list):
+            self.object_picker.title = "Private Object List"
+            self.object_picker.show(object_list, 0, target, 1, True)
+            return
+        message_box(None, None, "Private Objects", "No objects found!", "GREEN")
+
+    def list_private_objects(self, timeline):
+        object_list = sc_Vars.private_objects
+        object_list.sort(key=lambda obj: distance_to_by_level(obj, self.target))
+        if len(object_list):
+            self.object_picker.title = "Private Object List"
+            self.object_picker.show(object_list, 0, self.target, 1, True)
+            return
+        message_box(None, None, "Private Objects", "No objects found!", "GREEN")
+
+    def interaction_objects(self, timeline):
+        client = services.client_manager().get_first_client()
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = client.active_sim
+
+        object_label = []
+        object_list = []
+        for interaction in target.get_all_running_and_queued_interactions():
+            object_list.append(interaction.target)
+            object_label.append("Interaction: ({}) Object ID: ({})\n{}\n{}".format(interaction.guid64, interaction.target.definition.id if interaction.target else None, interaction.__class__.__name__, get_object_dump(interaction.target, "interaction_refs")))
+
+        if len(object_list):
+            self.object_picker.title = "Interaction Object List"
+            self.object_picker.show(object_list, 0, target, 1, True, None, None, object_label)
+            return
+        message_box(None, None, "Interaction Objects", "No objects found!", "GREEN")
 
     def reset_in_use(self, timeline):
-        if not self.target.is_sim and self.target.definition.id != 816:
+        if self.target.definition.id != 816:
             if len(self.target.interaction_refs):
                 for interaction in tuple(self.target.interaction_refs):
                     interaction.sim.reset(ResetReason.NONE, None, 'Command')
@@ -550,6 +688,46 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def add_object_to_inventory(self, timeline):
         add_to_inventory(self.sim, self.target)
+
+    def place_inventory_callback(self, obj):
+        try:
+            client = services.client_manager().get_first_client()
+            zone_id = services.current_zone_id()
+            if self.target.is_sim:
+                target = self.target
+            else:
+                target = client.active_sim
+            new_obj = objects.system.create_object(obj.definition.id)
+            level = self.target.level
+            translation = self.target.position
+            point = target.position
+            angle = atan2(point.x - translation.x, point.z - translation.z)
+            orientation = angle_to_yaw_quaternion(angle)
+            routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+            new_obj.location = Location(Transform(translation, orientation), routing_surface)
+            new_obj.update_ownership((target.sim_info), make_sim_owner=True)
+        except BaseException as e:
+            error_trap(e)
+
+    def show_objects_in_inventory(self, timeline):
+        client = services.client_manager().get_first_client()
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = client.active_sim
+
+        if len(target.sim_info.inventory_data.objects):
+            definition_manager = services.definition_manager()
+            obj_ids = [definition_manager.get(obj.guid) for obj in target.sim_info.inventory_data.objects]
+            obj_list = [objects.system.create_script_object(id) for id in obj_ids]
+            self.object_picker.title = "Inventory List"
+            self.object_picker.show(obj_list, 0, self.target, 1, False, self.place_inventory_callback)
+        else:
+            message_box(target, None, "Sim Inventory", "No inventory found!", "GREEN")
+
+    def take_ownership(self, timeline):
+        client = services.client_manager().get_first_client()
+        self.target.update_ownership((client.active_sim.sim_info), make_sim_owner=True)
 
     def teleport_instanced(self, timeline):
         self.teleport_sims("instanced")
@@ -577,6 +755,16 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             self.sc_spawn.do_error()
         except BaseException as e:
             error_trap(e)
+
+    def add_button_to_object(self, timeline):
+        inputbox("Add Button To Object", "Enter button id to add to object.", self.add_button_to_object_callback, ScriptCoreMenu.last_initial_value)
+
+    def add_button_to_object_callback(self, button_id: str):
+        ScriptCoreMenu.last_initial_value = button_id
+        if "-" in button_id:
+            remove_button(abs(int(button_id)), self.target)
+            return
+        assign_button(abs(int(button_id)), self.target)
 
     def delete_object(self, timeline):
         target = services.object_manager().get(self.target.id)
@@ -728,7 +916,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             else:
                 all_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN]
 
-            self.picker("Permanently Delete {} Sims".format(filter.title()), "Pick up to 50 Sims", 50, get_simpicker_results_callback, all_sims)
+            self.picker("Permanently Delete {}".format((filter.title() + " Sims" if "sim" not in filter else self.target.first_name + " " + self.target.last_name)),
+                        "There are {} sims.\nPick up to 50 Sims".format(len(all_sims)), 50, get_simpicker_results_callback, all_sims)
 
         except BaseException as e:
             error_trap(e)
@@ -739,72 +928,159 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             if not dialog.accepted:
                 return
             for sim in dialog.get_result_tags():
-                go_here_routine(client.active_sim, sim.position, sim.level)
+                go_here(client.active_sim, sim.position, sim.level)
 
         self.picker("Goto Sim", "Pick up to 1 Sim", 1, get_simpicker_results_callback)
 
-    def push_sim(self, timeline):
+    def _user_directed(self, timeline):
+        ScriptCoreMenu.debug_mode = True
+        self.push_sim(timeline)
+
+    def _autonomous(self, timeline):
+        ScriptCoreMenu.debug_mode = False
+        self.push_sim(timeline)
+
+    def _custom(self, timeline):
+        self.push_sim(timeline, True)
+
+    def _filter(self, timeline):
+        ScriptCoreMenu.timeline = timeline
+        inputbox("Enter filter to lookup interactions.","", self._filter_callback, ScriptCoreMenu.last_initial_value)
+
+    def _filter_callback(self, filter: str):
+        ScriptCoreMenu.last_initial_value = filter
+        self.push_sim(ScriptCoreMenu.timeline, False, filter)
+
+    def push_sim(self, timeline, custom=False, filter=None):
+        if self.target._super_affordances and not custom:
+            font_color = "990000"
+            if not ScriptCoreMenu.debug_mode:
+                font_text = ""
+                end_font_text = ""
+            else:
+                font_text = "<font color='#{}'>".format(font_color)
+                end_font_text = "</font>"
+            super_affordances = sc_Affordance(self.target)
+            action_titles = sorted(super_affordances.affordance_instances, key=(lambda x: x.guid64))
+            action_titles = ["{}({}) {}{}".format(font_text, interaction.guid64, super_affordances.affordance_names[interaction.guid64], end_font_text)
+                                for interaction in action_titles if not filter or filter and str(filter).lower() in super_affordances.affordance_names[interaction.guid64].lower()]
+            if action_titles:
+                self.sc_push_sim_menu.MAX_MENU_ITEMS_TO_LIST = 10
+                self.sc_push_sim_menu.commands = []
+                self.sc_push_sim_menu.commands.append("<font color='#990000'>[Menu]</font>")
+                self.sc_push_sim_menu.commands.append("<font color='#990000'>[Custom]</font>")
+                self.sc_push_sim_menu.commands.append("<font color='#990000'>[Filter]</font>")
+                if not ScriptCoreMenu.debug_mode:
+                    self.sc_push_sim_menu.commands.append("<font color='#990000'>[User Directed]</font>")
+                else:
+                    self.sc_push_sim_menu.commands.append("<font color='#990000'>[Autonomous]</font>")
+                self.sc_push_sim_menu.show(timeline, self, 0, action_titles, "Push Sim",
+                                          "User Directed set to {}\nMake a selection.".format(ScriptCoreMenu.debug_mode), "push_sim_callback", True)
+                return
+
         inputbox("Enter Interaction ID, Add + to beginning of the ID to push it autonomously.",
                          "\n\nEXAMPLES:\n" \
-                         "104626 - Staff Front Desk (Shift left click on computer ON front desk)\n" \
-                         "107093 - Page sim (Shift left click on front desk, or any desk)\n" \
-                         "13094 - Sleep in Bed (Shift left click on any bed)\n" \
-                         "240089 - Listen to METAL (Shift left click on any stereo)\n" \
-                         "254902 - Sit (Shift left click any chair or sofa)\n" \
-                         "13187 - Browse Web (Shift left click any computer - Must use sitting above first)\n" \
-                         "192816 - Use Tablet (Shift left click on active sim)\n" \
-                         "39825 - Hug (Shift left click target sim)\n" \
-                         "228605 - High Five (Shift left click target sim)\n" \
-                         "39848 - Kiss (Shift left click target sim)\n" \
-                         "201152 - Witty Takedown (Shift left click target sim)\n" \
-                         "201727 - Take Picture (Shift left click object)\n" \
-                         "192817 - Take Notes (Shift left click active sim)\n" \
-                         "189332 - Charades/Practice Scene (Shift left click target sim)\n" \
+                         "104626 - Staff Front Desk (Left click on computer ON front desk)\n" \
+                         "107093 - Page sim (Left click on front desk, or any desk)\n" \
+                         "13094 - Sleep in Bed (Left click on any bed)\n" \
+                         "240089 - Listen to METAL (Left click on any stereo)\n" \
+                         "254902 - Sit (Left click any chair or sofa)\n" \
+                         "13187 - Browse Web (Left click any computer - Must use sitting above first)\n" \
+                         "192816 - Use Tablet (Left click on active sim)\n" \
+                         "39825 - Hug (Left click target sim)\n" \
+                         "228605 - High Five (Left click target sim)\n" \
+                         "39848 - Kiss (Left click target sim)\n" \
+                         "201152 - Witty Takedown (Left click target sim)\n" \
+                         "201727 - Take Picture (Left click object)\n" \
+                         "192817 - Take Notes (Left click active sim)\n" \
+                         "189332 - Charades/Practice Scene (Left click target sim)\n" \
                          "",
                          self.push_sim_callback, ScriptCoreMenu.last_initial_value)
 
     def push_sim_callback(self, dc_interaction: str):
-        target_sim = None
         if dc_interaction == "":
             return
+        result = dc_interaction.replace(" ", "_")
+        clean = re.compile('<.*?>')
+        result = re.sub(clean, '', result)
+        result = result.replace("[", "_")
+        result = result.replace("]", "")
+        result = result.replace("*", "_")
+        result = result.lower()
+        function = re.sub(r'\W+', '', result)
+
+        if hasattr(self, function):
+            method = getattr(self, function)
+            if method is not None:
+                method(None)
+                return
+
+        if "(" in dc_interaction:
+            dc_interaction = dc_interaction[dc_interaction.find('(')+1:dc_interaction.find(')')]
+        elif not dc_interaction.isnumeric():
+            return
+
+        autonomous = False
+        ScriptCoreMenu.last_initial_value = dc_interaction
+        if "+" in dc_interaction:
+            autonomous = True
+            dc_interaction = dc_interaction.replace("+","")
         else:
             autonomous = False
-            ScriptCoreMenu.last_initial_value = dc_interaction
-            if "+" in dc_interaction:
-                autonomous = True
-                dc_interaction = dc_interaction.replace("+","")
-            else:
-                autonomous = False
+        if not ScriptCoreMenu.debug_mode:
+            autonomous = True
 
-            def get_push_sim_callback(dialog):
+        def get_push_sim_callback(dialog):
+            if not dialog.accepted:
+                return
+
+            def get_page_sims_callback(dialog):
                 if not dialog.accepted:
                     return
-
-                def get_page_sims_callback(dialog):
-                    if not dialog.accepted:
-                        return
-                    for sim in dialog.get_result_tags():
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Go to sim: {}".format(sim.first_name, target_sim.first_name))
-                        go_here_routine(sim, target_sim.position, target_sim.level)
-
                 for sim in dialog.get_result_tags():
-                    if sim is not None:
-                        if "107093" in dc_interaction:
-                            clear_sim_instance(sim.sim_info, "computer|sit|frontdesk", True)
-                            target_sim = sim
-                            self.picker("Page Sims", "Pick up to 50 Sims", 50, get_page_sims_callback)
-                        elif "107083" in dc_interaction:
-                            clear_sim_instance(sim.sim_info, "computer|sit|frontdesk", True)
-                        else:
-                            clear_sim_instance(sim.sim_info)
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Go to sim: {}".format(sim.first_name, target_sim.first_name))
+                    go_here(sim, target_sim.position, target_sim.level)
 
-                        result = push_sim_function(sim, self.target, int(dc_interaction), autonomous)
-                        if sc_Vars.DEBUG:
-                            debugger("Sim: {} - Push Sim Result: {}".format(sim.first_name, clean_string(str(result))))
+            for sim in dialog.get_result_tags():
+                if sim is not None:
+                    if self.target.definition.id == 816 and "14410" in dc_interaction:
+                        clear_sim_instance(sim.sim_info)
+                        go_here(sim, self.target.position, self.target.level, 0.5)
+                    elif "107093" in dc_interaction:
+                        clear_sim_instance(sim.sim_info, "computer|sit|frontdesk", True)
+                        target_sim = sim
+                        self.picker("Page Sims", "Pick up to 50 Sims", 50, get_page_sims_callback)
+                    elif "107083" in dc_interaction:
+                        clear_sim_instance(sim.sim_info, "computer|sit|frontdesk", True)
+                    else:
+                        clear_sim_instance(sim.sim_info)
+
+                    result = push_sim_function(sim, self.target, int(dc_interaction), autonomous)
+                    if sc_Vars.DEBUG:
+                        debugger("Sim: {} - Push Sim Result: {}".format(sim.first_name, clean_string(str(result))))
 
 
-            self.picker("Push Sim", "Pick up to 50 Sims", 50, get_push_sim_callback)
+        self.picker("Push Sim", "Pick up to 50 Sims", 50, get_push_sim_callback)
+
+    def object_dump(self, timeline):
+        inputbox("Object Dump", "Enter attribute or leave blank for all attributes", self.object_dump_callback, ScriptCoreMenu.last_initial_value)
+
+    def object_dump_callback(self, attribute: str):
+        ScriptCoreMenu.last_initial_value = attribute
+        if "." in attribute:
+            keys = attribute.split(".")
+            dump = self.target
+            for key in keys:
+                if hasattr(dump, key):
+                    dump = getattr(dump, key)
+            debugger("DUMP: {}.{}\n{}".format(self.target.__class__.__name__, attribute, get_object_dump(dump)))
+            return
+        if len(attribute) and hasattr(self.target, attribute):
+            dump = getattr(self.target, attribute)
+            debugger("DUMP: {}.{}\n{}".format(self.target.__class__.__name__, attribute, get_object_dump(dump)))
+            return
+        debugger("DUMP: {}\n{}".format(self.target.__class__.__name__, get_object_dump(self.target)))
 
     def add_buff_to_sim(self, timeline):
         inputbox("Add Buff To Sim", "Enter the buff id", self._add_buff_to_sim_callback)
@@ -1121,7 +1397,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def teleport_sims(self, filter="all", clear_role=False, name=""):
         try:
             is_precise = False
-            precision = 2.0
+            precision = 1.0
 
             def teleport_callback(dialog):
                 if not dialog.accepted:
@@ -1140,8 +1416,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     sim_location = Location(Transform(pos, orientation), routing_surface)
                     if sim_info.is_instanced():
                         sim = sim_info.get_sim_instance()
-                        sim.reset(ResetReason.NONE, None, 'Command')
-                        sim.location = sim_location
+                        while sim.location != sim_location:
+                            sim.reset(ResetReason.NONE, None, 'Command')
+                            sim.location = sim_location
+                            sim.refresh_los_constraint()
                     else:
                         sim_info.set_zone_on_spawn()
                         self.sc_spawn.spawn_sim(sim_info, sim_location, level)
@@ -1205,8 +1483,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             except BaseException as e:
                 error_trap(e)
 
-        sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN
-            and sim_info.age > Age.TEEN and sim_info._sim_ref]
+        if self.target.is_sim:
+            sims = [self.target]
+        else:
+            sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.species == Species.HUMAN
+                and sim_info.age > Age.TEEN and sim_info._sim_ref]
         self.picker("Tag Sim For Debugging", "Pick up to 1 Sim", 1, get_simpicker_results_callback, sims)
 
     def add_career_to_sims(self, timeline):
@@ -1407,11 +1688,13 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def reset_timeline(self, timeline):
         timeline = services.time_service().sim_timeline
+        debugger(str(len(timeline.heap)))
         for handle in sorted(timeline.heap):
             if handle.element is not None:
                 if isinstance(handle.element, alarms.AlarmElement):
                     continue
                 timeline.hard_stop(handle)
+
     def set_season_and_time(self, timeline):
         inputbox("Set Season And Time", "[Season 0-3], [Time in minutes to advance]", self.set_season_and_time_callback)
 
@@ -1490,6 +1773,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def idle_sims(self, timeline):
         self.sc_bulletin.show_idle_sims(camera.focus_on_object)
 
+
+
     def get_posture_target(self, timeline):
         if self.target.is_sim:
             sim = self.target
@@ -1499,6 +1784,21 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
         posture_target = get_sim_posture_target(sim)
         message_box(sim, posture_target, "Posture Target", "Posture target for sim", "GREEN")
+
+    # New private objects code
+    def add_private_object(self, timeline):
+        if not self.target.is_sim and self.target.definition.id != 816:
+            sc_Vars.private_objects.append(self.target)
+            sims = get_sims_using_object(self.target)
+            for sim in sims:
+                if not sim.sim_info.is_selectable:
+                    for interaction in sim.get_all_running_and_queued_interactions():
+                        if interaction.target == self.target and is_allowed_privacy_role(sim) or \
+                                distance_to_by_level(interaction.target, self.target) < 10 and is_allowed_privacy_role(sim):
+                            interaction.cancel(FinishingType.RESET, 'Stop')
+
+    def clear_private_objects(self, timeline):
+        sc_Vars.private_objects = []
 
     def get_info(self, timeline):
         try:
@@ -1565,213 +1865,23 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         except BaseException as e:
             error_trap(e)
 
-    def _delete_filtered_objects(self, timeline):
-        inputbox("Search For Object & Delete", "Searches objects on currently loaded lot only. "
-                                                      "Full or partial search term. Separate multiple search "
-                                                      "terms with a comma. Will search in "
-                                                      "tuning files and tags. Only 512 items per search "
-                                                      "will be shown.",
-                         self._delete_filtered_objects_callback)
+    def reload_weather_scripts(self, timeline):
+        path = Path(os.path.abspath(os.path.dirname(__file__)))
+        directory = str(path.parent.absolute()) + r"\module_weather"
+        self._reload_script_callback(directory)
 
-    def _delete_filtered_objects_callback(self, search: str):
-        try:
-            object_list = []
-            count = 0
-            datapath = sc_Vars.config_data_location
-            filename = datapath + r"\{}.log".format("search_dump")
-            append_write = 'w'  # make a new file if not
-            file = open(filename, append_write)
-            for obj in services.object_manager().get_all():
-                if count < 512:
-                    found = False
-                    target_object_tags = None
-                    object_tuning = services.definition_manager().get(obj.definition.id)
-                    if object_tuning is not None:
-                        object_class = clean_string(str(object_tuning._cls))
-                    else:
-                        object_class = ""
-                    try:
-                        target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
-                        target_object_tags = clean_string(str(target_object_tags))
-                        value = target_object_tags.split(",")
-                        target_object_tags = []
-                        for v in value:
-                            tag = get_tag_name(int(v))
-                            target_object_tags.append(tag)
-                    except:
-                        pass
-                    search_value = search.lower().split(",")
-                    if target_object_tags is not None:
-                        target_object_tags = clean_string(str(target_object_tags))
-                        if all((x in target_object_tags.lower() for x in search_value)):
-                            found = True
-                    if all((x in object_class.lower() for x in search_value)):
-                        found = True
-                    if found:
-                        if obj is not None:
-                            if not obj.is_sim:
-                                count = count + 1
-                                object_list.append(obj)
-                                file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, object_class))
+    def reload_tracker_scripts(self, timeline):
+        path = Path(os.path.abspath(os.path.dirname(__file__)))
+        directory = str(path.parent.absolute()) + r"\module_ai_tracker"
+        self._reload_script_callback(directory)
 
-            file.close()
-            if len(object_list) > 0:
-                ld_notice(None, "Search Objects", "{} object(s) found!".format(len(object_list)), False, "GREEN")
-                self.object_picker.show(object_list, 0, self.target, True, 10)
-            else:
-                ld_notice(None, "Search Objects", "No objects found!", False, "GREEN")
-
-        except BaseException as e:
-            error_trap(e)
-
-    def _find_object(self, timeline):
-        inputbox("Find Object On Lot", "Searches for object on active lot/zone. "
-                                                      "Full or partial search term. Separate multiple search "
-                                                      "terms with a comma. Will search in "
-                                                      "tuning files and tags.",
-                         self._find_object_callback)
-
-    def _find_object_callback(self, search: str):
-        try:
-            object_list = []
-            count = 0
-            datapath = sc_Vars.config_data_location
-            filename = datapath + r"\{}.log".format("search_dump")
-            append_write = 'w'  # make a new file if not
-            file = open(filename, append_write)
-            if search.isnumeric():
-                obj = objects.system.find_object(int(search))
-                if obj:
-                    target_object_tags = None
-                    object_tuning = services.definition_manager().get(obj.definition.id)
-
-                    if object_tuning is not None:
-                        object_class = clean_string(str(object_tuning._cls))
-                    else:
-                        object_class = ""
-                    try:
-                        target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
-                        target_object_tags = clean_string(str(target_object_tags))
-                        value = target_object_tags.split(",")
-                        target_object_tags = []
-                        for v in value:
-                            tag = get_tag_name(int(v))
-                            target_object_tags.append(tag)
-                    except:
-                        pass
-                    object_list.append(obj)
-                #file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, object_class))
-            else:
-                for obj in services.object_manager().get_all():
-                    found = False
-                    target_object_tags = None
-                    object_tuning = services.definition_manager().get(obj.definition.id)
-                    if object_tuning is not None:
-                        object_class = clean_string(str(object_tuning._cls))
-                    else:
-                        object_class = ""
-                    try:
-                        target_object_tags = set(build_buy.get_object_all_tags(obj.definition.id))
-                        target_object_tags = clean_string(str(target_object_tags))
-                        value = target_object_tags.split(",")
-                        target_object_tags = []
-                        for v in value:
-                            tag = get_tag_name(int(v))
-                            target_object_tags.append(tag)
-                    except:
-                        pass
-                    search_value = search.lower().split(",")
-                    if target_object_tags is not None:
-                        target_object_tags = clean_string(str(target_object_tags))
-                        if all((x in target_object_tags.lower() for x in search_value)):
-                            found = True
-                    if all((x in object_class.lower() for x in search_value)):
-                        found = True
-                    if found:
-                        if obj is not None:
-                            if not obj.is_sim:
-                                count = count + 1
-                                object_list.append(obj)
-                                file.write("{}: {} {}\n".format(obj.definition.id, target_object_tags, object_class))
-
-            file.close()
-            if len(object_list) > 0:
-                ld_notice(None, "Find Object", "{} object(s) found!".format(len(object_list)), False, "GREEN")
-                self.object_picker.show(object_list, 0, self.target, False, 1, True)
-            else:
-                ld_notice(None, "Find Object", "No objects found!", False, "GREEN")
-        except BaseException as e:
-            error_trap(e)
-
-    def _search_objects(self, timeline):
-        inputbox("Search For Object & Place", "Searches ALL game objects. Will take some time. "
-                                                      "Full or partial search term. Separate multiple search "
-                                                      "terms with a comma. Will search in "
-                                                      "tuning files and tags. Only 512 items per search "
-                                                      "will be shown.",
-                         self._search_objects_callback)
-
-    def _search_objects_callback(self, search: str):
-        try:
-            object_list = []
-            count = 0
-            datapath = sc_Vars.config_data_location
-            filename = datapath + r"\{}.log".format("search_dump")
-            append_write = 'w'  # make a new file if not
-            file = open(filename, append_write)
-            for key in sorted(sims4.resources.list(type=(sims4.resources.Types.OBJECTDEFINITION))):
-                if count < 512:
-                    found = False
-                    target_object_tags = None
-                    object_tuning = services.definition_manager().get(key.instance)
-                    if object_tuning is not None:
-                        object_class = clean_string(str(object_tuning._cls))
-                    else:
-                        object_class = ""
-                    try:
-                        target_object_tags = set(build_buy.get_object_all_tags(key.instance))
-                        target_object_tags = clean_string(str(target_object_tags))
-                        value = target_object_tags.split(",")
-                        target_object_tags = []
-                        for v in value:
-                            tag = get_tag_name(int(v))
-                            target_object_tags.append(tag)
-                    except:
-                        pass
-                    search_value = search.lower().split(",")
-                    if target_object_tags is not None:
-                        target_object_tags = clean_string(str(target_object_tags))
-                        if all((x in target_object_tags.lower() for x in search_value)):
-                            found = True
-                    if all((x in object_class.lower() for x in search_value)):
-                        found = True
-                    if [x for x in search_value if x in str(key.instance)]:
-                        found = True
-                    if found:
-                        try:
-                            obj = objects.system.create_object(key.instance)
-                        except:
-                            obj = None
-                            pass
-                        if obj is not None:
-                            if not obj.is_sim:
-                                count = count + 1
-                                object_list.append(obj)
-                                file.write("{}: {} {}\n".format(key.instance, target_object_tags, object_class))
-
-            file.close()
-            if len(object_list) > 0:
-                ld_notice(None, "Search Objects", "{} object(s) found!".format(len(object_list)), False, "GREEN")
-                self.object_picker.show(object_list, 0, self.target, False, 1)
-            else:
-                ld_notice(None, "Search Objects", "No objects found!", False, "GREEN")
-
-        except BaseException as e:
-            error_trap(e)
+    def reload_simulation_scripts(self, timeline):
+        path = Path(os.path.abspath(os.path.dirname(__file__)))
+        directory = str(path.parent.absolute()) + r"\module_simulation"
+        self._reload_script_callback(directory)
 
     def _reload_scripts(self, timeline):
-        inputbox("Reload Script",
-                         "Type in directory to browse or leave blank to list all in current directory", self._reload_script_callback)
+        inputbox("Reload Script", "Type in directory to browse or leave blank to list all in current directory", self._reload_script_callback)
 
     def _reload_script_callback(self, script_dir: str):
         try:

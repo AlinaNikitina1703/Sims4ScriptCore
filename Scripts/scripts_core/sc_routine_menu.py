@@ -2,7 +2,7 @@ import math
 
 import services
 from scripts_core.sc_jobs import get_sim_role, set_exam_info, get_number_of_sims, get_number_of_role_sims, \
-    get_number_of_non_routine_sims, get_number_of_routine_sims
+    get_number_of_non_routine_sims, get_number_of_routine_sims, get_room_by_position
 from scripts_core.sc_menu_class import get_icon_info_data, ICON_MORE, ICON_BACK
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
@@ -98,12 +98,12 @@ class sc_RoutineMenu:
                         sim_name = LocalizationHelperTuning.get_raw_text("<font color='#000000'>{}: {} {}</font>".format(count, sim.first_name, sim.last_name))
 
                     if sim.sim_info.routine:
-                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}\nAutonomy: {}\nCurrently:\n{}".format(
-                            sim.sim_info.routine_info.title.title(), autonomy, currently))
+                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}\nAutonomy: {}\nRoom: {}\nCurrently:\n{}".format(
+                            sim.sim_info.routine_info.title.title(), autonomy, get_room_by_position(sim.position, sim.level), currently))
                     else:
                         sim.job = get_sim_role(sim)
-                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}Autonomy: {}\nCurrently:\n{}".format(
-                            sim.job.title(), autonomy, currently))
+                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}Autonomy: {}\nRoom: {}\nCurrently:\n{}".format(
+                            sim.job.title(), autonomy, get_room_by_position(sim.position, sim.level), currently))
                     if hasattr(sim, "icon_info"):
                         sim_icon = get_icon_info_data(sim)
                     else:

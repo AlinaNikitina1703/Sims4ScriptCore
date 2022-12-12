@@ -193,11 +193,14 @@ def error_trap(e: BaseException, file=__file__):
     error_traceback = str(sys.exc_info()) + "\n\n"
     for v in e.args:
         err = err + format(v) + "\n"
-    err = err.replace('"', '').replace("<", "(").replace(">", ")").replace("@", "At:")
+    err = err.replace('"', '`').replace("<", "-=").replace(">", "=-").replace("@", "At:")
     lines = traceback.format_exc().splitlines()
     for line in lines:
         error_traceback = error_traceback + "[" + re.sub(r'File ".*[\\/]([^\\/]+.py)"', r'File "\1"', line) + "]\n"
-    error_traceback = error_traceback.replace('"', '').replace("<", "(").replace(">", ")").replace("@", "At:")
+    error_traceback = error_traceback.replace('"', '`').replace("<", "-=").replace(">", "=-").replace("@", "At:")
+    if "object_terrain" in error_traceback:
+        debugger("{}\n{}\n".format(err, error_traceback), 0, True, True, True, False, file)
+        return
     try:
         debugger("{}\n{}\n".format(err, error_traceback), 0, True, True, False, True, file)
         error_trap_console(e)

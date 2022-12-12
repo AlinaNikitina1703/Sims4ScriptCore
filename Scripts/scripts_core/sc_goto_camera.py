@@ -4,7 +4,8 @@ from sims4.math import Vector3, vector_normalize
 from terrain import get_terrain_height
 
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import check_actions, distance_to_pos, go_here
+from scripts_core.sc_gohere import go_here
+from scripts_core.sc_jobs import check_actions, distance_to_pos
 from scripts_core.sc_message_box import message_box
 
 
@@ -30,7 +31,7 @@ def camera_info(sim, distance=None, console=False):
     directional_info = directional_info + "[Camera Position]: {}\n".format(camera._camera_position)
     directional_info = directional_info + "[Distance]: {}\n".format(distance)
     directional_info = directional_info + "[Sim Position]: {}\n".format(sim.position)
-
+    directional_info = directional_info + "[Sim Forward]: {}\n".format(sim.position + sim.forward)
 
     if console:
         debugger(directional_info)
@@ -49,14 +50,15 @@ def target_from_camera(distance):
                 camera_move_vector.z)
 
 def target_from_sim(sim, distance):
-    camera_direction = sim.position - camera._target_position
-    camera_direction = vector_normalize(camera_direction)
-    camera_distance = distance_to_pos(sim.position, camera._target_position)
-    camera_move_vector = sim.position - vector_magnify(camera_direction, distance * camera_distance)
+    sim_target = sim.position + sim.forward
+    sim_direction = sim.position - sim_target
+    sim_direction = vector_normalize(sim_direction)
+    sim_distance = distance_to_pos(sim.position, sim_target)
+    sim_move_vector = sim.position - vector_magnify(sim_direction, distance * sim_distance)
 
-    return camera_distance, Vector3(camera_move_vector.x,
-                get_terrain_height(camera_move_vector.x, camera_move_vector.z),
-                camera_move_vector.z)
+    return sim_distance, Vector3(sim_move_vector.x,
+                get_terrain_height(sim_move_vector.x, sim_move_vector.z),
+                sim_move_vector.z)
 
 def update_camera(sim, distance=2.0, debug=False):
     if not check_actions(sim, "gohere"):

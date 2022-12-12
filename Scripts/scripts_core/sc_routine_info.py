@@ -1,11 +1,10 @@
 from sims.sim_info import SimInfo
-from sims.sim_info_name_data import SimInfoNameData
 
 
 class sc_RoutineInfo:
     __slots__ = ("title", "autonomy", "role", "career", "level", "max_staff", "routine", "buffs", "actions", "filtered_actions",
                  "autonomy_requests", "autonomy_objects", "off_lot", "zone", "venue", "on_duty", "off_duty", "use_object1", "use_object2", "use_object3", "object_action1",
-                 "object_action2", "object_action3")
+                 "object_action2", "object_action3", "role_buttons")
 
     def __init__(self, title=None,
                  autonomy=None,
@@ -29,7 +28,8 @@ class sc_RoutineInfo:
                  use_object3=None,
                  object_action1=0,
                  object_action2=0,
-                 object_action3=0):
+                 object_action3=0,
+                 role_buttons=None):
 
         super().__init__()
         self.title = title
@@ -55,6 +55,7 @@ class sc_RoutineInfo:
         self.object_action1 = object_action1
         self.object_action2 = object_action2
         self.object_action3 = object_action3
+        self.role_buttons = role_buttons
 
 
 setattr(SimInfo, "routine_info", sc_RoutineInfo())

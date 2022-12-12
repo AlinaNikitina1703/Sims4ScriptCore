@@ -14,7 +14,9 @@ from sims4.resources import Types, get_resource_key
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_queue_of, clear_sim_instance, \
     update_interaction_tuning, \
-    get_filters, distance_to_by_room, get_venue, get_guid64
+    get_filters, distance_to_by_room, get_venue, get_guid64, check_interaction_on_private_objects, check_actions, \
+    disable_chat_movement
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars, sc_DisabledAutonomy, AutonomyState
 from scripts_core.sc_util import error_trap, clean_string
 
@@ -192,6 +194,9 @@ class sc_Autonomy:
             update_interaction_tuning(get_guid64(interaction), "is_user_directed", False)
 
         venue = get_venue()
+        # Add new stereos for metalheads
+        if "metal" in action:
+            sc_Vars.stereos_on_lot = [obj for obj in services.object_manager().get_all() if "stereo" in str(obj).lower()]
 
         if "residential" not in venue:
             # Neat Sims will not clean on any lot other than residential
@@ -236,6 +241,7 @@ class sc_Autonomy:
                 return False
 
         if autonomy == AutonomyState.DISABLED and not interaction.is_user_directed:
+            # Filter code
             filters = get_filters("enabled")
             if filters is not None:
                 indexes = [f for f in filters if f in action or f in str(get_guid64(interaction))]
@@ -264,6 +270,12 @@ class sc_Autonomy:
                 if not interaction.target.is_outside:
                     interaction.cancel(FinishingType.KILLED, 'Filtered')
                     return False
+
+        # New private objects code
+        if sc_Vars.private_objects and not interaction.sim.sim_info.is_selectable and not interaction.sim.sim_info.routine and interaction.target:
+            if not check_interaction_on_private_objects(interaction.sim, interaction.target, interaction):
+                interaction.cancel(FinishingType.KILLED, 'Filtered')
+                return False
 
         if autonomy == AutonomyState.FULL and not interaction.is_user_directed or \
                 autonomy == AutonomyState.LIMITED_ONLY and not interaction.is_user_directed or \
@@ -397,6 +409,10 @@ class sc_Autonomy:
         target = self.target.__class__.__name__.lower()
         autonomy = self.sim.sim_info.autonomy
 
+        if sc_Vars.disable_chat_movement:
+            disable_chat_movement(self)
+            return
+
         # HACK: Drinks added to world from inventory are auto refilled.
         if "add_to_world" in action:
             sc_Autonomy.add_to_world_flag = True
@@ -433,10 +449,12 @@ class sc_Autonomy:
 
     def prepare_gen(self: SuperInteraction):
         try:
+            if sc_Vars.DISABLE_MOD:
+                return True
             action = self.__class__.__name__.lower()
+            name = "{} {}".format(self.sim.first_name, self.sim.last_name)
 
             if sc_Vars.tag_sim_for_debugging:
-                name = "{} {}".format(self.sim.first_name, self.sim.last_name)
                 if name in sc_Vars.tag_sim_for_debugging:
                     debugger("Sim: {} {} - Interaction: {} Target: {} User Directed: {}".format(self.sim.first_name,
                                                                                                 self.sim.last_name,
@@ -452,22 +470,21 @@ class sc_Autonomy:
                     cur_value = tracker.get_value(cur_stat) if tracker is not None else 0
                     if cur_value < 95:
                         clear_sim_instance(self.sim.sim_info, "sleep|nap|relax", True)
-                        return
+                        return False
                     else:
                         clear_sim_instance(self.sim.sim_info, "sleep|nap")
-                        return
+                        return False
 
             if not sc_Autonomy.run_interaction_filter(self, self):
-                return
+                return False
 
             sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(self.sim.sim_info, get_guid64(self)))
             autonomy_choices = []
-            [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if
-             x not in autonomy_choices]
+            [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices]
             sc_Vars.non_filtered_autonomy_list = autonomy_choices
             if len(sc_Vars.non_filtered_autonomy_list) > 24:
                 sc_Vars.non_filtered_autonomy_list.pop()
-
+            return True
         except BaseException as e:
             error_trap(e)
 

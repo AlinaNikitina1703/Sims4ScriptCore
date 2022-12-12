@@ -12,13 +12,13 @@ from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import add_sim_buff, clear_sim_instance, push_sim_function, find_all_objects_by_title, \
     distance_to_by_room
 from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_util import init_sim
+from scripts_core.sc_util import init_sim, error_trap
 
 
 class sc_SimTracker:
-    __slots__ = ("position", "level", "actions", "mood", "buffs", "effect", "vfx", "vfx_joint", "title")
+    __slots__ = ("position", "level", "actions", "mood", "buffs", "effect", "vfx", "vfx_joint", "title", "objects", "outfit")
 
-    def __init__(self, position=None, level=0, actions=None, mood=None, buffs=None, effect=None, vfx=None, vfx_joint="b__Head__", title=None):
+    def __init__(self, position=None, level=0, actions=None, mood=None, buffs=None, effect=None, vfx=None, vfx_joint="b__Head__", title=None, objects=None, outfit=None):
         super().__init__()
         self.position = position
         self.level = level
@@ -29,6 +29,8 @@ class sc_SimTracker:
         self.vfx = vfx
         self.vfx_joint = vfx_joint
         self.title = title
+        self.objects = objects
+        self.outfit = outfit
 
     def __str__(self):
         return "Buffs: {} Effect: {}".format(str(self.buffs), self.effect)
@@ -110,70 +112,79 @@ def save_sim_tracking(sim_info):
     config.set(sim_name, "id", str(sim.id))
     config.set(sim_name, "actions", str(action_list))
     config.set(sim_name, "targets", str(target_list))
+    config.set(sim_name, "outfit", str(sim_info.get_current_outfit()))
     with open(filename, 'w') as configfile:
         config.write(configfile)
 
 def load_sim_tracking(sim_info):
-    sim = init_sim(sim_info)
-    if not sim:
-        return
-    sim_id = sim.id
-    zone_id = services.current_zone_id()
-    sim_name = "{}_{}".format(sim_info.first_name, sim_info.last_name)
-    datapath = sc_Vars.config_data_location
-    filename = datapath + r"\Data\tracker.ini"
-    if not os.path.exists(filename):
-        return
-    config = configparser.ConfigParser()
-    config.read(filename)
-    if config.has_section(sim_name):
-        position = sim.position
-        tracking_zone = config.getint(sim_name, "zone")
-        if config.has_option(sim_name, "id"):
-            sim_id = config.getint(sim_name, "id")
+    try:
+        sim = init_sim(sim_info)
+        if not sim:
+            return
+        sim_id = sim.id
+        zone_id = services.current_zone_id()
+        sim_name = "{}_{}".format(sim_info.first_name, sim_info.last_name)
+        datapath = sc_Vars.config_data_location
+        filename = datapath + r"\Data\tracker.ini"
+        if not os.path.exists(filename):
+            return
+        config = configparser.ConfigParser()
+        config.read(filename)
+        if config.has_section(sim_name):
+            position = sim.position
+            tracking_zone = config.getint(sim_name, "zone")
+            if config.has_option(sim_name, "id"):
+                sim_id = config.getint(sim_name, "id")
 
-        if sim_id == sim.id:
-            if config.has_option(sim_name, "mood"):
-                mood = config.getint(sim_name, "mood")
-            else:
-                mood = None
-            if config.has_option(sim_name, "buffs"):
-                buffs = ast.literal_eval(config.get(sim_name, "buffs"))
-            else:
-                buffs = None
+            if sim_id == sim.id:
+                if config.has_option(sim_name, "mood"):
+                    mood = config.getint(sim_name, "mood")
+                else:
+                    mood = None
+                if config.has_option(sim_name, "buffs"):
+                    buffs = ast.literal_eval(config.get(sim_name, "buffs"))
+                else:
+                    buffs = None
+                if config.has_option(sim_name, "outfit"):
+                    outfit = ast.literal_eval(config.get(sim_name, "outfit"))
+                    sim_info._current_outfit = outfit
+                else:
+                    outfit = None
 
 
-            sim_info.tracker = sc_SimTracker(position=sim.position, mood=mood, buffs=buffs)
-            update_sim_tracking_info(sim_info)
+                sim_info.tracker = sc_SimTracker(position=sim.position, mood=mood, buffs=buffs, outfit=outfit)
+                update_sim_tracking_info(sim_info)
 
-        if zone_id == tracking_zone and sim_id == sim.id:
-            clear_sim_instance(sim_info)
-            if config.has_option(sim_name, "position"):
-                tracking_position = ast.literal_eval(config.get(sim_name, "position"))
-                position = Vector3(float(tracking_position[0]),
-                               float(tracking_position[1]),
-                               float(tracking_position[2]))
-                orientation = Quaternion.ZERO()
-                if config.has_option(sim_name, "orientation"):
-                    tracking_orientation = ast.literal_eval(config.get(sim_name, "orientation"))
-                    orientation = Quaternion(float(tracking_orientation[0]),
-                                       float(tracking_orientation[1]),
-                                       float(tracking_orientation[2]),
-                                       float(tracking_orientation[3]))
-
-                level = config.getint(sim_name, "level")
-                routing_surface = routing.SurfaceIdentifier(zone_id, level, routing.SurfaceType.SURFACETYPE_WORLD)
-                sim.location = Location(Transform(position, orientation), routing_surface)
-
-            if config.has_option(sim_name, "actions"):
-                action_list = ast.literal_eval(config.get(sim_name, "actions"))
-                target_list = ast.literal_eval(config.get(sim_name, "targets"))
+            if zone_id == tracking_zone and sim_id == sim.id:
                 clear_sim_instance(sim_info)
-                for i, action in enumerate(action_list):
-                    if i < len(target_list):
-                        obj = services.get_zone(zone_id).find_object(target_list[i])
-                        if obj:
-                            push_sim_function(sim, obj, action, False)
+                if config.has_option(sim_name, "position"):
+                    tracking_position = ast.literal_eval(config.get(sim_name, "position"))
+                    position = Vector3(float(tracking_position[0]),
+                                   float(tracking_position[1]),
+                                   float(tracking_position[2]))
+                    orientation = Quaternion.ZERO()
+                    if config.has_option(sim_name, "orientation"):
+                        tracking_orientation = ast.literal_eval(config.get(sim_name, "orientation"))
+                        orientation = Quaternion(float(tracking_orientation[0]),
+                                           float(tracking_orientation[1]),
+                                           float(tracking_orientation[2]),
+                                           float(tracking_orientation[3]))
 
+                    level = config.getint(sim_name, "level")
+                    routing_surface = routing.SurfaceIdentifier(zone_id, level, routing.SurfaceType.SURFACETYPE_WORLD)
+                    sim.location = Location(Transform(position, orientation), routing_surface)
+
+                if config.has_option(sim_name, "actions"):
+                    action_list = ast.literal_eval(config.get(sim_name, "actions"))
+                    target_list = ast.literal_eval(config.get(sim_name, "targets"))
+                    clear_sim_instance(sim_info)
+                    for i, action in enumerate(action_list):
+                        if i < len(target_list):
+                            obj = services.get_zone(zone_id).find_object(target_list[i])
+                            if obj:
+                                push_sim_function(sim, obj, action, False)
+    except BaseException as e:
+        error_trap(e)
+        pass
 
 setattr(SimInfo, "tracker", sc_SimTracker())

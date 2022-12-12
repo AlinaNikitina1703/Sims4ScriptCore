@@ -12,10 +12,9 @@ from sims4.math import Location, Transform, Quaternion, Vector3
 from visualization.spawn_point_visualizer import SpawnPointVisualizer
 from world.spawn_point import SpawnPointOption
 
-from scripts_core.sc_jobs import distance_to_pos, make_sim_at_work, activate_sim_icon, remove_annoying_buffs
+from scripts_core.sc_debugger import debugger
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
-from scripts_core.sc_sim_tracker import track_sim, update_sim_tracking_info
 from scripts_core.sc_util import init_sim, error_trap, clean_string
 
 
@@ -78,6 +77,13 @@ class sc_Spawn:
                     sim.location = sim_location
                 else:
                     sim.location = sim_location
+
+            if sc_Vars.ai_function:
+                sc_Vars.ai_function.load_sim_ai(sim_info)
+                sc_Vars.ai_function.update_sim_ai_info(sim_info)
+
+            if sc_Vars.DEBUG:
+                debugger("Spawn Sim: {}".format(sim_info.first_name))
 
         except BaseException as e:
             error_trap(e)
@@ -143,10 +149,4 @@ class sc_Spawn:
         zone = services.current_zone()
         for i, spawn_point in enumerate(zone._world_spawn_points.values()):
             if index == i:
-                return spawn_point
-
-    def get_spawn_point_by_distance(self, point, dist):
-        zone = services.current_zone()
-        for spawn_point in zone.spawn_points_gen():
-            if distance_to_pos(point, spawn_point._center) > dist:
                 return spawn_point

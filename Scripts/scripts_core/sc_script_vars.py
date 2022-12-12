@@ -3,8 +3,10 @@ import os
 import enum
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
+from objects import terrain
 from sims.sim import Sim
 from sims.sim_info import SimInfo
+from sims4.math import Vector3
 
 setattr(SuperInteraction, "FILTER_QUEUE_ENABLED", False)
 setattr(MixerInteraction, "DEBUG", False)
@@ -45,6 +47,7 @@ class AutonomyState(enum.Int):
 setattr(SimInfo, "autonomy", AutonomyState.FULL)
 setattr(SimInfo, "choice", 0)
 setattr(Sim, "autonomy", AutonomyState.FULL)
+setattr(terrain, "position", Vector3(0, 0, 0))
 
 
 class sc_AutonomyQueue:
@@ -162,6 +165,7 @@ class sc_Vars:
     roles = []
     career_function = None
     weather_function = None
+    ai_function = None
     custom_routine = None
     head_of_household = None
     keep_sims_outside = False
@@ -186,8 +190,14 @@ class sc_Vars:
     stereos_on_lot = []
     beds_on_lot = []
     routine_objects = []
+    private_objects = []
     dirty_objects = []
+    street_slabs = []
+    transmog_objects = []
     timeline = None
+    non_routable_obj_list = []
+    disable_new_sims = False
+    disable_chat_movement = False
 
     def __init__(self):
         super().__init__()
