@@ -32,12 +32,11 @@ from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 from vfx import PlayEffect
 from weather.lightning import LightningStrike
 
-from module_simulation.sc_simulation import set_distance_score
 from scripts_core.sc_affordance import sc_Affordance
 from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_gohere import go_here, send_sim_home
-from scripts_core.sc_goto_camera import update_camera, camera_info
+from scripts_core.sc_goto_camera import update_camera, camera_info, sc_GotoCamera
 from scripts_core.sc_input import inputbox, TEXT_INPUT_NAME
 from scripts_core.sc_jobs import get_sim_info, advance_game_time_and_timeline, \
     advance_game_time, sc_Vars, make_sim_selectable, make_sim_unselectable, remove_sim, remove_all_careers, \
@@ -57,6 +56,7 @@ from scripts_core.sc_routing import routing_fix
 from scripts_core.sc_script_vars import sc_DisabledAutonomy, AutonomyState
 from scripts_core.sc_sim_tracker import load_sim_tracking, save_sim_tracking
 from scripts_core.sc_spawn import sc_Spawn
+from scripts_core.sc_timeline import sc_Timeline
 from scripts_core.sc_util import error_trap, ld_file_loader, clean_string, init_sim
 
 
@@ -139,6 +139,8 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
         self.sc_control_choices = ("<font color='#990000'>Toggle Directional Controls</font>",
                                 "Get Camera Info",
+                                "Show Camera Target",
+                                "Hide Camera Target",
                                 "Push Sim",
                                 "Load Config",
                                 "Load Routine",
@@ -153,8 +155,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                 "Rename World",
                                 "Enable Autonomy",
                                 "Disable Autonomy",
-                                "Set Autonomy",
-                                "Set Distance Score")
+                                "Set Autonomy")
 
         self.sc_debug_choices = ("Reload Weather Scripts", "Reload Tracker Scripts", "Reload Simulation Scripts",
                                     "Toggle Debug",
@@ -171,13 +172,17 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                     "Interaction Objects",
                                     "Indexed Sims",
                                     "Scheduled Sims",
+                                    "Autonomy Sims",
                                     "Idle Sims",
                                     "Transmog Objects",
                                     "Reset In Use",
                                     "Find Go Here",
                                     "Reset Lot",
                                     "Object Dump",
-                                    "Transform Werewolf")
+                                    "Transform Werewolf",
+                                    "Get Timeline Dump",
+                                    "Use Custom Arbs",
+                                    "Use Vanilla Arbs")
 
         self.sc_grab_drink_choices = ("Grab Vodka Soda",
                                     "Grab Beer",
@@ -214,6 +219,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_main = ScriptCoreMain()
         self.sc_spawn = sc_Spawn()
         self.object_picker = ObjectMenu(*args, **kwargs)
+        self.sc_camera = sc_GotoCamera(*args, **kwargs)
 
     def _run_interaction_gen(self, timeline):
         self.sc_menu.MAX_MENU_ITEMS_TO_LIST = 10
@@ -305,6 +311,23 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_delete_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_delete_menu.show(timeline, self, 0, self.sc_delete_choices, "Delete Sim Menu", "Make a selection.")
 
+    def get_timeline_dump(self, timeline):
+        timeline_dump = sc_Timeline()
+        timeline_dump.inverse = False
+        timeline_dump.filter = []
+        timeline_dump.get_values()
+        timeline_dump.dump_values()
+
+    def use_custom_arbs(self, timeline):
+        from animation.arb_accumulator import ArbSequenceElement
+        from module_simulation.sc_simulation import arbs_run_gen
+        ArbSequenceElement._run_gen = arbs_run_gen
+
+    def use_vanilla_arbs(self, timeline):
+        from animation.arb_accumulator import ArbSequenceElement
+        from module_simulation import sc_simulate
+        ArbSequenceElement._run_gen = sc_simulate.vanilla_run_gen
+
     def transform_werewolf(self, timeline):
         client = services.client_manager().get_first_client()
         target = client.active_sim
@@ -324,7 +347,13 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
             update_camera(self.sim, 2.0, True)
 
     def get_camera_info(self, timeline):
-        camera_info(self.sim, None, True)
+        camera_info(self.sim)
+
+    def show_camera_target(self, timeline):
+        self.sc_camera.show_camera_target()
+
+    def hide_camera_target(self, timeline):
+        self.sc_camera.hide_camera_target()
 
     def go_here(self, timeline):
         go_here(self.sim, self.target.position)
@@ -413,13 +442,6 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
         except BaseException as e:
             error_trap(e)
-
-    def set_distance_score(self, timeline):
-        inputbox("Set Sim Perception Size", "Set to a number between 10 and 50. 0 would be no perception for priority sorting. Default is 5.",
-            self.set_distance_score_callback)
-
-    def set_distance_score_callback(self, score: str):
-        set_distance_score(int(score))
 
     def disable_autonomy(self, timeline):
         client = services.client_manager().get_first_client()
@@ -1119,10 +1141,10 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def max_motives(self, timeline):
         all_motives = ['motive_fun', 'motive_social', 'motive_hygiene', 'motive_hunger', 'motive_energy', 'motive_bladder']
-        for sim in services.sim_info_manager().instanced_sims_gen():
+        for sim_info in services.sim_info_manager().get_all():
             for motive in all_motives:
                 cur_stat = get_tunable_instance((sims4.resources.Types.STATISTIC), motive, exact_match=True)
-                tracker = sim.get_tracker(cur_stat)
+                tracker = sim_info.get_tracker(cur_stat)
                 tracker.set_value(cur_stat, 100)
 
     def select_and_fix_sim_icons(self, timeline):
@@ -1397,7 +1419,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
     def teleport_sims(self, filter="all", clear_role=False, name=""):
         try:
             is_precise = False
-            precision = 1.0
+            precision = 2.0
 
             def teleport_callback(dialog):
                 if not dialog.accepted:
@@ -1414,12 +1436,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                     zone_id = services.current_zone_id()
                     routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
                     sim_location = Location(Transform(pos, orientation), routing_surface)
-                    if sim_info.is_instanced():
-                        sim = sim_info.get_sim_instance()
-                        while sim.location != sim_location:
+                    sims = [s for s in services.sim_info_manager().instanced_sims_gen() if s.sim_info == sim_info]
+                    if sims:
+                        for sim in sims:
                             sim.reset(ResetReason.NONE, None, 'Command')
                             sim.location = sim_location
-                            sim.refresh_los_constraint()
                     else:
                         sim_info.set_zone_on_spawn()
                         self.sc_spawn.spawn_sim(sim_info, sim_location, level)
@@ -1769,6 +1790,9 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
 
     def scheduled_sims(self, timeline):
         self.sc_bulletin.show_scheduled_sims(camera.focus_on_object)
+
+    def autonomy_sims(self, timeline):
+        self.sc_bulletin.show_autonomy_sims(camera.focus_on_object)
 
     def idle_sims(self, timeline):
         self.sc_bulletin.show_idle_sims(camera.focus_on_object)

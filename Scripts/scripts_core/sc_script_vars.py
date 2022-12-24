@@ -22,6 +22,7 @@ setattr(Sim, "routine", False)
 setattr(Sim, "job", None)
 setattr(SimInfo, "routine", False)
 setattr(SimInfo, "job", None)
+setattr(SimInfo, "time_to_simulate", [0, 0])
 setattr(Sim, "use_object_index", 0)
 setattr(SimInfo, "use_object_index", 0)
 
@@ -123,6 +124,7 @@ class sc_Vars:
     DEBUG_SPAWN = False
     DEBUG_TIME = False
     DEBUG_AUTONOMY = False
+    DEBUG_SOCIALS = False
     DEBUG_ROUTING = False
     debug_log_text = ""
     AUTO_SELECTED_SIMS = True
@@ -197,7 +199,12 @@ class sc_Vars:
     timeline = None
     non_routable_obj_list = []
     disable_new_sims = False
-    disable_chat_movement = False
+    enable_distance_autonomy = True
+    distance_autonomy_messages = True
+    action_distance_autonomy = 12
+    chat_distance_autonomy = 6
+    sorted_autonomy_sims = []
+    old_autonomy = False
 
     def __init__(self):
         super().__init__()

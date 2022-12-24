@@ -1,7 +1,7 @@
 import services
 from clock import ClockSpeedMode
 from filters.tunable import TunableSimFilter
-
+import sims.sim_spawner
 from scripts_core.sc_goto_camera import update_camera
 from scripts_core.sc_jobs import pause_routine
 from scripts_core.sc_main import ScriptCoreMain
@@ -16,6 +16,10 @@ def sc_zone_update(zone):
             if not is_paused:
                 if sc_Vars.disable_new_sims:
                     TunableSimFilter._template_chooser = None
+                if sc_Vars.DISABLE_SPAWNS:
+                    sims.sim_spawner.disable_spawning_non_selectable_sims = True
+                else:
+                    sims.sim_spawner.disable_spawning_non_selectable_sims = False
                 if not pause_routine(sc_Vars.update_speed):
                     ScriptCoreMain.init(zone)
                     ScriptCoreMain.init_routine(zone)

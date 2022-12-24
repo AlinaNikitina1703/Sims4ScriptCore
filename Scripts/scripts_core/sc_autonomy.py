@@ -15,7 +15,7 @@ from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_queue_of, clear_sim_instance, \
     update_interaction_tuning, \
     get_filters, distance_to_by_room, get_venue, get_guid64, check_interaction_on_private_objects, check_actions, \
-    disable_chat_movement
+    enable_distance_autonomy, check_action_list
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars, sc_DisabledAutonomy, AutonomyState
 from scripts_core.sc_util import error_trap, clean_string
@@ -220,26 +220,6 @@ class sc_Autonomy:
                 interaction.cancel(FinishingType.KILLED, 'Filtered')
                 return False
 
-        if autonomy == AutonomyState.DISABLED and "chat" in action and not interaction.is_user_directed or \
-                autonomy == AutonomyState.DISABLED and "social" in action and not interaction.is_user_directed:
-            if distance_to_by_room(interaction.sim, interaction.target) > 5:
-                if sc_Vars.tag_sim_for_debugging or sc_Vars.DEBUG_AUTONOMY:
-                    name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
-                    if name in str(sc_Vars.tag_sim_for_debugging) or sc_Vars.DEBUG_AUTONOMY:
-                        debugger("Sim: {} {} - Long Distance: ({}) {} Autonomy: {}".format(interaction.sim.first_name,
-                                                                                           interaction.sim.last_name,
-                                                                                           get_guid64(interaction), action,
-                                                                                           interaction.allow_autonomous), 2, True)
-                for social_group in interaction.sim.get_groups_for_sim_gen():
-                    social_group.remove(interaction.target)
-                    social_group._resend_members()
-
-                sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
-                if len(sc_Vars.disabled_autonomy_list) > 999:
-                    sc_Vars.disabled_autonomy_list.pop()
-                interaction.cancel(FinishingType.KILLED, 'Filtered')
-                return False
-
         if autonomy == AutonomyState.DISABLED and not interaction.is_user_directed:
             # Filter code
             filters = get_filters("enabled")
@@ -270,12 +250,6 @@ class sc_Autonomy:
                 if not interaction.target.is_outside:
                     interaction.cancel(FinishingType.KILLED, 'Filtered')
                     return False
-
-        # New private objects code
-        if sc_Vars.private_objects and not interaction.sim.sim_info.is_selectable and not interaction.sim.sim_info.routine and interaction.target:
-            if not check_interaction_on_private_objects(interaction.sim, interaction.target, interaction):
-                interaction.cancel(FinishingType.KILLED, 'Filtered')
-                return False
 
         if autonomy == AutonomyState.FULL and not interaction.is_user_directed or \
                 autonomy == AutonomyState.LIMITED_ONLY and not interaction.is_user_directed or \
@@ -409,10 +383,6 @@ class sc_Autonomy:
         target = self.target.__class__.__name__.lower()
         autonomy = self.sim.sim_info.autonomy
 
-        if sc_Vars.disable_chat_movement:
-            disable_chat_movement(self)
-            return
-
         # HACK: Drinks added to world from inventory are auto refilled.
         if "add_to_world" in action:
             sc_Autonomy.add_to_world_flag = True
@@ -488,6 +458,6 @@ class sc_Autonomy:
         except BaseException as e:
             error_trap(e)
 
-
-BucketBase.append = sc_Autonomy.append
-BucketBase.insert_next = sc_Autonomy.insert_next
+if sc_Vars.old_autonomy:
+    BucketBase.append = sc_Autonomy.append
+    BucketBase.insert_next = sc_Autonomy.insert_next

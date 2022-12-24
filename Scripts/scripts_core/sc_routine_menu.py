@@ -1,6 +1,9 @@
 import math
 
 import services
+
+from module_simulation.sc_simulate_autonomy import get_game_autonomy, get_autonomy_distance, \
+    get_autonomy_distance_cutoff
 from scripts_core.sc_jobs import get_sim_role, set_exam_info, get_number_of_sims, get_number_of_role_sims, \
     get_number_of_non_routine_sims, get_number_of_routine_sims, get_room_by_position
 from scripts_core.sc_menu_class import get_icon_info_data, ICON_MORE, ICON_BACK
@@ -98,12 +101,13 @@ class sc_RoutineMenu:
                         sim_name = LocalizationHelperTuning.get_raw_text("<font color='#000000'>{}: {} {}</font>".format(count, sim.first_name, sim.last_name))
 
                     if sim.sim_info.routine:
-                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}\nAutonomy: {}\nRoom: {}\nCurrently:\n{}".format(
-                            sim.sim_info.routine_info.title.title(), autonomy, get_room_by_position(sim.position, sim.level), currently))
+                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}\nAutonomy: {}\nGame Autonomy: {}\nAutonomy Distance: {} ({})\nRoom: {}\nCurrently:\n{}".format(
+                            sim.sim_info.routine_info.title.title(), autonomy, get_game_autonomy(sim), get_autonomy_distance(sim), get_autonomy_distance_cutoff(), get_room_by_position(sim.position, sim.level), currently))
                     else:
                         sim.job = get_sim_role(sim)
-                        sim_label = LocalizationHelperTuning.get_raw_text("Job: {}Autonomy: {}\nRoom: {}\nCurrently:\n{}".format(
-                            sim.job.title(), autonomy, get_room_by_position(sim.position, sim.level), currently))
+                        jobs = len(sim.autonomy_component.active_roles())
+                        sim_label = LocalizationHelperTuning.get_raw_text("Job({}): {}Autonomy: {}\nGame Autonomy: {}\nAutonomy Distance: {} ({})\nRoom: {}\nCurrently:\n{}".format(jobs,
+                            sim.job.title(), autonomy, get_game_autonomy(sim), get_autonomy_distance(sim), get_autonomy_distance_cutoff(), get_room_by_position(sim.position, sim.level), currently))
                     if hasattr(sim, "icon_info"):
                         sim_icon = get_icon_info_data(sim)
                     else:

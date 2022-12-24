@@ -41,6 +41,16 @@ class sc_Bulletin(sc_RoutineMenu):
         except BaseException as e:
             error_trap(e)
 
+    def show_autonomy_sims(self, callback=None):
+        try:
+            self.MAX_MENU_ITEMS_TO_LIST = 20
+            if len(sc_Vars.sorted_autonomy_sims):
+                self.show("Autonomy Sims", sc_Vars.sorted_autonomy_sims, 0, services.get_active_sim(), 1, callback)
+            else:
+                message_box(None, None, "Autonomy Sims", "No autonomy sims in range of active sims.", "GREEN")
+        except BaseException as e:
+            error_trap(e)
+
     def show_idle_sims(self, callback=None):
         try:
             sim_list = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and doing_nothing(sim)]

@@ -6,6 +6,7 @@ from scripts_core.sc_file import get_config
 from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims, \
     has_role, assign_role_title, get_number_of_role_sims, remove_sim_role, get_sim_role, get_work_hours, \
     get_number_of_routine_sims, distance_to_by_room, assign_routine
+from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 
 
@@ -21,17 +22,7 @@ class sc_Filter:
         venue = get_venue()
         roles = sim.autonomy_component.active_roles()
 
-        if sim.sim_info.routine:
-            return True
-        if sim == services.get_active_sim():
-            return True
-        elif sim.sim_info.is_selectable:
-            return True
-        elif is_sim_in_group(sim):
-            return True
-        elif sim.sim_info in services.active_household():
-            return True
-        elif sim.sim_info.household.home_zone_id == zone.id:
+        if sim.sim_info.routine or sim == services.get_active_sim() or sim.sim_info.is_selectable or is_sim_in_group(sim) or sim.sim_info in services.active_household() or sim.sim_info.household.home_zone_id == zone.id:
             return True
         if sc_Vars.DISABLE_SPAWNS:
             return False
@@ -43,7 +34,7 @@ class sc_Filter:
                 remove_sim_role(sim, "leave")
                 return True
         if [role for role in roles if [leave for leave in self.leave_roles if leave == str(role.__class__.__name__).lower()]]:
-            assign_routine(sim.sim_info, "leave", False)
+            assign_routine(sim.sim_info, "leave", True)
             return False
         if not self.add_role_and_trait_sims_to_routine(sim):
             return False
@@ -82,7 +73,11 @@ class sc_Filter:
             str(r).lower() or role.career.lower() in str(r).lower() and role.career != "None"] or [trait for trait in sim.sim_info.trait_tracker
             if role.title in str(trait).lower() or role.career.lower() in str(trait).lower()] and role.career != "None"]
         if not roles:
-            return True
+            return add_non_role_sims_to_routine(sim, venue)
+
+        if not has_role(sim):
+            if add_non_role_sims_to_routine(sim, venue):
+                return True
 
         for role in roles:
             if role.venue and not [v for v in role.venue if v in venue]:
@@ -170,4 +165,31 @@ class sc_Filter:
                 if sc_Vars.DEBUG:
                     debugger("Conspiracist: {}".format(sim.first_name))
                 return True
+
+            if "barfly" in role.title:
+                assign_routine(sim.sim_info, "barfly", False)
+                if sc_Vars.DEBUG:
+                    debugger("Barfly: {}".format(sim.first_name))
+                return True
+
+            if "dancer" in role.title:
+                assign_routine(sim.sim_info, "dancer", False)
+                if sc_Vars.DEBUG:
+                    debugger("Dancer: {}".format(sim.first_name))
+                return True
         return True
+
+def add_non_role_sims_to_routine(sim, venue):
+    # No role exceptions based on venue.
+    if "venue_bar" in venue and not has_role(sim):
+        assign_routine(sim.sim_info, "barfly")
+        if sc_Vars.DEBUG:
+            debugger("Barfly: {}".format(sim.first_name))
+        return True
+
+    if "venue_club" in venue and not has_role(sim):
+        assign_routine(sim.sim_info, "dancer")
+        if sc_Vars.DEBUG:
+            debugger("Dancer: {}".format(sim.first_name))
+        return True
+    return False

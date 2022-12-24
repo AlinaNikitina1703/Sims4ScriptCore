@@ -1,4 +1,5 @@
-import element_utils
+import random
+
 import element_utils
 import objects
 import routing
@@ -14,12 +15,14 @@ from interactions.utils.routing_constants import TransitionFailureReasons
 from objects.object_enums import ResetReason
 from postures.posture_graph import EMPTY_PATH_SPEC
 from routing import SurfaceIdentifier, SurfaceType
-from sims4.math import Location, Transform
+from sims4.math import Location, Transform, Quaternion
 
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import distance_to_by_room, make_clean, get_sim_posture_target
+from scripts_core.sc_gohere import get_spawn_by_distance
+from scripts_core.sc_jobs import distance_to_by_room, make_clean, get_sim_posture_target, remove_sim
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_spawn import sc_Spawn
 from scripts_core.sc_util import error_trap
 
 AutonomyModesTuning.LOCKOUT_TIME = 1
@@ -43,6 +46,18 @@ def add_unroutable_object(sim, target, interaction_id, failure_reason=None):
     if not [obj for obj in sc_Vars.non_routable_obj_list if obj.object == target and obj.sim == sim]:
         sc_Vars.non_routable_obj_list.append(NonRoutableObject(sim, interaction_id, target, failure_reason))
 
+def handle_unroutable_object(sim):
+    if not sc_Vars.non_routable_obj_list or sim.sim_info.is_selectable:
+        return
+    if sim.sim_info.routine:
+        if "leave" not in sim.sim_info.routine_info.title:
+            return
+    unroutable_sim = [obj for obj in sc_Vars.non_routable_obj_list if obj.sim == sim]
+    if unroutable_sim and len(unroutable_sim) > 2:
+        routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), 0, routing.SurfaceType.SURFACETYPE_WORLD)
+        location = Location(Transform(services.current_zone().active_lot_arrival_spawn_point._center, Quaternion.ZERO()), routing_surface)
+        spawn = sc_Spawn()
+        spawn.spawn_sim(sim.sim_info, location, sim.level, False, False)
 
 def _route_failure(sim, interaction, failure_reason, failure_object_id):
     global ROUTE_FAILURE_OVERRIDE_MAP
@@ -81,8 +96,7 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
 
         if interaction:
             action = interaction.__class__.__name__.lower()
-            for route in sc_Vars.non_routable_obj_list:
-                route_obj_list.append(str(route.object))
+            route_obj_list = [str(route.object) for route in sc_Vars.non_routable_obj_list if route.sim == interaction.sim]
             route_obj_list = "\n".join(route_obj_list)
             if failure_reason == TransitionFailureReasons.PATH_PLAN_FAILED or failure_reason == TransitionFailureReasons.RESERVATION:
                 interaction.sim.sim_info.use_object_index += 1
@@ -128,9 +142,10 @@ def _route_failure(sim, interaction, failure_reason, failure_object_id):
                 except:
                     pass
 
+        handle_unroutable_object(interaction.sim)
     except BaseException as e:
         error_trap(e)
-        message_box(interaction.sim, interaction.target, "Error Object", "", "ORANGE")
+        #message_box(interaction.sim, interaction.target, "Error Object", "", "ORANGE")
         pass
 
     route_fail_anim = RouteFailureTunables.route_fail_animation((sim.posture.source_interaction), overrides=overrides,

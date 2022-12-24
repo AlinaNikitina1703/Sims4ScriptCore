@@ -5,11 +5,11 @@ import os
 import objects
 import services
 import sims4
-from date_and_time import TimeSpan
 from filters.tunable import TunableSimFilter
 from sims.sim_spawner_service import SimSpawnerService
 
-from module_simulation.sc_simulation import set_sim_buffer, set_sim_delay
+from module_simulation.sc_simulate_autonomy import set_autonomy_distance_cutoff, set_update_autonomy, set_sim_delay
+from module_simulation.sc_simulation import set_sim_buffer, set_time_slice
 from scripts_core.sc_clubs import C_ZoneClubs
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_file import get_config
@@ -19,7 +19,7 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
     fade_lights_in_live_mode, \
     add_career_to_sim, set_proper_sim_outfit, remove_all_careers, \
     remove_annoying_buffs, has_role, \
-    clear_jobs, assign_title, set_autonomy, clear_leaving, get_important_objects_on_lot, \
+    clear_jobs, assign_title, clear_leaving, get_important_objects_on_lot, \
     doing_nothing, \
     push_sim_function
 from scripts_core.sc_message_box import message_box
@@ -137,11 +137,6 @@ class ScriptCoreMain:
             _connection = client.id
             sims4.commands.client_cheat('bb.moveobjects on', _connection)
 
-        try:
-            from module_simulation.sc_simulation import reset_simulation_to_vanilla, set_simulation_to_custom
-        except:
-            message_box(None, None, "Simulation", "Cannot load simulation mode!", "GREEN")
-            pass
         datapath = sc_Vars.config_data_location
         filename = datapath + r"\Data\config.ini"
         if not os.path.exists(filename):
@@ -151,11 +146,12 @@ class ScriptCoreMain:
 
         sc_Vars.SELECTED_SIMS_AUTONOMY = config.getint("control", "selected_sims_autonomy")
         sc_Vars.MAX_SIMS = config.getint("control", "max_sims")
-        sc_Vars.DEBUG = config.getboolean("control", "debug")
-        sc_Vars.DEBUG_FULL = config.getboolean("control", "full_debug")
-        sc_Vars.DEBUG_SPAWN = config.getboolean("control", "spawn_debug")
-        sc_Vars.DEBUG_AUTONOMY = config.getboolean("control", "debug_autonomy")
-        sc_Vars.DEBUG_ROUTING = config.getboolean("control", "debug_routing")
+        sc_Vars.DEBUG = config.getboolean("debugging", "debug")
+        sc_Vars.DEBUG_FULL = config.getboolean("debugging", "full_debug")
+        sc_Vars.DEBUG_SPAWN = config.getboolean("debugging", "spawn_debug")
+        sc_Vars.DEBUG_AUTONOMY = config.getboolean("debugging", "debug_autonomy")
+        sc_Vars.DEBUG_ROUTING = config.getboolean("debugging", "debug_routing")
+        sc_Vars.DEBUG_SOCIALS = config.getboolean("debugging", "debug_socials")
         sc_Vars.DISABLE_MOD = config.getboolean("control", "disable_mod")
         sc_Vars.DISABLE_ROUTINE = config.getboolean("control", "disable_routine")
         sc_Vars.DISABLE_SPAWNS = config.getboolean("control", "disable_spawns")
@@ -169,17 +165,26 @@ class ScriptCoreMain:
         sc_Vars.disable_forecasts = config.getboolean("control", "disable_forecasts")
         sc_Vars.disable_social_autonomy = config.getboolean("control", "disable_social_autonomy")
         sc_Vars.disable_new_sims = config.getboolean("control", "disable_new_sims")
-        sc_Vars.disable_chat_movement = config.getboolean("control", "disable_chat_movement")
+        sc_Vars.enable_distance_autonomy = config.getboolean("distance_autonomy", "enable_distance_autonomy")
+        sc_Vars.distance_autonomy_messages = config.getboolean("distance_autonomy", "distance_autonomy_messages")
+        sc_Vars.action_distance_autonomy = config.getfloat("distance_autonomy", "action_distance_autonomy")
+        sc_Vars.chat_distance_autonomy = config.getfloat("distance_autonomy", "chat_distance_autonomy")
         services.weather_service()._icy_conditions_option = not config.getboolean("control", "disable_icy_conditions")
         sc_Vars.update_speed = config.getfloat("control", "update_speed")
         sc_Vars.chance_switch_action = config.getfloat("control", "chance_switch_action")
         sc_Vars.interaction_minutes_run = config.getfloat("control", "action_timeout")
         sc_Vars.chance_role_trait = config.getfloat("control", "chance_role_trait")
-        sim_buffer = config.getfloat("control", "set_sim_buffer")
-        sim_delay = config.getint("control", "set_sim_delay")
+        sim_buffer = config.getfloat("simulation", "set_sim_buffer")
+        sim_delay = config.getfloat("simulation", "set_sim_delay")
+        autonomy_distance_cutoff = config.getfloat("simulation", "autonomy_distance_cutoff")
+        update_autonomy = config.getint("simulation", "update_autonomy")
+        time_slice = config.getint("simulation", "time_slice")
 
         set_sim_buffer(sim_buffer)
-        set_sim_delay(TimeSpan(sim_delay))
+        set_sim_delay(sim_delay)
+        set_autonomy_distance_cutoff(autonomy_distance_cutoff)
+        set_time_slice(time_slice)
+        set_update_autonomy(update_autonomy)
         SimSpawnerService.NPC_SOFT_CAP = 255
         sc_Vars.timestamp = 0
         services.sim_spawner_service().set_npc_soft_cap_override(sc_Vars.MAX_SIMS)
@@ -235,7 +240,10 @@ class ScriptCoreMain:
                 else:
                     config_text = config_text + "[{}:] {}\n".format(each_key, each_val)
 
+        account_data_msg = services.get_persistence_service().get_account_proto_buff()
+        options_proto = account_data_msg.gameplay_account_data.gameplay_options
 
+        config_text = config_text + "[Autonomy Level:] {}\n[Selected Sim Autonomy Enabled:] {}\n".format(options_proto.autonomy_level, options_proto.selected_sim_autonomy_enabled)
         config_text = config_text.replace("[", font_text1).replace("]", end_font_text)
         config_text = config_text.replace("(", font_text3).replace(")", end_font_text)
         status_text = status_text.replace("[", font_text2).replace("]", end_font_text)
@@ -290,19 +298,6 @@ class ScriptCoreMain:
             return
         zone = services.current_zone()
         now = services.time_service().sim_now
-        autonomy_service = services.autonomy_service()
-        selected_sim_autonomy_enabled = autonomy_service._selected_sim_autonomy_enabled
-        account_data_msg = services.get_persistence_service().get_account_proto_buff()
-        options_proto = account_data_msg.gameplay_account_data.gameplay_options
-
-        if sim == services.get_active_sim() and options_proto.autonomy_level == options_proto.OFF:
-            autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
-        elif sim.sim_info.is_selectable and sim != services.get_active_sim() and options_proto.autonomy_level == options_proto.LIMITED:
-            autonomy_setting = AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY)
-        elif sim.sim_info.routine:
-            autonomy_setting = sim.sim_info.routine_info.autonomy
-        else:
-            autonomy_setting = AutonomyState.FULL
 
         if not sim.sim_info.routine:
             set_proper_sim_outfit(sim, sim.sim_info.is_selectable, None, True)
@@ -331,43 +326,24 @@ class ScriptCoreMain:
                 if not sim.sim_info.is_selectable:
                     make_sim_leave(sim)
                 return
-            if sim == services.get_active_sim():
+            if sim == services.get_active_sim() or sim.sim_info.is_selectable or sim.sim_info.routine:
                 clear_leaving(sim)
-                if not selected_sim_autonomy_enabled:
-                    set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
-                else:
-                    set_autonomy(sim.sim_info, sim.sim_info.routine_info.autonomy)
-            elif sim.sim_info.is_selectable:
-                clear_leaving(sim)
-                set_autonomy(sim.sim_info, autonomy_setting)
-            elif sim.sim_info.routine:
-                clear_leaving(sim)
-                set_autonomy(sim.sim_info, sim.sim_info.routine_info.autonomy)
             if sc_Vars.career_function and sim.sim_info.autonomy != AutonomyState.DISABLED and sim.sim_info.routine:
                 sc_Vars.career_function.routine_handler(sim.sim_info)
             return
         elif sim == services.get_active_sim():
-            if not selected_sim_autonomy_enabled:
-                set_autonomy(sim.sim_info, sc_Vars.SELECTED_SIMS_AUTONOMY)
-            else:
-                set_autonomy(sim.sim_info, AutonomyState.FULL)
             return
         elif sim.sim_info.is_selectable:
-            set_autonomy(sim.sim_info, autonomy_setting)
             return
         elif is_sim_in_group(sim):
             clear_leaving(sim)
-            set_autonomy(sim.sim_info, autonomy_setting)
             return
         elif sim.sim_info in services.active_household():
-            set_autonomy(sim.sim_info, autonomy_setting)
             return
         elif sim.sim_info.vacation_or_home_zone_id == zone.id:
             clear_leaving(sim)
-            set_autonomy(sim.sim_info, AutonomyState.FULL)
             return
         elif ScriptCoreMain.sim_filter.has_allowed_role(sim):
-            set_autonomy(sim.sim_info, AutonomyState.FULL)
             # New private objects code
             if sc_Vars.keep_sims_outside:
                 keep_sim_outside(sim, sc_Vars.private_objects)

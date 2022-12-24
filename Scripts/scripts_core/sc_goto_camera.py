@@ -1,43 +1,65 @@
 import camera
+import objects
+import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
-from sims4.math import Vector3, vector_normalize
+from routing import SurfaceIdentifier, SurfaceType
+from sims4.math import Vector3, Quaternion, Location, Transform, vector_normalize
 from terrain import get_terrain_height
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_gohere import go_here
 from scripts_core.sc_jobs import check_actions, distance_to_pos
 from scripts_core.sc_message_box import message_box
+from scripts_core.sc_util import error_trap
 
 
 class sc_GotoCamera(ImmediateSuperInteraction):
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
+        self.marker = None
 
     def _run_interaction_gen(self, timeline):
         goto_camera_target(self.sim)
+
+    def show_camera_target(self):
+        if not self.marker:
+            self.marker = objects.system.create_object(317169)
+        translation = camera._target_position
+        orientation = Quaternion.ZERO()
+        pos = Vector3(translation.x, translation.y, translation.z)
+        routing_surface = SurfaceIdentifier(services.current_zone_id(), 0, SurfaceType.SURFACETYPE_WORLD)
+        self.marker.location = Location(Transform(pos, orientation), routing_surface)
+
+    def hide_camera_target(self):
+        if self.marker:
+            self.marker.destroy()
 
 
 def vector_magnify(v, m):
     return Vector3(v.x * m, v.y * m, v.z * m)
 
 def camera_info(sim, distance=None, console=False):
-    font_color = "000000"
-    font_text = "<font color='#{}'>".format(font_color)
-    end_font_text = "</font>"
-    if not distance:
-        distance = distance_to_pos(camera._camera_position, camera._target_position)
-    directional_info = "[Camera Target]: {}\n".format(camera._target_position)
-    directional_info = directional_info + "[Camera Position]: {}\n".format(camera._camera_position)
-    directional_info = directional_info + "[Distance]: {}\n".format(distance)
-    directional_info = directional_info + "[Sim Position]: {}\n".format(sim.position)
-    directional_info = directional_info + "[Sim Forward]: {}\n".format(sim.position + sim.forward)
+    try:
+        font_color = "000000"
+        font_text = "<font color='#{}'>".format(font_color)
+        end_font_text = "</font>"
+        if not distance:
+            distance = distance_to_pos(camera._camera_position, camera._target_position)
+        directional_info = "[Camera Target]: {}\n".format(camera._target_position)
+        directional_info = directional_info + "[Camera Position]: {}\n".format(camera._camera_position)
+        directional_info = directional_info + "[Distance]: {}\n".format(distance)
+        directional_info = directional_info + "[Sim Position]: {}\n".format(sim.position)
+        directional_info = directional_info + "[Sim Forward]: {}\n".format(sim.position + sim.forward)
+        directional_info = directional_info + "[Sim Distance]: {}\n".format(distance_to_pos(camera._target_position, sim.position))
 
-    if console:
-        debugger(directional_info)
-        return
-    directional_info = directional_info.replace("[", font_text).replace("]", end_font_text)
-    message_box(sim, None, "Directional Controls", directional_info)
+        if console:
+            debugger(directional_info)
+            return
+        directional_info = directional_info.replace("[", font_text).replace("]", end_font_text)
+        message_box(sim, None, "Directional Controls", directional_info)
+    except BaseException as e:
+        error_trap(e)
 
 def target_from_camera(distance):
     camera_direction = camera._camera_position - camera._target_position

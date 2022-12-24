@@ -89,9 +89,6 @@ class sc_SpawnHandler(SimSpawnerService):
         venue = get_venue()
         sims_on_lot = get_number_of_sims(True)
 
-        if sc_Vars.DISABLE_SPAWNS:
-            spawn_sim = False
-
         if sims_on_lot >= sc_Vars.MAX_SIMS:
             spawn_sim = False
 

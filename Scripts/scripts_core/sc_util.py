@@ -53,10 +53,6 @@ def ld_file_loader(dirname: str, module: str, _connection=None):
     else:
         try:
             filename = os.path.join(dirname, filetitle) + ".py"
-            if "simulation.py" in filename:
-                ld_notice(None, "Load Script", "Error loading simulation module. Access denied".format(filename), False,
-                          "ORANGE")
-                return False
             reloaded_module = r.reload_file(filename)
             if reloaded_module is not None:
                 ld_notice(None, "Load Script", "Module {} loaded successfully!".format(filetitle), False, "PURPLE")
@@ -87,7 +83,7 @@ def ld_reload(_connection=None):
 
 
 def ld_notice(sim_info: SimInfo, title, text, show_icon=True, color="DEFAULT", icon_hash=None, button_text=None,
-              button_response="notif_button1_clicked"):
+              button_response=""):
     button_responses = []
     try:
         if button_text is not None:
@@ -140,7 +136,7 @@ def ld_notice(sim_info: SimInfo, title, text, show_icon=True, color="DEFAULT", i
                                                                      visual_type=visual_type,
                                                                      expand_behavior=1, ui_responses=button_responses,
                                                                      dialog_options=0)
-        notification.show_dialog(on_response=(notif_button1_clicked))
+        notification.show_dialog()
     except BaseException as e:
         error_trap_console(e)
 
@@ -176,15 +172,6 @@ def notif_icon_clicked(sim_id: int, _connection=None):
     output = sims4.commands.CheatOutput(_connection)
     sim_info = services.sim_info_manager().get(sim_id)
     output('The icon in the notification was of {} {}'.format(sim_info.first_name, sim_info.last_name))
-
-
-@sims4.commands.Command('notif_button1_clicked', command_type=sims4.commands.CommandType.Live)
-def notif_button1_clicked(_connection=None):
-    output = sims4.commands.CheatOutput(_connection)
-    import subprocess
-    cmd = "C:/Windows/System32/notepad.exe"
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
-    process.wait()
 
 
 def error_trap(e: BaseException, file=__file__):

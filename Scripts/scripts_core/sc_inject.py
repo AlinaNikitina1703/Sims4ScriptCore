@@ -8,6 +8,7 @@ from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
 from postures.posture_graph import PostureGraphService
 from scheduling import Timeline
+from sims.outfits.outfit_tracker import OutfitTrackerMixin
 from sims.sim_info_base_wrapper import SimInfoBaseWrapper
 from sims.sim_info_manager import SimInfoManager
 from singletons import DEFAULT
@@ -17,6 +18,7 @@ from module_outfit.sc_outfit_functions import generate_outfit
 from scripts_core.sc_autonomy import sc_Autonomy
 from scripts_core.sc_clubs import sc_club_gathering_start_handler, sc_club_gathering_end_handler, \
     sc_club_on_zone_load_handler
+from scripts_core.sc_jobs import get_best_outfit_for_clothing_change
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import error_trap
@@ -217,3 +219,9 @@ def sc_generate_outfit(original, self, outfit_category, outfit_index=0, tag_list
         pass
 
     return result
+
+@safe_inject(OutfitTrackerMixin, 'get_outfit_for_clothing_change')
+def sc_get_outfit_for_clothing_change(original, self, interaction, reason, resolver=None, *args, **kwargs):
+    outfit_change = original(self, interaction, reason, resolver, *args, **kwargs)
+    outfit_change = get_best_outfit_for_clothing_change(self, outfit_change)
+    return outfit_change

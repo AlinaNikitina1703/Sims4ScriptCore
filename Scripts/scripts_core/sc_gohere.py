@@ -8,14 +8,13 @@ from interactions.priority import Priority
 from objects.terrain import TerrainPoint
 from server.pick_info import PickType, PickInfo
 from server_commands.sim_commands import CommandTuning, _build_terrain_interaction_target_and_context
-from sims4.math import Location, Transform, Vector3
+from sims4.math import Location, Transform, Vector3, Quaternion
 from terrain import get_terrain_height
 
-from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import distance_to_pos, clear_sim_instance, distance_to_by_level, get_room, \
     set_proper_sim_outfit, assign_role, check_actions, remove_sim, set_autonomy, assign_routine, get_venue, \
-    is_allowed_privacy_role, check_private_objects, get_sim_role
-from scripts_core.sc_script_vars import AutonomyState, sc_Vars
+    is_allowed_privacy_role, check_private_objects
+from scripts_core.sc_script_vars import AutonomyState
 from scripts_core.sc_util import error_trap
 
 
@@ -140,6 +139,27 @@ def get_spawn_point_by_distance(point, dist) -> Vector3:
     center_pos = services.current_zone().lot.position
     spawn_point = Vector3(center_pos.x + random.uniform(-dist, dist), center_pos.y,  center_pos.z + random.uniform(-dist, dist))
     spawn_point.y = get_terrain_height(spawn_point.x, spawn_point.z)
+    return spawn_point
+
+def get_spawn_by_distance(point, dist) -> Vector3:
+    zone = services.current_zone()
+    for spawn_point in zone.spawn_points_gen():
+        if hasattr(spawn_point, "_center"):
+            if distance_to_pos(point, spawn_point._center) < dist:
+                return spawn_point
+        elif hasattr(spawn_point, "position"):
+            if distance_to_pos(point, spawn_point.position) < dist:
+                return spawn_point
+        elif hasattr(spawn_point, "location"):
+            if distance_to_pos(point, spawn_point.location.transform.translation) < dist:
+                return spawn_point
+        else:
+            continue
+    center_pos = services.current_zone().lot.position
+    spawn_point = Vector3(center_pos.x + random.uniform(-dist, dist), center_pos.y,  center_pos.z + random.uniform(-dist, dist))
+    spawn_point.y = get_terrain_height(spawn_point.x, spawn_point.z)
+    routing_surface = routing.SurfaceIdentifier(services.current_zone_id(), 0, routing.SurfaceType.SURFACETYPE_WORLD)
+    spawn_point = Location(Transform(spawn_point, Quaternion.ZERO()), routing_surface)
     return spawn_point
 
 def go_here(sim, location, level=0, offset=1.5):

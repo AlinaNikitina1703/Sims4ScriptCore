@@ -24,7 +24,7 @@ class sc_Spawn:
     def __init__(self):
         super().__init__()
 
-    def spawn_sim(self, sim_info, spawn_point=None, level=0, use_radius=False):
+    def spawn_sim(self, sim_info, spawn_point=None, level=0, use_radius=False, use_reset=True):
         try:
             zone_id = services.current_zone_id()
             lot = services.active_lot()
@@ -49,8 +49,14 @@ class sc_Spawn:
                     else:
                         translation = lot.position
                         orientation = Quaternion.ZERO()
+                elif hasattr(spawn_point, "_center"):
+                    translation = spawn_point._center
+                    orientation = Quaternion.ZERO()
+                elif hasattr(spawn_point, "position"):
+                    translation = spawn_point.position
+                    orientation = Quaternion.ZERO()
                 else:
-                    translation = Vector3(spawn_point.transform.translation.x, spawn_point.transform.translation.y, spawn_point.transform.translation.z)
+                    translation = spawn_point.transform.translation
                     orientation = Quaternion.ZERO()
 
 
@@ -59,7 +65,8 @@ class sc_Spawn:
             sim_location = Location(Transform(translation, orientation), routing_surface)
             if sim_info.is_instanced():
                 sim = sim_info.get_sim_instance()
-                sim.reset(ResetReason.NONE, None, 'Command')
+                if use_reset:
+                    sim.reset(ResetReason.NONE, None, 'Command')
                 sim.location = sim_location
             else:
                 sim = sim_info.get_sim_instance(allow_hidden_flags=objects.ALL_HIDDEN_REASONS)
@@ -73,7 +80,8 @@ class sc_Spawn:
                 sim = init_sim(sim_info)
                 if sim.has_hidden_flags(objects.HiddenReasonFlag.RABBIT_HOLE):
                     sim.show(objects.HiddenReasonFlag.RABBIT_HOLE)
-                    sim.reset(ResetReason.NONE, None, 'Command')
+                    if use_reset:
+                        sim.reset(ResetReason.NONE, None, 'Command')
                     sim.location = sim_location
                 else:
                     sim.location = sim_location

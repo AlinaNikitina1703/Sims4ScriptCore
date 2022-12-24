@@ -1,3 +1,5 @@
+from clubs.club_tuning import ClubTunables
+
 from scripts_core.sc_jobs import clear_sim_instance, assign_title
 
 
@@ -39,6 +41,7 @@ class C_ZoneClubs:
                 self.label_club_members(club)
 
 sc_club = C_ZoneClubs()
+ClubTunables.CLUB_GATHERING_TRAVEL_AUTO_START_GROUP_SIZE = 999
 
 def sc_club_gathering_start_handler(self, club, *args, **kwargs):
     global sc_club

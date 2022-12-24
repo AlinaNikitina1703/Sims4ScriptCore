@@ -6,6 +6,8 @@ import sys
 import time
 from math import fabs, sqrt
 
+import autonomy.settings
+
 import alarms
 import build_buy
 import caches
@@ -42,8 +44,10 @@ from objects.object_enums import ResetReason
 from objects.system import create_script_object
 from plex.plex_enums import INVALID_PLEX_ID
 from seasons.seasons_enums import SeasonSetSource, SeasonType
+from server.pick_info import PickType
 from server_commands.argument_helpers import get_tunable_instance, TunableInstanceParam, get_optional_target, \
     OptionalTargetParam
+from server_commands.sim_commands import _build_terrain_interaction_target_and_context, CommandTuning
 from sims.outfits.outfit_enums import OutfitCategory
 from sims.outfits.outfit_tuning import OutfitTuning
 from sims.sim_info_lod import SimInfoLODLevel
@@ -51,7 +55,7 @@ from sims.sim_info_manager import SimInfoManager
 from sims4 import resources
 from sims4.color import Color
 from sims4.localization import LocalizationHelperTuning
-from sims4.math import Location, Transform, Quaternion, Vector3
+from sims4.math import Location, Transform, Quaternion, Vector3, vector_normalize
 from sims4.resources import Types, get_resource_key
 from situations.bouncer.bouncer_request import RequestSpawningOption
 from situations.bouncer.bouncer_types import BouncerRequestPriority
@@ -190,6 +194,32 @@ def do_change_outfit_spinup(sim, category, timeline):
     except BaseException as e:
         error_trap(e)
 
+def get_best_outfit_for_clothing_change(sim_info, outfit_change):
+    roles = ["bartender", "mail", "butler"]
+    t = get_current_temperature()
+    venue = get_venue()
+    sim = init_sim(sim_info)
+    if not outfit_change:
+        return sim_info._current_outfit
+    elif has_role(sim, "patient"):
+        return (OutfitCategory.SITUATION, 0)
+    elif [role for role in roles if has_role(sim, role)]:
+        picked_outfit = (OutfitCategory.CAREER, 0)
+        if not sim_info.has_outfit(picked_outfit):
+            picked_outfit = (OutfitCategory.SITUATION, 0)
+        return picked_outfit
+    elif outfit_change[0] == OutfitCategory.SWIMWEAR and not check_actions(sim, "swim") and "beach" not in venue and "pool" not in venue and t < Temperature.WARM and sim.is_outside:
+        return sim_info._current_outfit
+    elif outfit_change[0] == OutfitCategory.BATHING and t < Temperature.WARM and sim.is_outside:
+        return sim_info._current_outfit
+    elif outfit_change[0] == OutfitCategory.SPECIAL and t < Temperature.WARM and sim.is_outside:
+        return sim_info._current_outfit
+    elif sim_info.is_selectable:
+        return sim_info._current_outfit
+    elif t < Temperature.WARM and sim_info._current_outfit[0] != OutfitCategory.COLDWEATHER and not sim_info.is_selectable:
+        sim_info.get_random_outfit((OutfitCategory.COLDWEATHER,))
+    else:
+        return outfit_change
 
 def set_proper_sim_outfit(sim, is_player=False, routine=None, use_buffs=False):
     t = get_current_temperature()
@@ -754,42 +784,20 @@ def find_all_objects_by_title(target,
                               title,
                               level=sc_Vars.MIN_LEVEL,
                               dist_limit=sc_Vars.MAX_DISTANCE,
-                              dirty=False,
-                              outside=False):
+                              dirty=False):
     try:
         value = []
         if title != "":
             value = title.split("|")
-        if len(value) == 0 and not outside:
+        if len(value) == 0:
             object_list = [obj for obj in services.object_manager().get_all()
-                           if not obj.is_outside and distance_to(target,
-                                                                 obj) < dist_limit and obj.level >= level and title in str(
-                    obj).lower() and dirty and object_is_dirty(obj)
-                           or not obj.is_outside and distance_to(target,
-                                                                 obj) < dist_limit and obj.level >= level and title in str(
-                    obj).lower()
-                           or not obj.is_outside and distance_to(target,
-                                                                 obj) < dist_limit and obj.level >= level and title in str(
-                    obj.definition.id)]
-        elif len(value) == 0 and outside:
-            object_list = [obj for obj in services.object_manager().get_all()
-                           if distance_to(target, obj) < dist_limit and obj.level >= level and title in str(
-                    obj).lower() and dirty and object_is_dirty(obj)
-                           or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
-                           or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(
-                    obj.definition.id)]
-        elif outside:
-            object_list = [obj for obj in services.object_manager().get_all()
-                           if distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if
-                                                                                                v in str(
-                                                                                                    obj).lower()] and dirty and object_is_dirty(
-                    obj)
-                           or distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if
-                                                                                                v in str(obj).lower()]]
+                if distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower() and dirty and object_is_dirty(obj)
+                or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj).lower()
+                or distance_to(target, obj) < dist_limit and obj.level >= level and title in str(obj.definition.id)]
         else:
             object_list = [obj for obj in services.object_manager().get_all()
-               if not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()] and dirty and object_is_dirty(obj)
-               or not obj.is_outside and distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
+                if distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()] and dirty and object_is_dirty(obj)
+                or distance_to(target, obj) < dist_limit and obj.level >= level and [v for v in value if v in str(obj).lower()]]
 
         if len(object_list):
             object_list.sort(key=lambda obj: distance_to_by_room(obj, target))
@@ -949,16 +957,16 @@ def clear_all_buffs(sim_info):
 
 
 def get_room(obj):
+    if not obj:
+        return -1
     if hasattr(obj, "zone_id") and hasattr(obj, "position") and hasattr(obj, "level"):
-        return build_buy.get_block_id(obj.zone_id, obj.position, obj.level)
+        return build_buy.get_block_id(obj.zone_id if obj.zone_id else services.current_zone_id(), obj.position, obj.level)
     else:
         return -1
 
 
-def get_room_by_position(position, level, offset=0.0):
-    return build_buy.get_block_id(services.current_zone_id(),
-                                  Vector3(position.x + offset, position.y, position.z + offset), level)
-
+def get_room_by_position(position, level, x_offset=0.0, y_offset=0.0):
+    return build_buy.get_block_id(services.current_zone_id(), Vector3(position.x + x_offset, position.y, position.z + y_offset), level)
 
 def get_polygons():
     plex_service = services.get_plex_service()
@@ -1044,7 +1052,6 @@ def get_career_level(sim_info):
 def set_autonomy(sim_info, routine=4):
     sim_info.autonomy = AutonomyState(routine)
 
-
 # New private objects code
 def get_private_objects(target, private_objects):
     object_list = [obj for obj in private_objects if check_private_objects(target, obj)]
@@ -1078,15 +1085,18 @@ def check_private_objects(sim, private_object):
 
 def check_interaction_on_private_objects(sim, target, interaction=None, debug=False):
     for obj in sc_Vars.private_objects:
-        if target == obj and not is_allowed_privacy_role(sim) or distance_to_by_level(target,
-                                                                                      obj) < 10 and not is_allowed_privacy_role(
-                sim):
+        if target == obj and not is_allowed_privacy_role(sim) or distance_to_by_level(target, obj) < 10 and not is_allowed_privacy_role(sim):
             if debug:
                 message_box(sim, target, str(interaction.__class__.__name__) if interaction else None,
                             str(target.__class__.__name__) if target else None)
             return False
     return True
 
+def camera_is_near_private_objects(distance):
+    near_camera_list = [obj for obj in sc_Vars.private_objects if distance_to_pos(obj.position, camera._target_position) < distance]
+    if near_camera_list:
+        return True
+    return False
 
 def unlock_for_sim(door, sim):
     lock_data = IndividualSimDoorLockData(unlock_sim=sim.sim_info, lock_priority=(LockPriority.PLAYER_LOCK),
@@ -1104,8 +1114,8 @@ def get_routable_for_sim(target, sim):
     doors = [obj for obj in services.object_manager().get_all() if obj.has_component(PORTAL_LOCKING_COMPONENT)]
     if not doors:
         return False
-    doors = [obj for obj in doors if get_room_by_position(obj.position, obj.level, 0.5) == get_room(target) or
-             get_room_by_position(obj.position, obj.level, -0.5) == get_room(target)]
+    doors = [obj for obj in doors if get_room_by_position(obj.position, obj.level, 0.5 * obj.forward.x, 0.5 * obj.forward.z) == get_room(target) or
+             get_room_by_position(obj.position, obj.level, -0.5 * obj.forward.x, -0.5 * obj.forward.z) == get_room(target)]
     if doors:
         if any(not get_locked_for_sim(door, sim) for door in doors):
             return True
@@ -1274,6 +1284,10 @@ def only_this_action(sim, action):
 
 
 def doing_nothing(sim):
+    if not sim:
+        return False
+    if not hasattr(sim, "get_all_running_and_queued_interactions"):
+        return False
     if all("sit" in str(interaction).lower() for interaction in sim.get_all_running_and_queued_interactions()) or \
             all("stand" in str(interaction).lower() for interaction in sim.get_all_running_and_queued_interactions()):
         return True
@@ -1722,14 +1736,16 @@ def get_sim_role(sim) -> str:
 def remove_sim_role(sim, role_title):
     roles = sim.autonomy_component.active_roles()
     role_list = []
-    for role in roles:
-        if role_title not in role.__class__.__name__.lower():
-            role_list.append(role.guid64)
-    role_tracker = sim.autonomy_component._role_tracker
-    role_tracker.reset()
+    [role_list.append(role.guid64) for role in roles if role_title not in role.__class__.__name__.lower()]
+    clear_jobs(sim.sim_info)
     for role in role_list:
         assign_role(role, sim.sim_info)
 
+def create_time_span(days=0, hours=0, minutes=0, seconds=0):
+    num_sim_seconds = days * date_and_time.SECONDS_PER_DAY + hours * date_and_time.SECONDS_PER_HOUR + \
+        minutes * date_and_time.SECONDS_PER_MINUTE + seconds
+    time_in_ticks = num_sim_seconds * date_and_time.REAL_MILLISECONDS_PER_SIM_SECOND
+    return date_and_time.TimeSpan(time_in_ticks)
 
 def is_sim_in_group(sim):
     sim_info = None
@@ -1880,6 +1896,36 @@ def clear_sim_queue_of(sim_info, interaction_name):
     except BaseException as e:
         error_trap(e)
 
+def get_angle(v1, v2):
+    return math.atan2(v1.x - v2.x, v1.z - v2.z)
+
+def vector_magnify(v, m):
+    return Vector3(v.x * m, v.y * m, v.z * m)
+
+def point_object_at(orig, target):
+    point = target.position
+    angle = get_angle(point, orig.position)
+    level = orig.level
+    orientation = sims4.math.angle_to_yaw_quaternion(angle)
+    zone_id = services.current_zone_id()
+    routing_surface = routing.SurfaceIdentifier(zone_id, level, routing.SurfaceType.SURFACETYPE_WORLD)
+    orig.location = sims4.math.Location(Transform(orig.position, orientation), routing_surface)
+
+def face_sim(sim, target):
+    sim_direction = sim.position - target.position
+    sim_direction = vector_normalize(sim_direction)
+    sim_distance = distance_to_pos(sim.position, target.position)
+    sim_move_vector = sim.position - vector_magnify(sim_direction, 0.1 * sim_distance)
+    return Vector3(sim_move_vector.x, get_terrain_height(sim_move_vector.x, sim_move_vector.z),
+                sim_move_vector.z)
+
+def get_random_radius_position(center, radius):
+    alpha = 2 * math.pi * random.random()
+    r = radius * math.sqrt(random.random())
+    x = r * math.cos(alpha) + center.x
+    z = r * math.sin(alpha) + center.z
+    y = get_terrain_height(x, z)
+    return Vector3(x, y, z)
 
 def distance_to_pos(target, dest):
     return (target - dest).magnitude_2d()
@@ -1907,7 +1953,7 @@ def distance_to_by_room(target, dest):
         if target_room != dest_room:
             d = d + 1024
     except:
-        return 1024
+        return d
     return d
 
 
@@ -1918,10 +1964,8 @@ def objects_by_room(target):
         return None
     target_room = get_room_by_position(target.position, target.level)
     return [obj for obj in services.object_manager().valid_objects() if
-            get_room_by_position(obj.position, obj.level, 0.5) == target_room and obj.has_component(
-                PORTAL_LOCKING_COMPONENT) or
-            get_room_by_position(obj.position, obj.level, -0.5) == target_room and obj.has_component(
-                PORTAL_LOCKING_COMPONENT) or
+            get_room_by_position(obj.position, obj.level, 0.5 * obj.forward.x, 0.5 * obj.forward.z) == target_room or
+            get_room_by_position(obj.position, obj.level, -0.5 * obj.forward.x, -0.5 * obj.forward.z) == target_room or
             get_room_by_position(obj.position, obj.level) == target_room]
 
 
@@ -1945,7 +1989,6 @@ def distance_to_by_level(target, dest):
 
 
 def clamp(n, smallest, largest): return max(smallest, min(n, largest))
-
 
 def get_object_info(target, long_version=False):
     client = services.client_manager().get_first_client()
@@ -2028,59 +2071,66 @@ def get_object_info(target, long_version=False):
         pass
 
     in_use = is_object_in_use(target)
+    zone_manager = services.get_zone_manager()
+    persistence_service = services.get_persistence_service()
+    current_zone = zone_manager.current_zone
+    neighborhood = persistence_service.get_neighborhood_proto_buff(current_zone.neighborhood_id)
 
     info_string = "[Zone Info:] {}\n" \
-                  "[Object ID:] {}\n" \
-                  "[Object Name:] {}\n" \
-                  "[Object Definition ID:] {} ({})\n" \
-                  "[Object Tuning ID:] {}\n" \
-                  "[Object Footprint:] {}\n" \
-                  "[Object Outside:] {}\n" \
-                  "[Object In Use:] {}\n" \
-                  "[Object Use Sim Count:] {}\n" \
-                  "[Object Scale:] {}\n" \
-                  "[Object Locked:] {}\n" \
-                  "[Object Routable:] {}\n" \
-                  "[Object Dirty:] {}\n" \
-                  "[Object Room ID:] {}\n" \
-                  "[Object Level:] {}\n" \
-                  "[Object Opacity:] {}\n" \
-                  "[Object Location ID:] {}\n" \
-                  "[Object POS:] {}, {}, {}\n" \
-                  "[Object ROT:] {}, {}, {}, {}\n" \
-                  "[Type:] {}\n" \
-                  "[Object Slots:] {}\n" \
-                  "[Object Tags:] {}\n" \
-                  "[Commodities:]\n{}\n" \
-        .format(zone_id,
-                target.id,
-                target.__class__.__name__,
-                target.definition.id,
-                hex(target.definition.id),
-                target.tuning_manager._definitions_cache[target.definition.id].tuning_file_id,
-                object_width,
-                target.is_outside,
-                in_use,
-                len(get_sims_using_object(target)),
-                scale,
-                locked,
-                routable,
-                object_is_dirty(target),
-                obj_room_id,
-                target.level,
-                opacity,
-                parent_id,
-                target.position.x,
-                target.position.y,
-                target.position.z,
-                target.location.transform.orientation.x,
-                target.location.transform.orientation.y,
-                target.location.transform.orientation.z,
-                target.location.transform.orientation.w,
-                object_class,
-                slots_resource,
-                clean_string(str(target_object_tags)),
-                commodity_list)
+                    "[{}:] {}\n" \
+                    "[Object Name:] {}\n" \
+                    "[Object Definition ID:] {} ({})\n" \
+                    "[Object Tuning ID:] {}\n" \
+                    "[Object Footprint:] {}\n" \
+                    "[Object Routable:] {}\n" \
+                    "[Sims Using Object:] {}\n" \
+                    "[Object Outside:] {}\n" \
+                    "[Object In Use:] {}\n" \
+                    "[Object Scale:] {}\n" \
+                    "[Object Locked:] {}\n" \
+                    "[Object Dirty:] {}\n" \
+                    "[Object Room ID:] {}\n" \
+                    "[Object Level:] {}\n" \
+                    "[Object Opacity:] {}\n" \
+                    "[Object Location ID:] {}\n" \
+                    "[Object POS:] {}, {}, {}\n" \
+                    "[Object ROT:] {}, {}, {}, {}\n" \
+                    "[Object Facing:] {}\n" \
+                    "[Type:] {}\n" \
+                    "[Object Slots:] {}\n" \
+                    "[Object Tags:] {}\n" \
+                    "[Commodities:]\n{}\n" \
+                    .format(zone_id,
+                    "Object ID" if target.id else "World Name:",
+                    target.id if target.id else neighborhood.name,
+                    target.__class__.__name__,
+                    target.definition.id,
+                    hex(target.definition.id),
+                    target.tuning_manager._definitions_cache[target.definition.id].tuning_file_id,
+                    object_width if object_width > 0 else routing.get_world_size(),
+                    routable,
+                    [(_info.first_name + " " + _info.last_name) for _info in get_sims_using_object(target)],
+                    target.is_outside if hasattr(target, "is_outside") else False,
+                    in_use,
+                    scale,
+                    locked,
+                    object_is_dirty(target),
+                    obj_room_id,
+                    target.level,
+                    opacity,
+                    parent_id,
+                    target.position.x,
+                    target.position.y,
+                    target.position.z,
+                    target.location.transform.orientation.x,
+                    target.location.transform.orientation.y,
+                    target.location.transform.orientation.z,
+                    target.location.transform.orientation.w,
+                    target.forward,
+                    object_class,
+                    slots_resource,
+                    clean_string(str(target_object_tags)),
+                    commodity_list)
 
     if filename is not None:
         info_string += "[Filename:] {}\n".format(filename)
@@ -2173,7 +2223,7 @@ def get_instance_tuning(id):
     return tuning_manager.get(id)
 
 
-def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
+def push_sim_function(sim, target, dc_interaction: int, autonomous=True, init_chat=13998):
     try:
         if sim is None or target is None:
             return False
@@ -2208,7 +2258,7 @@ def push_sim_function(sim, target, dc_interaction: int, autonomous=True):
         if affordance_instance.is_super:
             result = push_super_affordance(sim, affordance_instance, target, context, autonomous=autonomous)
         elif affordance_instance.is_social:
-            result = push_social_affordance(sim, 13998, dc_interaction, target, context)
+            result = push_social_affordance(sim, init_chat, dc_interaction, target, context)
         else:
             result = push_mixer_affordance(sim, dc_interaction, target, context)
         return result
@@ -2565,15 +2615,22 @@ def is_unroutable_object(sim, obj):
         return True
     return False
 
-def find_empty_chair(sim, obj=None, dist=sc_Vars.MAX_DISTANCE, index=0):
+def find_empty_chair(sim, obj=None, dist=sc_Vars.MAX_DISTANCE, index=0, no_computer=False, is_outside=True):
     if obj:
         search = obj
     else:
         search = sim
-    chairs = find_all_objects_by_title(search, "sitliving|sitdining|sitsofa|sitlove|beddouble|bedsingle|chair|stool|hospitalexambed", sim.level, dist)
+    chairs = find_all_objects_by_title(search, "sitliving|sitdining|sitsofa|sitlove|beddouble|bedsingle|chair|stool|hospitalexambed", search.level, dist)
     if not chairs:
         return None
     for i, chair in enumerate(chairs):
+        inside_chairs = [oc for oc in chairs if not oc.is_outside]
+        if inside_chairs and chair.is_outside and not is_outside:
+            continue
+        if no_computer:
+            computers = find_all_objects_by_title(chair, "computer", chair.level, 1.5)
+            if computers:
+                continue
         if i >= index:
             if is_unroutable_object(sim, chair):
                 continue
@@ -2588,14 +2645,65 @@ def find_empty_chair(sim, obj=None, dist=sc_Vars.MAX_DISTANCE, index=0):
                 return chair
     return None
 
-# New code to disable standing while chatting and sitting.
-def disable_chat_movement(interaction):
+@sims4.commands.Command('distance_autonomy_callback', command_type=sims4.commands.CommandType.Live)
+def distance_autonomy_callback(value1=None, value2=None, value3=None, _connection=None):
+    output = sims4.commands.CheatOutput(_connection)
+    sim = services.object_manager().get(int(value1))
+    target = services.object_manager().get(int(value2))
+    action = int(value3)
+    result = push_sim_function(sim, target, action, False)
+    output('Sim: {}\nTarget: {}\nAction: {}\n'.format(value1, value2, value3))
+    output("Result from distance autonomy callback:\n{}\n".format(result))
+
+# New code to disable autonomy based on distance.
+def enable_distance_autonomy(interaction, action_dist=12.0, chat_dist=6.0, message=False):
     action = interaction.__class__.__name__.lower()
+    if not interaction.sim.sim_info.is_selectable:
+        return False
+    if not interaction.is_user_directed and not interaction.sim.sim_info.routine:
+        if distance_to_by_level(interaction.sim, interaction.target) > action_dist:
+            clear_sim_instance(interaction.sim.sim_info, [action, "stand"])
+            if message and interaction.sim == services.get_active_sim():
+                message_box(interaction.sim, interaction.target, "Distance Autonomy", "Distance autonomy activated!\n"
+                    "<font color='#ffff00'>config.ini\n[distance_autonomy]\nenable_distance_autonomy = True\n</font>"
+                    "Target is outside of reach when distance autonomy is enabled regardless of sim autonomy. Disable "
+                    "this feature in the config. Furthermore, IF sim autonomy is disabled. Activate certain actions "
+                    "using enabled.dat, placing the name, or partial name of the action seperated by | or use the "
+                    "script core menu under control. Select enable autonomy then look for the action you need enabled "
+                    "and click it. This adds the action to enabled.dat. Routine sims are excluded from this.\n"
+                    "Disabled action: {}".format(action),
+                    "DEFAULT", "Execute Disabled Action", 'distance_autonomy_callback',
+                    str(interaction.sim.id), str(interaction.target.id), str(interaction.guid64))
+            return True
+
+    if "chat" in action and not interaction.is_user_directed or "social" in action and not interaction.is_user_directed:
+        if distance_to_by_room(interaction.sim, interaction.target) > chat_dist:
+            for group in interaction.sim.get_groups_for_sim_gen():
+                group.remove(interaction.target)
+                group._resend_members()
+            if check_actions(interaction.sim, "sit"):
+                clear_sim_instance(interaction.sim.sim_info, ["chat", "social", "stand"])
+            else:
+                clear_sim_instance(interaction.sim.sim_info, ["chat", "social"])
+            if message and interaction.sim == services.get_active_sim():
+                message_box(interaction.sim, interaction.target, "Distance Autonomy", "Distance autonomy activated!\n"
+                    "<font color='#ffff00'>config.ini\n[distance_autonomy]\nenable_distance_autonomy = True\n</font>"
+                    "Target is outside of reach when distance autonomy is enabled. Disable this feature in the config. "
+                    "Furthermore, chatting is distanced based using this feature regardless of sim autonomy.",
+                    "DEFAULT", "Chat With Sim", 'distance_autonomy_callback',
+                    str(interaction.sim.id), str(interaction.target.id), str(interaction.guid64))
+            return True
+    if check_actions(interaction.sim, "greet") and check_actions(interaction.sim, "sit"):
+        target = get_interaction_target_by_name(interaction.sim, "greet")
+        clear_sim_instance(interaction.sim.sim_info, ["stand", "greet"])
+        push_sim_function(target, interaction.sim, 13998)
+        return False
     if "stand" in action and check_actions(interaction.sim, "sit") and check_actions(interaction.sim, "chat"):
         target = get_interaction_target_by_name(interaction.sim, "social")
-        clear_sim_instance(interaction.sim.sim_info, "chat|social|stand")
+        clear_sim_instance(interaction.sim.sim_info, ["chat", "social", "stand"])
         push_sim_function(target, interaction.sim, 13998)
-
+        return True
+    return False
 
 def create_trauma(target):
     amount_puddle = int(random.uniform(1, 5))
