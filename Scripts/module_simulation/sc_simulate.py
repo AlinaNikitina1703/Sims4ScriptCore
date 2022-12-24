@@ -1,10 +1,13 @@
-import sims4
-import heapq, inspect, operator, time
-from scheduling import MAX_ELEMENTS, HardStopError, ACCEPTABLE_GARBAGE, MAX_GARBAGE_FACTOR, Timeline
+import heapq
+import inspect
+import time
 
-from scripts_core.sc_script_vars import sc_Vars
+import sims4
+from animation.arb_accumulator import ArbSequenceElement
+from scheduling import MAX_ELEMENTS, HardStopError, ACCEPTABLE_GARBAGE, MAX_GARBAGE_FACTOR
 
 logger = sims4.log.Logger('Scheduling')
+vanilla_run_gen = ArbSequenceElement._run_gen
 
 class sc_Simulate:
 

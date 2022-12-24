@@ -4,7 +4,6 @@ from threading import Thread
 import services
 from clock import ClockSpeedMode
 
-from scripts_core.sc_debugger import debugger
 from scripts_core.sc_script_vars import sc_Vars
 
 
