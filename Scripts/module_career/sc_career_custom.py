@@ -6,13 +6,12 @@ import random
 import services
 
 from module_career.sc_career_medical import sc_CareerMedical
-from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import get_career_name, get_venue, clear_all_buffs, add_sim_buff, assign_title, clear_jobs, \
-    get_work_hours, check_actions, function_options, assign_role, remove_sim, get_career_level, \
+from scripts_core.sc_gohere import make_sim_leave
+from scripts_core.sc_jobs import get_career_name, get_venue, assign_title, get_work_hours, check_actions, \
+    function_options, assign_role, get_career_level, \
     clear_queue_of_duplicates, set_all_motives_by_sim, max_sims, clear_sim_instance, set_proper_sim_outfit, \
-    get_awake_hours, send_sim_home, make_sim_leave
-from scripts_core.sc_message_box import message_box
+    get_awake_hours, assign_routine
 from scripts_core.sc_routine_info import sc_RoutineInfo
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_spawn import sc_Spawn
@@ -72,7 +71,8 @@ class sc_CareerCustom(sc_CareerMedical):
                                                      config.get(title, "use_object3"),
                                                      config.getint(title, "object_action1"),
                                                      config.getint(title, "object_action2"),
-                                                     config.getint(title, "object_action3")))
+                                                     config.getint(title, "object_action3"),
+                                                     ast.literal_eval(config.get(title, "role_buttons"))))
 
     def setup_sims(self):
         sc_Vars.exam_list = []
@@ -130,7 +130,7 @@ class sc_CareerCustom(sc_CareerMedical):
             random.shuffle(workforce_sims)
             sc_Vars.routine_sims = workforce_sims
             for sim_info in workforce_sims:
-                if sim_info.is_instanced() and sim_info.routine:
+                if sim_info.is_instanced() and sim_info.routine and "leave" not in sim_info.routine_info.title:
                     sim_info.routine = True
                     roles = [role for role in sc_Vars.roles if sim_info.routine_info.title in role.title]
                 else:
@@ -160,7 +160,7 @@ class sc_CareerCustom(sc_CareerMedical):
 
             sc_Vars.routine_start_times = []
             if [sim_info for sim_info in sc_CareerCustom.sim_infos if "stripper" in sim_info.routine_info.title]:
-                sc_Vars.routine_start_times = [17, 18, 19, 20, 21, 22, 23, 1, 2, 3, 4, 5]
+                sc_Vars.routine_start_times = [17, 18, 19, 20, 21, 22, 23, 1, 3, 5, 7, 9, 11, 13, 15]
                 if [start_time for start_time in sc_Vars.routine_start_times if start_time == now.hour()]:
                     sc_Vars.routine_start_times.remove(now.hour())
             else:
@@ -301,19 +301,11 @@ class sc_CareerCustom(sc_CareerMedical):
             debugger(sim_names)
     
     def assign_sim(self, sim_info):
-        sim_info.routine = True
-        clear_jobs(sim_info)
-        clear_all_buffs(sim_info)
         clear_sim_instance(sim_info)
         if sim_info.routine_info.title != "none":
-            for buff in list(sim_info.routine_info.buffs):
-                add_sim_buff(int(buff), sim_info)
-            add_sim_buff(182697, sim_info)
-            assign_title(sim_info, sim_info.routine_info.title.title())
-            assign_role(sim_info.routine_info.role, sim_info)
+            assign_routine(sim_info, sim_info.routine_info.title)
         else:
-            sim_info.routine = False
-            assign_title(sim_info, "")
+            assign_routine(sim_info, sim_info.routine_info.title, True, False, False)
 
     def routine_handler(self, sim_info):
         try:
@@ -323,6 +315,8 @@ class sc_CareerCustom(sc_CareerMedical):
 
             sim = init_sim(sim_info)
             if sim:
+                if check_actions(sim, "wicked"):
+                    return
                 clear_queue_of_duplicates(sim)
                 set_all_motives_by_sim(sim)
                 assign_title(sim_info, sim_info.routine_info.title.title())
@@ -331,12 +325,12 @@ class sc_CareerCustom(sc_CareerMedical):
                     sim_info.routine_info.routine.append(sim_info.routine_info.title + "_routine")
 
                 if [buff for buff in sim_info.routine_info.buffs if buff == 145074]:
-                    set_proper_sim_outfit(sim, False, True)
+                    set_proper_sim_outfit(sim, False, sim_info.routine_info.title)
 
                 if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and not sc_Vars.dont_sleep_on_lot:
                     self.sleep_routine(sim_info)
                 if [buff for buff in sim_info.routine_info.buffs if buff == 35478] and sc_Vars.dont_sleep_on_lot and not get_awake_hours(sim):
-                    send_sim_home(sim)
+                    make_sim_leave(sim)
                 if [buff for buff in sim_info.routine_info.buffs if buff == 115830]:
                     self.room_check_routine(sim_info)
 

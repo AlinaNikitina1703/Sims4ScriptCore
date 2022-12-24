@@ -9,13 +9,11 @@ from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
 from module_career.sc_career_custom import sc_CareerCustom
 from module_career.sc_career_functions import get_routine_objects_by_title
-from module_career.sc_career_medical import sc_CareerMedicalExams
-from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_jobs import clear_sim_instance, push_sim_function, distance_to, assign_situation, assign_title, \
-    set_exam_info, assign_routine, is_object_in_use
+    set_exam_info, assign_routine, is_object_in_use, remove_sim_role
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_info import sc_RoutineInfo
@@ -31,11 +29,12 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
-        self.sc_career_menu_choices = ("Set Menu",
+        self.sc_career_menu_choices = ("Set Vendor Menu",
                                        "Show Exams",
                                        "Set Exam To Patient",
                                        "Add Routine To Sim",
                                        "Add Situation To Sim",
+                                       "Remove Role From Sim",
                                        "Routine Info")
 
         self.sc_vendor_choices = ("Mexican",
@@ -68,7 +67,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         self.sc_career_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_career_menu.show(timeline, self, 0, self.sc_career_menu_choices, "Career Menu", "Make a selection.")
 
-    def set_menu(self, timeline):
+    def set_vendor_menu(self, timeline):
         self.sc_vendor_menu.MAX_MENU_ITEMS_TO_LIST = 10
         self.sc_vendor_menu.commands = []
         self.sc_vendor_menu.commands.append("<font color='#990000'>[Menu]</font>")
@@ -146,6 +145,23 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
 
         self.picker("Add Situation {} To Sim".format(situation_id), "Pick up to 50 Sims", 50, get_simpicker_results_callback)
 
+    def remove_role_from_sim(self, timeline):
+        inputbox("Remove Role From Sim", "Enter the role title.", self._remove_role_from_sim_callback)
+
+    def _remove_role_from_sim_callback(self, role_title: str):
+        if role_title == "" or role_title is None:
+            return
+
+        def get_simpicker_results_callback(dialog):
+            if not dialog.accepted:
+                return
+            for sim in dialog.get_result_tags():
+                remove_sim_role(sim, role_title)
+                message_box(sim, None, "{}".format(role_title.title()), "Role removed from sim!", "GREEN")
+
+
+        self.picker("Remove Role {} From Sim".format(role_title.title()), "Pick up to 50 Sims", 50, get_simpicker_results_callback)
+
     def add_routine_to_sim(self, timeline):
         inputbox("Add Routine To Sim", "Enter the routine title. Add a + to the beginning for 24 hour duty.", self._add_routine_to_sim_callback)
 
@@ -179,7 +195,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                                             in str(obj).lower() and roles[0].use_object1 != "None" or
                                             roles[0].use_object1 in str(obj.definition.id)]
                 if len(routine_objects):
-                    sc_Vars.routine_objects = set(list(sc_Vars.routine_objects) + list(routine_objects))
+                    sc_Vars.routine_objects = list(set(list(sc_Vars.routine_objects) + list(routine_objects)))
                 sc_CareerCustom.assign_sim(self, sim.sim_info)
                 message_box(sim, None, "{}".format(roles[0].title.title()), "Routine assigned to sim! On Duty: {}"
                     " Off Duty: {}".format(sim.sim_info.routine_info.on_duty, sim.sim_info.routine_info.off_duty), "GREEN")
@@ -242,7 +258,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217850)
+                    push_sim_function(self.target, obj, 217850, False)
 
     def cafeteria_tuesday(self, timeline):
         if self.target.is_sim:
@@ -261,7 +277,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217853)
+                    push_sim_function(self.target, obj, 217853, False)
 
     def cafeteria_wednesday(self, timeline):
         if self.target.is_sim:
@@ -280,7 +296,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217854)
+                    push_sim_function(self.target, obj, 217854, False)
 
     def cafeteria_thursday(self, timeline):
         if self.target.is_sim:
@@ -299,7 +315,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217855)
+                    push_sim_function(self.target, obj, 217855, False)
 
     def cafeteria_friday(self, timeline):
         if self.target.is_sim:
@@ -318,7 +334,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217856)
+                    push_sim_function(self.target, obj, 217856, False)
 
     def cafeteria_saturday(self, timeline):
         if self.target.is_sim:
@@ -337,7 +353,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217857)
+                    push_sim_function(self.target, obj, 217857, False)
 
     def cafeteria_sunday(self, timeline):
         if self.target.is_sim:
@@ -356,7 +372,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                         debugger("Sim: {} - Obj Index: {}".format(self.target.sim_info.first_name, self.target.sim_info.use_object_index))
                     return
                 if obj:
-                    push_sim_function(self.target, obj, 217858)
+                    push_sim_function(self.target, obj, 217858, False)
 
     def routine_info(self, timeline):
         font_color1 = "aa88ff"

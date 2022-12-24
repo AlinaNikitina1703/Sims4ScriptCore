@@ -14,6 +14,19 @@ from scripts_core.sc_sim_tracker import sc_SimTracker
 from scripts_core.sc_util import init_sim
 
 
+class sc_AiFunctions:
+    def __init__(self):
+        super().__init__()
+
+    def update_sim_ai_info(self, sim_info):
+        update_sim_ai_info(sim_info)
+
+    def load_sim_ai(self, sim_info):
+        load_sim_ai(sim_info)
+
+
+sc_Vars.ai_function = sc_AiFunctions()
+
 def update_sim_ai_info(sim_info):
     if sim_info.tracker.mood:
         buff_manager = services.get_instance_manager(Types.BUFF)

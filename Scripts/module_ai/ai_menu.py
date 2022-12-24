@@ -23,20 +23,26 @@ from sims4.localization import LocalizationHelperTuning
 from socials.group import SocialGroup
 from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
+from scripts_core.sc_gohere import go_here
 from scripts_core.sc_jobs import do_change_outfit_spinup
+from scripts_core.sc_message_box import message_box
 
 
 class AIMenu(ImmediateSuperInteraction):
     directory = None
     last_initial_value = ""
+    ai_alarm = AIAlarm()
 
     def __init__(self, *args, **kwargs):
         (super().__init__)(*args, **kwargs)
 
-        self.ai_option_choices = ("Settings", "Emotes", "Friendly", "Mean", "Mischief", "Romance", "Funny", "Chat", "Teach", "*Reload Script")
+        self.ai_option_choices = ("Settings", "Emotes", "Friendly", "Mean", "Mischief", "Romance", "Funny", "Chat", "Reset Socials", "*Reload Script")
         self.ai_mean_choices = ("Pick On Sim", "Stop Picking On Sim")
-        self.ai_friendly_choices = ("Befriend",)
-        self.ai_emotes_choices = ("Cheer", "Shout", "Dance", "Guitar", "Shock", "Cry", "Cackle", "Loathe", "Solve", "Kneel", "Sit On Floor", "Sit In Car", "Bah", "Spin", "Custom")
+        self.ai_friendly_choices = ("Socialize", "Stop Socializing", "Snowball Fight", "Stop Snowball Fight", "Show Scores", "Play Basketball", "Stop Basketball")
+        self.ai_emotes_choices = ("Cheer", "Shout", "Dance", "Guitar", "Shock", "Cry", "Cackle", "Loathe", "Solve",
+                                  "Kneel", "Sit On Floor", "Sit In Car", "Bah", "Spin", "Headbang", "Hangout",
+                                  "Fire Dance", "Sleep", "Custom")
+
         self.ai_settings_choices = ("*Enable Debugging",
                                     "*Enable Tracking",
                                     "*Disable Debugging",
@@ -58,7 +64,6 @@ class AIMenu(ImmediateSuperInteraction):
         self.ai_emotes = MainMenu(*args, **kwargs)
         self.ai_settings = MainMenu(*args, **kwargs)
         self.script_choice = MainMenu(*args, **kwargs)
-        self.ai_alarm = AIAlarm(*args, **kwargs)
 
     def _run_interaction_gen(self, timeline):
         self.ai_option.show(timeline, self, 0, self.ai_option_choices, "AI Social Menu", "Make a selection.")
@@ -77,6 +82,9 @@ class AIMenu(ImmediateSuperInteraction):
 
     def emotes(self, timeline):
         self.ai_emotes.show(timeline, self, 0, self.ai_emotes_choices, "AI Emotes", "Make a selection.", None, False, True)
+
+    def reset_socials(self, timeline):
+        AIMenu.ai_alarm.reset_socials()
 
     def cheer(self, timeline):
         if self.target.is_sim:
@@ -187,6 +195,38 @@ class AIMenu(ImmediateSuperInteraction):
         push_sim_function(target, target, 15779027876505748956, False)
         #do_change_outfit_spinup(target, target.sim_info._current_outfit[0], timeline)
 
+    def headbang(self, timeline):
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = self.sim
+        clear_sim_instance(target.sim_info)
+        push_sim_function(target, target, 16430692320681519261, False)
+
+    def hangout(self, timeline):
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = self.sim
+        clear_sim_instance(target.sim_info)
+        push_sim_function(target, target, 16430692320681519260, False)
+
+    def fire_dance(self, timeline):
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = self.sim
+        clear_sim_instance(target.sim_info)
+        push_sim_function(target, target, 16430692320681519259, False)
+
+    def sleep(self, timeline):
+        if self.target.is_sim:
+            target = self.target
+        else:
+            target = self.sim
+        clear_sim_instance(target.sim_info)
+        push_sim_function(target, target, 16430692320681519262, False)
+
     def custom(self, timeline):
         inputbox("Custom Emote", "Text names or partial names in lowercase of the animation you want", self.custom_callback, AIMenu.last_initial_value)
 
@@ -242,17 +282,18 @@ class AIMenu(ImmediateSuperInteraction):
                 if not dialog.accepted:
                     return
 
+                AI_Autonomy.behavior_queue = []
                 for target in dialog.get_result_tags():
-                    for queue in AI_Autonomy.behavior_queue:
-                        if target == queue.target:
-                            AI_Autonomy.behavior_queue.remove(queue)
-                    AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.MEAN))
+                    if self.sim != target:
+                        AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.MEAN))
+                        AI_Autonomy.behavior_queue.append(AIBehavior(target, self.sim, Behavior.MEAN))
 
-                self.ai_alarm.pick_on_sim_alarm()
+                AIMenu.ai_alarm.set_position(self.target)
+                AIMenu.ai_alarm.pick_on_sim_alarm()
 
-                ld_notice(self.sim.sim_info, "Pick On Sim", "{} {} is picking on {} sims. "
+                message_box(self.sim, None, "Pick On Sim", "{} {} is picking on {} sims. "
                     "This works best using mean sims. (sims with the mean trait)".
-                    format(self.sim.first_name, self.sim.last_name, self.ai_alarm.pick_on_sim_count(self.sim)), True, "GREEN")
+                    format(self.sim.first_name, self.sim.last_name, AIMenu.ai_alarm.pick_on_sim_count(self.sim)), "GREEN")
 
             except BaseException as e:
                 error_trap(e)
@@ -260,20 +301,98 @@ class AIMenu(ImmediateSuperInteraction):
         self.picker("Select Sims To Pick On", "Pick up to 10 Sims", 10, get_simpicker_results_callback)
 
     def stop_picking_on_sim(self, timeline):
-        self.ai_alarm.end_alarm()
+        AIMenu.ai_alarm.end_alarm("Pick on Sim", "Stopped picking on sim.")
         for queue in list(AI_Autonomy.behavior_queue):
-            if queue.sim == self.sim:
-                clear_sim_instance(queue.sim.sim_info, "sit", True)
-                clear_sim_instance(queue.target.sim_info, "sit", True)
-                push_sim_function(queue.sim, queue.target, 193802)
+            clear_sim_instance(queue.sim.sim_info, "sit", True)
+            clear_sim_instance(queue.target.sim_info, "sit", True)
 
-    def befriend(self, timeline):
-        ld_notice(self.sim.sim_info, "Befriend", "{} {} chooses not to be mean to {} {}. "
-                "This works best using mean sims (sims with the mean trait) or angry sims, "
-                "disabling their ability to be mean. ".
-                format(self.sim.first_name, self.sim.last_name, self.target.first_name, self.target.last_name),
-                True, "GREEN")
-        AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, self.target, Behavior.FRIENDLY))
+    def socialize(self, timeline):
+        def get_simpicker_results_callback(dialog):
+            try:
+                if not dialog.accepted:
+                    return
+
+                AI_Autonomy.behavior_queue = []
+                for target in dialog.get_result_tags():
+                    if self.sim != target:
+                        AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.FRIENDLY))
+                        AI_Autonomy.behavior_queue.append(AIBehavior(target, self.sim, Behavior.FRIENDLY))
+
+                AIMenu.ai_alarm.set_position(self.target)
+                AIMenu.ai_alarm.socialize_alarm()
+
+                message_box(self.sim, None, "Socialize", "Socialize started with selected sims. ", "GREEN")
+            except BaseException as e:
+                error_trap(e)
+
+        self.picker("Select Sims To Socialize With", "Pick up to 10 Sims", 10, get_simpicker_results_callback)
+
+    def stop_socializing(self, timeline):
+        AIMenu.ai_alarm.end_alarm("Socialize", "Stopped auto socializing.")
+        for queue in list(AI_Autonomy.behavior_queue):
+            clear_sim_instance(queue.sim.sim_info, "sit", True)
+            clear_sim_instance(queue.target.sim_info, "sit", True)
+
+    def snowball_fight(self, timeline):
+        def get_simpicker_results_callback(dialog):
+            try:
+                if not dialog.accepted:
+                    return
+
+                AI_Autonomy.behavior_queue = []
+                for target in dialog.get_result_tags():
+                    if self.sim != target:
+                        AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.FRIENDLY))
+                        AI_Autonomy.behavior_queue.append(AIBehavior(target, self.sim, Behavior.FRIENDLY))
+
+                AIMenu.ai_alarm.set_position(self.target)
+                AIMenu.ai_alarm.snowball_fight_alarm()
+
+                message_box(self.sim, None, "Snowball Fight", "Snowball fight started with selected sims. ", "GREEN")
+            except BaseException as e:
+                error_trap(e)
+
+        self.picker("Select Sims For Snowball Fight", "Pick up to 10 Sims", 10, get_simpicker_results_callback)
+
+    def stop_snowball_fight(self, timeline):
+        AIMenu.ai_alarm.end_alarm("Snowball Fight", "Stopped snowball fight.")
+        for queue in list(AI_Autonomy.behavior_queue):
+            clear_sim_instance(queue.sim.sim_info)
+            clear_sim_instance(queue.target.sim_info)
+            go_here(queue.sim, AIMenu.ai_alarm.get_position())
+            go_here(queue.target, AIMenu.ai_alarm.get_position())
+
+    def show_scores(self, timeline):
+        AIMenu.ai_alarm.show_scores()
+
+    def play_basketball(self, timeline):
+        def get_simpicker_results_callback(dialog):
+            try:
+                if not dialog.accepted:
+                    return
+
+                AI_Autonomy.behavior_queue = []
+                for target in dialog.get_result_tags():
+                    if self.sim != target:
+                        AIMenu.ai_alarm.score[self.sim] = 0
+                        AIMenu.ai_alarm.score[target] = 0
+                        AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.FRIENDLY))
+                        AI_Autonomy.behavior_queue.append(AIBehavior(target, self.sim, Behavior.FRIENDLY))
+
+                AIMenu.ai_alarm.set_position(self.target)
+                AIMenu.ai_alarm.basketball_alarm()
+
+                message_box(self.sim, None, "Basketball", "Basketball game started with selected sims. ", "GREEN")
+            except BaseException as e:
+                error_trap(e)
+
+        self.picker("Select Sims For Basketball game", "Pick up to 10 Sims", 10, get_simpicker_results_callback)
+
+    def stop_basketball(self, timeline):
+        AIMenu.ai_alarm.end_alarm("Basketball", "Stopped playing basketball.")
+        for queue in list(AI_Autonomy.behavior_queue):
+            clear_sim_instance(queue.sim.sim_info)
+            clear_sim_instance(queue.target.sim_info)
 
     def _enable_debugging(self, timeline):
         setattr(SocialGroup, "DEBUG", True)

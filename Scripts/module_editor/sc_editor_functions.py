@@ -7,19 +7,22 @@ from math import atan2
 import objects
 import services
 import sims4
-from objects.components.types import LIGHTING_COMPONENT
 from objects.game_object import GameObject
+from objects.lighting.lighting_dialog import UiDialogLightColorAndIntensity
 from objects.object_enums import ResetReason
 from routing import SurfaceIdentifier, SurfaceType
+from sims4.color import from_rgba_as_int, to_rgba_as_int
 from sims4.localization import LocalizationHelperTuning
 from sims4.math import Location, Transform, Vector3, Quaternion
 from tag import Tag
-from terrain import get_terrain_height
+from terrain import get_terrain_height, get_terrain_center
 
-from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import transmogrify, objects_by_room
+from scripts_core.sc_file import get_config, set_config
+from scripts_core.sc_jobs import objects_by_room, distance_to
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
+from scripts_core.sc_transmogrify import transmogrify, set_material, save_material, clone_selected_object, \
+    create_game_object
 from scripts_core.sc_util import error_trap, clean_string, get_icon_info_data
 
 try:
@@ -45,6 +48,25 @@ def reset_all_objects():
             count = count + 1
             obj.reset(ResetReason.NONE, None, 'Command')
     message_box(None, None, "Reset Objects", "{} Objects reset.".format(count), "GREEN")
+
+def color_selected_object(target):
+    def _on_update(*, color, intensity):
+        r, g, b, a = to_rgba_as_int(color)
+        color = from_rgba_as_int(int(float(r) * intensity), int(float(g) * intensity), int(float(b) * intensity), int(float(a)))
+        target.tint = color
+        set_config("Mats/{}.mat".format(target.id), "material", "tint", to_rgba_as_int(target.tint))
+
+    intensity = 1.0
+    dialog = UiDialogLightColorAndIntensity(target, r=255, g=255, b=255, intensity=intensity, on_update=_on_update)
+    dialog.show_dialog()
+
+def fade_selected_object(target):
+    def _on_update(*, color, intensity):
+        target.fade_opacity(intensity, 0.1)
+
+    intensity = 1.0
+    dialog = UiDialogLightColorAndIntensity(target, r=255, g=255, b=255, intensity=intensity, on_update=_on_update)
+    dialog.show_dialog()
 
 
 def delete_all_objects(error_objects=False, elevation=120):
@@ -95,7 +117,6 @@ def delete_objects_on_lot():
                 obj.destroy()
     message_box(None, None, "Delete Objects On Lot", "{} Objects deleted.".format(count), "GREEN")
 
-
 def delete_selected_objects():
     try:
         all_objects = TMToolData.GroupObjects
@@ -145,6 +166,13 @@ def place_selected_objects(x=0.0, y = 0.0, z=0.0):
     except BaseException as e:
         error_trap(e)
 
+def distance_to_selected(target):
+    if TMToolData.SelectedObject:
+        message_box(target, TMToolData.SelectedObject, "Distance Between Objects", "2 Sim Units ~ 6 feet.\n{} Sim Units".format(distance_to(target, TMToolData.SelectedObject)), "GREEN")
+    else:
+        client = services.client_manager().get_first_client()
+        message_box(target, TMToolData.SelectedObject, "Distance Between Objects", "2 Sim Units ~ 6 feet.\n{} Sim Units".format(distance_to(target, client.active_sim)), "GREEN")
+
 def ground_selected_objects(target=None):
     try:
         zone_id = services.current_zone_id()
@@ -167,12 +195,52 @@ def ground_selected_objects(target=None):
     except BaseException as e:
         error_trap(e)
 
+def center_selected_objects(target=None):
+    try:
+        zone_id = services.current_zone_id()
+        if not target:
+            all_objects = TMToolData.GroupObjects
+        elif hasattr(target, "definition"):
+            all_objects = get_similar_objects(target.definition.id)
+        else:
+            return
+        for obj in list(all_objects):
+            if hasattr(obj, "position"):
+                pos = get_terrain_center()
+                pos.y = obj.position.y
+                level = obj.level
+                position = Vector3(pos.x, pos.y, pos.z)
+                orientation = obj.orientation
+                routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
+                obj.location = Location(Transform(position, orientation), routing_surface)
+
+    except BaseException as e:
+        error_trap(e)
+
 def get_angle(v1, v2):
     return atan2(v1.x - v2.x, v1.z - v2.z)
 
+# New transmog code
 def transmog_from_selected_object(target):
     if TMToolData.SelectedObject:
         transmogrify(TMToolData.SelectedObject, target)
+
+
+def texture_from_selected_object(target):
+    if TMToolData.SelectedObject:
+        set_material(target, target.definition.id, TMToolData.SelectedObject._material_variant, to_rgba_as_int(target.tint) if target.tint else None)
+        save_material(target)
+
+def model_from_selected_object(target):
+    if TMToolData.SelectedObject:
+        set_material(target, TMToolData.SelectedObject.model, TMToolData.SelectedObject._material_variant, to_rgba_as_int(target.tint) if target.tint else None)
+        save_material(target)
+
+def object_to_original(target):
+    set_material(target,
+                 get_config("Mats/{}.mat".format(target.id), "material", "original"),
+                 get_config("Mats/{}.mat".format(target.id), "material", "original_tex"))
+    save_material(target)
 
 def select_object(target, clear=True):
     TMToolData.SelectedObject = target
@@ -185,22 +253,6 @@ def select_object(target, clear=True):
     target.fade_opacity(0.5, 0.1)
     tint = sims4.color.from_rgba(0, 255, 0)
     target.tint = tint
-
-def clone_selected_object(target):
-    zone_id = services.current_zone_id()
-    if TMToolData.SelectedObject is not None and not TMToolData.SelectedObject.is_sim:
-        clone = create_game_object(TMToolData.SelectedObject.definition.id)
-        level = clone.level
-        scale = TMToolData.SelectedObject.scale
-        orientation = clone.orientation
-        routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
-        position = Vector3(target.position.x,
-                           target.position.y,
-                           target.position.z)
-        clone.location = sims4.math.Location(sims4.math.Transform(position, orientation), routing_surface)
-        clone.scale = scale
-        return clone
-    return None
 
 def get_radius(obj):
     if hasattr(obj, "footprint_polygon"):
@@ -224,7 +276,7 @@ def random_position(obj, range=5.0, height=0.25):
 
 def paint_selected_object(target, amount=10, area=5.0, height=0.25):
     for i in range(amount):
-        obj = clone_selected_object(target)
+        obj = clone_selected_object(TMToolData.SelectedObject, target)
         if obj:
             scale = obj.scale
             random_position(obj, area, height)
@@ -278,20 +330,6 @@ def reset_scale_selected():
 def scale_selected_objects():
     for obj in TMToolData.GroupObjects:
         random_scale(obj)
-
-def swap_objects(obj, target):
-    orig_loc = obj.location.transform.translation
-    target_loc = target.location.transform.translation
-    orig_or = obj.location.transform.orientation
-    target_or = target.location.transform.orientation
-    level = obj.location.level
-    scale = target.scale
-    zone_id = services.current_zone_id()
-    routing_surface = SurfaceIdentifier(zone_id, level, SurfaceType.SURFACETYPE_WORLD)
-    obj.location = sims4.math.Location(sims4.math.Transform(target_loc, target_or), routing_surface)
-    target.location = sims4.math.Location(sims4.math.Transform(orig_loc, orig_or), routing_surface)
-    obj.scale = scale
-
 
 def stack_object(obj, parent, hash, translation, orientation):
     if obj is None:
@@ -386,23 +424,6 @@ def write_objects_to_file(filename: str, radius=0.0, save_lot=False, save_select
         file.close()
     except BaseException as e:
         error_trap(e)
-
-
-def create_game_object(object_definition, init=None, post_add=None, location=None, household_id=-1, opacity=None):
-    try:
-        game_object = objects.system.create_object(object_definition, init=init, post_add=post_add)
-    except:
-        return None
-        pass
-    if game_object is not None:
-        if location is not None:
-            game_object.location = location
-        if household_id != -1:
-            game_object.set_household_owner_id(household_id)
-        if opacity is not None:
-            game_object.opacity = opacity
-        return game_object
-
 
 def add_object_to_file(path: str, filename: str, target: GameObject):
     try:

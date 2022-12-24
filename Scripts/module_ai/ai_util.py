@@ -75,7 +75,7 @@ def ld_reload():
         error_trap(e)
         return
 
-def ld_notice(sim_info: SimInfo, title, text, show_icon=True, color="DEFAULT", icon_hash=None, button_text=None, button_response="notif_button1_clicked"):
+def ld_notice(sim_info: SimInfo, title, text, show_icon=True, color="DEFAULT", icon_hash=None, button_text=None, button_response=""):
     button_responses = []
     try:
         if button_text is not None:
@@ -121,7 +121,7 @@ def ld_notice(sim_info: SimInfo, title, text, show_icon=True, color="DEFAULT", i
             secondary_icon=None,
             urgency=urgency, information_level=information_level, visual_type=visual_type,
             expand_behavior=1, ui_responses=button_responses, dialog_options=0)
-        notification.show_dialog(on_response=(notif_button1_clicked))
+        notification.show_dialog()
     except BaseException as e:
         error_trap_console(e)
 
@@ -167,14 +167,6 @@ def notif_icon_clicked(sim_id:int, _connection=None):
     output = sims4.commands.CheatOutput(_connection)
     sim_info = services.sim_info_manager().get(sim_id)
     output('The icon in the notification was of {} {}'.format(sim_info.first_name, sim_info.last_name))
-
-@sims4.commands.Command('notif_button1_clicked', command_type=sims4.commands.CommandType.Live)
-def notif_button1_clicked(_connection=None):
-    output = sims4.commands.CheatOutput(_connection)
-    import subprocess
-    cmd = "C:/Windows/System32/notepad.exe"
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
-    process.wait()
 
 def error_trap(e: BaseException):
     err = "Script failed: {} \n"

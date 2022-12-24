@@ -3,6 +3,7 @@ import time
 
 import alarms
 import build_buy
+import camera
 import services
 from careers.career_ops import CareerTimeOffReason
 from event_testing import test_events
@@ -12,20 +13,23 @@ from sims.sim_spawner import SimSpawner
 from sims4.math import Vector3
 from sims4.random import weighted_random_item
 from sims4.resources import Types
-from terrain import get_terrain_center, get_terrain_height, get_terrain_size
+from terrain import get_terrain_size
 from world import get_lot_id_from_instance_id
 from world.travel_service import travel_sim_to_zone
 
 from module_career.sc_career_functions import get_routine_objects_by_title, find_empty_random_bed, find_empty_computer, \
-    find_empty_register, find_empty_desk_by_id, find_empty_desk, find_empty_chair, choose_role_interaction, \
+    find_empty_register, find_empty_desk_by_id, find_empty_desk, choose_role_interaction, \
     find_empty_objects
+from module_simulation import sc_simulate_autonomy
+from module_simulation.sc_simulate_autonomy import get_autonomy_distance
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance, go_here_routine, push_sim_function, \
+from scripts_core.sc_gohere import go_here, make_sim_leave, push_sim_out
+from scripts_core.sc_jobs import distance_to, check_actions, clear_sim_instance, push_sim_function, \
     set_all_motives_by_sim, clear_jobs, get_awake_hours, make_clean, \
-    object_is_dirty, make_dirty, create_dust, get_dust_action_and_vacuum, remove_object_from_list, check_action_list, \
-    find_all_objects_by_title, distance_to_by_level, push_sim_out, remove_sim, make_sim_leave, \
-    get_spawn_point_by_distance, distance_to_pos, distance_to_by_room, assign_routine, get_venue, doing_nothing, \
-    is_object_in_use, is_object_in_use_by
+    object_is_dirty, make_dirty, create_dust, get_dust_action_and_vacuum, check_action_list, \
+    find_all_objects_by_title, distance_to_by_level, distance_to_by_room, assign_routine, get_venue, doing_nothing, \
+    is_object_in_use, is_object_in_use_by, does_object_have_action, find_empty_chair, distance_to_pos, \
+    camera_is_near_private_objects
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_script_vars import sc_Vars
 from scripts_core.sc_util import init_sim, error_trap, clean_string
@@ -223,24 +227,6 @@ class sc_CareerRoutine:
         except BaseException as e:
             error_trap(e)
 
-    def default_routine(self, sim_info):
-        sim = init_sim(sim_info)
-        if sim:
-            random.seed(int(sim.sim_id))
-            if doing_nothing(sim):
-                if not check_actions(sim, "sit"):
-                    chair = find_empty_chair(sim)
-                    if "stool" in str(chair).lower():
-                        push_sim_function(sim, chair, 157667, False)
-                    elif "hospitalexambed" in str(chair).lower():
-                        push_sim_function(sim, chair, 107801, False)
-                    else:
-                        push_sim_function(sim, chair, 31564, False)
-                    return True
-                choose_role_interaction(sim)
-                return True
-        return True
-
     def custom_routine(self, sim_info):
         try:
             sim = init_sim(sim_info)
@@ -269,7 +255,7 @@ class sc_CareerRoutine:
 
                         if not check_actions(sim, "gohere") and distance_to(sim, obj) > 5:
                             clear_sim_instance(sim_info)
-                            go_here_routine(sim, obj.position, obj.level, 2.0)
+                            go_here(sim, obj.position, obj.level, 2.0)
                             if sc_Vars.DEBUG:
                                 debugger("Sim: {} - Obj: {} Action: gohere".format(sim_info.first_name, str(obj)))
                             return True
@@ -316,29 +302,89 @@ class sc_CareerRoutine:
         except BaseException as e:
             error_trap(e)
 
+    def role_sim_routine(self, sim_info):
+        sim = init_sim(sim_info)
+        if sim:
+            if doing_nothing(sim):
+                if not choose_role_interaction(sim):
+                    self.check_lot_routine(sim_info)
+        return True
+
+    def default_routine(self, sim_info):
+        sim = init_sim(sim_info)
+        valid_actions = ["watch"]
+        venue = get_venue()
+        if sim:
+            random.seed(int(sim.sim_id))
+            objs = None
+
+            if check_actions(sim, "gohere"):
+                return
+
+            if doing_nothing(sim) and not camera_is_near_private_objects(sc_simulate_autonomy.autonomy_distance_cutoff) and \
+                    "residential" not in venue and get_autonomy_distance(sim) > sc_simulate_autonomy.autonomy_distance_cutoff:
+                if not check_actions(sim, "gohere"):
+                    go_here(sim, camera._target_position, sim.level, sc_simulate_autonomy.autonomy_distance_cutoff * 0.5)
+                    return
+
+            if not doing_nothing(sim):
+                objs = [obj for obj in services.object_manager().valid_objects() if is_object_in_use_by(obj, sim) and does_object_have_action(obj, "watch")]
+                if objs:
+                    for obj in objs:
+                        if distance_to_by_room(sim, obj) > 5:
+                            return
+
+            if doing_nothing(sim) or check_actions(sim, "watch") and objs:
+                if not check_actions(sim, "sit"):
+                    chair = find_empty_chair(sim, no_computer=True, is_outside=False)
+                    if "stool" in str(chair).lower():
+                        push_sim_function(sim, chair, 157667)
+                    elif "hospitalexambed" in str(chair).lower():
+                        push_sim_function(sim, chair, 107801)
+                    elif "bed" in str(chair).lower():
+                        push_sim_function(sim, chair, 288595)
+                    else:
+                        push_sim_function(sim, chair, 31564)
+                    return True
+                if doing_nothing(sim):
+                    choose_role_interaction(sim)
+                return True
+        return True
+
     def watch_tv_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
             random.seed(int(sim.sim_id))
+            if hasattr(sim.sim_info, "tracker"):
+                sim.sim_info.tracker.objects = []
             if doing_nothing(sim):
                 obj = find_empty_objects(sim, "television|object_tvsurface", False)
+                if hasattr(sim.sim_info, "tracker"):
+                    sim.sim_info.tracker.objects.append(obj)
                 if obj:
-                    if distance_to_by_room(sim, obj) > 2:
+                    if distance_to_by_room(sim, obj) > 3:
                         clear_sim_instance(sim_info)
-                        go_here_routine(sim, obj.position, obj.level, 2.0)
-                    elif not is_object_in_use(obj):
-                        push_sim_function(sim, obj, 133558, False)
-                    elif is_object_in_use(obj) and not obj.in_use_by(sim):
-                        push_sim_function(sim, obj, 133558, False)
+                        go_here(sim, obj.position, obj.level, 3.0)
+                        return True
+                    push_sim_function(sim, obj, 133558, False)
+                    return True
+                return False
             elif check_actions(sim, "watch") and not check_actions(sim, "sit"):
                 chair = find_empty_chair(sim)
-                if "stool" in str(chair).lower():
-                    push_sim_function(sim, chair, 157667, False)
-                elif "hospitalexambed" in str(chair).lower():
-                    push_sim_function(sim, chair, 107801, False)
-                else:
-                    push_sim_function(sim, chair, 31564, False)
-        return True
+                if hasattr(sim.sim_info, "tracker"):
+                    sim.sim_info.tracker.objects.append(chair)
+                if chair:
+                    if "stool" in str(chair).lower():
+                        push_sim_function(sim, chair, 157667, False)
+                    elif "hospitalexambed" in str(chair).lower():
+                        push_sim_function(sim, chair, 107801, False)
+                    elif "bed" in str(chair).lower():
+                        push_sim_function(sim, chair, 288595, False)
+                    else:
+                        push_sim_function(sim, chair, 31564, False)
+                    return True
+                return False
+        return False
 
     def metalhead_routine(self, sim_info):
         sim = init_sim(sim_info)
@@ -348,12 +394,12 @@ class sc_CareerRoutine:
                     sc_Vars.MAX_DISTANCE and obj.level >= sc_Vars.MIN_LEVEL and sim_info.routine_info.use_object1 in
                     str(obj).lower() and "broadcaster_Stereo_Metal" in str(obj._on_location_changed_callbacks)]
             if objs:
-                objs.sort(key=lambda obj: distance_to(obj, lot))
+                objs.sort(key=lambda obj: distance_to_by_room(obj, sim))
                 obj = objs[0]
                 if obj:
                     if not check_actions(sim, "gohere") and distance_to_by_room(sim, obj) > 5:
                         clear_sim_instance(sim_info)
-                        go_here_routine(sim, obj.position, obj.level, 2.0)
+                        go_here(sim, obj.position, obj.level, 2.0)
                         if sc_Vars.DEBUG:
                             debugger("Sim: {} - Obj: {} Action: gohere".format(sim_info.first_name, str(obj)))
                         return True
@@ -472,22 +518,11 @@ class sc_CareerRoutine:
     def go_home_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
-            center_pos = services.current_zone().lot.position
-            spawn_point = get_spawn_point_by_distance(center_pos, 64)
-            if hasattr(spawn_point, "_center"):
-                pos = spawn_point._center
-            else:
-                pos = get_terrain_center()
-                pos.y = get_terrain_height(pos.x, pos.z)
-
-            if not check_actions(sim, "gohere") and distance_to_pos(sim.position, pos) > 8:
+            if not check_actions(sim, "gohere"):
                 make_sim_leave(sim)
                 if sc_Vars.DEBUG:
                     debugger("Sim: {} - Going Home".format(sim_info.first_name))
                 return True
-            elif distance_to_pos(sim.position, pos) < 8:
-                clear_sim_instance(sim_info)
-                remove_sim(sim)
         return True
 
     def room_check_routine(self, sim_info):
@@ -527,19 +562,19 @@ class sc_CareerRoutine:
                     if dist > 10 and room_sim_is_in != room_slab_is_in:
                         if not check_actions(sim, "gohere"):
                             clear_sim_instance(sim.sim_info, "gohere", True)
-                            go_here_routine(sim, slab.position, slab.level)
+                            go_here(sim, slab.position, slab.level)
                 else:
                     if dist < 10 and room_sim_is_in == room_slab_is_in:
                         if not check_actions(sim, "gohere"):
                             clear_sim_instance(sim.sim_info, "gohere", True)
-                            push_sim_out(sim, 24)
+                            push_sim_out(sim)
     
             if xray:
                 dist = distance_to_by_level(sim, xray)
                 if sim_info.routine_info.title == "radiologist" and not check_actions(sim, "frontdesk"):
                     if dist > 15 and room_sim_is_in != room_xray_is_in and not check_actions(sim, "gohere"):
                         clear_sim_instance(sim.sim_info, "gohere", True)
-                        go_here_routine(sim, xray.position, xray.level)                        
+                        go_here(sim, xray.position, xray.level)                        
         return True
 
     def sleep_routine(self, sim_info):
@@ -584,30 +619,50 @@ class sc_CareerRoutine:
         sim = init_sim(sim_info)
         if sim:
             random.seed(int(sim.sim_id))
-            if not check_actions(sim, "browse_web") and not check_actions(sim, "sit"):
-                object1, object2 = find_empty_computer(sim)
+            actions = [13187, 31745, 31743, 31742, 31741, 31746, 13230]
+            action = 13187
+            if doing_nothing(sim):
+                game_or_browse = random.randint(0, 100)
+                if game_or_browse > 50:
+                    action = actions[random.randint(0, len(actions) - 1)]
+            object1, object2 = find_empty_computer(sim)
+            if hasattr(sim.sim_info, "tracker"):
+                sim.sim_info.tracker.objects = []
+                sim.sim_info.tracker.objects.extend([object1, object2])
+            if not check_actions(sim, "computer") and not check_actions(sim, "sit"):
                 if object1 and object2:
-                    if not is_object_in_use(object1) and not object2.in_use:
-                        clear_sim_instance(sim_info, "chat|browse|sit", True)
-                        if sc_Vars.DEBUG and sim == services.get_active_sim():
-                            message_box(sim, object2, "Found Seat", "", "GREEN")
-                        if "stool" in str(object2).lower():
-                            push_sim_function(sim, object2, 157667, False)
-                        else:
-                            push_sim_function(sim, object2, 31564, False)
-            elif check_actions(sim, "sit") and not check_actions(sim, "browse_web"):
-                object1, object2 = find_empty_computer(sim)
-                if distance_to(sim, object1) > 2:
-                    go_here_routine(sim, object1.position, object1.level)
+                    clear_sim_instance(sim_info, "chat|browse|computer|sit", True)
+                    if sc_Vars.DEBUG and sim == services.get_active_sim():
+                        message_box(sim, object2, "Found Seat", "", "GREEN")
+                    if "stool" in str(object2).lower():
+                        push_sim_function(sim, object2, 157667, False)
+                    elif "hospitalexambed" in str(object2).lower():
+                        push_sim_function(sim, object2, 107801, False)
+                    elif "bed" in str(object2).lower():
+                        push_sim_function(sim, object2, 288595, False)
+                    else:
+                        push_sim_function(sim, object2, 31564, False)
                     return True
-                clear_sim_instance(sim_info, "chat|browse|sit", True)
-                push_sim_function(sim, object1, 13187, False)
-        return True
+            elif check_actions(sim, "sit") and not check_actions(sim, "computer"):
+                if object1 and object2:
+                    if distance_to(sim, object1) > 2:
+                        go_here(sim, object1.position, object1.level)
+                        return True
+                    clear_sim_instance(sim_info, "chat|browse|computer|sit", True)
+                    push_sim_function(sim, object1, action, False)
+                    return True
+            elif check_actions(sim, "sit") and check_actions(sim, "computer"):
+                if object1 and object2:
+                    return True
+        return False
 
     def cashier_routine(self, sim_info):
         sim = init_sim(sim_info)
         if sim:
             register, chair = find_empty_register(sim)
+            if hasattr(sim.sim_info, "tracker"):
+                sim.sim_info.tracker.objects = []
+                sim.sim_info.tracker.objects.extend([register, chair])
             if register and chair:
                 choice = 0
                 if check_actions(sim, "sit"):
@@ -623,6 +678,10 @@ class sc_CareerRoutine:
                     clear_sim_instance(sim_info, "sit", True)
                     if "stool" in str(chair).lower():
                         push_sim_function(sim, chair, 157667, False)
+                    elif "hospitalexambed" in str(chair).lower():
+                        push_sim_function(sim, chair, 107801, False)
+                    elif "bed" in str(chair).lower():
+                        push_sim_function(sim, chair, 288595, False)
                     else:
                         push_sim_function(sim, chair, 31564, False)
                 elif not check_actions(sim, "clockin") and choice == 1:
@@ -657,7 +716,7 @@ class sc_CareerRoutine:
                                   center_pos.z + random.uniform(-lot_size, lot_size))
             if not check_actions(sim, "gohere") and not check_actions(sim, "chat"):
                 clear_sim_instance(sim_info)
-                go_here_routine(sim, check_point)
+                go_here(sim, check_point)
         return True
 
     def check_lot_routine(self, sim_info):
@@ -677,7 +736,7 @@ class sc_CareerRoutine:
                                   center_pos.z + random.uniform(-lot_size, lot_size))
             if not check_actions(sim, "gohere") and not check_actions(sim, "chat"):
                 clear_sim_instance(sim_info)
-                go_here_routine(sim, check_point)
+                go_here(sim, check_point)
         return True
 
     def janitor_routine(self, sim_info):
@@ -689,7 +748,7 @@ class sc_CareerRoutine:
             lot_size = lot_x_size + lot_z_size * 0.5
             if not check_actions(sim, "gohere") and distance_to(sim, lot) > lot_size * 0.5:
                 clear_sim_instance(sim_info, "gohere", True)
-                go_here_routine(sim, lot.position, 0)
+                go_here(sim, lot.position, 0)
             else:
                 self.cleaning_routine(sim_info)
         return True
@@ -772,7 +831,9 @@ class sc_CareerRoutine:
                         push_sim_function(sim, obj, get_dust_action_and_vacuum(sim), False)
                     else:
                         result = push_sim_function(sim, obj, self.cleaning_job_list["action"][i], False)
-                        if "executeresult: false" in str(result).lower():
+                        if "executeresult: false" in str(result).lower() or "object failed" in str(result).lower():
+                            if "coffee" in str(obj).lower():
+                                push_sim_function(sim, obj, 13164, False)
                             make_clean(obj)
                             if sim == services.get_active_sim():
                                 message_box(sim, obj, "cleaning_job", "Result: {}".format(clean_string(str(result))), "GREEN")

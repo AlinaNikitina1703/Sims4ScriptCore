@@ -8,16 +8,21 @@ import element_utils
 import enum
 import services
 import sims4
-from module_ai.ai_util import error_trap, clean_string
 from autonomy.autonomy_modes_tuning import AutonomyModesTuning
+from interactions.aop import AffordanceObjectPair
 from interactions.base.mixer_interaction import MixerInteraction
 from interactions.base.super_interaction import SuperInteraction
-from interactions.context import InteractionSource
+from interactions.context import InteractionSource, InteractionContext, QueueInsertStrategy
 from interactions.utils.route_fail import route_failure
+from postures.posture_scoring import PostureScoring
 from routing.route_events.route_event import RouteEvent
 from sims.sim import Sim
 from sims.sim_info import SimInfo
+from socials.geometry import SocialGeometry
 from socials.group import SocialGroup
+
+from module_ai.ai_util import error_trap, clean_string
+from scripts_core.sc_debugger import debugger
 
 setattr(MixerInteraction, "EXIT_SOCIALS_ENABLED", True)
 setattr(SuperInteraction, "FILTER_QUEUE_ENABLED", False)
@@ -35,6 +40,15 @@ setattr(Sim, "autonomy", 3)
 
 SocialGroup.maximum_sim_count = 16
 SocialGroup.radius_scale = 1.0
+SocialGeometry.NON_OVERLAPPING_SCORE_MULTIPLIER = 0.1
+SocialGeometry.OVERLAP_SCORE_MULTIPLIER = 1
+SocialGeometry.SCORE_OFFSET_FOR_CURRENT_POSITION = 3.5
+SocialGeometry.SCORE_STRENGTH_MULTIPLIER = 10
+PostureScoring.ADJACENT_TO_GROUP_MEMBER_BONUS = 5
+PostureScoring.DEST_ALREADY_SELECTED_PENALTY = 35
+PostureScoring.IN_USE_PENALTY = 175
+PostureScoring.SAME_CLUSTER_SIM_MULTIPLIER = 1.5
+PostureScoring.SURFACE_BONUS = 100
 
 def check_object(obj):
     output = ""
@@ -103,6 +117,21 @@ class AIObjectTracker:
         self.target = target
         self.sim = sim
 
+class AISimSocials(Sim):
+    def __init__(self, *args, **kwargs):
+        (super().__init__)(*args, **kwargs)
+
+    def _execute_adjustment_interaction(self, affordance, constraint, int_priority, group_id=None, **kwargs):
+        debugger("affordance: {} constraint: {}".format(affordance, constraint))
+        aop = AffordanceObjectPair(affordance, None, affordance, None, constraint_to_satisfy=constraint,
+         route_fail_on_transition_fail=False,
+         is_adjustment_interaction=True, **kwargs)
+        context = InteractionContext(self, (InteractionContext.SOURCE_SOCIAL_ADJUSTMENT), int_priority, insert_strategy=(QueueInsertStrategy.NEXT),
+          group_id=group_id,
+          must_run_next=True,
+          cancel_if_incompatible_in_queue=True,
+          can_derail_if_constraint_invalid=False)
+        return aop.test_and_execute(context)
 
 class AISocials(SocialGroup):
     def __init__(self, *args, **kwargs):
@@ -114,7 +143,6 @@ class AISocials(SocialGroup):
         self._adjustment_alarm = alarms.add_alarm(self, clock.interval_in_sim_minutes(1), self._adjustment_alarm_callback)
 
     def _adjustment_alarm_callback(self, _):
-        # ld_notice(None, "Adjustment Alarm", "Running!", False, "GREEN")
         if self._adjustment_alarm is not None:
             self._adjustment_alarm = None
             self._create_adjustment_alarm()
@@ -129,11 +157,11 @@ class AISocials(SocialGroup):
             else:
                 sim_mood = 0
             if sim_mood == 14632 and sim_count > 2:
-                return
-
-            sis = self._si_registry.setdefault(interaction.sim, set())
-            should_add = not sis
-            sis.add(interaction)
+                should_add = False
+            else:
+                sis = self._si_registry.setdefault(interaction.sim, set())
+                should_add = not sis
+                sis.add(interaction)
 
             if should_add:
                 self._add(interaction.sim, interaction)
@@ -230,8 +258,7 @@ class AIRouteEvent(RouteEvent):
             if hasattr(self.event_data, "animation_elements"):
                 action = str(self.event_data.animation_elements).lower()
                 if "environmentalreaction_smell_positive" in action:
-                    AIRouteEvent.debugger(self, "Sim: {} {} - Killed: {}".format(sim.first_name,
-                                                                            sim.last_name, action))
+                    debugger("Sim: {} {} - Killed: {}".format(sim.first_name, sim.last_name, action))
                     return
             if hasattr(self.event_data, 'defer_process_until_execute'):
                 self.event_data.defer_process_until_execute = defer_process_until_execute
