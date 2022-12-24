@@ -1,13 +1,16 @@
 import configparser
 import os
+from math import fabs
 
 import services
 import sims4
+import weather
 from date_and_time import create_time_span
 from sims4.resources import Types
 from weather.weather_enums import WeatherElementTuple, Temperature, WeatherEffectType, PrecipitationType, CloudType, \
-    GroundCoverType
-from weather.weather_service import get_street_or_region_id_with_weather_tuning
+    GroundCoverType, SnowBehavior
+from weather.weather_service import get_street_or_region_id_with_weather_tuning, \
+    get_street_or_region_with_weather_tuning
 
 from scripts_core.sc_main import ScriptCoreMain
 from scripts_core.sc_message_box import message_box
@@ -258,10 +261,10 @@ def build_weather(section, duration):
                 config.set(section, "CLEAR", "1.0")
             elif "fog" in section:
                 config.set(section, "LIGHT_SNOWCLOUDS", "0.0")
-                config.set(section, "DARK_SNOWCLOUDS", "1.01")
+                config.set(section, "DARK_SNOWCLOUDS", "1.035")
                 config.set(section, "LIGHT_RAINCLOUDS", "0.0")
                 config.set(section, "DARK_RAINCLOUDS", "0.0")
-                config.set(section, "CLOUDY", "0.1")
+                config.set(section, "CLOUDY", "0.0")
                 config.set(section, "PARTLY_CLOUDY", "0.0")
                 config.set(section, "CLEAR", "0.0")
             elif "june_gloom" in section:
@@ -448,34 +451,36 @@ def get_weather_names_from_weather(set_weather=True, instant=False):
                         if "partly" in weather_label and "cloudy" not in str(words) and current_value > 0:
                             words.append("cloudy")
                             words.append("partly")
-                        if "dark_snowclouds" in weather_label and "fog" not in str(words) and current_value > 1:
+                        if "dark_snowclouds" in weather_label and "cloudy" not in str(words) and "fog" not in str(words) and "hazy" not in str(words) and current_value > 1:
                             words.append("fog")
-                        if "cloud" in weather_label and "partly" not in weather_label and "cloudy" not in str(words) and "fog" not in str(words) and current_value > 0:
+                        if "light_snowclouds" in weather_label and "cloudy" not in str(words) and "fog" not in str(words) and "hazy" not in str(words) and current_value <= 0.75:
+                            words.append("hazy")
+                        if "cloud" in weather_label and "partly" not in weather_label and "cloudy" not in str(words) and "fog" not in str(words) and "hazy" not in str(words) and current_value > 0:
                             words.append("cloudy")
                         if "clear" in weather_label and "sunny" not in str(words) and current_value > 0:
                             words.append("sunny")
                         if "thunder" in weather_label and "thunder" not in str(words) and "rain" not in str(words) and current_value > 0:
                             words.append("thunder")
-                        if "snow" in weather_label and "snow" not in str(words) and current_value > 0.9:
+                        if "snow" in weather_label and "cloud" not in weather_label and "snow" not in str(words) and current_value > 0.9:
                             words.append("snow")
                             words.append("heavy")
-                        if "snow" in weather_label and "snow" not in str(words) and current_value > 0.1:
+                        if "snow" in weather_label and "cloud" not in weather_label and "snow" not in str(words) and current_value > 0.1:
                             words.append("snow")
                             words.append("light")
-                        if "snow" in weather_label and "snow" not in str(words) and current_value > 0:
+                        if "snow" in weather_label and "cloud" not in weather_label and "snow" not in str(words) and current_value > 0:
                             words.append("snow")
-                        if "rain" in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0.9:
+                        if "rain" in weather_label and "cloud" not in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0.9:
                             words.append("rain")
                             words.append("heavy")
+                        if "rain" in weather_label and "cloud" not in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0.1:
+                            words.append("rain")
+                            words.append("light")
+                        if "rain" in weather_label and "cloud" not in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0:
+                            words.append("rain")
                         if "showers" in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0.9:
                             words.append("showers")
                         if "drizzle" in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0.1:
                             words.append("drizzle")
-                        if "rain" in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0.1:
-                            words.append("rain")
-                            words.append("light")
-                        if "rain" in weather_label and "rain" not in str(words) and "showers" not in str(words) and "drizzle" not in str(words) and current_value > 0:
-                            words.append("rain")
 
     if not len(words):
         words.append("cloudy")
@@ -633,13 +638,15 @@ def set_weather_by_zone(zone, instant=False):
 
 def update_weather(weather):
     try:
+        if sc_Vars.DISABLE_MOD:
+            return
         now = services.time_service().sim_now
         duration = sc_Vars.update_trans_duration
         if not sc_Vars.update_trans_timestamp:
             sc_Vars.update_trans_timestamp = now + create_time_span(hours=duration)
         if len(sc_Vars.update_trans_info):
             sc_Vars.current_trans_info = weather._trans_info
-            end_time = now + create_time_span(minutes=10)
+            end_time = now + create_time_span(minutes=30)
             sc_Vars.update_trans_timestamp = now + create_time_span(hours=duration)
             weather_event_manager = services.get_instance_manager(Types.WEATHER_EVENT)
             weather.start_weather_event(weather_event_manager.get(186636), duration)
@@ -657,9 +664,30 @@ def update_weather(weather):
             weather._send_weather_event_op()
             sc_Vars.update_trans_info = {}
 
+        # Do street slab alpha for snow.
+        current_value = weather.get_weather_element_value(int(GroundCoverType.SNOW_ACCUMULATION), now)
+        if sc_Vars.street_slabs:
+            for slab in sc_Vars.street_slabs:
+                slab.fade_opacity(1.0 - (fabs(current_value) * 0.95), 0.1)
+
+        current_value = weather.get_weather_element_value(int(PrecipitationType.SNOW), now)
+        if current_value:
+            weather._trans_info[int(WeatherEffectType.TEMPERATURE)] = WeatherElementTuple(Temperature.FREEZING, now, Temperature.FREEZING, now + create_time_span(hours=duration))
+
+
     except BaseException as e:
         error_trap(e)
         sc_Vars.update_trans_info = {}
         sc_Vars.current_trans_info = {}
         pass
 
+def get_snow_behavior():
+    street_or_region = get_street_or_region_with_weather_tuning()
+    season_service = services.season_service()
+    season = season_service.season if season_service is not None else None
+    if season is None:
+        return street_or_region.snow_behavior_no_seasons
+    return SnowBehavior.ACCUMULATE
+
+
+weather.weather_service.get_snow_behavior = get_snow_behavior
