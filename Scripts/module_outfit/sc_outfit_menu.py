@@ -3,12 +3,13 @@ from os.path import isfile, join
 
 import services
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
-from module_outfit.sc_outfit import OutfitMenu, OutfitCategoryMenu
+from sims4.localization import LocalizationHelperTuning
+from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
+
+from module_outfit.sc_outfit import OutfitCategoryMenu
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_util import error_trap, ld_file_loader
-from sims4.localization import LocalizationHelperTuning
-from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
 
 class ModuleOutfitMenu(ImmediateSuperInteraction):

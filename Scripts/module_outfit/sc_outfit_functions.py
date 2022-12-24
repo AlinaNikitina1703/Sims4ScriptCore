@@ -7,7 +7,7 @@ from sims.sim_info import SimInfo
 from sims.sim_info_types import Age
 
 from scripts_core.sc_message_box import message_box
-from scripts_core.sc_util import error_trap, init_sim
+from scripts_core.sc_util import error_trap
 
 
 class OutfitFunctions:
@@ -22,6 +22,10 @@ class OutfitFunctions:
         self.datapath = os.path.abspath(os.path.dirname(__file__)) + "\\Data"
         self.outfit_types = [1, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 36,
                              42]
+        self.outfit_hair_and_makeup = [2, 29, 30, 31, 32, 33, 37, 75]
+        self.outfit_skin_details = [38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+                                    61, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82, 83, 84, 85,
+                                    86, 87, 89]
 
     def convert_enum_to_dict(self, e: enum.Int):
         enum_dict = {}
@@ -93,7 +97,7 @@ class OutfitFunctions:
         except BaseException as e:
             error_trap(e)
 
-    def paste_outfit(self, sim_info: SimInfo, outfit_category_and_index, data=None):
+    def paste_outfit(self, sim_info: SimInfo, outfit_category_and_index, data=None, override=None):
         try:
             if data is None:
                 copied_sim = OutfitFunctions.outfit_data_clipboard[0]
@@ -113,14 +117,15 @@ class OutfitFunctions:
                 return
             outfit_body_types = []
             outfit_part_ids = []
-
+            if not override:
+                override = self.outfit_types
             # if body_type is any of the copied outfit parts it gets added to the outfit
             # the actual outfit we want to copy
             for body_type, cas_id in new_outfit_parts.items():
                 if not body_type == -1:
                     if cas_id == -1:
                         continue
-                    for ot in self.outfit_types:
+                    for ot in override:
                         if body_type == ot:
                             outfit_body_types.append(int(body_type))
                             outfit_part_ids.append(int(cas_id))
@@ -133,7 +138,7 @@ class OutfitFunctions:
                 if not body_type == -1:
                     if cas_id == -1:
                         continue
-                    for ot in self.outfit_types:
+                    for ot in override:
                         if body_type == ot:
                             pass_types = False
                     if pass_types:
@@ -216,12 +221,13 @@ class OutfitFunctions:
         except BaseException as e:
             error_trap(e)
 
-    def write_sim_outfit(self, filename: str):
+    def write_sim_outfit(self, filename: str, outfit=None):
         try:
             if OutfitFunctions.outfit_selected_sim.age == Age.BABY or OutfitFunctions.outfit_selected_sim.age == Age.TODDLER:
                 return
             file = open(filename, "w")
-            outfit = OutfitFunctions.outfit_selected_sim.get_current_outfit()
+            if not outfit:
+                outfit = OutfitFunctions.outfit_selected_sim.get_current_outfit()
             parts = self.get_outfit_parts(OutfitFunctions.outfit_selected_sim, (outfit[0], outfit[1]))
 
             file.write("{}:{}\n".format(int(OutfitFunctions.outfit_selected_sim.age), int(OutfitFunctions.outfit_selected_sim.gender)))
@@ -234,8 +240,11 @@ class OutfitFunctions:
         except BaseException as e:
             error_trap(e)
 
-    def read_sim_outfit(self, filename: str):
+    def read_sim_outfit(self, filename: str, override=None, outfit=None):
         try:
+            if not os.path.exists(filename):
+                message_box(None, None, "File Not Found!", "{}".format(filename))
+                return
             file = open(filename, "r")
             body_types = []
             part_ids = []
@@ -257,14 +266,15 @@ class OutfitFunctions:
             outfit_data = dict(zip(body_types, part_ids))
             file.close()
             for sim in OutfitFunctions.outfit_selected_sim_list:
-                outfit = sim.get_current_outfit()
+                if not outfit:
+                    outfit = sim.get_current_outfit()
 
                 if sim.age == Age.ADULT and age != Age.CHILD and age != Age.TEEN or \
                         sim.age == Age.YOUNGADULT and age != Age.CHILD and age != Age.TEEN or \
                         sim.age == Age.ELDER and age != Age.CHILD and age != Age.TEEN:
-                    self.paste_outfit(sim, outfit, outfit_data)
+                    self.paste_outfit(sim, outfit, outfit_data, override)
                 elif sim.age == age and sim.age != Age.BABY and sim.age != Age.TODDLER:
-                    self.paste_outfit(sim, outfit, outfit_data)
+                    self.paste_outfit(sim, outfit, outfit_data, override)
                 else:
                     message_box(None, None, "Paste Error",
                               "Unable to paste outfit! Incorrect age group", "ORANGE")
