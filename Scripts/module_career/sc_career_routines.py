@@ -321,8 +321,8 @@ class sc_CareerRoutine:
             if check_actions(sim, "gohere"):
                 return
 
-            if doing_nothing(sim) and not camera_is_near_private_objects(sc_simulate_autonomy.autonomy_distance_cutoff) and \
-                    "residential" not in venue and get_autonomy_distance(sim) > sc_simulate_autonomy.autonomy_distance_cutoff:
+            if doing_nothing(sim) and not check_actions(sim, "sit") and not camera_is_near_private_objects(sc_simulate_autonomy.autonomy_distance_cutoff) and \
+                    "residential" not in venue and get_autonomy_distance(sim) > sc_simulate_autonomy.autonomy_distance_cutoff and not sim_info.is_selectable:
                 if not check_actions(sim, "gohere"):
                     go_here(sim, camera._target_position, sim.level, sc_simulate_autonomy.autonomy_distance_cutoff * 0.5)
                     return
@@ -802,6 +802,7 @@ class sc_CareerRoutine:
                 error_trap(e)
 
     def cleaning_job(self, sim, target=None):
+        excluded_objects = ["14122620234069141635", "3part"]
         try:
             if not target:
                 # TODO Write a function that stores all dirty objects on zone load instead
@@ -813,7 +814,7 @@ class sc_CareerRoutine:
                     elif random.uniform(0, 100) < 75:
                         index = random.randint(0, len(sc_Vars.dirty_objects))
                         obj = sc_Vars.dirty_objects[index] if len(sc_Vars.dirty_objects) > index else sc_Vars.dirty_objects[0]
-                        if not is_object_in_use(obj) and not obj.in_use_by(sim) or obj.in_use_by(sim):
+                        if not is_object_in_use(obj) or is_object_in_use_by(obj, sim):
                             if not object_is_dirty(obj):
                                 make_dirty(obj)
                         else:
@@ -825,6 +826,12 @@ class sc_CareerRoutine:
             else:
                 obj = target
 
+            if obj and [ex for ex in excluded_objects if ex in str(obj.definition.id) or ex in str(obj).lower()]:
+                make_clean(obj)
+                if sim == services.get_active_sim() or sim.sim_info.focus:
+                    message_box(sim, obj, "Excluded Object", "Object: {}".format(str(obj)), "PURPLE")
+                    return
+
             for i, title in enumerate(self.cleaning_job_list["object"]):
                 if title in str(obj).lower():
                     if self.cleaning_job_list["action"][i] == 0:
@@ -835,11 +842,11 @@ class sc_CareerRoutine:
                             if "coffee" in str(obj).lower():
                                 push_sim_function(sim, obj, 13164, False)
                             make_clean(obj)
-                            if sim == services.get_active_sim():
+                            if sim == services.get_active_sim() or sim.sim_info.focus:
                                 message_box(sim, obj, "cleaning_job", "Result: {}".format(clean_string(str(result))), "GREEN")
                             return
 
-            if sim == services.get_active_sim() and obj:
+            if sim == services.get_active_sim() and obj or sim.sim_info.focus and obj:
                 message_box(sim, obj, "Job Found", "Object: {}".format(str(obj)), "PURPLE")
                 return
 

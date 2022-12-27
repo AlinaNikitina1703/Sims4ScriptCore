@@ -9,11 +9,13 @@ from ui.ui_dialog_picker import UiSimPicker, SimPickerRow
 
 from module_career.sc_career_custom import sc_CareerCustom
 from module_career.sc_career_functions import get_routine_objects_by_title
+from module_career.sc_career_routines import sc_CareerRoutine
 from scripts_core.sc_bulletin import sc_Bulletin
 from scripts_core.sc_debugger import debugger
+from scripts_core.sc_gohere import go_here
 from scripts_core.sc_input import inputbox
 from scripts_core.sc_jobs import clear_sim_instance, push_sim_function, distance_to, assign_situation, assign_title, \
-    set_exam_info, assign_routine, is_object_in_use, remove_sim_role
+    set_exam_info, assign_routine, is_object_in_use, remove_sim_role, doing_nothing, check_actions
 from scripts_core.sc_menu_class import MainMenu
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine_info import sc_RoutineInfo
@@ -34,8 +36,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
                                        "Set Exam To Patient",
                                        "Add Routine To Sim",
                                        "Add Situation To Sim",
-                                       "Remove Role From Sim",
-                                       "Routine Info")
+                                       "Remove Role From Sim")
 
         self.sc_vendor_choices = ("Mexican",
                                   "American",
@@ -52,6 +53,7 @@ class ModuleCareerMenu(ImmediateSuperInteraction):
         self.sc_vendor_menu = MainMenu(*args, **kwargs)
         self.sc_bulletin = sc_Bulletin()
         self.script_choice = MainMenu(*args, **kwargs)
+        self.sc_career_routine = sc_CareerRoutine()
 
     def _run_interaction_gen(self, timeline):
         self.sc_career_menu.MAX_MENU_ITEMS_TO_LIST = 10

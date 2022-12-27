@@ -284,9 +284,13 @@ class AIMenu(ImmediateSuperInteraction):
 
                 AI_Autonomy.behavior_queue = []
                 for target in dialog.get_result_tags():
-                    if self.sim != target:
-                        AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.MEAN))
-                        AI_Autonomy.behavior_queue.append(AIBehavior(target, self.sim, Behavior.MEAN))
+                    if self.sim != target and target != self.target:
+                        if hasattr(self.target, "is_sim") and self.target.is_sim:
+                            AI_Autonomy.behavior_queue.append(AIBehavior(target, self.target, Behavior.MEAN))
+                            AI_Autonomy.behavior_queue.append(AIBehavior(self.target, target, Behavior.MEAN))
+                        else:
+                            AI_Autonomy.behavior_queue.append(AIBehavior(self.sim, target, Behavior.MEAN))
+                            AI_Autonomy.behavior_queue.append(AIBehavior(target, self.sim, Behavior.MEAN))
 
                 AIMenu.ai_alarm.set_position(self.target)
                 AIMenu.ai_alarm.pick_on_sim_alarm()

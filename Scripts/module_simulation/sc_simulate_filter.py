@@ -2,7 +2,7 @@ from interactions.interaction_finisher import FinishingType
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_jobs import get_guid64, get_filters, get_venue, clear_sim_queue_of, enable_distance_autonomy, \
-    check_interaction_on_private_objects
+    check_interaction_on_private_objects, push_sim_function, clear_sim_instance
 from scripts_core.sc_script_vars import sc_Vars, AutonomyState, sc_DisabledAutonomy
 from scripts_core.sc_util import error_trap
 
@@ -18,11 +18,6 @@ def sc_filter_autonomy_actions(self, interaction):
         if filter_routine_autonomy(interaction):
             interaction.cancel(FinishingType.KILLED, 'Filtered')
             return False
-        if sc_Vars.enable_distance_autonomy:
-            if enable_distance_autonomy(interaction, sc_Vars.action_distance_autonomy, sc_Vars.chat_distance_autonomy, sc_Vars.distance_autonomy_messages):
-                if interaction:
-                    interaction.cancel(FinishingType.KILLED, 'Filtered')
-                return False
         if filter_private_objects(interaction):
             interaction.cancel(FinishingType.KILLED, 'Filtered')
             return False
@@ -30,6 +25,40 @@ def sc_filter_autonomy_actions(self, interaction):
     except BaseException as e:
         error_trap(e)
         return True
+
+def sc_filter_queue_actions(self, *args, **kwargs):
+    action = self.__class__.__name__.lower()
+    sim_autonomy = self.sim.sim_info.autonomy
+
+    if sc_Vars.enable_distance_autonomy:
+        if enable_distance_autonomy(self, sc_Vars.action_distance_autonomy, sc_Vars.chat_distance_autonomy, sc_Vars.distance_autonomy_messages):
+            return
+
+    # HACK: Currently not used.
+    if "add_to_world" in action:
+        return
+
+    # HACK: Drinks added to world from inventory are auto refilled.
+    if "put_down_anywhere" in action:
+        push_sim_function(self.sim, self.target, 99066, False)
+        return
+
+    # HACK Bartender fix
+    if sim_autonomy == AutonomyState.ROUTINE_FOOD:
+        if sc_Vars.tag_sim_for_debugging:
+            name = "{} {}".format(self.sim.first_name, self.sim.last_name)
+            if name in sc_Vars.tag_sim_for_debugging:
+                debugger("Sim: {} {} - Queue: {}".format(self.sim.first_name, self.sim.last_name, action), 2, True)
+
+        if "createglass" in action:
+            clear_sim_instance(self.sim.sim_info, "practice|tricks|chat")
+            return
+        if "practice" in action or "tricks" in action:
+            clear_sim_instance(self.sim.sim_info, "chat")
+            return
+        if "chat" in action:
+            clear_sim_instance(self.sim.sim_info, "practice|tricks")
+            return
 
 def filter_disabled_autonomy_actions(interaction):
     sim_autonomy = interaction.sim.sim_info.autonomy

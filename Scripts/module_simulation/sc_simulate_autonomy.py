@@ -10,7 +10,7 @@ from clock import ClockSpeedMode
 from date_and_time import TimeSpan
 
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import distance_to_pos, set_autonomy, create_time_span
+from scripts_core.sc_jobs import distance_to_pos, set_autonomy, create_time_span, doing_nothing
 from scripts_core.sc_script_vars import sc_Vars, AutonomyState
 
 logger = sims4.log.Logger('Autonomy')
@@ -46,6 +46,11 @@ def sc_simulate_update(zone):
         if not is_paused:
             sc_calculate_autonomy()
 
+def set_idle_autonomy(sim):
+    if doing_nothing(sim):
+        return autonomy.settings.AutonomyState.FULL
+    return autonomy.settings.AutonomyState.LIMITED_ONLY
+
 def sc_calculate_autonomy():
     global last_updated_autonomy, autonomy_distance_cutoff, update_autonomy
     if not services.get_active_sim():
@@ -57,7 +62,7 @@ def sc_calculate_autonomy():
         spawned = list(services.sim_info_manager().instanced_sims_gen())
         spawned.sort(key=lambda sim: get_autonomy_distance(sim))
         for sim in spawned:
-
+            sim.sim_info.focus = False
             if sim == services.get_active_sim() and not options_proto.selected_sim_autonomy_enabled:
                 set_autonomy(sim.sim_info, AutonomyState(sc_Vars.SELECTED_SIMS_AUTONOMY))
             elif sim.sim_info.is_selectable and sim != services.get_active_sim() and options_proto.autonomy_level == options_proto.LIMITED:
@@ -68,27 +73,25 @@ def sc_calculate_autonomy():
                 set_autonomy(sim.sim_info, AutonomyState.FULL)
 
             if get_autonomy_distance(sim) < 0.1:
-                if options_proto.selected_sim_autonomy_enabled:
-                    set_game_autonomy(sim, autonomy.settings.AutonomyState.FULL)
-                    continue
-                else:
-                    set_game_autonomy(sim, autonomy.settings.AutonomyState.LIMITED_ONLY)
-                    continue
+                sim.sim_info.focus = True
+                set_game_autonomy(sim, autonomy.settings.AutonomyState.FULL)
+                continue
+
             if get_autonomy_distance(sim) < autonomy_distance_cutoff:
                 if sim == services.get_active_sim() and not options_proto.selected_sim_autonomy_enabled:
                     set_game_autonomy(sim, autonomy.settings.AutonomyState.LIMITED_ONLY)
                     continue
-                elif sim.sim_info.is_selectable and options_proto.autonomy_level == options_proto.LIMITED:
+                elif sim != services.get_active_sim() and sim.sim_info.is_selectable and options_proto.autonomy_level == options_proto.LIMITED:
                     set_game_autonomy(sim, autonomy.settings.AutonomyState.LIMITED_ONLY)
                     continue
                 elif sim.sim_info.routine:
-                    set_game_autonomy(sim, autonomy.settings.AutonomyState.FULL)
+                    set_game_autonomy(sim, set_idle_autonomy(sim))
                     continue
                 elif sim.sim_info.is_selectable:
-                    set_game_autonomy(sim, autonomy.settings.AutonomyState.FULL)
+                    set_game_autonomy(sim, set_idle_autonomy(sim))
                     continue
                 else:
-                    set_game_autonomy(sim, autonomy.settings.AutonomyState.FULL)
+                    set_game_autonomy(sim, set_idle_autonomy(sim))
                     continue
 
             if sim == services.get_active_sim() and not options_proto.selected_sim_autonomy_enabled:

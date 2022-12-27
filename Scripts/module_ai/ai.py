@@ -213,7 +213,7 @@ class AIMain:
                 elif check_actions(sim, "gohere"):
                     clear_sim_instance(sim.sim_info, "gohere", True)
                     continue
-                elif distance_to(sim, self.interaction_target) > 8 and not check_actions(sim, "gohere"):
+                elif distance_to(sim, self.interaction_target) > 6 and not check_actions(sim, "gohere"):
                     clear_sim_instance(sim.sim_info, "gohere", True)
                     go_here(sim, self.interaction_target.position)
                     continue
@@ -221,13 +221,13 @@ class AIMain:
                     clear_sim_instance(sim.sim_info, "gohere", True)
                     clear_sim_instance(target.sim_info, "gohere", True)
                     if not check_actions(sim, "gohere"):
-                        pos = get_random_radius_position(target.position, 6)
+                        pos = get_random_radius_position(target.position, 4)
                         go_here(sim, pos)
                     if not check_actions(target, "gohere"):
-                        pos = get_random_radius_position(sim.position, 6)
+                        pos = get_random_radius_position(sim.position, 4)
                         go_here(target, pos)
                     continue
-                elif distance_to_by_room(sim, self.interaction_target) < 8:
+                elif distance_to_by_room(sim, self.interaction_target) < 6:
                     clear_sim_instance(sim.sim_info, "snowball", True)
                     clear_sim_instance(target.sim_info, "snowball", True)
                     point_object_at(sim, target)
