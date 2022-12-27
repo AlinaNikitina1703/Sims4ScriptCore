@@ -1,5 +1,5 @@
 import services
-from sims.sim_info_types import Age
+from sims.sim_info_types import Age, Species
 
 from scripts_core.sc_debugger import debugger
 from scripts_core.sc_file import get_config
@@ -67,6 +67,9 @@ class sc_Filter:
         venue = get_venue()
 
         if sc_Vars.DISABLE_ROUTINE:
+            return True
+
+        if not sim.sim_info.species == Species.HUMAN:
             return True
 
         roles = [role for role in sc_Vars.roles if [r for r in sim.autonomy_component.active_roles() if role.title in

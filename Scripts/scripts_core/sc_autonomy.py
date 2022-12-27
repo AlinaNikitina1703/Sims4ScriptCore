@@ -2,21 +2,16 @@ import build_buy
 import date_and_time
 import services
 import sims4
-from event_testing.results import TestResult
 from interactions.base.super_interaction import SuperInteraction
 from interactions.interaction_finisher import FinishingType
-from interactions.interaction_queue import BucketBase
 from server_commands.argument_helpers import get_tunable_instance
-from sims.sim_log import log_interaction
 from sims4.resources import Types
 from sims4.resources import Types, get_resource_key
 
 from scripts_core.sc_debugger import debugger
-from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_queue_of, clear_sim_instance, \
+from scripts_core.sc_jobs import distance_to, push_sim_function, clear_sim_instance, \
     update_interaction_tuning, \
-    get_filters, distance_to_by_room, get_venue, get_guid64, check_interaction_on_private_objects, check_actions, \
-    enable_distance_autonomy, check_action_list
-from scripts_core.sc_message_box import message_box
+    get_filters, get_venue, get_guid64
 from scripts_core.sc_script_vars import sc_Vars, sc_DisabledAutonomy, AutonomyState
 from scripts_core.sc_util import error_trap, clean_string
 
@@ -113,65 +108,6 @@ class sc_Autonomy:
 
     def notify_queue_head(self):
         return
-
-    def append(self, interaction):
-        result = TestResult.NONE
-
-        if not sc_Vars.DISABLE_MOD:
-            if not sc_Autonomy.run_interaction_filter(self, interaction):
-                return result
-
-            if not sc_Autonomy.run_routine_filter(self, interaction):
-                return result
-
-        if sc_Vars.tag_sim_for_debugging:
-            name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
-            if name in sc_Vars.tag_sim_for_debugging:
-                action = interaction.__class__.__name__.lower()
-                debugger("Sim: {} {} - Append: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name,
-                                                               get_guid64(interaction), action), 2, True)
-
-        sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
-        autonomy_choices = []
-        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices]
-        sc_Vars.non_filtered_autonomy_list = autonomy_choices
-        if len(sc_Vars.non_filtered_autonomy_list) > 24:
-            sc_Vars.non_filtered_autonomy_list.pop()
-
-        log_interaction('Enqueue', interaction)
-        result = self._append(interaction)
-        return result
-
-    def insert_next(self, interaction, **kwargs):
-        if not hasattr(interaction, "guid64"):
-            return None
-        result = TestResult.NONE
-
-        if not sc_Vars.DISABLE_MOD:
-            if not sc_Autonomy.run_interaction_filter(self, interaction):
-                return result
-
-            if not sc_Autonomy.run_routine_filter(self, interaction):
-                return result
-
-        if sc_Vars.tag_sim_for_debugging:
-            name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
-            if name in sc_Vars.tag_sim_for_debugging:
-                action = interaction.__class__.__name__.lower()
-                debugger(
-                    "Sim: {} {} - Insert Next: ({}) {}".format(interaction.sim.first_name, interaction.sim.last_name,
-                                                               get_guid64(interaction), action), 2, True)
-
-        sc_Vars.non_filtered_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
-        autonomy_choices = []
-        [autonomy_choices.append(x) for x in sc_Vars.non_filtered_autonomy_list if x not in autonomy_choices]
-        sc_Vars.non_filtered_autonomy_list = autonomy_choices
-        if len(sc_Vars.non_filtered_autonomy_list) > 24:
-            sc_Vars.non_filtered_autonomy_list.pop()
-
-        log_interaction('Enqueue_Next', interaction)
-        result = (self._insert_next)(interaction, **kwargs)
-        return result
 
     def run_interaction_filter(self, interaction):
         if not hasattr(interaction, "guid64"):
@@ -293,130 +229,6 @@ class sc_Autonomy:
                         return False
         return True
 
-    def run_routine_filter(self, interaction):
-        if not hasattr(interaction, "guid64"):
-            return False
-        action = interaction.__class__.__name__.lower()
-        autonomy = interaction.sim.sim_info.autonomy
-        zone = services.current_zone_id()
-        venue = get_venue()
-
-        if autonomy == AutonomyState.FULL:
-            if "residential" not in venue and "mop" not in action and "vacuum" not in action and "dust" not in action and "trash" not in action \
-                    and "dish" not in action and "wash" not in action and "clean" not in action:
-                return True
-            elif "residential" in venue:
-                return True
-
-        if autonomy == AutonomyState.DISABLED:
-            return True
-
-        if interaction.is_user_directed:
-            return True
-
-        if autonomy == AutonomyState.ROUTINE_MEDICAL:
-            if "research" in action or "chemistry" in action or "analysis" in action or "browse_web" in action \
-                    or "examine" in action or "hospital" in action or "xray" in action or "treadmill" in action \
-                    or "sit" in action or "computer_use" in action or "social" in action or "chat" in action \
-                    or "stand" in action or "analyze" in action or "makecall" in action or "takecall" in action \
-                    or "page" in action:
-                return True
-            if "hospitalexambed" in action:
-                if "cleanbed" not in action:
-                    return True
-
-        if autonomy == AutonomyState.ROUTINE_FOOD:
-            if "cook" in action or "bake" in action or "food" in action or "put_away" in action \
-                    or "oven" in action or "fridge" in action or "espresso" in action or "stove" in action \
-                    or "craft" in action or "tend" in action or "counter" in action or "carry" in action \
-                    or "loaddishes" in action or "bar" in action or "chat" in action or "makedrink" in action \
-                    or "cleanup" in action or "stand" in action or "clean" in action or "collect" in action \
-                    or "practice" in action or "tricks" in action or "createglass" in action or "waiter" in action \
-                    or "putdown" in action or "put_down" in action or "drink" in action or "shaker" in action:
-                return True
-
-        if autonomy == AutonomyState.ON_BREAK:
-            if "order" in action or "tobacco_purchase" in action:
-                return True
-            if [i for i in interaction.sim.get_all_running_and_queued_interactions()
-                if "frontdesk_staff" in str(i).lower()]:
-                clear_sim_queue_of(interaction.sim.sim_info, 104626)
-                return True
-
-        if autonomy == AutonomyState.ROUTINE_ORDERLY:
-            # front desk check
-            # if a call to use the front desk pops up and sim is browsing web it will be killed
-            if "frontdesk" in action:
-                if not [i for i in interaction.sim.get_all_running_and_queued_interactions()
-                        if "browse" in str(i).lower()]:
-                    return True
-            # if a call to browse web pops up and sim is using front desk it will be killed
-            if "browse" in action:
-                if not [i for i in interaction.sim.get_all_running_and_queued_interactions()
-                        if "frontdesk" in str(i).lower()]:
-                    return True
-
-            if "mop" in action or "vacuum" in action or "dust" in action or "trash" in action \
-                    or "dish" in action or "wash" in action or "clean" in action or "frontdesk" in action \
-                    or "browse" in action or "throw_away" in action or "carry" in action:
-                return True
-
-        if autonomy == AutonomyState.NO_CLEANING:
-            if "mop" not in action and "vacuum" not in action and "dust" not in action and "trash" not in action \
-                    and "dish" not in action and "wash" not in action and "clean" not in action:
-                return True
-
-        if sc_Vars.tag_sim_for_debugging:
-            name = "{} {}".format(interaction.sim.first_name, interaction.sim.last_name)
-            if name in sc_Vars.tag_sim_for_debugging:
-                debugger("Routine Sim: {} {} - Killed: {}".format(interaction.sim.first_name, interaction.sim.last_name,
-                                                                  action), 2, True)
-
-        sc_Vars.disabled_autonomy_list.insert(0, sc_DisabledAutonomy(interaction.sim.sim_info, get_guid64(interaction)))
-        if len(sc_Vars.disabled_autonomy_list) > 999:
-            sc_Vars.disabled_autonomy_list.pop()
-        interaction.cancel(FinishingType.KILLED, 'Filtered')
-        return False
-
-    def on_added_to_queue(self: SuperInteraction, *args, **kwargs):
-        action = self.__class__.__name__.lower()
-        target = self.target.__class__.__name__.lower()
-        autonomy = self.sim.sim_info.autonomy
-
-        # HACK: Drinks added to world from inventory are auto refilled.
-        if "add_to_world" in action:
-            sc_Autonomy.add_to_world_flag = True
-            return
-
-        # HACK: Drinks added to world from inventory are auto refilled.
-        if "put_down_anywhere" in action and sc_Autonomy.add_to_world_flag:
-            push_sim_function(self.sim, self.target, 99066, False)
-            sc_Autonomy.add_to_world_flag = False
-            return
-
-        # HACK Bartender fix
-        if autonomy == AutonomyState.ROUTINE_FOOD:
-            if sc_Vars.tag_sim_for_debugging:
-                name = "{} {}".format(self.sim.first_name, self.sim.last_name)
-                if name in sc_Vars.tag_sim_for_debugging:
-                    debugger("Sim: {} {} - Queue: {}".format(self.sim.first_name, self.sim.last_name, action), 2, True)
-
-            if "createglass" in action:
-                clear_sim_instance(self.sim.sim_info, "practice|tricks|chat")
-                return
-            if "practice" in action or "tricks" in action:
-                clear_sim_instance(self.sim.sim_info, "chat")
-                return
-            if "chat" in action:
-                clear_sim_instance(self.sim.sim_info, "practice|tricks")
-                return
-
-    def kill_interaction(self: SuperInteraction):
-        action = self.__class__.__name__
-        if sc_Vars.DEBUG:
-            debugger("Sim: {} {} - Killed: {}".format(self.sim.first_name, self.sim.last_name, action))
-        self.cancel(FinishingType.KILLED, 'Filtered')
-
     def prepare_gen(self: SuperInteraction):
         try:
             if sc_Vars.DISABLE_MOD:
@@ -457,7 +269,3 @@ class sc_Autonomy:
             return True
         except BaseException as e:
             error_trap(e)
-
-if sc_Vars.old_autonomy:
-    BucketBase.append = sc_Autonomy.append
-    BucketBase.insert_next = sc_Autonomy.insert_next

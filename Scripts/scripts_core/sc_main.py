@@ -21,7 +21,7 @@ from scripts_core.sc_jobs import is_sim_in_group, get_venue, get_number_of_sims,
     remove_annoying_buffs, has_role, \
     clear_jobs, assign_title, clear_leaving, get_important_objects_on_lot, \
     doing_nothing, \
-    push_sim_function
+    push_sim_function, check_actions
 from scripts_core.sc_message_box import message_box
 from scripts_core.sc_routine import ScriptCoreRoutine
 from scripts_core.sc_script_vars import sc_Vars, AutonomyState
@@ -357,7 +357,7 @@ class ScriptCoreMain:
             if sc_Vars._running and not sc_Vars.DISABLE_MOD and not sc_Vars.DISABLE_ROUTINE:
                 update_sim = None
                 sims = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine]
-                sims_doing_nothing = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and doing_nothing(sim) and sim.sim_info.routine_info.title != "patient"]
+                sims_doing_nothing = [sim for sim in services.sim_info_manager().instanced_sims_gen() if sim.sim_info.routine and doing_nothing(sim) and not check_actions(sim, "sit") and sim.sim_info.routine_info.title != "patient"]
                 if not len(sims):
                     return
                 if len(sims_doing_nothing):
@@ -379,7 +379,7 @@ class ScriptCoreMain:
                 if sim.sim_info.is_instanced():
                     ScriptCoreMain.assign_sim(self, sim)
                 if update_sim:
-                    if update_sim != sim and update_sim.sim_info.is_instanced():
+                    if update_sim != sim and update_sim.sim_info.is_instanced() and sc_Vars.career_function and not sim.sim_info.is_selectable:
                         ScriptCoreMain.assign_sim(self, update_sim)
 
         except BaseException as e:
@@ -433,7 +433,7 @@ class ScriptCoreMain:
                         sc_SpawnHandler.spawned_sims.remove(sim_info)
 
                 sims = [sim for sim in services.sim_info_manager().instanced_sims_gen(allow_hidden_flags=objects.ALL_HIDDEN_REASONS) if not sim.sim_info.routine]
-                sims_doing_nothing = [sim for sim in sims if doing_nothing(sim)]
+                sims_doing_nothing = [sim for sim in sims if doing_nothing(sim) and not check_actions(sim, "sit")]
                 update_sim = None
                 if len(sims_doing_nothing):
                     update_sim = sims_doing_nothing[0]
@@ -452,7 +452,7 @@ class ScriptCoreMain:
                 fade_lights_in_live_mode(False, 0.0)
                 ScriptCoreMain.assign_sim(self, sim)
                 if update_sim:
-                    if update_sim != sim and update_sim.sim_info.is_instanced() and not sim.sim_info.is_selectable and sc_Vars.career_function:
+                    if update_sim != sim and update_sim.sim_info.is_instanced() and sc_Vars.career_function and not sim.sim_info.is_selectable:
                         sc_Vars.career_function.default_routine(sim.sim_info)
 
         except BaseException as e:

@@ -123,12 +123,6 @@ def sc_notify_queue_head_inject(original, self, *args, **kwargs):
     result = original(self, *args, **kwargs)
     return result
 
-@safe_inject(SuperInteraction, 'on_added_to_queue')
-def sc_on_added_to_queue_inject(original, self, *args, **kwargs):
-    sc_Autonomy.on_added_to_queue(self)
-    result = original(self, *args, **kwargs)
-    return result
-
 @safe_inject(SuperInteraction, 'prepare_gen')
 def sc_prepare_gen_inject(original, self, *args, **kwargs):
     sc_Autonomy.prepare_gen(self)

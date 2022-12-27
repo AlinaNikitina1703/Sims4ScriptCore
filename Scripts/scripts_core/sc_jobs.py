@@ -197,7 +197,6 @@ def do_change_outfit_spinup(sim, category, timeline):
 def get_best_outfit_for_clothing_change(sim_info, outfit_change):
     roles = ["bartender", "mail", "butler"]
     t = get_current_temperature()
-    venue = get_venue()
     sim = init_sim(sim_info)
     if not outfit_change:
         return sim_info._current_outfit
@@ -208,16 +207,16 @@ def get_best_outfit_for_clothing_change(sim_info, outfit_change):
         if not sim_info.has_outfit(picked_outfit):
             picked_outfit = (OutfitCategory.SITUATION, 0)
         return picked_outfit
-    elif outfit_change[0] == OutfitCategory.SWIMWEAR and not check_actions(sim, "swim") and "beach" not in venue and "pool" not in venue and t < Temperature.WARM and sim.is_outside:
-        return sim_info._current_outfit
-    elif outfit_change[0] == OutfitCategory.BATHING and t < Temperature.WARM and sim.is_outside:
-        return sim_info._current_outfit
-    elif outfit_change[0] == OutfitCategory.SPECIAL and t < Temperature.WARM and sim.is_outside:
-        return sim_info._current_outfit
+    elif check_action_list(sim, ["swim", "pool"]) and t >= Temperature.WARM and sim.is_outside:
+        return sim_info.get_random_outfit((OutfitCategory.SWIMWEAR,))
+    elif sim_info._current_outfit[0] == OutfitCategory.BATHING and t < Temperature.WARM and sim.is_outside:
+        return sim_info.get_random_outfit((OutfitCategory.COLDWEATHER,))
+    elif sim_info._current_outfit[0] == OutfitCategory.SPECIAL and t < Temperature.WARM and sim.is_outside:
+        return sim_info.get_random_outfit((OutfitCategory.COLDWEATHER,))
     elif sim_info.is_selectable:
         return sim_info._current_outfit
     elif t < Temperature.WARM and sim_info._current_outfit[0] != OutfitCategory.COLDWEATHER and not sim_info.is_selectable:
-        sim_info.get_random_outfit((OutfitCategory.COLDWEATHER,))
+        return sim_info.get_random_outfit((OutfitCategory.COLDWEATHER,))
     else:
         return outfit_change
 
@@ -2620,7 +2619,7 @@ def find_empty_chair(sim, obj=None, dist=sc_Vars.MAX_DISTANCE, index=0, no_compu
         search = obj
     else:
         search = sim
-    chairs = find_all_objects_by_title(search, "sitliving|sitdining|sitsofa|sitlove|beddouble|bedsingle|chair|stool|hospitalexambed", search.level, dist)
+    chairs = find_all_objects_by_title(search, "sitliving|sitdining|sitsofa|sitlove|sitdeco|bench|beddouble|bedsingle|chair|stool|hospitalexambed", search.level, dist)
     if not chairs:
         return None
     for i, chair in enumerate(chairs):
@@ -2658,9 +2657,7 @@ def distance_autonomy_callback(value1=None, value2=None, value3=None, _connectio
 # New code to disable autonomy based on distance.
 def enable_distance_autonomy(interaction, action_dist=12.0, chat_dist=6.0, message=False):
     action = interaction.__class__.__name__.lower()
-    if not interaction.sim.sim_info.is_selectable:
-        return False
-    if not interaction.is_user_directed and not interaction.sim.sim_info.routine:
+    if not interaction.is_user_directed and interaction.sim.sim_info.is_selectable:
         if distance_to_by_level(interaction.sim, interaction.target) > action_dist:
             clear_sim_instance(interaction.sim.sim_info, [action, "stand"])
             if message and interaction.sim == services.get_active_sim():
@@ -2697,11 +2694,15 @@ def enable_distance_autonomy(interaction, action_dist=12.0, chat_dist=6.0, messa
         target = get_interaction_target_by_name(interaction.sim, "greet")
         clear_sim_instance(interaction.sim.sim_info, ["stand", "greet"])
         push_sim_function(target, interaction.sim, 13998)
-        return False
+        if message and interaction.sim == services.get_active_sim():
+            debugger("Distance Autonomy: Distance autonomy activated for Sim: {} action: {}".format(interaction.sim.first_name + " " + interaction.sim.last_name, action))
+        return True
     if "stand" in action and check_actions(interaction.sim, "sit") and check_actions(interaction.sim, "chat"):
         target = get_interaction_target_by_name(interaction.sim, "social")
         clear_sim_instance(interaction.sim.sim_info, ["chat", "social", "stand"])
         push_sim_function(target, interaction.sim, 13998)
+        if message and interaction.sim == services.get_active_sim():
+            debugger("Distance Autonomy: Distance autonomy activated for Sim: {} action: {}".format(interaction.sim.first_name + " " + interaction.sim.last_name, action))
         return True
     return False
 

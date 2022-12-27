@@ -47,6 +47,7 @@ class AutonomyState(enum.Int):
 
 setattr(SimInfo, "autonomy", AutonomyState.FULL)
 setattr(SimInfo, "choice", 0)
+setattr(SimInfo, "focus", False)
 setattr(Sim, "autonomy", AutonomyState.FULL)
 setattr(terrain, "position", Vector3(0, 0, 0))
 

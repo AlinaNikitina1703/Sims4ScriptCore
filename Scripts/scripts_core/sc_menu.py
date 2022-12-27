@@ -161,6 +161,7 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
                                     "Toggle Debug",
                                     "Tag Sim For Debugging",
                                     "Load Sim Tracking",
+                                    "Sims To Camera",
                                     "Debug Error",
                                     "Add Button To Object",
                                     "Get In Use By",
@@ -310,6 +311,11 @@ class ScriptCoreMenu(ImmediateSuperInteraction):
         self.sc_delete_menu.commands.append("<font color='#990000'>[Debug]</font>")
         self.sc_delete_menu.commands.append("<font color='#990000'>[Reload Scripts]</font>")
         self.sc_delete_menu.show(timeline, self, 0, self.sc_delete_choices, "Delete Sim Menu", "Make a selection.")
+
+    def sims_to_camera(self, timeline):
+        for sim in services.sim_info_manager().instanced_sims_gen():
+            clear_sim_instance(sim.sim_info)
+            go_here(sim, camera._target_position, sim.level, 2.0)
 
     def get_timeline_dump(self, timeline):
         timeline_dump = sc_Timeline()
