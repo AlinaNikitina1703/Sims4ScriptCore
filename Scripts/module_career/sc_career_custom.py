@@ -124,7 +124,7 @@ class sc_CareerCustom(sc_CareerMedical):
 
         if base_roles:
             workforce_sims = [sim_info for sim_info in services.sim_info_manager().get_all() if sim_info.routine or
-                [career for career in sim_info.career_tracker if [role for role in base_roles if role.career in str(career)]]
+                (sim_info.career_tracker is not None and [career for career in sim_info.career_tracker if [role for role in base_roles if role.career in str(career)]])
                 or [trait for trait in sim_info.trait_tracker if [role for role in base_roles if role.career in str(trait)]]]
 
             random.shuffle(workforce_sims)
